@@ -20,12 +20,26 @@ import ManagedListingsAppConfig from '../main/homes/managedproperties/ManagedLis
 import PropertyTypesAppConfig from '../main/homes/propertytypes/PropertyTypesAppConfig';
 import SignAcceptInviteConfig from '../main/sign-accept-invite/SignAcceptInviteConfig';
 import ManagedUserListingsAppConfig from '../main/homes/managedusersandproperties/ManagedUserListingsAppConfig';
+import ShopDashboardAppConfig from '../main/vendors-shop/dasboard/ShopDashboardAppConfig';
+import ShopProductsAppConfig from '../main/vendors-shop/products/ShopProductsAppConfig';
+import ShopOrdersAppConfig from '../main/vendors-shop/orders/ShopOrdersAppConfig';
+import SupportHelpCenterAppConfig from '../main/vendors-shop/support-center/SupportHelpCenterAppConfig';
+import AfricanshopsFinanceDashboardAppConfig from '../main/africanshops-finance/AfricanshopsFinanceDashboardAppConfig';
+import AfricanshopsMessengerAppConfig from '../main/africanshops-messenger/AfricanshopsMessengerAppConfig';
+import forgotPasswordConfig from '../main/sign-forgot-password/forgotPasswordPagesConfig';
+import resetPasswordConfig from '../main/sign-reset-password/resetPasswordPagesConfig';
+import merchantProfileAppConfig from '../main/vendors-shop/profile/merchantProfileAppConfig';
+import SettingsAppConfig from '../main/vendors-shop/settings/SettingsAppConfig';
+import ShopsPosAppConfig from '../main/vendors-shop/pos/ShopsPosAppConfig';
+// import AfricanshopsMessengerAppConfig from '../main/africanshops-messenger/AfricanshopsMessengerAppConfig';
 
 const routeConfigs = [
-	SignOutConfig,
+	// SignOutConfig,
 	SignInConfig,
 	SignUpConfig,
 	SignAcceptInviteConfig,
+	forgotPasswordConfig,
+	resetPasswordConfig,
 	// DocumentationConfig,
 	UsersAppConfig,
 	StaffAppConfig,
@@ -35,22 +49,38 @@ const routeConfigs = [
 	PropertyTypesAppConfig,
 	ManagedUserListingsAppConfig,
 
+	/****Africanshops Dashboard Configs Starts Here */
+	ShopDashboardAppConfig,
+	ShopProductsAppConfig,
+	ShopOrdersAppConfig,
+	SupportHelpCenterAppConfig,
+	AfricanshopsFinanceDashboardAppConfig,
+	AfricanshopsMessengerAppConfig,
+	merchantProfileAppConfig,
+
+
+	SettingsAppConfig,
+	ShopsPosAppConfig,
+
+	/****Africanshops Dashboard Configs Ends Here */
+
 	
 	/**Routes Below to be disabled */
 	...PagesConfigs,
 	...UserInterfaceConfigs,
-	...DashboardsConfigs,
+	// ...DashboardsConfigs,
 	...AppsConfigs,
 	...authRoleExamplesConfigs
 ];
 /**
- * The routes of the application.
+ * The routes of the application. 
  */
 const routes = [
 	...FuseUtils.generateRoutesFromConfigs(routeConfigs, settingsConfig.defaultAuth),
 	{
 		path: '/',
-		element: <Navigate to="/dashboards/project" />,
+		// element: <Navigate to="/dashboards/project" />,
+		element: <Navigate to="/shop-dashboard" />,
 		auth: settingsConfig.defaultAuth
 	},
 	{

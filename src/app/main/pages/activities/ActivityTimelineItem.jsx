@@ -11,10 +11,11 @@ import { lighten } from '@mui/material/styles';
  * The ActivityTimelineItem component.
  */
 function ActivityTimelineItem(props) {
+
 	const { item, last } = props;
 	return (
 		<TimelineItem>
-			<TimelineSeparator>
+			{/* <TimelineSeparator>
 				<TimelineDot
 					color="primary"
 					className="mt-0 flex h-40  w-40 items-center justify-center p-0"
@@ -24,7 +25,7 @@ function ActivityTimelineItem(props) {
 				</TimelineDot>
 
 				{!last && <TimelineConnector />}
-			</TimelineSeparator>
+			</TimelineSeparator> */}
 
 			<TimelineContent className="flex flex-col items-start pb-48 pt-0">
 				{/* eslint-disable-next-line react/no-danger */}
@@ -37,7 +38,7 @@ function ActivityTimelineItem(props) {
 					>
 						{format(new Date(item.date), 'MMM dd, h:mm a')}
 					</Typography>
-					{item.linkedContent && <div className="hidden sm:block">&bull;</div>}
+					{/* {item.linkedContent && <div className="hidden sm:block">&bull;</div>}
 
 					{item.useRouter && (
 						<Link
@@ -57,7 +58,7 @@ function ActivityTimelineItem(props) {
 						>
 							{item.linkedContent}
 						</a>
-					)}
+					)} */}
 				</div>
 
 				{item.extraContent && (
@@ -70,7 +71,6 @@ function ActivityTimelineItem(props) {
 									: lighten(theme.palette.background.default, 0.02)
 						}}
 					>
-						{/* eslint-disable-next-line react/no-danger */}
 						<div dangerouslySetInnerHTML={{ __html: item.extraContent }} />
 					</Box>
 				)}

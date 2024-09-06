@@ -12,6 +12,7 @@ import useJwtAuth from 'src/app/auth/services/jwt/useJwtAuth';
 /**
  * Form Validation Schema
  */
+
 const schema = z
 	.object({
 		displayName: z.string().nonempty('You must enter your name'),

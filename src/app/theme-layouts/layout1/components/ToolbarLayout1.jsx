@@ -71,11 +71,14 @@ function ToolbarLayout1(props) {
 						{/* <FullScreenToggle /> */}
 						{/* <NavigationSearch /> */}
 						{/* <QuickPanelToggleButton /> */}
-						{/* <NotificationPanelToggleButton /> */}
+						
+						<NotificationPanelToggleButton />
 						<UserMenu />
+
+						
 					</div>
 
-					{config.navbar.display && config.navbar.position === 'right' && (
+					{/* {config.navbar.display && config.navbar.position === 'right' && (
 						<>
 							<Hidden lgDown>
 								{!navbar.open && <NavbarToggleButton className="mx-0 h-40 w-40 p-0" />}
@@ -85,7 +88,7 @@ function ToolbarLayout1(props) {
 								<NavbarToggleButton className="mx-0 h-40 w-40 p-0 sm:mx-8" />
 							</Hidden>
 						</>
-					)}
+					)} */}
 				</Toolbar>
 			</AppBar>
 		</ThemeProvider>

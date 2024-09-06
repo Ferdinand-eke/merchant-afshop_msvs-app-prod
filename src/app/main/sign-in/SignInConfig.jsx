@@ -9,7 +9,7 @@ const SignInConfig = {
 					display: false
 				},
 				toolbar: {
-					display: false
+					display: true
 				},
 				footer: {
 					display: false
@@ -23,6 +23,7 @@ const SignInConfig = {
 			}
 		}
 	},
+	
 	auth: authRoles.onlyGuest,
 	routes: [
 		{

@@ -9,7 +9,7 @@ import { CacheProvider } from "@emotion/react";
 import { selectCurrentLanguageDirection } from "app/store/i18nSlice";
 import themeLayouts from "app/theme-layouts/themeLayouts";
 import { selectMainTheme } from "@fuse/core/FuseSettings/fuseSettingsSlice";
-import MockAdapterProvider from "@mock-api/MockAdapterProvider";
+import MockAdapterProvider from "src/@mock-api_old/MockAdapterProvider";
 import { useAppSelector } from "app/store/hooks";
 import { useSelector } from "react-redux";
 import withAppProviders from "./withAppProviders";
@@ -80,8 +80,8 @@ function App() {
 
       <ToastContainer
         className="z-1000"
-        // position="bottom-center"
-        position="top-left"
+        position="bottom-center"
+        // position="top-left"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}

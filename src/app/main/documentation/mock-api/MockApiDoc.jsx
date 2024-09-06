@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import mockApiJson from 'src/@mock-api/mock-api.json';
+import mockApiJson from 'src/@mock-api_old/mock-api.json';
 
 const Root = styled('div')(() => ({
 	'& .menu-content': {

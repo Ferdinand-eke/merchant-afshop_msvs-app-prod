@@ -1,5 +1,5 @@
 {
-  "name": "fuse-react-app",
+  "name": "africanshops-merchants-portal",
   "version": "10.4.0",
   "private": true,
   "type": "module",
@@ -63,6 +63,7 @@
     "react-app-alias": "2.2.2",
     "react-autosuggest": "10.1.0",
     "react-beautiful-dnd": "13.1.1",
+    "react-cookie": "^7.2.0",
     "react-dom": "18.3.1",
     "react-draft-wysiwyg": "1.15.0",
     "react-draggable": "4.4.6",

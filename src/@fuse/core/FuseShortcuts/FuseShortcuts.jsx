@@ -59,6 +59,8 @@ function FuseShortcuts(props) {
 		onChange(newShortcuts);
 	}
 
+	console.log("ShortCuts", shortcutItems)
+
 	return (
 		<div className={clsx('flex flex-1', variant === 'vertical' && 'shrink grow-0 flex-col', className)}>
 			{useMemo(() => {
@@ -106,6 +108,8 @@ function FuseShortcuts(props) {
 								<FuseSvgIcon sx={{ color: amber[600] }}>heroicons-solid:star</FuseSvgIcon>
 							</IconButton>
 						</Tooltip>
+
+						
 					</div>
 				);
 			}, [addMenu, variant, shortcutItems])}

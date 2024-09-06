@@ -8,6 +8,7 @@ import ActivityTimelineItem from './ActivityTimelineItem';
 /**
  * The activities page.
  */
+
 function ActivitiesPage() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	return (

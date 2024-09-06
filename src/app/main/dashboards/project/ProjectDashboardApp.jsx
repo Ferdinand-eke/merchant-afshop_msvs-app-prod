@@ -10,6 +10,7 @@ import HomeTab from './tabs/home/HomeTab';
 import TeamTab from './tabs/team/TeamTab';
 import BudgetTab from './tabs/budget/BudgetTab';
 import { useGetProjectDashboardWidgetsQuery } from './ProjectDashboardApi';
+import { getAdminAccessToken } from 'src/app/aaqueryhooks/utils/opsUtils';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
@@ -32,6 +33,7 @@ function ProjectDashboardApp() {
 	if (isLoading) {
 		return <FuseLoading />;
 	}
+
 
 	return (
 		<Root

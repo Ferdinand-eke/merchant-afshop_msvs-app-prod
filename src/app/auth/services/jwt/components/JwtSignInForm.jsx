@@ -1,78 +1,92 @@
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
-import { z } from 'zod';
-import _ from '@lodash';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import useJwtAuth from '../useJwtAuth';
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { z } from "zod";
+import _ from "@lodash";
+import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+import useJwtAuth from "../useJwtAuth";
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-	email: z.string().email('You must enter a valid email').nonempty('You must enter an email'),
-	password: z
-		.string()
-		.min(4, 'Password is too short - must be at least 4 chars.')
-		.nonempty('Please enter your password.')
+//   email: z
+//     .string()
+//     .email("You must enter a valid email")
+//     .nonempty("You must enter an email"),
+shopemail: z
+    .string()
+    .email("You must enter a valid email")
+    .nonempty("You must enter an email"),
+  password: z
+    .string()
+    .min(4, "Password is too short - must be at least 4 chars.")
+    .nonempty("Please enter your password."),
 });
 const defaultValues = {
-	email: '',
-	password: '',
-	remember: true
+  // email: '',
+  // password: '',
+  // remember: true
+
+  shopemail: "",
+  password: "",
+  remember: true,
 };
 
 function JwtSignInForm() {
+  const { signIn, isLoading } = useJwtAuth();
+  const { control, formState, handleSubmit, setValue, setError } = useForm({
+    mode: "onChange",
+    defaultValues,
+    resolver: zodResolver(schema),
+  });
+  const { isValid, dirtyFields, errors } = formState;
+  // useEffect(() => {
+  // 	setValue('email', 'admin@fusetheme.com', { shouldDirty: true, shouldValidate: true });
+  // 	setValue('password', 'admin', { shouldDirty: true, shouldValidate: true });
+  // }, [setValue]);
 
-	const { signIn, isLoading } = useJwtAuth();
-	const { control, formState, handleSubmit, setValue, setError } = useForm({
-		mode: 'onChange',
-		defaultValues,
-		resolver: zodResolver(schema)
-	});
-	const { isValid, dirtyFields, errors } = formState;
-	// useEffect(() => {
-	// 	setValue('email', 'admin@fusetheme.com', { shouldDirty: true, shouldValidate: true });
-	// 	setValue('password', 'admin', { shouldDirty: true, shouldValidate: true });
-	// }, [setValue]);
+  // useEffect(() => {
+  // 	setValue('email', defaultValues.email, { shouldDirty: true, shouldValidate: true });
+  // 	setValue('password', defaultValues.password, { shouldDirty: true, shouldValidate: true });
+  // }, [setValue]);
 
-	// useEffect(() => {
-	// 	setValue('email', defaultValues.email, { shouldDirty: true, shouldValidate: true });
-	// 	setValue('password', defaultValues.password, { shouldDirty: true, shouldValidate: true });
-	// }, [setValue]);
+  function onSubmit(formData) {
+    console.log("Login-Values", formData);
+    const { 
+		// email,
+		shopemail,
+		password } = formData;
+    signIn({
+      // email,
+      // password
+      shopemail,
+      password,
+    }).catch((error) => {
+      console.log("FormJSXError", error);
 
-	function onSubmit(formData) {
-		console.log("Login-Values", formData)
-		const { email, password } = formData;
-		signIn({
-			email,
-			password
-		}).catch((error) => {
-			console.log('FormJSXError', error)
-
-
-			// const errorData = error.response.data;
-			// errorData.forEach((err) => {
-			// 	setError(err.type, {
-			// 		type: 'manual',
-			// 		message: err.message
-			// 	});
-			// });
-		});
-	}
-	return (
-		<form
-			name="loginForm"
-			noValidate
-			className="mt-32 flex w-full flex-col justify-center"
-			onSubmit={handleSubmit(onSubmit)}
-		>
-			<Controller
-				name="email"
+      // const errorData = error.response.data;
+      // errorData.forEach((err) => {
+      // 	setError(err.type, {
+      // 		type: 'manual',
+      // 		message: err.message
+      // 	});
+      // });
+    });
+  }
+  return (
+    <form
+      name="loginForm"
+      noValidate
+      className="mt-32 flex w-full flex-col justify-center"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      {/* <Controller
+				// name="email"
 				control={control}
 				render={({ field }) => (
 					<TextField
@@ -88,27 +102,46 @@ function JwtSignInForm() {
 						fullWidth
 					/>
 				)}
-			/>
+			/> */}
 
-			<Controller
-				name="password"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mb-24"
-						label="Password"
-						type="password"
-						error={!!errors.password}
-						helperText={errors?.password?.message}
-						variant="outlined"
-						required
-						fullWidth
-					/>
-				)}
-			/>
+      <Controller
+        name="shopemail"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            className="mb-24"
+            label="Email"
+            autoFocus
+            type="email"
+            error={!!errors.shopemail}
+            helperText={errors?.shopemail?.message}
+            variant="outlined"
+            required
+            fullWidth
+          />
+        )}
+      />
 
-			{/* <div className="flex flex-col items-center justify-center sm:flex-row sm:justify-between">
+      <Controller
+        name="password"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            className="mb-24"
+            label="Password"
+            type="password"
+            error={!!errors.password}
+            helperText={errors?.password?.message}
+            variant="outlined"
+            required
+            fullWidth
+          />
+        )}
+      />
+
+      <div className="flex flex-col items-center justify-center sm:flex-row sm:justify-between">
 				<Controller
 					name="remember"
 					control={control}
@@ -129,27 +162,27 @@ function JwtSignInForm() {
 
 				<Link
 					className="text-md font-medium"
-					to="/pages/auth/forgot-password"
+					to="/forgot-password"
 				>
 					Forgot password?
 				</Link>
-			</div> */}
+			</div>
 
-			<Button
-				variant="contained"
-				color="secondary"
-				className=" mt-16 w-full"
-				aria-label="Sign in"
-				//|| isLoading
-				disabled={_.isEmpty(dirtyFields) || !isValid }
-				type="submit"
-				size="large"
-			>
-				{/* {isLoading ? "processing..." : "Sign in"} */}
-				Sign in
-			</Button>
-		</form>
-	);
+      <Button
+        variant="contained"
+        color="secondary"
+        className=" mt-16 w-full"
+        aria-label="Sign in"
+        //|| isLoading
+        disabled={_.isEmpty(dirtyFields) || !isValid}
+        type="submit"
+        size="large"
+      >
+        {/* {isLoading ? "processing..." : "Sign in"} */}
+        Sign in
+      </Button>
+    </form>
+  );
 }
 
 export default JwtSignInForm;

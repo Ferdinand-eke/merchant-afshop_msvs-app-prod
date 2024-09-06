@@ -3861,6 +3861,445 @@
       },
       "parameters": []
     },
+    "/settings/account": {
+      "get": {
+        "summary": "Get account settings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/settings_account"
+                },
+                "examples": {
+                  "example-1": {
+                    "$ref": "#/components/examples/settings_account"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getAccountSettings",
+        "description": "Retrieve account settings.",
+        "x-stoplight": {
+          "id": "ry8nlj6smzooi"
+        },
+        "tags": [
+          "settings_account"
+        ]
+      },
+      "parameters": [],
+      "put": {
+        "summary": "Update account settings",
+        "operationId": "updateAccountSettings",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "description": "Update account settings.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/settings_account"
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "id": "string",
+                    "avatar": "string",
+                    "name": "string",
+                    "about": "string",
+                    "details": {
+                      "emails": [
+                        {
+                          "email": "string",
+                          "label": "string"
+                        }
+                      ],
+                      "phoneNumbers": [
+                        {
+                          "country": "string",
+                          "phoneNumber": "string",
+                          "label": "string"
+                        }
+                      ],
+                      "title": "string",
+                      "company": "string",
+                      "birthday": "string",
+                      "address": "string"
+                    },
+                    "attachments": {
+                      "media": [
+                        null
+                      ],
+                      "docs": [
+                        null
+                      ],
+                      "links": [
+                        null
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "ryafeizlukifs"
+        },
+        "tags": [
+          "settings_account"
+        ]
+      }
+    },
+    "/settings/notifications": {
+      "get": {
+        "summary": "Get notification settings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/settings_notifications"
+                },
+                "examples": {
+                  "example-1": {
+                    "$ref": "#/components/examples/settings_notifications"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getNotificationSettings",
+        "description": "Retrieve notification settings.",
+        "x-stoplight": {
+          "id": "wulhu4bxk0k4p"
+        },
+        "tags": [
+          "settings_notification"
+        ]
+      },
+      "parameters": [],
+      "put": {
+        "summary": "Update notification settings",
+        "operationId": "updateNotificationSettings",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "description": "Update notification settings.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/settings_notifications"
+              },
+              "examples": {
+                "example-1": {
+                  "$ref": "#/components/examples/settings_notifications"
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "iu4zfpuraufqe"
+        },
+        "tags": [
+          "settings_notification"
+        ]
+      }
+    },
+    "/settings/security": {
+      "get": {
+        "summary": "Get security settings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/settings_security"
+                },
+                "examples": {
+                  "example-1": {
+                    "$ref": "#/components/examples/settings_security"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getSecuritySettings",
+        "description": "Retrieve security settings.",
+        "x-stoplight": {
+          "id": "r6prltskhn8tv"
+        },
+        "tags": [
+          "settings_security"
+        ]
+      },
+      "parameters": [],
+      "put": {
+        "summary": "Update security settings",
+        "operationId": "updateSecuritySettings",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "description": "Update security settings.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/settings_security"
+              },
+              "examples": {
+                "example-1": {
+                  "$ref": "#/components/examples/settings_security"
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "m3n9qp959fp3l"
+        },
+        "tags": [
+          "settings_security"
+        ]
+      }
+    },
+    "/settings/plan-billing": {
+      "get": {
+        "summary": "Get plan billing settings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/settings_plan_billing"
+                },
+                "examples": {
+                  "example-1": {
+                    "$ref": "#/components/examples/settings_plan_billing"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getPlanBillingSettings",
+        "description": "Retrieve plan billing settings.",
+        "x-stoplight": {
+          "id": "4yetqbo651gul"
+        },
+        "tags": [
+          "settings_plan_billing"
+        ]
+      },
+      "parameters": [],
+      "put": {
+        "summary": "Update plan billing settings",
+        "operationId": "updatePlanBillingSettings",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "description": "Update plan billing settings.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/settings_plan_billing"
+              },
+              "examples": {
+                "example-1": {
+                  "$ref": "#/components/examples/settings_plan_billing"
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "tasn0zzxuyadk"
+        },
+        "tags": [
+          "settings_plan_billing"
+        ]
+      }
+    },
+    "/settings/team": {
+      "get": {
+        "summary": "Get team members",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/settings_team_member"
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "$ref": "#/components/examples/settings_team"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getTeamMembersSettings",
+        "description": "Retrieve team members.",
+        "x-stoplight": {
+          "id": "9xkxzr9obv2vg"
+        },
+        "tags": [
+          "settings_team"
+        ]
+      },
+      "parameters": [],
+      "post": {
+        "summary": "Create team member",
+        "tags": [
+          "settings_team"
+        ],
+        "responses": {
+          "2XX": {
+            "description": "Success"
+          }
+        },
+        "operationId": "createTeamMemberSettings",
+        "x-stoplight": {
+          "id": "e4phzi1n05twk"
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/settings_team_member"
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "avatar": "string",
+                    "name": "string",
+                    "email": "string",
+                    "role": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update team members",
+        "tags": [
+          "settings_team"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "operationId": "updateTeamSettings",
+        "x-stoplight": {
+          "id": "xi6mqss7df1bm"
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/settings_team_member"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/team/{memberId}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "memberId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "delete": {
+        "summary": "Delete team member",
+        "tags": [
+          "settings_team_member"
+        ],
+        "responses": {
+          "2XX": {
+            "description": "Success"
+          }
+        },
+        "operationId": "deleteTeamMemberSettings",
+        "x-stoplight": {
+          "id": "2fvlzh7qhk2qw"
+        },
+        "description": "Delete team member."
+      },
+      "put": {
+        "summary": "Update team member",
+        "tags": [
+          "settings_team_member"
+        ],
+        "responses": {
+          "2XX": {
+            "description": "Success"
+          }
+        },
+        "operationId": "updateTeamMemberSettings",
+        "x-stoplight": {
+          "id": "j5ovi3rblu0bz"
+        },
+        "description": "Update team member.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/settings_team_member"
+              }
+            }
+          }
+        }
+      }
+    },
     "/messenger/contacts/{contactId}": {
       "get": {
         "summary": "Get contact",
@@ -8067,6 +8506,179 @@
             ]
           }
         }
+      },
+      "settings_account": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "about": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          }
+        },
+        "x-examples": {
+          "Example 1": {
+            "name": "Brian Hughes",
+            "username": "brianh",
+            "title": "Senior Frontend Developer",
+            "company": "YXZ Software",
+            "about": "Hey! This is Brian; husband, father and gamer. I'm mostly passionate about bleeding edge tech and chocolate! 🍫",
+            "email": "hughes.brian@mail.com",
+            "phone": "121-490-33-12",
+            "country": "United States",
+            "language": "English"
+          }
+        }
+      },
+      "settings_notifications": {
+        "type": "object",
+        "properties": {
+          "communication": {
+            "type": "boolean"
+          },
+          "security": {
+            "type": "boolean"
+          },
+          "meetups": {
+            "type": "boolean"
+          },
+          "comments": {
+            "type": "boolean"
+          },
+          "mention": {
+            "type": "boolean"
+          },
+          "follow": {
+            "type": "boolean"
+          },
+          "inquiry": {
+            "type": "boolean"
+          }
+        },
+        "x-examples": {
+          "Example 1": {
+            "communication": false,
+            "security": false,
+            "meetups": false,
+            "comments": false,
+            "mention": false,
+            "follow": false,
+            "inquiry": false
+          }
+        }
+      },
+      "settings_plan_billing": {
+        "type": "object",
+        "properties": {
+          "plan": {
+            "type": "string"
+          },
+          "cardHolder": {
+            "type": "string"
+          },
+          "cardNumber": {
+            "type": "string"
+          },
+          "cardExpiration": {
+            "type": "string"
+          },
+          "cardCVC": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          }
+        },
+        "x-examples": {
+          "Example 1": {
+            "plan": "team",
+            "cardHolder": "",
+            "cardNumber": "",
+            "cardExpiration": "",
+            "cardCVC": "",
+            "country": "",
+            "zip": ""
+          }
+        }
+      },
+      "settings_security": {
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          },
+          "twoStepVerification": {
+            "type": "boolean"
+          },
+          "askPasswordChange": {
+            "type": "boolean"
+          }
+        },
+        "x-examples": {
+          "Example 1": {
+            "currentPassword": "",
+            "newPassword": "",
+            "twoStepVerification": true,
+            "askPasswordChange": false
+          }
+        }
+      },
+      "settings_team_member": {
+        "type": "object",
+        "x-stoplight": {
+          "id": "855f8e6ac60cb"
+        },
+        "properties": {
+          "avatar": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "x-examples": {
+          "Example 1": {
+            "avatar": "images/avatars/male-01.jpg",
+            "name": "Dejesus Michael",
+            "email": "dejesusmichael@mail.org",
+            "role": "admin"
+          }
+        },
+        "title": "settings_team_member"
       }
     },
     "securitySchemes": {},
@@ -32891,6 +33503,95 @@
             "read": true,
             "link": "/apps/file-manager",
             "useRouter": true
+          }
+        ]
+      },
+      "settings_account": {
+        "value": {
+          "name": "Brian Hughes",
+          "username": "brianh",
+          "title": "Senior Frontend Developer",
+          "company": "YXZ Software",
+          "about": "Hey! This is Brian; husband, father and gamer. I'm mostly passionate about bleeding edge tech and chocolate! 🍫",
+          "email": "hughes.brian@mail.com",
+          "phone": "121-490-33-12",
+          "country": "United States",
+          "language": "English"
+        }
+      },
+      "settings_notifications": {
+        "value": {
+          "communication": true,
+          "security": true,
+          "meetups": false,
+          "comments": false,
+          "mention": true,
+          "follow": true,
+          "inquiry": true
+        }
+      },
+      "settings_plan_billing": {
+        "value": {
+          "plan": "team",
+          "cardHolder": "",
+          "cardNumber": "",
+          "cardExpiration": "",
+          "cardCVC": "",
+          "country": "",
+          "zip": ""
+        }
+      },
+      "settings_security": {
+        "value": {
+          "currentPassword": "",
+          "newPassword": "",
+          "twoStepVerification": true,
+          "askPasswordChange": false
+        }
+      },
+      "settings_team": {
+        "value": [
+          {
+            "avatar": "assets/images/avatars/male-01.jpg",
+            "name": "Dejesus Michael",
+            "email": "dejesusmichael@mail.org",
+            "role": "admin"
+          },
+          {
+            "avatar": "assets/images/avatars/male-03.jpg",
+            "name": "Mclaughlin Steele",
+            "email": "mclaughlinsteele@mail.me",
+            "role": "admin"
+          },
+          {
+            "avatar": "assets/images/avatars/female-02.jpg",
+            "name": "Laverne Dodson",
+            "email": "lavernedodson@mail.ca",
+            "role": "write"
+          },
+          {
+            "avatar": "assets/images/avatars/female-03.jpg",
+            "name": "Trudy Berg",
+            "email": "trudyberg@mail.us",
+            "role": "read"
+          },
+          {
+            "avatar": "assets/images/avatars/male-07.jpg",
+            "name": "Lamb Underwood",
+            "email": "lambunderwood@mail.me",
+            "role": "read"
+          },
+          {
+            "avatar": "assets/images/avatars/male-08.jpg",
+            "name": "Mcleod Wagner",
+            "email": "mcleodwagner@mail.biz",
+            "role": "read"
+          },
+          {
+            "avatar": "assets/images/avatars/female-07.jpg",
+            "name": "Shannon Kennedy",
+            "email": "shannonkennedy@mail.ca",
+            "role": "read"
           }
         ]
       }

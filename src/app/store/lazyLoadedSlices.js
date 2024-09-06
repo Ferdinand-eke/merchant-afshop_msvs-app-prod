@@ -1,4 +1,5 @@
 import { combineSlices } from '@reduxjs/toolkit';
+
 import { fuseSettingsSlice } from '@fuse/core/FuseSettings/fuseSettingsSlice';
 import { i18nSlice } from 'app/store/i18nSlice';
 import apiService from './apiService';

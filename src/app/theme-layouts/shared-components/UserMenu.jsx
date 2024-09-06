@@ -1,3 +1,5 @@
+import _ from '@lodash';
+import clsx from 'clsx';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -12,11 +14,16 @@ import { selectUser } from 'src/app/auth/user/store/userSlice';
 import useAuth from 'src/app/auth/useAuth';
 import { darken } from '@mui/material/styles';
 import { useAppSelector } from 'app/store/hooks';
+import Divider from '@mui/material/Divider';
+// import { useGetShopAccountBalance } from 'app/configs/data/server-calls/shopdetails/useShopDetails';
 
 /**
  * The user menu.
  */
+
+
 function UserMenu() {
+	// const {data:shopAccount, isLoading:accountLoading} = useGetShopAccountBalance()
 	const user = useAppSelector(selectUser);
 	
 	const { signOut } = useAuth();
@@ -31,6 +38,8 @@ function UserMenu() {
 	if (!user) {
 		return null;
 	}
+
+	// console.log("Account-BALANCE", shopAccount?.data?.accountBalance)
 
 	return (
 		<>
@@ -47,12 +56,23 @@ function UserMenu() {
 						{user.name ? user.name : user.data.displayName}
 					</Typography>
 					<Typography
-						className="text-11 font-medium capitalize"
+						className=" rounded-full font-semibold py-4 px-4  text-11 font-medium capitalize"
 						color="text.secondary"
 					>
 						{user.role?.toString()}
 						{(!user.role || (Array.isArray(user.role) && user.role.length === 0)) && 'Guest'}
+						{/* 100000000000 */}
+						{/* NGN {shopAccount?.data?.accountBalance} */}
 					</Typography>
+
+					{/* <Typography
+			className={clsx(
+				'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
+				'bg-green text-white'
+			)}
+		>
+			100000000000
+		</Typography> */}
 				</div>
 
 				{user.data.photoURL ? (
@@ -121,7 +141,7 @@ function UserMenu() {
 					<>
 						<MenuItem
 							component={Link}
-							to="/apps/profile"
+							to="/merchant/profile"
 							onClick={userMenuClose}
 							role="button"
 						>
@@ -141,6 +161,32 @@ function UserMenu() {
 							</ListItemIcon>
 							<ListItemText primary="Inbox" />
 						</MenuItem>
+
+						<MenuItem
+							component={Link}
+							to="/africanshops/finance"
+							onClick={userMenuClose}
+							role="button"
+						>
+							<ListItemIcon className="min-w-40">
+								<FuseSvgIcon>heroicons-outline:mail-open</FuseSvgIcon>
+							</ListItemIcon>
+							<ListItemText primary="Wallet" />
+						</MenuItem>
+
+						<MenuItem
+							component={Link}
+							to="/africanshops/settings"
+							onClick={userMenuClose}
+							role="button"
+						>
+							<ListItemIcon className="min-w-40">
+								<FuseSvgIcon>heroicons-outline:cog</FuseSvgIcon>
+							</ListItemIcon>
+							<ListItemText primary="Settings" />
+						</MenuItem>
+
+						<Divider variant="middle"  />
 						<MenuItem
 							onClick={() => {
 								signOut();

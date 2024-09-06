@@ -11,7 +11,12 @@ export const notificationPanelSlice = createSlice({
 	reducers: {
 		toggleNotificationPanel: (state) => !state,
 		openNotificationPanel: () => true,
-		closeNotificationPanel: () => false
+		closeNotificationPanel: () => false,
+
+
+		// toggleAccountsPanel: (state) => !state,
+		// openAccountsPanel: () => true,
+		// closeAccountsPanel: () => false
 	},
 	selectors: {
 		selectNotificationPanelState: (state) => state
@@ -20,9 +25,12 @@ export const notificationPanelSlice = createSlice({
 /**
  * Lazy load
  * */
+
 rootReducer.inject(notificationPanelSlice);
 const injectedSlice = notificationPanelSlice.injectInto(rootReducer);
-export const { toggleNotificationPanel, openNotificationPanel, closeNotificationPanel } =
+export const { toggleNotificationPanel, openNotificationPanel, closeNotificationPanel,
+	// toggleAccountsPanel, openAccountsPanel, closeAccountsPanel
+} =
 	notificationPanelSlice.actions;
 export const { selectNotificationPanelState } = injectedSlice.selectors;
 export default notificationPanelSlice.reducer;

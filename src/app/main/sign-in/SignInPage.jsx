@@ -50,8 +50,8 @@ function SignInPage() {
 			<Paper className="h-full w-full px-16 py-8 ltr:border-r-1 rtl:border-l-1 sm:h-auto sm:w-auto sm:rounded-2xl sm:p-48 sm:shadow md:flex md:h-full md:w-1/2 md:items-center md:justify-end md:rounded-none md:p-64 md:shadow-none">
 				<CardContent className="mx-auto w-full max-w-320 sm:mx-0 sm:w-320">
 					<img
-						className="w-48"
-						src="assets/images/logo/logo.svg"
+						className="w-68"
+						src="assets/images/afslogo/afLogo.svg"
 						alt="logo"
 					/>
 

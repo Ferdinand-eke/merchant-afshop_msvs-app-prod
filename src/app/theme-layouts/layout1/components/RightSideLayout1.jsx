@@ -17,6 +17,7 @@ function RightSideLayout1() {
 			<NotificationPanel />
 		</Suspense>
 	);
+	
 }
 
 export default memo(RightSideLayout1);

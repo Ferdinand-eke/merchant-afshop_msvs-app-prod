@@ -20,7 +20,9 @@ export const resetForgotPassToken = () => {
 
 
 export const getAdminAccessToken = () => {
-    return localStorage.getItem(jwtAuthConfig.tokenStorageKey);
+    //jwt_access_token
+    // return localStorage.getItem(jwtAuthConfig.tokenStorageKey);
+    return localStorage.getItem('jwt_access_token');
 };
 
 

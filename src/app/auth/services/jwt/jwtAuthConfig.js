@@ -1,5 +1,11 @@
-// const baseUrl = 'http://localhost:8007'
-const baseUrl = 'https://sea-turtle-app-c6p3o.ondigitalocean.app'
+const baseUrl = 'http://localhost:8000'
+// const baseUrl = 'https://sea-turtle-app-c6p3o.ondigitalocean.app'  //Chariz Homes
+
+// import { adminSignIn } from "app/configs/data/client/clientToApiRoutes";
+
+// const baseUrl = 'https://coral-app-n8ox9.ondigitalocean.app' //Africanshops
+
+
 
 
 const jwtAuthConfig = {
@@ -13,8 +19,16 @@ const jwtAuthConfig = {
 
 
 	/******Bravort Admin Dashboard Controls API */
-	signInBravortAdminUrl: `${baseUrl}/admin/login`,
-	getAuthAdminInBravortAdminUrl: `${baseUrl}/admin/get-auth-admin`,
+	// signInBravortAdminUrl: `${baseUrl}/admin/login`,
+
+	// signInBravortAdminUrl: `${adminSignIn()}`,
+	signInBravortAdminUrl: `${baseUrl}/api/shop/login`,    
+
+
+
+	// getAuthAdminInBravortAdminUrl: `${baseUrl}/admin/get-auth-admin`,
+
+	getAuthAdminInBravortAdminUrl: `${baseUrl}/shop/get-auth-shop`,
 	isAuthenticatedStatus: 'jwt_is_authenticated_status',
 	authStatus: 'jwt_is_authStatus',
 	adminCredentials: 'jwt_auth_credentials',

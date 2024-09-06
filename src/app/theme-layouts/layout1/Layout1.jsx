@@ -79,7 +79,7 @@ function Layout1(props) {
 				{config.navbar.display && config.navbar.position === 'right' && <NavbarWrapperLayout1 />}
 			</div>
 
-			{/* {config.rightSidePanel.display && <RightSideLayout1 />} */}
+			{config.rightSidePanel.display && <RightSideLayout1 />}
 			<FuseMessage />
 		</Root>
 	);
