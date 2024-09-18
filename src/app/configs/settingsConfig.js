@@ -47,4 +47,5 @@ const settingsConfig = {
 	 */
 	loginRedirectUrl: '/'
 };
+
 export default settingsConfig;

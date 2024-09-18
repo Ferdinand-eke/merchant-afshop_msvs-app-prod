@@ -1,5 +1,5 @@
 import Cookie from 'js-cookie'
-import { RESOURCE_AUTH_CRED, AUTH_RESOURCE_TOKEN, RESOURCE_ACTIVATE_CRED, FORGOT_PASS_CREDENTIALS } from '../constants'
+import { RESOURCE_AUTH_CRED, AUTH_RESOURCE_TOKEN, RESOURCE_ACTIVATE_CRED, FORGOT_PASS_CREDENTIALS, MERCHANT_SIGUP_CREDENTIALS, RESEND_MERCHANT_SIGUP_OTP } from '../constants'
 // import { UerData } from '@/types/types'
 // import { CLIENT_ENDPOINTS } from '../dataService/data/clientEndpoints' setShopForgotPasswordPAYLOAD
 
@@ -29,6 +29,15 @@ export function setForgotPasswordPAYLOAD(userActivationToken) {
     Cookie.set(FORGOT_PASS_CREDENTIALS, JSON.stringify(userActivationToken))
 }
 
+/**Set coockie for merchant sign-up */
+export function setMerchantSignUpStorage(merchantActivationToken) {
+    Cookie.set(MERCHANT_SIGUP_CREDENTIALS, JSON.stringify(merchantActivationToken))
+}
+
+/***set coockie to store merchant formData for resending OTP if timer expires */
+export function setResendMerchantSignUpOtp(merchantClientData) {
+    Cookie.set(RESEND_MERCHANT_SIGUP_OTP, JSON.stringify(merchantClientData))
+}
 
 
 
@@ -82,14 +91,38 @@ export function get_SHOP_FORGOTPASS_TOKEN() {
     return { activationToken: null }
 }
 
-//   export function parseSSRCookie(context: any) {
-//     return SSRCookie.parse(context.req.headers.cookie ?? '');
-//   }
-// export function getRouterHandler() {
-//     const router = useRouter()
+export function getMerchantSignUpToken() {
+    // Cookie.get(MERCHANT_SIGUP_CREDENTIALS, JSON.parse(merchantActivationToken))
+    let merchantSignUpTokenCred
+    merchantSignUpTokenCred = Cookie.get(MERCHANT_SIGUP_CREDENTIALS)
 
-//     return { router }
-// }
+    if (merchantSignUpTokenCred) {
+        return JSON.parse(merchantSignUpTokenCred)
+    }
+    return { merchantActivationToken: null }
+}
+
+/***get coockie to store merchant formData for resending OTP if timer expires setResendMerchantSignUpOtp*/
+export function getResendMerchantSignUpOtp() {
+    // Cookie.set(RESEND_MERCHANT_SIGUP_OTP, JSON.stringify(merchantClientData))
+
+    let merchantSignResendData
+    merchantSignResendData = Cookie.get(RESEND_MERCHANT_SIGUP_OTP)
+
+    if (merchantSignResendData) {
+        return JSON.parse(merchantSignResendData)
+    }
+    return { merchantClientData: null }
+}
+
+
+
+
+/**
+ * 
+ * @param context REMOVE COOKIES___PARSED__DATAS
+ * @returns 
+ */
 
 /****REMOVE SPECIFIC COOKIES */
 export function remove_SHOP_FORGOTPASS_TOKEN() {
@@ -114,10 +147,26 @@ export function logOutRoutHandler() {
     // return { router }
 }
 
+export function removeMerchantSignUpToken() {
+    Cookie.remove(MERCHANT_SIGUP_CREDENTIALS)
+    Cookie.remove('_MERCHANT_SIGNUP_SPLAWED_USER_DATA_TOKEN')
+}
+
+export function removeResendMerchantSignUpOtp() {
+    Cookie.remove(RESEND_MERCHANT_SIGUP_OTP)
+    Cookie.remove('_RESEND_MERCHANT_SIGNUP_SPLAWED_USER_OTP')
+
+}
+
+
+
 export const resetSessionForShopUsers = () => {
     
   
     localStorage.removeItem('jwt_auth_credentials');
+
+   
+
     // delete axios.defaults.headers.common.Authorization;
     // delete axios.defaults.headers.common.accessToken;
     localStorage.removeItem('jwt_is_authenticated_status');

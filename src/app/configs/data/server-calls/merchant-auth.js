@@ -152,44 +152,4 @@ export function useResetShopPass() {
   });
 }
 
-//   export function useUserLogin() {
-//     const router = useRouter()
-//     return useMutation(userSignIn, {
-//         onSuccess: (data) => {
-//             if (data?.data?.accessToken && data?.data?.user) {
-//                 setAuthCredentials(data?.data?.user)
-//                 setAuthTokens(data?.data?.accessToken)
-//                 toast.success('logged in successfully')
 
-//                 router.push(`${CLIENT_ENDPOINTS.LACHARIZ_LISTINGS}`)
-//                 return
-//             } else if (data?.data?.error) {
-//                toast.error(data?.data?.error?.message)
-//                 return
-//             } else {
-//                 toast.info('something unexpected happened')
-//                 return
-//             }
-//         },
-//         onError: (error) => {
-//             const {
-//                 response: { data },
-//             }: any = error ?? {}
-//             data?.message?.map((m: []) =>toast.error(m))
-//         },
-//     })
-// }
-
-//   export const useLogoutMutation = () => {
-//     const router = useRouter();
-
-//     return useMutation(logOutAdmin, {
-//       onSuccess: () => {
-//         Cookies.remove(AUTH_CRED);
-//         router.replace(CLIENT_ENDPOINTS.ADMIN_LOGIN);
-//         // toast.success(t('common:successfully-logout'), {
-//         //   messageId: 'logoutSuccess',
-//         // });
-//       },
-//     });
-//   };

@@ -331,7 +331,7 @@ export const CreateShopPointOfSales = (invoiceFormData) =>
  * 
  * @returns HANDLE SHOP_PLANS 
  */
-//SHopPlans Routes
+//SHopPlans Routes 
 export const getShopPlans = () => Api().get('/shopplans'); //done
 export const getShopPlanById = (id) => Api().get(`/shopplans/${id}`); //done
   
@@ -339,6 +339,25 @@ export const getShopPlanById = (id) => Api().get(`/shopplans/${id}`); //done
 // {===============================shop orders handling ends =======================================}
 // export const createProduct = (productFormData) =>
 //   AuthApi().post('/usersproducts', productFormData);
+
+/****
+ * 
+ * HANDLE MERCHANT UNBOADING STARTS
+ */
+export const newShopSignup = (formData) =>
+    Api().post('/api/pre-shop-signup', formData);
+    export const newShopSignupWithOtp = (formData) =>
+    Api().post('/api/pre-shop-signup/with-otp', formData);
+// export const getAfPostById = (id) => Api().get(`/posts/${id}`);
+export const storePreShopUserData = (formData) =>
+    Api().post('/api/register-preshop-user', formData);
+    export const storePreShopUserDataWithOtp = (formData) =>
+    Api().post('/api/register-preshop-user/with-otp', formData);
+
+    /****
+ * 
+ * HANDLE MERCHANT UNBOADING ENDS
+ */
 
 //Shop Users Logout functionality  usersproducts
 export const MyShopLogOutSession = () => AuthApi().post(`/shop/logout`);
@@ -381,6 +400,7 @@ export const merchantLogOutCall = () => {
     try {
       /**Fuse admin starts */
       resetSessionForShopUsers()
+
       Cookies.remove('jwt_auth_credentials');
       /***Fuse admin ends */
 
@@ -396,6 +416,11 @@ export const merchantLogOutCall = () => {
       Cookies.remove('SLG_G_WPT_TO');
       Cookies.remove('ADMIN_AFSP_Show_Hide_tmp_Lead');
       Cookies.remove('ADMIN_AFSP_Show_Hide_tmp_Lead_ARC');
+
+
+
+      localStorage.removeItem('jwt_auth_credentials')
+      localStorage.clear()
 
       // Cookies.set(
       //   'ADMIN_AFSP_Show_Hide_tmp_Lead',

@@ -35,13 +35,14 @@ const ShopOrdersAppConfig = {
 				},
 
 				
-				{
-					path: 'pos',
-					element: <Products />
-				},
+				// {
+				// 	path: 'pos',
+				// 	element: <Products />
+				// },
 				
 			]
 		}
 	]
 };
+
 export default ShopOrdersAppConfig;

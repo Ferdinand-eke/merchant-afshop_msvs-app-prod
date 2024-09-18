@@ -79,13 +79,13 @@ const navigationConfig = [
 				icon: 'heroicons-outline:shopping-cart',
 				url: '/shoporders-list/orders'
 			},
-			{
-				id: 'shoporders.pos',
-				title: 'Poin Of Sale (POS)',
-				type: 'item',
-				icon: 'heroicons-outline:shopping-cart',
-				url: '/shoporders-list/pos'
-			},
+			// {
+			// 	id: 'shoporders.pos',
+			// 	title: 'Poin Of Sale (POS)',
+			// 	type: 'item',
+			// 	icon: 'heroicons-outline:shopping-cart',
+			// 	url: '/shoporders-list/pos'
+			// },
 
 			{
 				id: 'africanshops.pos',
@@ -177,96 +177,40 @@ const navigationConfig = [
 		]
 	},
 
-	{
-		id: 'users',
-		title: 'Manage users',
-		subtitle: 'Users management helpers',
-		type: 'group',
-		icon: 'heroicons-outline:home',
-		translate: 'SHOP-STAFF-USERS',
-		children: [
-			// {
-			// 	id: 'users.admin',
-			// 	title: 'Admin staff',
-			// 	type: 'item',
-			// 	icon: 'heroicons-outline:user-group',
-			// 	url: '/users/admin'
-			// },
-			// {
-			// 	id: 'users.user',
-			// 	title: 'Uers',
-			// 	type: 'item',
-			// 	icon: 'heroicons-outline:user-group',
-			// 	url: '/users/user'
-			// },
-			{
-				id: 'users.shopstaff',
-				title: 'Shop Staff',
-				type: 'item',
-				icon: 'heroicons-outline:user-group',
-				url: '/users/shopstaff'
-			},
+	// {
+	// 	id: 'users',
+	// 	title: 'Manage users',
+	// 	subtitle: 'Users management helpers',
+	// 	type: 'group',
+	// 	icon: 'heroicons-outline:home',
+	// 	translate: 'SHOP-STAFF-USERS',
+	// 	children: [
+	// 		// {
+	// 		// 	id: 'users.admin',
+	// 		// 	title: 'Admin staff',
+	// 		// 	type: 'item',
+	// 		// 	icon: 'heroicons-outline:user-group',
+	// 		// 	url: '/users/admin'
+	// 		// },
+	// 		// {
+	// 		// 	id: 'users.user',
+	// 		// 	title: 'Uers',
+	// 		// 	type: 'item',
+	// 		// 	icon: 'heroicons-outline:user-group',
+	// 		// 	url: '/users/user'
+	// 		// },
+	// 		{
+	// 			id: 'users.shopstaff',
+	// 			title: 'Shop Staff',
+	// 			type: 'item',
+	// 			icon: 'heroicons-outline:user-group',
+	// 			url: '/users/shopstaff'
+	// 		},
 			
-		]
-	},
-
-	// {
-	// 	id: 'properties',
-	// 	title: 'Manage prperties',
-	// 	subtitle: 'Properties management helpers',
-	// 	type: 'group',
-	// 	icon: 'heroicons-outline:home',
-	// 	translate: 'PROPERTIES',
-	// 	children: [
-	// 		{
-	// 			id: 'properties.list',
-	// 			title: 'Properties',
-	// 			type: 'item',
-	// 			icon: 'heroicons-outline:clipboard-check',
-	// 			url: '/properties/listings'
-	// 		},
-
-	// 		{
-	// 			id: 'properties.managedlist',
-	// 			title: 'Managed Properties',
-	// 			type: 'item',
-	// 			icon: 'heroicons-outline:clipboard-check',
-	// 			url: '/property/managed-listings'
-	// 		},
-	// 		{
-	// 			id: 'properties.users.managedlist',
-	// 			title: 'Manage Users & Properties',
-	// 			type: 'item',
-	// 			icon: 'heroicons-outline:clipboard-check',
-	// 			url: '/userlistings/managed-user-listings'
-	// 		},
 	// 	]
 	// },
 
-	// {
-	// 	id: 'Add-Ons',
-	// 	title: 'Manage Add-Ons',
-	// 	subtitle: 'Properties Add-Ons management helpers',
-	// 	type: 'group',
-	// 	icon: 'heroicons-outline:home',
-	// 	translate: 'ADD-ONS',
-	// 	children: [
-	// 		{
-	// 			id: 'packages.servicetypes',
-	// 			title: 'Service Types',
-	// 			type: 'item',
-	// 			icon: 'heroicons-outline:clipboard-check',
-	// 			url: '/packages/servicetypes'
-	// 		},
-	// 		{
-	// 			id: 'packages.propertytypes',
-	// 			title: 'Property Types',
-	// 			type: 'item',
-	// 			icon: 'heroicons-outline:clipboard-check',
-	// 			url: '/types/propertytypes'
-	// 		},
-	// 	]
-	// },
+	
 
 ];
 export default navigationConfig;

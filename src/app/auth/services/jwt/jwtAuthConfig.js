@@ -4,6 +4,7 @@ const baseUrl = 'https://coral-app-n8ox9.ondigitalocean.app' //Africanshops
 
 
 
+
 const jwtAuthConfig = {
 	tokenStorageKey: 'jwt_access_token',
 	signInUrl: 'mock-api/auth/sign-in',

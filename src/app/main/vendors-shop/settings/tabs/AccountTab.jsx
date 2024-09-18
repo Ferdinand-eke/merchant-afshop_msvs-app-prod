@@ -95,7 +95,6 @@ function AccountTab() {
   const [markets, setBMarkets] = useState([]);
   const [stateData, setStateData] = useState([]);
 
-  // console.log("MySHOP-VALUES", justMyshop?.data)
 
   useEffect(() => {
     reset(justMyshop?.data);

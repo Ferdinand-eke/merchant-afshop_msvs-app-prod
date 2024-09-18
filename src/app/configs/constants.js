@@ -26,3 +26,9 @@ export const BOOKING_USER_PAYLOAD = '_CHECKOUT_BOOKING_USER_DETAILS';;
 
 //cookies for user-payment option details
 export const USER_PAYMENT_OPTION = '_CHECKOUT_PAYMENT_OPTION';;
+
+//merchant sign-up token details
+export const MERCHANT_SIGUP_CREDENTIALS = '_MERCHANT_SIGNUP_SPLAWED_USER_DATA_TOKEN';
+
+//merchant sign-up resendOTP details
+export const RESEND_MERCHANT_SIGUP_OTP = '_RESEND_MERCHANT_SIGNUP_SPLAWED_USER_OTP';

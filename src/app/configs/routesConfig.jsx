@@ -32,6 +32,9 @@ import merchantProfileAppConfig from "../main/vendors-shop/profile/merchantProfi
 import SettingsAppConfig from "../main/vendors-shop/settings/SettingsAppConfig";
 import ShopsPosAppConfig from "../main/vendors-shop/pos/ShopsPosAppConfig";
 import blogAppConfig from "../main/newsblog/blogAppConfig";
+import HomeAppConfig from "../main/vendors-shop/home/HomeAppConfig";
+import HelpCenterHome from "../main/apps/help-center/home/HelpCenterHome";
+import LandingCenterHome from "../main/vendors-shop/home/home/LandingCenterHome";
 // import AfricanshopsMessengerAppConfig from '../main/africanshops-messenger/AfricanshopsMessengerAppConfig';
 
 const routeConfigs = [
@@ -68,6 +71,8 @@ const routeConfigs = [
    *
    * Start of Un-Authenticated pages are listed below here
    */
+//   HomeAppConfig,
+HomeAppConfig,
   blogAppConfig,
 
   /****
@@ -107,6 +112,32 @@ const routes = [
   {
     path: "*",
     element: <Navigate to="404" />,
+  },
+
+  {
+    path: "/home",
+	settings: {
+		layout: {
+			config: {
+				navbar: {
+					display: false
+				},
+				toolbar: {
+					display: true
+				},
+				footer: {
+					display: false
+				},
+				leftSidePanel: {
+					display: false
+				},
+				rightSidePanel: {
+					display: false
+				}
+			}
+		}
+	},
+    element: <LandingCenterHome />,
   },
 ];
 export default routes;

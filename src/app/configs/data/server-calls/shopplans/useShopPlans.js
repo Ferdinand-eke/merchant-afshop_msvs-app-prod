@@ -26,7 +26,7 @@ export function useSingleShopplans(shopplanId) {
     () => getShopPlanById(shopplanId),
     {
       enabled: Boolean(shopplanId),
-      staleTime: 2000,
+      // staleTime: 2000,
     }
   );
 }

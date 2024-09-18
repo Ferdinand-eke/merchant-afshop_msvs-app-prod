@@ -44,6 +44,8 @@ const defaultValues = {
  * The modern reversed sign up page.
  */
 function ModernReversedSignUpPage() {
+
+	
 	const { control, formState, handleSubmit, reset } = useForm({
 		mode: 'onChange',
 		defaultValues,

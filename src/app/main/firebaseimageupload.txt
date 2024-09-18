@@ -1,0 +1,44 @@
+function handleSaveProduct() {
+    if (images?.length > 0) {
+      const fileName = new Date().getTime() + images[0]?.id;
+      const storage = getStorage(firebaseApp);
+      const storageRef = ref(storage, `/flags/${fileName}`);
+      //   const uploadTask = uploadBytesResumable(storageRef, images[0]?.url, 'base64');
+      const uploadTask = uploadString(storageRef, images[0]?.url, "data_url");
+      const desertRef = ref(storage, `${getValues()?.flag}`);
+
+      // Delete the file
+      if (getValues()?.flag) {
+        deleteObject(desertRef)
+          .then(() => {
+            uploadTask.then((snapshot) => {
+              getDownloadURL(snapshot.ref).then((downloadURL) => {
+
+                setValue("flag", downloadURL);
+                updateCountryMutation.mutate(getValues());
+              });
+            });
+          })
+          .catch((error) => {
+            // Uh-oh, an error occurred!
+            toast.error(
+              error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message
+            );
+          });
+      } else {
+        uploadTask.then((snapshot) => {
+          console.log("uploadSnaps11", snapshot);
+          getDownloadURL(snapshot.ref).then((downloadURL) => {
+            console.log("countryFlag22", downloadURL);
+
+            setValue("flag", downloadURL);
+            updateCountryMutation.mutate(getValues());
+          });
+        });
+      }
+    } else {
+      updateCountryMutation.mutate(getValues());
+    }
+  }

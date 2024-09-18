@@ -10,7 +10,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useShopForgotPass } from 'app/configs/data/server-calls/admin-auth';
+import { useShopForgotPass } from 'app/configs/data/server-calls/merchant-auth';
 /**
  * Form Validation Schema
  */

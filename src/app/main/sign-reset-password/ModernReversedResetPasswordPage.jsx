@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { get_SHOP_FORGOTPASS_TOKEN } from 'app/configs/utils/authUtils';
-import { useResetShopPass } from 'app/configs/data/server-calls/admin-auth';
+import { useResetShopPass } from 'app/configs/data/server-calls/merchant-auth';
 /**
  * Form Validation Schema
  */

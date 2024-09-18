@@ -52,8 +52,7 @@ function NotificationsTab() {
 	function onSubmit(formData) {
 
 
-		return
-		updateNotificationSettings(formData);
+		// updateNotificationSettings(formData);
 	}
 
 	return (
