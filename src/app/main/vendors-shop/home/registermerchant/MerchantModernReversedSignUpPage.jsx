@@ -295,7 +295,12 @@ function MerchantModernReversedSignUpPage() {
         setResendMerchantSignUpOtp(clientSignUpData);
       }
     }
-  }, [sigupMerchant?.isSuccess, remoteResponseToken]);
+  }, [
+    plan?.data?.plankey,
+    sigupMerchant?.isSuccess,
+     remoteResponseToken,
+     
+    ]);
 
   async function findStatesByCountry(countryId) {
     setLoading(true);
@@ -776,9 +781,10 @@ function MerchantModernReversedSignUpPage() {
               You have chosen our {plan?.data?.plansname} plan
             </Typography>
             <div className="mt-24 text-lg leading-6 tracking-tight text-gray-400">
-              This plan enables you to....
+              {/* This plan enables you to.... */}
+              {plan?.data?.planinfo}
             </div>
-            <div className="mt-32 flex items-center">
+            {/* <div className="mt-32 flex items-center">
               <AvatarGroup
                 sx={{
                   "& .MuiAvatar-root": {
@@ -795,10 +801,14 @@ function MerchantModernReversedSignUpPage() {
               <div className="ml-16 font-medium tracking-tight text-gray-400">
                 More than 17k people joined us, it's your turn
               </div>
-            </div>
+            </div> */}
           </div>
         </Box>
 
+        
+        
+        {(plan?.data?.plankey === 'MANUFACTURERS' || plan?.data?.plankey === 'WHOLESALEANDRETAILERS' || plan?.data?.plankey === 'RETAIL' ) &&
+        <>
         {!remoteResponseToken.length > 0 ? (
           <div className="w-full px-16 py-32 ltr:border-l-1 rtl:border-r-1 sm:w-auto sm:p-48 md:p-64">
             <div className="mx-auto w-full max-w-320 sm:mx-0 sm:w-320">
@@ -809,7 +819,7 @@ function MerchantModernReversedSignUpPage() {
               />
 
               <Typography className="mt-32 text-4xl font-extrabold leading-tight tracking-tight">
-                Sign up
+                Sign up for trade based activities
               </Typography>
               <div className="mt-2 flex items-baseline font-medium">
                 <Typography>Already have an account?</Typography>
@@ -868,6 +878,34 @@ function MerchantModernReversedSignUpPage() {
         ) : (
           <MerchantModernReversedActivatePage resendOTP={resendOTP} />
         )}
+        </>
+        }
+        
+        {(plan?.data?.plankey === 'REALESTATES') &&
+        
+        <div className="w-full px-16 py-32 ltr:border-l-1 rtl:border-r-1 sm:w-auto sm:p-48 md:p-64">
+            <div className="mx-auto w-full max-w-320 sm:mx-0 sm:w-320">
+              <img
+                className="w-48"
+                src="assets/images/afslogo/afLogo.svg"
+                alt="logo"
+              />
+
+              <Typography className="mt-32 text-4xl font-extrabold leading-tight tracking-tight">
+                Sign up for real estate based activities
+              </Typography>
+              <div className="mt-2 flex items-baseline font-medium">
+                <Typography>Already have an account?</Typography>
+                <Link className="ml-4" to="/sign-in">
+                  Sign in
+                </Link>
+              </div>
+            </div>
+        </div>
+        }
+
+
+
       </Paper>
     </div>
   );

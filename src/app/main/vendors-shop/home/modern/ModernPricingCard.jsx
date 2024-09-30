@@ -47,7 +47,7 @@ function ModernPricingCard(props) {
 				className="mt-8 text-lg font-medium tracking-tight"
 				color="text.secondary"
 			>
-				{subtitle}
+				{subtitle?.substring(0, 100)}{subtitle && '...'}
 			</Typography>
 
 			<Divider className="bg-accent my-40 h-4 w-32 rounded" />

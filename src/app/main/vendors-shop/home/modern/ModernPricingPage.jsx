@@ -29,7 +29,7 @@ function ModernPricingPage() {
 		show: { opacity: 1, y: 0 }
 	};
 
-	console.log("merchantsPLANS", merchantPlans?.data?.data)
+	// console.log("merchantsPLANS", merchantPlans?.data?.data)
 	return (
 		<div className="relative flex min-w-0 flex-auto flex-col overflow-hidden">
 			<div className="relative overflow-hidden px-24 pb-48 pt-32 sm:px-64 sm:pb-96 sm:pt-80">
@@ -145,7 +145,7 @@ function ModernPricingPage() {
 									isPopular={plan?.isMostPreferred}
 									accountId={plan?._id}
 									title={plan?.plansname}
-									subtitle="Perfect for an individual or a small team starting to get bigger"
+									subtitle={plan?.planinfo}
 									yearlyPrice={plan?.percetageCommissionCharge}
 									monthlyPrice={plan?.percetageCommissionCharge}
 									buttonTitle="Get Started"
