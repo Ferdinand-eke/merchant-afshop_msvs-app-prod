@@ -116,13 +116,13 @@ const navigationConfig = [
 				url: '/africanshops/finance'
 			},
 
-			// {
-			// 	id: 'withdrawals.list',
-			// 	title: 'Property Withdrawals',
-			// 	type: 'item',
-			// 	icon: 'heroicons-outline:clipboard-check',
-			// 	url: '/finance/withdrawals'
-			// },
+			{
+				id: 'withdrawals.list',
+				title: 'Withdrawals',
+				type: 'item',
+				icon: 'heroicons-outline:clipboard-check',
+				url: '/africanshops/withdrawals'
+			},
 		
 			
 		]

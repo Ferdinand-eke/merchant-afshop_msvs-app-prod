@@ -11,14 +11,18 @@ import clsx from 'clsx';
 import Button from '@mui/material/Button';
 import { useDeleteECommerceProductsMutation, useGetECommerceProductsQuery } from '../ECommerceApi';
 import useGetAllListings from 'src/app/aaqueryhooks/listingssHandlingQuery';
+import useMyShopEstateProperties from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
 
 function ProductsTable() {
 	
 	// const { data: products, isLoading } = useGetECommerceProductsQuery();
-	const [removeProducts] = useDeleteECommerceProductsMutation();
+	// const [removeProducts] = useDeleteECommerceProductsMutation();
 
-	const {data:listingData, isLoading:listingIsLoading} = useGetAllListings()
+	const {data:listingData, isLoading:listingIsLoading} = useMyShopEstateProperties()
+	
 
+
+	console.log('Listing-MANAGED1111', listingData?.data?.data)
 	console.log('Listing-MANAGED', listingData?.data?.listings)
 	// const columns = useMemo(
 	// 	() => [
@@ -163,7 +167,7 @@ function ProductsTable() {
 				Cell: ({ row }) => (
 					<Typography
 						component={Link}
-						to={`/property/managed-listings/${row.original.id}/${row.original.handle}`}
+						to={`/property/managed-listings/${row.original.slug}/${row.original.title}`}
 						className="underline"
 						color="secondary"
 						role="button"
@@ -307,7 +311,7 @@ function ProductsTable() {
 	// 	return <></>
 	// }
 
-	if (!listingData?.data?.listings) {
+	if (!listingData?.data?.data) {
 		return (
 			<div className="flex flex-1 items-center justify-center h-full">
 				<Typography
@@ -327,13 +331,13 @@ function ProductsTable() {
 		>
 			<DataTable
 				// data={products}
-				data={listingData?.data?.listings}
+				data={listingData?.data?.data}
 				columns={columns}
 				renderRowActionMenuItems={({ closeMenu, row, table }) => [
 					<MenuItem
 						key={0}
 						onClick={() => {
-							removeProducts([row.original.id]);
+							// removeProducts([row.original.id]);
 							closeMenu();
 							table.resetRowSelection();
 						}}
@@ -357,7 +361,7 @@ function ProductsTable() {
 							size="small"
 							onClick={() => {
 								const selectedRows = table.getSelectedRowModel().rows;
-								removeProducts(selectedRows.map((row) => row.original.id));
+								// removeProducts(selectedRows.map((row) => row.original.id));
 								table.resetRowSelection();
 							}}
 							className="flex shrink min-w-40 ltr:mr-8 rtl:ml-8"

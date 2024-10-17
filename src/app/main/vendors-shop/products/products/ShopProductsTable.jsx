@@ -98,6 +98,15 @@ function ShopProductsTable() {
                 row.quantityInStock > 25 && "bg-green"
               )}
             />
+            <Chip
+								className="text-11"
+								size="small"
+								color="default"
+								label={row?.quantityunitweight?.unitname}
+							/>
+              {/* <span>
+              { row.quantityInStock }
+              </span> */}
           </div>
         ),
       },

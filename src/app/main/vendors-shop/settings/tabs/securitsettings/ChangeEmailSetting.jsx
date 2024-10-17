@@ -12,17 +12,18 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import _ from '@lodash';
 import { useEffect } from 'react';
+import { useShopSettingsChangeEmail } from 'app/configs/data/server-calls/auth/useAuth';
 
 const defaultValues = {
 	currentEmail: '',
-	shopemail: '',
+	newEmail: '',
 };
 /**
  * Form Validation Schema
  */
 const schema = z.object({
 	currentEmail: z.string().email('You must enter a valid email').nonempty('You must enter an email'),
-	shopemail: z.string().email('You must enter a valid email').nonempty('You must enter an email'),
+	newEmail: z.string().email('You must enter a valid email').nonempty('You must enter an email'),
 	
 
 });
@@ -35,12 +36,18 @@ function ChangeEmailSetting() {
 		resolver: zodResolver(schema)
 	});
 	const { isValid, dirtyFields, errors } = formState;
+	const changeMail = useShopSettingsChangeEmail()
+
 	// useEffect(() => {
 	// 	reset(securitySettings);
 	// }, [securitySettings, reset]);
 	// useEffect(() => {
 	// 	reset({ ...securitySettings, currentPassword: '', newPassword: '' });
 	// }, [isSuccess]);
+
+	useEffect(()=>{
+
+	},[])
 	
 
 	/**
@@ -50,7 +57,8 @@ function ChangeEmailSetting() {
 
 
 		console.log("Form Data", formData)
-		return
+		changeMail.mutate(formData)
+		// return
 	}
 
 	return (
@@ -89,14 +97,14 @@ function ChangeEmailSetting() {
 					</div>
 					<div className="sm:col-span-4">
 						<Controller
-							name="shopemail"
+							name="newEmail"
 							control={control}
 							render={({ field }) => (
 								<TextField
 									{...field}
 									label="New email"
 									type="email"
-									error={!!errors.shopemail}
+									error={!!errors.newEmail}
 									variant="outlined"
 									fullWidth
 									InputProps={{
@@ -106,7 +114,7 @@ function ChangeEmailSetting() {
 											</InputAdornment>
 										)
 									}}
-									helperText={errors?.shopemail?.message}
+									helperText={errors?.newEmail?.message}
 								/>
 							)}
 						/>
@@ -118,14 +126,16 @@ function ChangeEmailSetting() {
 					<Button
 						variant="outlined"
 						disabled={_.isEmpty(dirtyFields)}
-						onClick={() => reset(securitySettings)}
+						// onClick={() => reset(securitySettings)}
 					>
 						Cancel
 					</Button>
 					<Button
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid}
+						disabled={_.isEmpty(dirtyFields) || !isValid
+						// || changeMail.isLoading
+						}
 						type="submit"
 					>
 						Changed email

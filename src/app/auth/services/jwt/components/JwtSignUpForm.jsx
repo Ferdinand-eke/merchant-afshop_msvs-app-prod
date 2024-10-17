@@ -62,6 +62,7 @@ function JwtSignUpForm() {
 			});
 	}
 
+	
 	return (
 		<form
 			name="registerForm"

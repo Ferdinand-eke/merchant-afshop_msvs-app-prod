@@ -26,10 +26,21 @@ import {
   getMarketsByLgaId,
   getStateByCountryId,
 } from "app/configs/data/client/clientToApiRoutes";
+import { firebaseApp } from "src/app/auth/services/firebase/initializeFirebase";
+import {
+  getStorage,
+  ref,
+  deleteObject,
+  uploadBytesResumable,
+  uploadString,
+  getDownloadURL,
+} from "firebase/storage";
+import FuseUtils from "@fuse/utils/FuseUtils";
+import { toast } from "react-toastify";
 
 const defaultValues = {
-avatar:"",
-  shopname: '',
+  avatar: "",
+  shopname: "",
   tradehub: "",
   userOwner: "",
   businessCountry: "",
@@ -53,13 +64,12 @@ avatar:"",
  */
 const schema = z.object({
   shopname: z.string().nonempty("Name is required"),
-//   username: z.string().nonempty("Username is required"),
-//   title: z.string().nonempty("Title is required"),
-//   company: z.string().nonempty("Company is required"),
+  //   username: z.string().nonempty("Username is required"),
+  //   title: z.string().nonempty("Title is required"),
+  //   company: z.string().nonempty("Company is required"),
   shopbio: z.string().nonempty("Sho bio is required"),
   shopemail: z.string().email("Invalid email").nonempty("Email is required"),
   shopphone: z.string().nonempty("Phone is required"),
-
 
   businessCountry: z.string().nonempty("Country is required"),
   businezState: z.string().nonempty("State is required"),
@@ -68,21 +78,32 @@ const schema = z.object({
 
   tradehub: z.string().nonempty("Trade Hub is required"),
   shopplan: z.string().nonempty("A shop plan is required"),
-//   language: z.string().nonempty("Language is required"),
+  //   language: z.string().nonempty("Language is required"),
 });
 
 function AccountTab() {
   const { data: accountSettings, isError } = useGetAccountSettingsQuery();
 
   const [updateAccountSettings] = useUpdateAccountSettingsMutation();
-  const { control, watch, reset, handleSubmit, formState, getValues } = useForm(
-    {
-      defaultValues,
-      mode: "all",
-      resolver: zodResolver(schema),
-    }
-  );
+  const {
+    control,
+    watch,
+    reset,
+    handleSubmit,
+    formState,
+    getValues,
+    setValue,
+  } = useForm({
+    defaultValues,
+    mode: "all",
+    resolver: zodResolver(schema),
+  });
   const { isValid, dirtyFields, errors } = formState;
+
+  const { avatar } = watch();
+
+  console.log("shopCover", avatar);
+
   const [loading, setLoading] = useState(false);
   const { data: justMyshop } = useGetJustMyShopDetails();
   const { data: hubData } = useHubs();
@@ -94,7 +115,6 @@ function AccountTab() {
   const [blgas, setBlgas] = useState([]);
   const [markets, setBMarkets] = useState([]);
   const [stateData, setStateData] = useState([]);
-
 
   useEffect(() => {
     reset(justMyshop?.data);
@@ -177,13 +197,58 @@ function AccountTab() {
    * Form Submit
    */
   function onSubmit(formData) {
-console.log("ShopData-DETAILS-111", formData)
-console.log("ShopData-DETAILS-111", getValues())
-	// return
-  // updateShopDetails(formData);
-  }
+    if (avatar) {
+      const fileName = new Date().getTime() + FuseUtils.generateGUID();
+      const storage = getStorage(firebaseApp);
+      const storageRef = ref(storage, `/shopbanners/${fileName}`);
+      //   const uploadTask = uploadBytesResumable(storageRef, avatar?.url, 'base64');
+      const uploadTask = uploadString(storageRef, avatar, "data_url");
+      const desertRef = ref(storage, `${getValues()?.coverimage}`);
 
-//   console.log("Fuse-Account-AVATA", getValues()?.avatar)
+      // Delete the file
+      if (getValues()?.coverimage) {
+        deleteObject(desertRef)
+          .then(() => {
+            uploadTask.then((snapshot) => {
+              getDownloadURL(snapshot.ref).then((downloadURL) => {
+                setValue("coverimage", downloadURL);
+                updateShopDetails?.mutate(getValues());
+                //   setUpdatePostLoading(false)
+              });
+            });
+          })
+          .catch((error) => {
+            // Uh-oh, an error occurred!
+            console.log(error);
+            toast.error(
+              error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message
+            );
+          });
+      } else {
+        uploadTask.then((snapshot) => {
+          getDownloadURL(snapshot.ref)
+            .then((downloadURL) => {
+              setValue("coverimage", downloadURL);
+              updateShopDetails?.mutate(getValues());
+              //   setUpdatePostLoading(false)
+            })
+            .catch((error) => {
+              // Uh-oh, an error occurred!
+              console.log(error);
+              toast.error(
+                error.response && error.response.data.message
+                  ? error.response.data.message
+                  : error.message
+              );
+            });
+        });
+      }
+    } else {
+      updateShopDetails?.mutate(getValues());
+    }
+  }
 
   return (
     <div className="w-full max-w-3xl">
@@ -226,177 +291,174 @@ console.log("ShopData-DETAILS-111", getValues())
           </div>
 
           {/* <div className="grid w-full gap-24 sm:grid-cols-4 mt-32"> */}
-            <div className="sm:col-span-2">
-				<Typography>Trade Hub</Typography>
-              <Controller
-                control={control}
-                name="tradehub"
-                render={({ field }) => (
-					<Select
-					sx={{
-					  "& .MuiSelect-select": {
-						minHeight: "0!important",
-					  },
-					}}
-					{...field}
-					label="Trade Hub"
-					placeholder="Trade Hub"
-					variant="outlined"
-					fullWidth
-					error={!!errors.tradehub}
-					helperText={errors?.tradehub?.message}
-				  >
-					{hubData?.data?.data?.map((buzcountry, index) => (
-					  <MenuItem key={index} value={buzcountry?._id}>
-						{buzcountry?.hubname}
-					  </MenuItem>
-					))}
-				  </Select>
-                )}
-              />
-            </div>
-            <div className="sm:col-span-2">
-			<Typography>Shop Plan</Typography>
-              <Controller
-                control={control}
-                name="shopplan"
-                render={({ field }) => (
-					<Select
-					sx={{
-					  "& .MuiSelect-select": {
-						minHeight: "0!important",
-					  },
-					}}
-					{...field}
-					label="Primary Shop Plan"
-					placeholder="Primary Shop Plan"
-					variant="outlined"
-					fullWidth
-					error={!!errors.shopplan}
-					helperText={errors?.shopplan?.message}
-          disabled
-				  >
-					{shopPlanData?.data?.data?.map((plan, index) => (
-					  <MenuItem key={index} value={plan?._id}>
-						{plan?.plansname}
-					  </MenuItem>
-					))}
-				  </Select>
-                )}
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <Controller
-                control={control}
-                name="postalCode"
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Postal Code"
-                    placeholder="Postal Code"
-                    variant="outlined"
-                    fullWidth
-                    error={!!errors.postalCode}
-                    helperText={errors?.postalCode?.message}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <FuseSvgIcon size={20}>
-                            heroicons-solid:flag
-                          </FuseSvgIcon>
-                        </InputAdornment>
-                      ),
+          <div className="sm:col-span-2">
+            <Typography>Trade Hub</Typography>
+            <Controller
+              control={control}
+              name="tradehub"
+              render={({ field }) => (
+                <Select
+                  sx={{
+                    "& .MuiSelect-select": {
+                      minHeight: "0!important",
+                    },
+                  }}
+                  {...field}
+                  label="Trade Hub"
+                  placeholder="Trade Hub"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.tradehub}
+                  helperText={errors?.tradehub?.message}
+                  disabled
+                >
+                  {hubData?.data?.data?.map((buzcountry, index) => (
+                    <MenuItem key={index} value={buzcountry?._id}>
+                      {buzcountry?.hubname}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <Typography>Shop Plan</Typography>
+            <Controller
+              control={control}
+              name="shopplan"
+              render={({ field }) => (
+                <Select
+                  sx={{
+                    "& .MuiSelect-select": {
+                      minHeight: "0!important",
+                    },
+                  }}
+                  {...field}
+                  label="Primary Shop Plan"
+                  placeholder="Primary Shop Plan"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.shopplan}
+                  helperText={errors?.shopplan?.message}
+                  disabled
+                >
+                  {shopPlanData?.data?.data?.map((plan, index) => (
+                    <MenuItem key={index} value={plan?._id}>
+                      {plan?.plansname}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <Controller
+              control={control}
+              name="postalCode"
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Postal Code"
+                  placeholder="Postal Code"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.postalCode}
+                  helperText={errors?.postalCode?.message}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <FuseSvgIcon size={20}>
+                          heroicons-solid:flag
+                        </FuseSvgIcon>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
+            />
+          </div>
+
+          <div className="sm:col-span-2">
+            <Controller
+              control={control}
+              name="avatar"
+              render={({ field: { onChange, value } }) => (
+                <Box
+                  sx={{
+                    borderWidth: 4,
+                    borderStyle: "solid",
+                    borderColor: "background.paper",
+                  }}
+                  className="relative flex items-center justify-center w-100 h-100 rounded-full overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-black bg-opacity-50 z-10" />
+                  <div className="absolute inset-0 flex items-center justify-center z-20">
+                    <div>
+                      <label
+                        htmlFor="button-avatar"
+                        className="flex p-8 cursor-pointer"
+                      >
+                        <input
+                          accept="image/*"
+                          className="hidden"
+                          id="button-avatar"
+                          type="file"
+                          onChange={async (e) => {
+                            function readFileAsync() {
+                              return new Promise((resolve, reject) => {
+                                const file = e?.target?.files?.[0];
+
+                                if (!file) {
+                                  return;
+                                }
+
+                                const reader = new FileReader();
+                                reader.onload = () => {
+                                  if (typeof reader.result === "string") {
+                                    resolve(
+                                      `data:${file.type};base64,${btoa(reader.result)}`
+                                    );
+                                  } else {
+                                    reject(
+                                      new Error(
+                                        "File reading did not result in a string."
+                                      )
+                                    );
+                                  }
+                                };
+                                reader.onerror = reject;
+                                reader.readAsBinaryString(file);
+                              });
+                            }
+
+                            const newImage = await readFileAsync();
+                            onChange(newImage);
+                          }}
+                        />
+                        <FuseSvgIcon className="text-white">
+                          heroicons-outline:camera
+                        </FuseSvgIcon>
+                      </label>
+                    </div>
+                  </div>
+
+                  <Avatar
+                    sx={{
+                      backgroundColor: "background.default",
+                      color: "text.secondary",
                     }}
-                  />
-                )}
-              />
-            </div>
-
-			<div className="sm:col-span-2">
-						<Controller
-							control={control}
-							name="avatar"
-							render={({ field: { onChange, value } }) => (
-								<Box
-									sx={{
-										borderWidth: 4,
-										borderStyle: 'solid',
-										borderColor: 'background.paper'
-									}}
-									className="relative flex items-center justify-center w-100 h-100 rounded-full overflow-hidden"
-								>
-									<div className="absolute inset-0 bg-black bg-opacity-50 z-10" />
-									<div className="absolute inset-0 flex items-center justify-center z-20">
-										<div>
-											<label
-												htmlFor="button-avatar"
-												className="flex p-8 cursor-pointer"
-											>
-												<input
-													accept="image/*"
-													className="hidden"
-													id="button-avatar"
-													type="file"
-													onChange={async (e) => {
-														function readFileAsync() {
-															return new Promise((resolve, reject) => {
-																const file = e?.target?.files?.[0];
-
-																if (!file) {
-																	return;
-																}
-
-																const reader = new FileReader();
-																reader.onload = () => {
-																	if (typeof reader.result === 'string') {
-																		resolve(
-																			`data:${file.type};base64,${btoa(reader.result)}`
-																		);
-																	} else {
-																		reject(
-																			new Error(
-																				'File reading did not result in a string.'
-																			)
-																		);
-																	}
-																};
-																reader.onerror = reject;
-																reader.readAsBinaryString(file);
-															});
-														}
-
-														const newImage = await readFileAsync();
-														onChange(newImage);
-													}}
-												/>
-												<FuseSvgIcon className="text-white">
-													heroicons-outline:camera
-												</FuseSvgIcon>
-											</label>
-										</div>
-									
-									</div>
-									
-									<Avatar
-										sx={{
-											backgroundColor: 'background.default',
-											color: 'text.secondary'
-										}}
-										className="object-cover w-128 h-128 text-64 font-bold"
-										src={getValues()?.avatar}
-										alt={getValues()?.shopname}
-										height={100}
-										width={100}
-									>
-										{getValues()?.shopname?.charAt(0)}
-									</Avatar>
-								</Box>
-							)}
-						/>
-				</div>
-            
-
-          
+                    className="object-cover w-128 h-128 text-64 font-bold"
+                    src={getValues()?.avatar}
+                    alt={getValues()?.shopname}
+                    height={100}
+                    width={100}
+                  >
+                    {getValues()?.shopname?.charAt(0)}
+                  </Avatar>
+                </Box>
+              )}
+            />
+          </div>
 
           <div className="sm:col-span-4">
             <Controller
@@ -413,13 +475,11 @@ console.log("ShopData-DETAILS-111", getValues())
                   variant="outlined"
                   required
                   fullWidth
-               
                 />
               )}
             />
           </div>
 
-          
           <div className="sm:col-span-4">
             <Controller
               control={control}
@@ -780,14 +840,16 @@ console.log("ShopData-DETAILS-111", getValues())
           <Button
             variant="outlined"
             disabled={_.isEmpty(dirtyFields)}
-            onClick={() => reset(accountSettings)}
+            // onClick={() => reset(accountSettings)}
           >
             Cancel
           </Button>
           <Button
             variant="contained"
             color="secondary"
-            disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={
+              _.isEmpty(dirtyFields) || !isValid || updateShopDetails.isLoading
+            }
             type="submit"
           >
             Save

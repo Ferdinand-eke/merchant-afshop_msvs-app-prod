@@ -70,9 +70,6 @@ export function useShopForgotPass() {
   const navigate = useNavigate();
   return useMutation(shopForgotPasswordInit, {
     onSuccess: (data) => {
-      console.log('LoginError11', data);
-      console.log('LoginError22', data?.data);
-      console.log('LoginError33', data?.data?.data);
       if (data?.data?.forgotpass_activation_token && data?.data?.message) {
         // ?.data
         // setShopForgotPasswordPAYLOAD

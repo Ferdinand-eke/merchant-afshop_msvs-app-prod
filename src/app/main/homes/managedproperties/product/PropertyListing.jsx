@@ -20,11 +20,19 @@ import ProductImagesTab from './tabs/ProductImagesTab';
 import ShippingTab from './tabs/ShippingTab';
 import { useGetECommerceProductQuery } from '../ECommerceApi';
 import ProductModel from './models/ProductModel';
+import useGetMyShopDetails from 'app/configs/data/server-calls/shopdetails/useShopDetails';
+import { useSingleShopEstateProperty } from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-	name: z.string().nonempty('You must enter a product name').min(5, 'The product name must be at least 5 characters')
+	title: z.string().nonempty('You must enter a property name').min(5, 'The property title must be at least 5 characters'),
+	propertyCountry: z.string().nonempty("Country is required"),
+	propertyState: z.string().nonempty("State is required"),
+	propertyLga: z.string().nonempty("L.G.A/County is required"),
+	// price: z.number(),
+	// z.number().safe(),
+
 });
 
 /**
@@ -34,17 +42,38 @@ function PropertyListing() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { productId } = routeParams;
+
+	const { data: shopData, isLoading: shopDataLoading } = useGetMyShopDetails();
+
 	const {
 		data: product,
 		isLoading,
 		isError
-	} = useGetECommerceProductQuery(productId, {
+	} = useSingleShopEstateProperty(productId, {
 		skip: !productId || productId === 'new'
 	});
+
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: {
+			title: '',
+			category: '',
+            // location: null,
+            guestCount: 0,
+            roomCount: 0,
+            sittingroomCount: 0,
+            // imageSrc: '',
+            // imageSrcTwo: '',
+            // imageSrcThree: '',
+            // imageSrcFour: '',
+            // images:'',
+            price: 0,
+           
+            description: '',
+            // servicetypeId: '',
+            // proptypeId: '',
+		},
 		resolver: zodResolver(schema)
 	});
 	const { reset, watch } = methods;
@@ -55,10 +84,12 @@ function PropertyListing() {
 		}
 	}, [productId, reset]);
 	useEffect(() => {
-		if (product) {
-			reset({ ...product });
+		if (product?.data) {
+			reset({ ...product?.data });
 		}
 	}, [product, reset]);
+
+	console.log("EstatePropertyData", product?.data)
 
 	/**
 	 * Tab Change
@@ -86,16 +117,16 @@ function PropertyListing() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such product!
+					There is no such property!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/e-commerce/products"
+					to="/property/managed-listings"
 					color="inherit"
 				>
-					Go to Products Page
+					Go to properties Page
 				</Button>
 			</motion.div>
 		);
@@ -104,7 +135,7 @@ function PropertyListing() {
 	/**
 	 * Wait while product data is loading and form is setted
 	 */
-	if (_.isEmpty(form) || (product && routeParams.productId !== product.id && routeParams.productId !== 'new')) {
+	if (_.isEmpty(form) || (product?.data && routeParams.productId !== product?.data?.slug && routeParams.productId !== 'new')) {
 		return <FuseLoading />;
 	}
 
@@ -135,13 +166,13 @@ function PropertyListing() {
 								className="h-64"
 								label="Pricing"
 							/>
-							<Tab
+							{/* <Tab
 								className="h-64"
 								label="Inventory"
-							/>
+							/> */}
 							<Tab
 								className="h-64"
-								label="Shipping"
+								label="Property measurement"
 							/>
 						</Tabs>
 						
@@ -155,14 +186,14 @@ function PropertyListing() {
 							</div>
 
 							<div className={tabValue !== 2 ? 'hidden' : ''}>
-								<PricingTab />
+								<PricingTab shopData={shopData}/>
 							</div>
+
+							{/* <div className={tabValue !== 3 ? 'hidden' : ''}>
+								<InventoryTab />
+							</div> */}
 
 							<div className={tabValue !== 3 ? 'hidden' : ''}>
-								<InventoryTab />
-							</div>
-
-							<div className={tabValue !== 4 ? 'hidden' : ''}>
 								<ShippingTab />
 							</div>
 						</div>

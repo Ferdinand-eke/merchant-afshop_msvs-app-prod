@@ -3,6 +3,8 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   createMyShopBranch,
   getJustMyShopDetails,
+  getJustMyShopDetailsAndPlan,
+  getMinimizedJustMyShopDetails,
   getMyOtherShopsList,
   getMyShopAccountApiDetails,
   getMyShopDetails,
@@ -17,6 +19,12 @@ export default function useGetMyShopDetails() {
 }
 
 /*****Get just my shop details */
+// export const getMinimizedJustMyShopDetails = () =>
+
+export function useGetMinimizedJustMyShopDetailsQuery() {
+  return useQuery(['__justmyshop'], getMinimizedJustMyShopDetails);
+}
+
 export function useGetJustMyShopDetails() {
   return useQuery(['__justmyshop'], getJustMyShopDetails);
 }
@@ -26,6 +34,17 @@ export function useGetMyOtherShopLists() {
   return useQuery(['__myshop_other_details'], getMyOtherShopsList);
 }
 
+//Shop details and shop plan
+export function useGetMyShopAndPlan() {
+  return useQuery(['__myshop_and_accountplan'], getJustMyShopDetailsAndPlan);
+}
+
+
+
+/****
+ * 
+ * FINANCE MANAGEMENT STARTS HERE
+ */
 /***Get Shop Wallet Account Balance */
 export function useGetShopAccountBalance() {
   return useQuery(['__myshop_account_balance'], getMyShopAccountApiDetails);
@@ -38,10 +57,12 @@ export function useShopUpdateMutation() {
 
   return useMutation(updateMyShopDetails, {
     onSuccess: (data) => {
-      console.log('Updated shop clientController', data);
+      // console.log('Updated shop clientController', data);
 
-      if (data?.data) {
+      if (data?.data?.success) {
         toast.success('shop updated successfully!!');
+
+      /**Set/update users client data to have newly updated user details */
 
         queryClient.invalidateQueries('__myshop_details');
       }
@@ -51,12 +72,6 @@ export function useShopUpdateMutation() {
         ? error.response.data.message
         : error.message)
 
-      // toast.error(
-      //   error.response && error.response.data.message
-      //     ? error.response.data.message
-      //     : error.message
-      // );
-      // queryClient.invalidateQueries('__myshop_orders');
     },
   });
 }

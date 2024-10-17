@@ -20,7 +20,7 @@ function ProductsHeader() {
 			</motion.span>
 
 			<div className="flex flex-1 items-center justify-end space-x-8">
-				{/* <motion.div
+				<motion.div
 					className="flex flex-grow-0"
 					initial={{ opacity: 0, x: 20 }}
 					animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
@@ -36,7 +36,7 @@ function ProductsHeader() {
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="mx-4 sm:mx-8">Add Property/Listing</span>
 					</Button>
-				</motion.div> */}
+				</motion.div>
 			</div>
 		</div>
 	);

@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import SecuritySetting from "./securitsettings/SecuritySetting";
 import ChangeEmailSetting from "./securitsettings/ChangeEmailSetting";
 import { useShopSettingsResetPass } from "app/configs/data/server-calls/auth/useAuth";
+import CloseAccountSetting from "./securitsettings/CloseAccountSetting";
 
 const defaultValues = {
   currentPassword: "",
@@ -41,6 +42,8 @@ const schema = z
     message: "Passwords must match",
     path: ["confirmPassword"],
   });
+
+
 
 function SecurityTab() {
   const resetShopPass = useShopSettingsResetPass();
@@ -176,6 +179,8 @@ function SecurityTab() {
       <ChangeEmailSetting />
 
       {/* <SecuritySetting /> */}
+
+      <CloseAccountSetting />
     </div>
   );
 }

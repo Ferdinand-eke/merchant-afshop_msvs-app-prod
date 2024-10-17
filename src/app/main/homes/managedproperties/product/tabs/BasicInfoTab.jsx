@@ -3,6 +3,11 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { Controller, useFormContext } from "react-hook-form";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { InputAdornment, Typography } from "@mui/material";
+// import useCountries from "src/app/hooks/useCountries";
+import { useEffect, useState } from "react";
+import useSellerCountries from "app/configs/data/server-calls/countries/useCountries";
+import { getLgaByStateId, getStateByCountryId } from "app/configs/data/client/clientToApiRoutes";
 
 /**
  * The basic info tab.
@@ -80,12 +85,69 @@ function BasicInfoTab() {
   };
 
   const methods = useFormContext();
-  const { control, formState } = methods;
+  const { control, formState, getValues } = methods;
   const { errors } = formState;
+  const {
+    data: countries,
+    isLoading: countriesLoading,
+    refetch,
+  } = useSellerCountries();
+  const [loading, setLoading] = useState(false);
+  const [bstates, setBstates] = useState([]);
+  const [blgas, setBlgas] = useState([]);
+
+  useEffect(() => {
+    if (getValues()?.propertyCountry?.length > 0) {
+      getStateDFromCountryId(getValues()?.propertyCountry);
+    }
+    if (getValues()?.propertyState?.length > 0) {
+      getLgasFromState(getValues()?.propertyState);
+    }
+  }, [
+    getValues()?.propertyCountry,
+    getValues()?.propertyState
+  ]);
+
+  async function getStateDFromCountryId(pid) {
+    setLoading(true);
+
+    const responseData = await getStateByCountryId(pid);
+
+    if (responseData) {
+      setBstates(responseData?.data);
+      setTimeout(
+        function () {
+          setLoading(false);
+        }.bind(this),
+        250
+      );
+    }
+  }
+
+   //**Get L.G.As from state_ID data */
+   async function getLgasFromState(sid) {
+    setLoading(true);
+    // const responseData = await ProductRepository.getProductsById(pid);
+    const responseData = await getLgaByStateId(sid);
+
+    if (responseData) {
+      // console.log('LGAs From State:', responseData);
+      setBlgas(responseData?.data);
+      setTimeout(
+        function () {
+          setLoading(false);
+        }.bind(this),
+        250
+      );
+    }
+  }
+
+
+
   return (
     <div>
       <Controller
-        name="name"
+        name="title"
         control={control}
         render={({ field }) => (
           <TextField
@@ -94,11 +156,11 @@ function BasicInfoTab() {
             required
             label="Name"
             autoFocus
-            id="name"
+            id="title"
             variant="outlined"
             fullWidth
-            error={!!errors.name}
-            helperText={errors?.name?.message}
+            error={!!errors.title}
+            helperText={errors?.title?.message}
           />
         )}
       />
@@ -121,36 +183,66 @@ function BasicInfoTab() {
         )}
       />
 
-      <Controller
+      <>
+      <Typography>Property category</Typography>
+      {/* <Controller
         control={control}
         name="cat"
-        //: { onChange, value }
         render={({ field }) => (
           <Select
             className="mt-8 mb-16"
             id="cat"
             label="Cat"
-            //   type="text"
             multiline
             rows={5}
             variant="outlined"
             fullWidth
             error={!!errors.cat}
             helperText={errors?.cat?.message}
-            //   onChange={onChange} value={value}
           >
-            {/* <MenuItem value="">
+            <MenuItem value="">
             <em>None</em>
           </MenuItem>
           <MenuItem value={10}>Ten</MenuItem>
           <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem> */}
+          <MenuItem value={30}>Thirty</MenuItem>
             {generateSingleOptions()}
           </Select>
         )}
-      />
+      /> */}
 
-      <Controller
+<Controller
+        name="category"
+        control={control}
+        defaultValue={[]}
+        render={({ field: { onChange, value } }) => (
+          <Select
+            className="mt-8 mb-16"
+            id="category"
+            label="Category"
+            variant="outlined"
+            placeholder="Select a category"
+            fullWidth
+            defaultValue=""
+            onChange={onChange}
+            value={value === undefined || null ? "" : value}
+            error={!!errors.category}
+            helpertext={errors?.category?.message}
+          >
+            {/* <MenuItem value="">Select a product category</MenuItem>
+            {hubs?.data?.data &&
+              hubs?.data?.data?.map((option) => (
+                <MenuItem key={option._id} value={option._id}>
+                  {option.hubname}
+                </MenuItem>
+              ))} */}
+               {generateSingleOptions()}
+          </Select>
+        )}
+      />
+      </>
+
+      {/* <Controller
         name="categories"
         control={control}
         defaultValue={[]}
@@ -177,9 +269,9 @@ function BasicInfoTab() {
             )}
           />
         )}
-      />
+      /> */}
 
-      <Controller
+      {/* <Controller
         name="tags"
         control={control}
         defaultValue={[]}
@@ -206,7 +298,173 @@ function BasicInfoTab() {
             )}
           />
         )}
-      />
+      /> */}
+
+<Controller
+          name="roomCount"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              className="mt-8 mb-16 mx-4"
+              label="Number of rooms"
+              id="roomCount"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">Rooms</InputAdornment>
+                ),
+              }}
+              type="number"
+              variant="outlined"
+              fullWidth
+            />
+          )}
+        />
+
+<Controller
+          name="bathroomCount"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              className="mt-8 mb-16 mx-4"
+              label="Number of Bathrooms"
+              id="bathroomCount"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">BathRooms</InputAdornment>
+                ),
+              }}
+              type="number"
+              variant="outlined"
+              fullWidth
+            />
+          )}
+        />
+
+<Controller
+          name="sittingroomCount"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              className="mt-8 mb-16 mx-4"
+              label="Number of Sitting rooms"
+              id="sittingroomCount"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">sitting Room(s)</InputAdornment>
+                ),
+              }}
+              type="number"
+              variant="outlined"
+              fullWidth
+            />
+          )}
+        />
+
+
+
+<>
+        <Typography style={{ fontSize: "12px", fontWeight: "800" }}>
+          Country of L.G.A/County?
+        </Typography>
+        <Controller
+          name={`propertyCountry`}
+          control={control}
+          defaultValue={[]}
+          render={({ field: { onChange, value } }) => (
+            <Select
+              // disabled
+              className="mt-8 mb-16"
+              id="propertyCountry"
+              label="business country"
+              fullWidth
+              defaultValue=""
+              onChange={onChange}
+              value={value === undefined || null ? "" : value}
+              error={!!errors.propertyCountry}
+              helpertext={errors?.propertyCountry?.message}
+            >
+              <MenuItem value="">Select a country</MenuItem>
+              {countries?.data?.data &&
+                countries?.data?.data?.map((option, id) => (
+                  <MenuItem key={option._id} value={option._id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          )}
+        />
+      </>
+
+      <>
+        <Typography style={{ fontSize: "12px", fontWeight: "800" }}>
+          State of L.G.A/County? (Dependent on country selected)
+        </Typography>
+        <Controller
+          name={`propertyState`}
+          control={control}
+          defaultValue={[]}
+          render={({ field: { onChange, value } }) => (
+            <Select
+              // disabled
+              className="mt-8 mb-16"
+              id="propertyState"
+              label="business state"
+              fullWidth
+              defaultValue=""
+              onChange={onChange}
+              value={value === undefined || null ? "" : value}
+              error={!!errors.propertyState}
+              helpertext={errors?.propertyState?.message}
+            >
+              <MenuItem value="">Select a state</MenuItem>
+              {bstates &&
+                bstates?.map((option, id) => (
+                  <MenuItem key={option._id} value={option._id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          )}
+        />
+      </>
+
+
+      <div className="sm:col-span-2">
+            <Typography>L.G.A/County location</Typography>
+            <Controller
+              control={control}
+              name="propertyLga"
+              render={({ field }) => (
+                <Select
+                  sx={{
+                    "& .MuiSelect-select": {
+                      minHeight: "0!important",
+                    },
+                  }}
+                  // value={member.role}
+                  // size="small"
+                  {...field}
+                  label="L.G.A/County of Location"
+                  placeholder="L.G.A/County of location"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.propertyLga}
+                  helperText={errors?.propertyLga?.message}
+                >
+                  {blgas?.map((lga, index) => (
+                    <MenuItem key={index} value={lga?._id}>
+                      {lga?.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+          </div>
+
+        
     </div>
   );
 }

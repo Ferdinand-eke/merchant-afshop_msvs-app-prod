@@ -35,6 +35,7 @@ import blogAppConfig from "../main/newsblog/blogAppConfig";
 import HomeAppConfig from "../main/vendors-shop/home/HomeAppConfig";
 import HelpCenterHome from "../main/apps/help-center/home/HelpCenterHome";
 import LandingCenterHome from "../main/vendors-shop/home/home/LandingCenterHome";
+import MerchantMailboxAppConfig from "../main/vendors-shop/mailbox/MerchantMailboxAppConfig";
 // import AfricanshopsMessengerAppConfig from '../main/africanshops-messenger/AfricanshopsMessengerAppConfig';
 
 const routeConfigs = [
@@ -45,13 +46,16 @@ const routeConfigs = [
   forgotPasswordConfig,
   resetPasswordConfig,
   // DocumentationConfig,
-  UsersAppConfig,
-  StaffAppConfig,
-  PropertiesAppConfig,
-  ServiceTypesAppConfig,
+
+  /***User management and properties starts ManagedUserListingsAppConfig*/
+  // UsersAppConfig,
+  // StaffAppConfig,
+  // PropertiesAppConfig,
+  // ServiceTypesAppConfig,
   ManagedListingsAppConfig,
-  PropertyTypesAppConfig,
+  // PropertyTypesAppConfig,
   ManagedUserListingsAppConfig,
+  /***User management and properties starts */
 
   /****Africanshops Dashboard Configs Starts Here */
   ShopDashboardAppConfig,
@@ -61,6 +65,7 @@ const routeConfigs = [
   AfricanshopsFinanceDashboardAppConfig,
   AfricanshopsMessengerAppConfig,
   merchantProfileAppConfig,
+  MerchantMailboxAppConfig,
 
   SettingsAppConfig,
   ShopsPosAppConfig,
@@ -81,10 +86,10 @@ HomeAppConfig,
    */
 
   /**Routes Below to be disabled */
-  ...PagesConfigs,
-  ...UserInterfaceConfigs,
+  // ...PagesConfigs,
+  // ...UserInterfaceConfigs,
   // ...DashboardsConfigs,
-  ...AppsConfigs,
+  // ...AppsConfigs,
   ...authRoleExamplesConfigs,
 ];
 /**

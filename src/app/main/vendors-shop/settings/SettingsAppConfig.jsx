@@ -29,18 +29,18 @@ const SettingsAppConfig = {
 					path: 'security',
 					element: <SecurityTab />
 				},
-				{
-					path: 'plan-billing',
-					element: <PlanBillingTab />
-				},
+				// {
+				// 	path: 'plan-billing',
+				// 	element: <PlanBillingTab />
+				// },
 				// {
 				// 	path: 'security',
 				// 	element: <SecurityTab />
 				// },
-				{
-					path: 'notifications',
-					element: <NotificationsTab />
-				},
+				// {
+				// 	path: 'notifications',
+				// 	element: <NotificationsTab />
+				// },
 				// {
 				// 	path: 'team',
 				// 	element: <TeamTab />

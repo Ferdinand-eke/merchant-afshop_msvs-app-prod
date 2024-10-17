@@ -34,7 +34,7 @@ function ShopProductsHeader() {
 						size={isMobile ? 'small' : 'medium'}
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-						<span className="mx-4 sm:mx-8">Add</span>
+						<span className="mx-4 sm:mx-8">Add New Product</span>
 					</Button>
 				</motion.div>
 			</div>

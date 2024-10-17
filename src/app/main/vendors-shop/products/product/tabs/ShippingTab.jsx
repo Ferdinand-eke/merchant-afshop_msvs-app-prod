@@ -85,36 +85,7 @@ function ShippingTab() {
       </div>
 
 	  <div className="flex -mx-4">
-        {/* <Controller
-          name="length"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className="mt-8 mb-16 mx-4"
-              label="Length"
-              id="length"
-              variant="outlined"
-              fullWidth
-            />
-          )}
-        />
-
-        <Controller
-          name="breadth"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className="mt-8 mb-16 mx-4"
-              label="breadth"
-              autoFocus
-              id="breadth"
-              variant="outlined"
-              fullWidth
-            />
-          )}
-        /> */}
+      
 
 <Controller
         name="productWeight"
@@ -166,40 +137,12 @@ function ShippingTab() {
         )}
       />
 
-{/* <Controller
-        name="perUnitShippingWeight"
-        control={control}
-        defaultValue={[]}
-        render={({ field: { onChange, value } }) => (
-          <Select
-            className="mt-8 mb-16"
-            id="perUnitShippingWeight"
-            label="Shipping weight unit"
-            variant="outlined"
-            placeholder="Select a category"
-            fullWidth
-            defaultValue=""
-            onChange={onChange}
-            value={value === undefined || null ? "" : value}
-            error={!!errors.category}
-            helpertext={errors?.category?.message}
-          >
-            <MenuItem value="">Select a product unit weight</MenuItem>
-            {shippingWeightUnit?.data?.data &&
-              shippingWeightUnit?.data?.data?.map((option) => (
-                <MenuItem key={option._id} value={option._id}>
-                  {option.weightname}
-                </MenuItem>
-              ))}
-          </Select>
-        )}
-      /> */}
 
         
       </div>
 
      
-      <Controller
+      {/* <Controller
         name="extraShippingFee"
         control={control}
         render={({ field }) => (
@@ -217,7 +160,7 @@ function ShippingTab() {
             fullWidth
           />
         )}
-      />
+      /> */}
     </div>
   );
 }

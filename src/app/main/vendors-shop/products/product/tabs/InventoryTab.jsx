@@ -75,7 +75,7 @@ function InventoryTab({shopData}) {
       </div>
 
 
-			<Controller
+			{/* <Controller
 				name="sku"
 				control={control}
 				render={({ field }) => (
@@ -90,9 +90,9 @@ function InventoryTab({shopData}) {
 						fullWidth
 					/>
 				)}
-			/>
+			/> */}
 
-			<Controller
+			{/* <Controller
 				name="quantity"
 				control={control}
 				render={({ field }) => (
@@ -106,7 +106,7 @@ function InventoryTab({shopData}) {
 						fullWidth
 					/>
 				)}
-			/>
+			/> */}
 		</div>
 	);
 }

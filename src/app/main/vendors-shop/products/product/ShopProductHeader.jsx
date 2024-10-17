@@ -13,6 +13,7 @@ import {
 } from '../ECommerceApi';
 import { useAppSelector } from 'app/store/hooks';
 import { selectUser } from 'src/app/auth/user/store/userSlice';
+import { useAddShopProductMutation, useDeleteSingleProduct, useProductUpdateMutation } from 'app/configs/data/server-calls/products/useShopProducts';
 
 
 /**
@@ -22,31 +23,35 @@ function ShopProductHeader() {
 	const user = useAppSelector(selectUser);
 	const routeParams = useParams();
 	const { productId } = routeParams;
-	const [createProduct] = useCreateECommerceProductMutation();
-	const [saveProduct] = useUpdateECommerceProductMutation();
-	const [removeProduct] = useDeleteECommerceProductMutation();
+	// const [createProduct] = useCreateECommerceProductMutation();
+	// const [saveProduct] = useUpdateECommerceProductMutation();
+	// const [removeProduct] = useDeleteECommerceProductMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
+	const addNewProduct = useAddShopProductMutation()
+	const updateProduct = useProductUpdateMutation()
+	const deleteSingleProduct = useDeleteSingleProduct()
 
 	function handleSaveProduct() {
-		saveProduct(getValues());
+		updateProduct.mutate(getValues())
 	}
 
 	function handleCreateProduct() {
-		createProduct(getValues())
-			.unwrap()
-			.then((data) => {
-				navigate(`/shopproducts-list/products/${data.id}`);
-			});
+		addNewProduct.mutate(getValues())
 	}
 
 	function handleRemoveProduct() {
-		removeProduct(productId);
-		navigate('/shopproducts-list/products');
+
+		if (window.confirm("Comfirm delete of this product?")) {
+			// deleteDepartment.mutate(productId)
+			console.log("deleting product...")
+			deleteSingleProduct.mutate(productId)
+		}
+		
 	}
 
 	return (
@@ -112,19 +117,21 @@ function ShopProductHeader() {
 
 					<div className="flex flex-col min-w-0 mx-16">
 						<Typography className="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
-							{`Hi, ${user?.name}! to your africanshops!`}
+							{`Hi, ${user?.name}!`}
 						</Typography>
 
 						<div className="flex items-center">
 							<FuseSvgIcon
 								size={20}
 								color="action"
-								className="bg-orange-700"
+								className="bg-orange-700 rounded-12"
+								
 							>
 								heroicons-solid:bell
 							</FuseSvgIcon>
 							<Typography
-								className="mx-6 leading-6 truncate"
+							//truncate
+								className="mx-6 leading-3 "
 								color="text.secondary"
 							>
 								Sale of counterfeit or stolen goods are highly prohibited, please be compliant on authenticity. Thanks!
@@ -153,7 +160,7 @@ function ShopProductHeader() {
 							className="whitespace-nowrap mx-4"
 							variant="contained"
 							color="secondary"
-							disabled={_.isEmpty(dirtyFields) || !isValid}
+							disabled={_.isEmpty(dirtyFields) || !isValid || addNewProduct?.isLoading}
 							onClick={handleSaveProduct}
 						>
 							Save
@@ -164,10 +171,10 @@ function ShopProductHeader() {
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid}
+						disabled={_.isEmpty(dirtyFields) || !isValid || updateProduct?.isLoading}
 						onClick={handleCreateProduct}
 					>
-						Add
+						Add Product
 					</Button>
 				)}
 			</motion.div>

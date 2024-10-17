@@ -2,6 +2,8 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 // import { toast } from 'react-toastify';
 // import { storeShopProduct } from '../../store-redux/api/apiRoutes';
 import {
+  deleteShopProduct,
+  deleteShopProductImage,
   getMyShopProductById,
   getShopProducts,
   pullMyShopProductByIdFromExport,
@@ -11,6 +13,7 @@ import {
 } from '../../client/clientToApiRoutes';
 // import { message } from 'antd';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router';
 
 //get all Specific user shop-products
 export default function useMyShopProducts() {
@@ -31,6 +34,7 @@ export function useSingleShopProduct(productId) {
 
 //create new product
 export function useAddShopProductMutation() {
+  const navigate = useNavigate()
   const queryClient = useQueryClient();
   return useMutation(
     (newProduct) => {
@@ -42,13 +46,14 @@ export function useAddShopProductMutation() {
 
     {
       onSuccess: (data) => {
-        if (data) {
+        if (data?.data?.success) {
           console.log('New product  Data', data);
 
           // return;
           toast.success('product  added successfully!');
           queryClient.invalidateQueries(['__myshop_products']);
           queryClient.refetchQueries('__myshop_products', { force: true });
+          navigate(`/shopproducts-list/products`);
         }
       },
     },
@@ -70,20 +75,25 @@ export function useAddShopProductMutation() {
 
 //update existing product
 export function useProductUpdateMutation() {
+  const navigate = useNavigate()
   const queryClient = useQueryClient();
 
   return useMutation(updateMyShopProductById, {
     onSuccess: (data) => {
-      console.log('Updated Producr clientController', data);
+     
 
-      if (data) {
-        message.success('product updated successfully!!');
+      if (data?.data?.success) {
+        console.log('Updated Producr clientController', data);
+
+        // return;
+        toast.success('product updated successfully!!');
 
         queryClient.invalidateQueries('__myshop_products');
         // queryClient.refetchQueries('__myshop_products', { force: true });
+        //  navigate('/shopproducts-list/products');
       }
 
-      // navigate('/transaction-list');
+     
     },
     onError: (error) => {
       toast.error(
@@ -146,6 +156,56 @@ export function usePullProductFromExportMutation() {
     },
     onError: (error) => {
       toast.error(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      );
+    },
+  });
+}
+
+/***Delete a product single image */
+export function useDeleteProductSingleImage() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  return useMutation(deleteShopProductImage, {
+    onSuccess: (data) => {
+      // console.log("productImageDeleted", data)
+      //?.success
+    if(data?.data){
+  
+      toast.success("product image deleted successfully!!");
+      queryClient.invalidateQueries("__myshop_products");
+      // navigate('/shopproducts-list/products');
+    }
+    },
+    onError: (error) => {
+      toast.success(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      );
+    },
+  });
+}
+
+/***Delete a product */
+export function useDeleteSingleProduct() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  return useMutation(deleteShopProduct, {
+    onSuccess: (data) => {
+      console.log("productDeleted", data)
+    if(data?.data?.success){
+      toast.success("product deleted successfully!!");
+      queryClient.invalidateQueries("__myshop_products");
+      navigate('/shopproducts-list/products');
+    }
+    },
+    onError: (error) => {
+      toast.success(
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message

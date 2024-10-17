@@ -15,6 +15,7 @@ const ManagedListingsAppConfig = {
 	settings: {
 		layout: {}
 	},
+	
 	routes: [
 		{
 			///property/managed-listings
@@ -49,4 +50,5 @@ const ManagedListingsAppConfig = {
 		}
 	]
 };
+
 export default ManagedListingsAppConfig;

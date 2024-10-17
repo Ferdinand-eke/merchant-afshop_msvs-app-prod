@@ -88,7 +88,7 @@ function CurrentStatementWidget({shopData, shopDataLoading, isError}) {
 					</Typography>
 
 				</div>
-				<div className="flex flex-col mx-24 my-12">
+				{/* <div className="flex flex-col mx-24 my-12">
 					<Typography
 						color="text.secondary"
 						className="text-sm font-medium leading-none"
@@ -101,8 +101,8 @@ function CurrentStatementWidget({shopData, shopDataLoading, isError}) {
 							currency: 'NGN'
 						})}
 					</Typography>
-				</div>
-				<div className="flex flex-col mx-24 my-12">
+				</div> */}
+				{/* <div className="flex flex-col mx-24 my-12">
 					<Typography
 						color="text.secondary"
 						className="text-sm font-medium leading-none"
@@ -115,9 +115,9 @@ function CurrentStatementWidget({shopData, shopDataLoading, isError}) {
 							currency: 'NGN'
 						})}
 					</Typography>
-				</div>
+				</div> */}
 
-				<div className="flex flex-col mx-24 my-12">
+				{/* <div className="flex flex-col mx-24 my-12">
 					<Typography
 						color="text.secondary"
 						className="text-sm font-medium leading-none"
@@ -130,7 +130,7 @@ function CurrentStatementWidget({shopData, shopDataLoading, isError}) {
 							currency: 'NGN'
 						})}
 					</Typography>
-				</div>
+				</div> */}
 			</div>
 
 			<div className="absolute bottom-0 ltr:right-0 rtl:left-0 w-96 h-96 -m-24">

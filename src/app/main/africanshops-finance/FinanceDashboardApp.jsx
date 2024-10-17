@@ -155,7 +155,15 @@ function FinanceDashboardApp() {
                 </motion.div>
               </div>
               <motion.div variants={item} className="flex flex-col flex-auto">
-                <AccountBalanceWidget />
+                <AccountBalanceWidget
+                   shopData={shopData?.data?.data}
+                   shopDataLoading={shopDataLoading}
+                   isError={isError}
+
+                   account={shopAccount?.data}
+                   accountLoading={accountLoading}
+                   accountError={accountError}
+                />
               </motion.div>
             </div>
 
@@ -166,73 +174,7 @@ function FinanceDashboardApp() {
               >
                 {/* <RecentTransactionsWidget /> */}
 
-                {/* <Paper className="flex flex-col flex-auto p-24 shadow rounded-2xl overflow-hidden">
-                  <div>
-                    <Typography className="mr-16 text-lg font-medium tracking-tight leading-6 truncate">
-                      Recent Withrawal Requests
-                    </Typography>
-                    <Typography className="font-medium" color="text.secondary">
-                      0 pending, 0 approved
-                    </Typography>
-                  </div>
-
-                  <div className="table-responsive mt-24">
-                    <DataTable
-                      data={myshopWithdrawals?.data?.data}
-                      columns={columns}
-                      renderRowActionMenuItems={({ closeMenu, row, table }) => [
-                        <MenuItem
-                          key={0}
-                          onClick={() => {
-                            removeProducts([row.original.id]);
-                            closeMenu();
-                            table.resetRowSelection();
-                          }}
-                        >
-                          <ListItemIcon>
-                            <FuseSvgIcon>heroicons-outline:trash</FuseSvgIcon>
-                          </ListItemIcon>
-                          Delete
-                        </MenuItem>,
-                      ]}
-                      renderTopToolbarCustomActions={({ table }) => {
-                        const { rowSelection } = table.getState();
-
-                        if (Object.keys(rowSelection).length === 0) {
-                          return null;
-                        }
-
-                        return (
-                          <Button
-                            variant="contained"
-                            size="small"
-                            onClick={() => {
-                              const selectedRows =
-                                table.getSelectedRowModel().rows;
-                              removeProducts(
-                                selectedRows.map((row) => row.original.id)
-                              );
-                              table.resetRowSelection();
-                            }}
-                            className="flex shrink min-w-40 ltr:mr-8 rtl:ml-8"
-                            color="secondary"
-                          >
-                            <FuseSvgIcon size={16}>
-                              heroicons-outline:trash
-                            </FuseSvgIcon>
-                            <span className="hidden sm:flex mx-8">
-                              Delete selected items
-                            </span>
-                          </Button>
-                        );
-                      }}
-                    />
-
-                    <div className="pt-24">
-                      <Button variant="outlined">See all transactions</Button>
-                    </div>
-                  </div>
-                </Paper> */}
+                
               </motion.div>
             </div>
           </motion.div>

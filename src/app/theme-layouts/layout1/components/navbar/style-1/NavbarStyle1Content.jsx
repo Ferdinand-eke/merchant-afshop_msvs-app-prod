@@ -1,11 +1,15 @@
 import FuseScrollbars from "@fuse/core/FuseScrollbars";
 import { styled } from "@mui/material/styles";
 import clsx from "clsx";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import Navigation from "app/theme-layouts/shared-components/navigation/Navigation";
 import NavbarToggleButton from "app/theme-layouts/shared-components/navbar/NavbarToggleButton";
 import Logo from "../../../../shared-components/Logo";
 import UserNavbarHeader from "../../../../shared-components/UserNavbarHeader";
+import { useGetMyShopAndPlan } from "app/configs/data/server-calls/shopdetails/useShopDetails";
+import { Typography } from "@mui/material";
+import RealEstateNavigation from "app/theme-layouts/shared-components/navigation/accountsnavigation/RealEstateNavigation";
+
 
 const Root = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -31,7 +35,16 @@ const StyledContent = styled(FuseScrollbars)(() => ({
  * The navbar style 1 content.
  */
 function NavbarStyle1Content(props) {
+  const {data:myshopData, isLoading} = useGetMyShopAndPlan()
   const { className = "" } = props;
+
+
+useEffect(() =>{
+
+},[
+  myshopData?.data?.shopplan?.plankey
+])
+  console.log("navigationSliceUser", myshopData?.data?.shopplan?.plankey)
   return (
     <Root
       className={clsx(
@@ -53,7 +66,28 @@ function NavbarStyle1Content(props) {
       >
         <UserNavbarHeader />
 
-        <Navigation layout="vertical" />
+
+        {
+          isLoading ? <>
+          <Typography>loading...</Typography>
+          </> :
+          <>
+          {myshopData?.data?.shopplan?.plankey === 'RETAIL' && <><Navigation layout="vertical" /></> } 
+          
+          {myshopData?.data?.shopplan?.plankey === 'WHOLESALEANDRETAILERS' && <><Navigation layout="vertical" /></>} 
+          {myshopData?.data?.shopplan?.plankey === 'MANUFACTURERS' && <><Navigation layout="vertical" /></> }
+          {myshopData?.data?.shopplan?.plankey === 'REALESTATES' && <><RealEstateNavigation layout="vertical"/></>}
+   
+          {/* {
+          ( myshopData?.data?.shopplan?.plankey !== 'RETAIL' || 
+           myshopData?.data?.shopplan?.plankey !== 'WHOLESALEANDRETAILERS' ||
+           myshopData?.data?.shopplan?.plankey !== 'MANUFACTURERS' ||
+           myshopData?.data?.shopplan?.plankey !== 'REALESTATES') &&
+           <><Typography>Merchant has no account plan</Typography></>} */}
+          {/* <Navigation layout="vertical" /> */}
+          </>
+        }
+       
 
         <div className="flex-0 flex items-center justify-center py-48 opacity-10">
           <img

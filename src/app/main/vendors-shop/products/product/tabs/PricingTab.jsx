@@ -10,6 +10,7 @@ import { Controller, useFormContext } from "react-hook-form";
  * The pricing tab.
  */
 function PricingTab({ shopData }) {
+  
   const methods = useFormContext();
   const { control, formState, watch, getValues } = methods;
   //   const { formState, watch, getValues } = methods;
@@ -28,7 +29,7 @@ function PricingTab({ shopData }) {
               id="price"
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">$</InputAdornment>
+                  <InputAdornment position="start">N</InputAdornment>
                 ),
               }}
               type="number"

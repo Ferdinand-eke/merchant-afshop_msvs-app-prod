@@ -1,5 +1,5 @@
 import Cookie from 'js-cookie'
-import { RESOURCE_AUTH_CRED, AUTH_RESOURCE_TOKEN, RESOURCE_ACTIVATE_CRED, FORGOT_PASS_CREDENTIALS, MERCHANT_SIGUP_CREDENTIALS, RESEND_MERCHANT_SIGUP_OTP } from '../constants'
+import { RESOURCE_AUTH_CRED, AUTH_RESOURCE_TOKEN, RESOURCE_ACTIVATE_CRED, FORGOT_PASS_CREDENTIALS, MERCHANT_SIGUP_CREDENTIALS, RESEND_MERCHANT_SIGUP_OTP, LOGGEDIN_RESET_MAIL_CREDENTIALS } from '../constants'
 // import { UerData } from '@/types/types'
 // import { CLIENT_ENDPOINTS } from '../dataService/data/clientEndpoints' setShopForgotPasswordPAYLOAD
 
@@ -14,6 +14,12 @@ export function setAuthTokens(token) {
 export function setShopForgotPasswordPAYLOAD(userActivationToken) {
     Cookie.set(FORGOT_PASS_CREDENTIALS, JSON.stringify(userActivationToken))
 }//done
+
+
+export function setShopResetMailPAYLOAD(userActivationToken) {
+    Cookie.set(LOGGEDIN_RESET_MAIL_CREDENTIALS, JSON.stringify(userActivationToken))
+}//done
+
 
 /********COokies Stters up above */
 

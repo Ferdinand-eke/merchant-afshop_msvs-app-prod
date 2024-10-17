@@ -127,7 +127,13 @@ export const logOutAdmin = () => {
  *   Shop authenticated settings start routes    
 ================================================================*/
 export const authShopResetPasword = (formData) =>
-  AuthApi().put(`/api/shop/seetings/reset-password`, formData);
+  AuthApi().put(`/api/shop/settings/reset-password`, formData);
+
+  export const authShopChangeEmail = (formData) =>
+  AuthApi().put(`/api/shop/settings/change-email`, formData);
+
+  export const authShopCloseAccountCall = () =>
+  AuthApi().post(`/api/shop/close-shop-account`);
 
 /**==============================================================|
  *   Shop authenticated settings start routes   
@@ -235,13 +241,28 @@ export const pushMyShopProductByIdToExport = (productFormData) =>
 export const pullMyShopProductByIdFromExport = (productFormData) =>
   AuthApi().put(`/myshop/pull-product-from-export/${productFormData}`);
 
-export const deleteShopProduct = (id) =>
-  AuthApi().delete(`/usersproducts/${id}`);
+ 
+  export const deleteShopProductImage = (imageData) => {
 
+    console.log("imageDataPayload", imageData)
+    return  AuthApi().delete(`/api/myshop/delete-product-image/${imageData?.id}/${imageData?.public_id}`);
+  }
+ 
+
+export const deleteShopProduct = (id) => {
+  console.log("productToDelete", id)
+  return AuthApi().delete(`/api/myshop/delete-product/${id}`);
+}
+  
 // {===============================shop product handling ends   =======================================}
+
+
 // {===============================shop detals handling starts   =======================================}
 export const getJustMyShopDetails = () =>
   AuthApi().get('/api/myshop/get-just-details');
+
+  export const getMinimizedJustMyShopDetails = () =>
+  AuthApi().get('/api/myshop/get-minimized-just-details');
 
 export const getJustMyShopDetailsAndPlan = () =>
   AuthApi().get('/api/myshop/get-just-details/plan');
@@ -357,6 +378,44 @@ export const storePreShopUserData = (formData) =>
  * 
  * HANDLE MERCHANT UNBOADING ENDS
  */
+
+/***
+ * #############################################################################################
+ * HANDLE SHOP ESTATE PRPERTIES STARTS HERE
+ * ############################################################################################
+ */
+
+// {===============================shop estate property handling starts=======================================}
+// export const storeProductImages = (formData) =>
+//   AuthApi().post('/api/usersprodimages/uploadimages', formData);
+
+// export const removeProductImagesById = (formData) =>
+//   AuthApi().post('/api/usersprodimages/removeimage', formData);
+
+export const getShopEstateProperties = () => AuthApi().get('/api/myshop/get-my-estate-properties'); //newDashboard
+
+
+export const storeShopEstateProperty = (formData) =>
+  AuthApi().post('/api/myshop/create-estate-property', formData);
+
+
+// export const getMyShopProductById = (id) =>
+//   AuthApi().get(`/api/myshop-products/${id}`);
+
+export const getMyShopEstatePropertyBySlug = (id) =>
+  AuthApi().get(`/api/myshop-estateproperty/${id}`);
+
+export const updateMyShopEstatePropertyById = (productFormData ) =>
+  AuthApi().put(
+    `/api/myshop/update-estateproperty/${productFormData?._id}`,
+    productFormData
+  );
+
+
+export const deleteShopEstateProperty = (id) =>
+  AuthApi().delete(`/myshop/usersproducts/${id}`);
+// {===============================shop product handling ends   =======================================}
+
 
 //Shop Users Logout functionality  usersproducts
 export const MyShopLogOutSession = () => AuthApi().post(`/shop/logout`);

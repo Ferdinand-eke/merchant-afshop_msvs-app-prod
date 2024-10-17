@@ -32,4 +32,5 @@ const PropertiesAppConfig = {
 		}
 	]
 };
+
 export default PropertiesAppConfig;

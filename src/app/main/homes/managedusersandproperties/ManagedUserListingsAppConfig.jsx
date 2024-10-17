@@ -68,4 +68,6 @@ const ManagedUserListingsAppConfig = {
 	]
 };
 
+
+
 export default ManagedUserListingsAppConfig;

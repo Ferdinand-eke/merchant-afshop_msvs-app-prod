@@ -143,7 +143,7 @@ function UserMenu() {
 						</MenuItem>
 						<MenuItem
 							component={Link}
-							to="/apps/mailbox"
+							to="/merchants/mailbox"
 							onClick={userMenuClose}
 							role="button"
 						>

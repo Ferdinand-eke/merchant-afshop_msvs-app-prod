@@ -36,13 +36,7 @@ function ModernReversedForgotPasswordPage() {
 	const { isValid, dirtyFields, errors } = formState;
 
 	function onSubmit() {
-		// reset(defaultValues);
-
-		console.log('FORGOT-VALUES', getValues());
-
-		// return
 		shopForgotPass(getValues())
-
 	}
 
 	return (

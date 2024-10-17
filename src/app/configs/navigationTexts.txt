@@ -1,0 +1,55 @@
+/***Products management pane */
+	// {
+	// 	id: 'shopproducts',
+	// 	title: 'Products',
+	// 	subtitle: 'Manage your shop products',
+	// 	type: 'group',
+	// 	icon: 'heroicons-outline:shopping-cart',
+	// 	translate: 'PRODUCTS',
+	// 	children: [
+	// 		{
+	// 			//NAVIGATION:SHOP PRODUCTS
+	// 			id: 'shopproducts.list',
+	// 			title: 'Products',
+	// 			type: 'item',
+	// 			icon: 'heroicons-outline:shopping-cart',
+	// 			url: '/shopproducts-list/products'
+	// 		},
+	// 		{
+	// 			id: 'shopproducts.inventory',
+	// 			title: 'Inventory',
+	// 			type: 'item',
+	// 			icon: 'heroicons-outline:shopping-cart',
+	// 			url: '/shopproducts-list/inventory'
+	// 		},
+			
+	// 	]
+	// },
+
+/***orders management pane */
+	// {
+	// 	id: 'shoporders',
+	// 	title: 'Orders-&-Pos',
+	// 	subtitle: 'Manage your shop orders',
+	// 	type: 'group',
+	// 	icon: 'heroicons-outline:home',
+	// 	translate: 'ORDERS-&-POS',
+	// 	children: [
+	// 		{
+	// 			id: 'shoporders.list',
+	// 			title: 'Orders',
+	// 			type: 'item',
+	// 			icon: 'heroicons-outline:shopping-cart',
+	// 			url: '/shoporders-list/orders'
+	// 		},
+
+	// 		{
+	// 			id: 'africanshops.pos',
+	// 			title: 'Poin Of Sale (POS22)',
+	// 			type: 'item',
+	// 			icon: 'heroicons-outline:shopping-cart',
+	// 			url: '/africanshops/shops/pos'
+	// 		},
+		
+	// 	]
+	// },

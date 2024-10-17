@@ -113,7 +113,7 @@ function ProductImagesTab() {
 					render={({ field: { onChange, value } }) => {
 						return (
 							<>
-								{images.map((media) => (
+								{images?.map((media) => (
 									<div
 										onClick={() => onChange(media.id)}
 										onKeyDown={() => onChange(media.id)}

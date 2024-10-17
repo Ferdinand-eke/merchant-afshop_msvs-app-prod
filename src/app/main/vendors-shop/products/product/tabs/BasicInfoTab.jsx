@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Controller, useFormContext } from "react-hook-form";
-import { MenuItem, Select } from "@mui/material";
+import { MenuItem, Select, Typography } from "@mui/material";
 import useProductCats from "app/configs/data/server-calls/product-categories/useProductCategories";
 import useHubs from "app/configs/data/server-calls/tradehubs/useTradeHubs";
 
@@ -23,6 +23,9 @@ function BasicInfoTab() {
   const { errors } = formState;
   return (
     <div>
+      <Typography style={{ fontSize: "12px", fontWeight: "800" }}>
+        Trade Hub
+      </Typography>
       <Controller
         name="tradehub"
         control={control}
@@ -71,7 +74,7 @@ function BasicInfoTab() {
         )}
       />
 
-<Controller
+      <Controller
         name="shortDescription"
         control={control}
         render={({ field }) => (
@@ -84,8 +87,8 @@ function BasicInfoTab() {
             id="shortDescription"
             variant="outlined"
             fullWidth
-			multiline
-			rows={2}
+            multiline
+            rows={2}
             error={!!errors.shortDescription}
             helperText={errors?.shortDescription?.message}
           />
@@ -110,64 +113,9 @@ function BasicInfoTab() {
         )}
       />
 
-      {/* <Controller
-				name="categories"
-				control={control}
-				defaultValue={[]}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						multiple
-						freeSolo
-						options={[]}
-						value={value}
-						onChange={(event, newValue) => {
-							onChange(newValue);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select multiple categories"
-								label="Categories"
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/> */}
-
-      {/* <Controller
-        name="tags"
-        control={control}
-        defaultValue={[]}
-        render={({ field: { onChange, value } }) => (
-          <Autocomplete
-            className="mt-8 mb-16"
-            multiple
-            freeSolo
-            options={[]}
-            value={value}
-            onChange={(event, newValue) => {
-              onChange(newValue);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder="Select multiple tags"
-                label="Tags"
-                variant="outlined"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            )}
-          />
-        )}
-      /> */}
-
+      <Typography style={{ fontSize: "12px", fontWeight: "800" }}>
+        Product category
+      </Typography>
       <Controller
         name="category"
         control={control}

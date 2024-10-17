@@ -9,11 +9,11 @@ i18next.addResourceBundle('en', 'navigation', en);
 i18next.addResourceBundle('tr', 'navigation', tr);
 i18next.addResourceBundle('ar', 'navigation', ar);
 /**
- * The navigationConfig object is an array of navigation items for the Fuse application.
+ * The navigationConfigBackup object is an array of navigation items for the Fuse application.
  */
 
 
-const navigationConfig = [
+const navigationConfigBackup = [
 	{
 		id: 'dashboards',
 		title: 'Dashboards',
@@ -1387,4 +1387,4 @@ const navigationConfig = [
 	// 	]
 	// }
 ];
-export default navigationConfig;
+export default navigationConfigBackup;

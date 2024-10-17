@@ -51,7 +51,7 @@ function ShopProduct() {
 		skip: !productId || productId === 'new'
 	})
 
-	console.log("SINGLE_SHOP-PRODUCT", products?.data)
+	// console.log("SINGLE_SHOP-PRODUCT", products?.data)
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({

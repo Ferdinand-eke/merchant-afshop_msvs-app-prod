@@ -11,6 +11,7 @@ import {
 	useDeleteECommerceProductMutation,
 	useUpdateECommerceProductMutation
 } from '../ECommerceApi';
+import { useAddShopEstatePropertyMutation } from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
 
 /**
  * The product header.
@@ -28,21 +29,29 @@ function ProductHeader() {
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
 
+	const addEstateProperty = useAddShopEstatePropertyMutation()
+
 	function handleSaveProduct() {
 		saveProduct(getValues());
 	}
 
 	function handleCreateProduct() {
-		createProduct(getValues())
-			.unwrap()
-			.then((data) => {
-				navigate(`/property/managed-listings/${data.id}`);
-			});
+
+		// console.log("CreateEstateProperty-Values", getValues())
+		addEstateProperty.mutate(getValues())
+		// createProduct(getValues())
+		// 	.unwrap()
+		// 	.then((data) => {
+		// 		navigate(`/property/managed-listings/${data.id}`);
+		// 	});
 	}
 
+
 	function handleRemoveProduct() {
-		removeProduct(productId);
-		navigate('/property/managed-listings');
+
+		console.log("UpdateEstateProperty-Values", getValues())
+		// removeProduct(productId);
+		// navigate('/property/managed-listings');
 	}
 
 
@@ -137,10 +146,12 @@ function ProductHeader() {
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid}
+						disabled={_.isEmpty(dirtyFields) || !isValid  
+						|| addEstateProperty.isLoading
+						}
 						onClick={handleCreateProduct}
 					>
-						Add
+						Add Estate|Property
 					</Button>
 				)}
 			</motion.div>

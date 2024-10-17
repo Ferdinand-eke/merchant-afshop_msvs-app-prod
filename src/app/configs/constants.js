@@ -21,6 +21,8 @@ export const RESOURCE_ACTIVATE_CRED = '_ACTIVATE_SPLAWED_USER_DATA';
 
 /***Forgot password cookie */
 export const FORGOT_PASS_CREDENTIALS = '_FORGOT_SPLAWED_USER_DATA';
+export const LOGGEDIN_RESET_MAIL_CREDENTIALS = '_RESET_MAIL_SPLAWED_USER_DATA';
+
 //cookies for user-booking details
 export const BOOKING_USER_PAYLOAD = '_CHECKOUT_BOOKING_USER_DETAILS';;
 

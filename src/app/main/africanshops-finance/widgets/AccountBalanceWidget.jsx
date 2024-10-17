@@ -10,18 +10,22 @@ import { useGetFinanceDashboardWidgetsQuery } from '../FinanceDashboardApi';
 /**
  * The AccountBalanceWidget widget.
  */
-function AccountBalanceWidget() {
+function AccountBalanceWidget({shopData, shopDataLoading, isError,
+	account,
+	accountLoading,
+	accountError
+}) {
 	
 	const theme = useTheme();
 	const { data: widgets, isLoading } = useGetFinanceDashboardWidgetsQuery();
 
-	if (isLoading) {
+	if (shopDataLoading) {
 		return <FuseLoading />;
 	}
 
 	const widget = widgets?.accountBalance;
 
-	if (!widget) {
+	if (!shopData) {
 		return null;
 	}
 
@@ -94,7 +98,11 @@ function AccountBalanceWidget() {
 				<div className="flex items-start mt-24 mr-8">
 					<div className="flex flex-col">
 						<Typography className="font-semibold text-3xl md:text-5xl tracking-tighter">
-							{growRate}%
+							{account?.accountBalance.toLocaleString('en-US', {
+								style: 'currency',
+								currency: 'NGN'
+							})}
+							{/* {shopData?.shopaccount?.accountbalance}% */}
 						</Typography>
 						<Typography
 							className="font-medium text-sm leading-none"
@@ -105,9 +113,9 @@ function AccountBalanceWidget() {
 					</div>
 					<div className="flex flex-col ml-32 md:ml-64">
 						<Typography className="font-semibold text-3xl md:text-5xl tracking-tighter">
-							{ami.toLocaleString('en-US', {
+							{shopData?.shopaccount?.accountbalance.toLocaleString('en-US', {
 								style: 'currency',
-								currency: 'USD'
+								currency: 'NGN'
 							})}
 						</Typography>
 						<Typography
