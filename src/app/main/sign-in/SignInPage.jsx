@@ -73,8 +73,8 @@ function SignInPage() {
 						severity="info"
 						className="mt-24 px-16 text-13 leading-relaxed"
 					>
-						You are browsing <b>Fuse React Demo</b>. Click on the "Sign in" button to access the Demo and
-						Documentation.
+						You are on <b>Africanshops merchants portal</b>. Click on the "Sign in" you attest to comply with our
+						terms of compliance.
 					</Alert>
 
 					{/* <Tabs
@@ -177,8 +177,8 @@ function SignInPage() {
 						<div>our community</div>
 					</div>
 					<div className="mt-24 text-lg leading-6 tracking-tight text-gray-400">
-						Fuse helps developers to build organized and well coded dashboards full of beautiful and rich
-						modules. Join us and start building your application today.
+						Our merchant portal avails you the power to drive your business in a highly productive and scallable manner, driven by our well built out dashboards full of beautiful and rich
+						interface to keep you active and eefctive while at work. Join us and start building your business with us today!.
 					</div>
 					<div className="mt-32 flex items-center">
 						<AvatarGroup
@@ -195,7 +195,7 @@ function SignInPage() {
 						</AvatarGroup>
 
 						<div className="ml-16 font-medium tracking-tight text-gray-400">
-							More than 17k people joined us, it's your turn
+							More than 1k merchants joined us, it's your turn
 						</div>
 					</div>
 				</div>

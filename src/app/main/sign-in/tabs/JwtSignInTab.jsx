@@ -15,12 +15,12 @@ function jwtSignInTab() {
 					className="mx-8"
 					color="text.secondary"
 				>
-					Or continue with
+					Powered By ScanAfrique
 				</Typography>
 				<div className="mt-px flex-auto border-t" />
 			</div>
 
-			<div className="mt-32 flex items-center space-x-16">
+			{/* <div className="mt-32 flex items-center space-x-16">
 				<Button
 					variant="outlined"
 					className="flex-auto"
@@ -54,7 +54,7 @@ function jwtSignInTab() {
 						feather:github
 					</FuseSvgIcon>
 				</Button>
-			</div>
+			</div> */}
 		</div>
 	);
 }
