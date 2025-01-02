@@ -54,25 +54,26 @@ export function useFindShopItemsInOrders(itemId) {
   );
 }
 
+
+
 export function useCashoutShopOrderItemsEarnings() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   return useMutation(MyShopCashOutOrderItemsByOrderItemsIdShopId, {
-    onSuccess: () => {
-      toast.success('Order Sealed successfully!');
-      queryClient.invalidateQueries('__myshop_items_orders');
-      // navigate('/transaction-list-items');
-      navigate('/shoporders-list/orders');
+    onSuccess: (data) => {
+      if(data?.data?.success){
+        toast.success(data?.data?.message ? data?.data?.message : 'Order Sealed successfully!');
+        queryClient.invalidateQueries('__myshop_items_orders');
+        navigate('/shoporders-list/orders');
+      }
+    
     },
     onError: (error) => {
-      console.log("Cashing out Error", error)
       toast.error(
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message
       );
-      // toast.success('Oops!, an error occured');
-      // queryClient.invalidateQueries('__myshop_orders');
     },
   });
 }

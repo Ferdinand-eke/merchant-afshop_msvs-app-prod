@@ -66,7 +66,7 @@ function ProductsTab({ order, isError }) {
 								</Typography>
 							</td>
 							<td className="w-64 text-right">
-								<span className="truncate">${order.price}</span>
+								<span className="truncate">NGN {order.price}</span>
 							</td>
 							<td className="w-64 text-right">
 								<span className="truncate">{order.quantity}</span>

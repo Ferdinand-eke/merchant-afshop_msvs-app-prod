@@ -106,7 +106,7 @@ function MerchantModernReversedActivatePage({ resendOTP }) {
               type="submit"
               size="large"
             >
-              Send reset link
+              Activate Merchant Account
             </Button>
 
             <Typography

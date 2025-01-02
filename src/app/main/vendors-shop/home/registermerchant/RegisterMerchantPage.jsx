@@ -20,7 +20,6 @@ import MerchantModernReversedSignUpPage from './MerchantModernReversedSignUpPage
 
 function RegisterMerchantPage() {
 	const mainThemeDark = useAppSelector(selectMainThemeDark);
-	// const { data: faqsMost } = useGetHelpCenterMostlyFaqsQuery();
 
 	return (
 		<div className="flex flex-col flex-auto min-w-0">

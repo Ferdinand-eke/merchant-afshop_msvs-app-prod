@@ -28,7 +28,7 @@ import StateSelect from "src/app/apselects/stateselect";
 import LgaSelect from "src/app/apselects/lgaselect";
 import MarketSelect from "src/app/apselects/marketselect";
 import TradehubSelect from "src/app/apselects/tradehubselect";
-import { InputAdornment } from "@mui/material";
+import { IconButton, InputAdornment } from "@mui/material";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import FuseUtils from "@fuse/utils/FuseUtils";
 
@@ -52,6 +52,8 @@ import {
   setResendMerchantSignUpOtp,
 } from "app/configs/utils/authUtils";
 import MerchantModernReversedActivatePage from "./MerchantModernReversedActivatePage";
+import { Diversity2, Visibility, VisibilityOff } from "@mui/icons-material";
+import { toast } from "react-toastify";
 /**
  * Form Validation Schema
  */
@@ -85,18 +87,14 @@ const defaultValues = {
   passwordConfirm: "",
   acceptTermsConditions: false,
 
-  userOwner: "",
   address: "",
   businessCountry: "",
   businezState: "",
   businezLga: "",
   tradehub: "",
   market: "",
-
-  coverimage: "",
-  shoplogo: "",
   shopphone: "",
-  verified: "false",
+  verified: false,
   shopplan: "",
 };
 
@@ -192,24 +190,30 @@ function MerchantModernReversedSignUpPage() {
     shopplan: accountId,
   };
 
-
   function onSubmit() {
-    if (images?.length > 0) {
-      const fileName = new Date().getTime() + images[0]?.id;
-      const storage = getStorage(firebaseApp);
-      const storageRef = ref(storage, `/shopbanners/${fileName}`);
-      const uploadTask = uploadString(storageRef, images[0]?.url, "data_url");
-
-      uploadTask.then((snapshot) => {
-        console.log("uploadSnaps11", snapshot);
-        getDownloadURL(snapshot.ref).then((downloadURL) => {
-          setValue("coverimage", downloadURL);
-          sigupMerchant.mutate(shopregistry);
+    if(plan?.data?.isInOperation ){
+      if (images?.length > 0) {
+        const fileName = new Date().getTime() + images[0]?.id;
+        const storage = getStorage(firebaseApp);
+        const storageRef = ref(storage, `/shopbanners/${fileName}`);
+        const uploadTask = uploadString(storageRef, images[0]?.url, "data_url");
+  
+        uploadTask.then((snapshot) => {
+          console.log("uploadSnaps11", snapshot);
+          getDownloadURL(snapshot.ref).then((downloadURL) => {
+            setValue("coverimage", downloadURL);
+            console.log("merchant_redistration", shopregistry)
+            sigupMerchant.mutate(shopregistry);
+          });
         });
-      });
-    } else {
-      sigupMerchant.mutate(shopregistry);
+      } else {
+        console.log("merchant_redistration", shopregistry)
+        sigupMerchant.mutate(shopregistry);
+      }
+    }else{
+      toast.info("This selected account plan is not currently opertaional!")
     }
+   
   }
 
   /****Resend OTP on expiration of OTP */
@@ -295,12 +299,7 @@ function MerchantModernReversedSignUpPage() {
         setResendMerchantSignUpOtp(clientSignUpData);
       }
     }
-  }, [
-    plan?.data?.plankey,
-    sigupMerchant?.isSuccess,
-     remoteResponseToken,
-     
-    ]);
+  }, [plan?.data?.plankey, sigupMerchant?.isSuccess, remoteResponseToken]);
 
   async function findStatesByCountry(countryId) {
     setLoading(true);
@@ -351,6 +350,10 @@ function MerchantModernReversedSignUpPage() {
     }
   }
 
+  const [showPassword, setShowPassword] = useState(false) 
+  const toggleShowPassword = () =>{
+		setShowPassword(!showPassword)
+	}
 
   let bodyContent = (
     <div className="flex flex-col gap-8">
@@ -411,12 +414,22 @@ function MerchantModernReversedSignUpPage() {
                 {...field}
                 className="mb-24"
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 error={!!errors.password}
                 helperText={errors?.password?.message}
                 variant="outlined"
                 required
                 fullWidth
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">
+                    <IconButton
+                    onClick={() => toggleShowPassword()}
+                    >
+    
+                      {showPassword ? <VisibilityOff/> : <Visibility/>}
+                    </IconButton>
+                    </InputAdornment>
+                }}
               />
             )}
           />
@@ -541,7 +554,7 @@ function MerchantModernReversedSignUpPage() {
               <TextField
                 {...field}
                 className="mt-8 mb-16"
-                label="Merchant Phone"
+                label="Merchant Address"
                 id="address"
                 variant="outlined"
                 InputProps={{
@@ -668,13 +681,12 @@ function MerchantModernReversedSignUpPage() {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Typography
-          // as="h3"
           className="px-[40px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10"
         >
           Business Bio : Provide a brief bio about your business
         </Typography>
         <>
-          <Controller
+          {/* <Controller
             name="shopbio"
             control={control}
             render={({ field }) => (
@@ -694,7 +706,7 @@ function MerchantModernReversedSignUpPage() {
                 helperText={errors?.shopbio?.message}
               />
             )}
-          />
+          /> */}
 
           <Controller
             name="acceptTermsConditions"
@@ -785,86 +797,95 @@ function MerchantModernReversedSignUpPage() {
               {/* This plan enables you to.... */}
               {plan?.data?.planinfo}
             </div>
-            
           </div>
         </Box>
 
-        
-        
         {/* {(plan?.data?.plankey === 'MANUFACTURERS' || plan?.data?.plankey === 'WHOLESALEANDRETAILERS' || plan?.data?.plankey === 'RETAIL' ) && */}
         <>
-        {!remoteResponseToken.length > 0 ? (
-          <div className="w-full px-16 py-32 ltr:border-l-1 rtl:border-r-1 sm:w-auto sm:p-48 md:p-64">
-            <div className="mx-auto w-full max-w-320 sm:mx-0 sm:w-320">
-              <img
-                className="w-40"
-                src="assets/images/afslogo/afslogo.png"
-                alt="logo"
-              />
+          {!remoteResponseToken.length > 0 ? (
+            <div className="w-full px-16 py-32 ltr:border-l-1 rtl:border-r-1 sm:w-auto sm:p-48 md:p-64">
+              <div className="mx-auto w-full max-w-320 sm:mx-0 sm:w-320">
+                <img
+                  className="w-40"
+                  src="assets/images/afslogo/afslogo.png"
+                  alt="logo"
+                />
 
-              <Typography className="mt-32 text-4xl font-extrabold leading-tight tracking-tight">
-                Sign up for trade based activities
-              </Typography>
-              <div className="mt-2 flex items-baseline font-medium">
-                <Typography>Already have an account?</Typography>
-                <Link className="ml-4" to="/sign-in">
-                  Sign in
-                </Link>
-              </div>
+                <Typography className="mt-32 text-4xl font-extrabold leading-tight tracking-tight">
+                  Sign up for trade based activities
+                </Typography>
+                <div className="mt-2 flex items-baseline font-medium">
+                  <Typography>Already have an account?</Typography>
+                  <Link className="ml-4" to="/sign-in">
+                    Sign in
+                  </Link>
+                </div>
 
-              <form
-                name="registerForm"
-                noValidate
-                className="mt-32 flex w-full flex-col justify-center overflow-scroll"
-                onSubmit={handleSubmit(onSubmit)}
-              >
-                {bodyContent}
-
-                <Button
-                  className="bg-regularBG dark:bg-regularBGdark h-[50px] ltr:mr-[20px] rtl:ml-[20px] px-[22px] text-[15px] text-body dark:text-white/60 hover:text-light font-normal border-regular dark:border-white/10"
-                  size="large"
-                  onClick={secondaryAction}
-                  disabled={step == STEPS.CATEGORY}
-                >
-                  Back
-                </Button>
-                {step < 4 ? (
-                  <Button
-                    className="bg-regularBG dark:bg-regularBGdark h-[50px] ltr:mr-[20px] rtl:ml-[20px] px-[22px] text-[15px] text-body dark:text-white/60 hover:text-light font-normal border-regular dark:border-white/10"
-                    size="large"
-                    onClick={onNext}
-                    disabled={step == STEPS.DESCRIPTION}
+                {plan?.data?.isInOperation && (
+                  <form
+                    name="registerForm"
+                    noValidate
+                    className="mt-32 flex w-full flex-col justify-center overflow-scroll"
+                    onSubmit={handleSubmit(onSubmit)}
                   >
-                    Next
-                  </Button>
-                ) : (
-                  <>
+                    {bodyContent}
+
                     <Button
-                      variant="contained"
-                      color="secondary"
-                      className=" mt-24 w-full"
-                      aria-label="Register"
-                      disabled={
-                        _.isEmpty(dirtyFields) ||
-                        !isValid ||
-                        sigupMerchant?.isLoading
-                      }
-                      type="submit"
+                      className="bg-regularBG dark:bg-regularBGdark h-[50px] ltr:mr-[20px] rtl:ml-[20px] px-[22px] text-[15px] text-body dark:text-white/60 hover:text-light font-normal border-regular dark:border-white/10"
                       size="large"
+                      onClick={secondaryAction}
+                      disabled={step == STEPS.CATEGORY}
                     >
-                      Create your free account
+                      Back
                     </Button>
-                  </>
+                    {step < 4 ? (
+                      <Button
+                        className="bg-regularBG dark:bg-regularBGdark h-[50px] ltr:mr-[20px] rtl:ml-[20px] px-[22px] text-[15px] text-body dark:text-white/60 hover:text-light font-normal border-regular dark:border-white/10"
+                        size="large"
+                        onClick={onNext}
+                        disabled={step == STEPS.DESCRIPTION}
+                      >
+                        Next
+                      </Button>
+                    ) : (
+                      <>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          className=" mt-24 w-full"
+                          aria-label="Register"
+                          disabled={
+                            _.isEmpty(dirtyFields) ||
+                            !isValid ||
+                            sigupMerchant?.isLoading
+                          }
+                          type="submit"
+                          size="large"
+                        >
+                          Create your free account
+                        </Button>
+                      </>
+                    )}
+                  </form>
                 )}
-              </form>
+
+                {!plan?.data?.isInOperation && (
+                  <div className="mt-32 flex w-full flex-col justify-center overflow-scroll">
+                    <div className="mt-2 flex items-baseline font-medium">
+                      <Typography>
+                        This account plan is currently not operational!
+                      </Typography>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ) : (
-          <MerchantModernReversedActivatePage resendOTP={resendOTP} />
-        )}
+          ) : (
+            <MerchantModernReversedActivatePage resendOTP={resendOTP} />
+          )}
         </>
         {/* } */}
-        
+
         {/* {(plan?.data?.plankey === 'REALESTATES') &&
         
         <div className="w-full px-16 py-32 ltr:border-l-1 rtl:border-r-1 sm:w-auto sm:p-48 md:p-64">
@@ -887,10 +908,6 @@ function MerchantModernReversedSignUpPage() {
             </div>
         </div>
         } */}
-
-
-
-
       </Paper>
     </div>
   );

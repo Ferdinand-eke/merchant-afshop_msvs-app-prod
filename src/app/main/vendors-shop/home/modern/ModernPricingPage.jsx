@@ -16,6 +16,7 @@ import useShopplans from 'app/configs/data/server-calls/shopplans/useShopPlans';
  */
 function ModernPricingPage() {
 	const {data:merchantPlans} = useShopplans()
+
 	const [period, setPeriod] = useState('month');
 	const container = {
 		show: {
@@ -164,17 +165,7 @@ function ModernPricingPage() {
 														<b>{plan?.numberofproducts}</b> products initial list
 													</Typography>
 												</div>
-												{/* <div className="flex">
-													<FuseSvgIcon
-														className="text-green-600"
-														size={20}
-													>
-														heroicons-solid:check
-													</FuseSvgIcon>
-													<Typography className="ml-2 leading-5">
-														<b>5GB</b> storage
-													</Typography>
-												</div> */}
+											
 												<div className="flex">
 													<FuseSvgIcon
 														className="text-green-600"
@@ -185,15 +176,7 @@ function ModernPricingPage() {
 													<Typography className="ml-2 leading-5">Analytics 
 													 : {plan?.dashboardandanalytics}</Typography>
 												</div>
-												{/* <div className="flex">
-													<FuseSvgIcon
-														className="text-green-600"
-														size={20}
-													>
-														heroicons-solid:check
-													</FuseSvgIcon>
-													<Typography className="ml-2 leading-5">Free mobile app</Typography>
-												</div> */}
+												
 												<div className="flex">
 													<FuseSvgIcon
 														className="text-green-600"
@@ -254,12 +237,7 @@ function ModernPricingPage() {
 							title="24/7 Support and Information Sharing"
 							subtitle="Get in touch with our support desk anywhere along the line, wherever you feel stocked."
 						/>
-						{/* <ModernPricingFeatureItem
-							icon="heroicons-outline:document-text"
-							title="Pre-rendered Results"
-							subtitle="Pre-render results to make reports and analytics more accessible by screen readers
-                and other accessibility tools."
-						/> */}
+						
 						<ModernPricingFeatureItem
 							icon="heroicons-outline:chart-square-bar"
 							title="Simple Analytics"
@@ -294,88 +272,7 @@ function ModernPricingPage() {
 				</div>
 			</Box>
 
-			{/* <div className="flex flex-col items-center px-24 pb-32 pt-12 sm:px-64 sm:pb-80 sm:pt-72">
-				<div className="w-full max-w-7xl">
-					<div>
-						<Typography className="text-4xl font-extrabold leading-tight tracking-tight">
-							Frequently asked questions
-						</Typography>
-						<Typography
-							className="mt-8 max-w-xl text-xl"
-							color="text.secondary"
-						>
-							Here are the most frequently asked questions you may check before getting started
-						</Typography>
-					</div>
-					<div className="mt-48 grid w-full grid-cols-1 gap-x-24 gap-y-48 sm:mt-64 sm:grid-cols-2 lg:gap-x-64">
-						<div>
-							<Typography className="text-xl font-semibold">
-								What is the duration of the free trial?
-							</Typography>
-							<Typography
-								className="mt-8 leading-6"
-								color="text.secondary"
-							>
-								Our app is free to try for 14 days, if you want more, you can provide payment details
-								which will extend your trial to 30 days providing you an extra 16 more days to try our
-								app.
-							</Typography>
-						</div>
-						<div>
-							<Typography className="text-xl font-semibold">
-								Are there discounts for non-profits or educational use?
-							</Typography>
-							<Typography
-								className="mt-2 leading-6"
-								color="text.secondary"
-							>
-								Yes, our Personal and Premium packages are free for non-profits and educational use.
-								E-mail your details to us after starting your Free Trial and we will upgrade your
-								account if you qualify.
-							</Typography>
-						</div>
-						<div>
-							<Typography className="text-xl font-semibold">What is the storage is for?</Typography>
-							<Typography
-								className="mt-8 leading-6"
-								color="text.secondary"
-							>
-								Since we provide an extremely detailed reporting and analytics tool, they require quite
-								a bit storage space. For average use, you don’t have to worry about running out of space
-								since the Personal package limits the projects you can have.
-							</Typography>
-							<Typography
-								className="mt-8 leading-6"
-								color="text.secondary"
-							>
-								For some reason if you run out of space, contact us and we will see what can be done
-								about it and make sure you are not generating unnecessary reports and/or analytics data.
-							</Typography>
-						</div>
-						<div>
-							<Typography className="text-xl font-semibold">
-								What happens if I’m not satisfied?
-							</Typography>
-							<Typography
-								className="mt-8 leading-6"
-								color="text.secondary"
-							>
-								If you are still in your free trial period, you can cancel your account at anytime with
-								a single click of a button. If you already paid for your first month, we also offer
-								30-day money-back guarantee with no questions asked.
-							</Typography>
-							<Typography
-								className="mt-8 leading-6"
-								color="text.secondary"
-							>
-								After first month, you can still cancel your account at any time but we will calculate
-								the amount that corresponds to days you have been using our app for that month and
-								refund only the remaining amount.
-							</Typography>
-						</div>
-					</div>
-				</div>
-			</div> */}
+			
 		</div>
 	);
 }

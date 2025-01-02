@@ -84,7 +84,7 @@ function ModernPricingCard(props) {
 			
 			<Button
 			component={Link}
-			to={`/homeregistry/register/${accountId}`}
+			to={`/homeregistry/register/${accountId}/chosen-plan`}
 				className="mt-40 w-full"
 				size="large"
 				variant={isPopular ? 'contained' : 'outlined'}

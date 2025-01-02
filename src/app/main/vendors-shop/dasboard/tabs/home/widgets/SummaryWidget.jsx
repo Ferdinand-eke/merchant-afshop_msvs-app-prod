@@ -72,6 +72,7 @@ function SummaryWidget({shopData, isLoading}) {
 					{/* {data.name} */}
 					NGN {shopData?.shopaccount?.accountbalance}
 					</Typography>
+					
 			</div>
 			<Typography
 				className="flex items-baseline justify-center w-full mt-20 mb-24"
