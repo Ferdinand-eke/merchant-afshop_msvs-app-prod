@@ -4,23 +4,22 @@ import { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/store/hooks';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import withSlices from 'app/store/withSlices';
-import { logisticsNavigationSlice, selectNavigation } from '../store/logisticsNavigationSlice';
+import { wholesaleretailNavigationSlice, selectNavigation } from '../store/wholesaleretailNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
 import { useNavigate } from 'react-router';
 
-function LogisticsNavigation(props) {
+function WholesaleRetailNavigation(props) {
 	const { className = '', layout = 'vertical', dense, active, merchantPlanKey } = props;
+
 	const navigation = useAppSelector(selectNavigation);
 	
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const dispatch = useAppDispatch();
-
 	const navigate = useNavigate()
 
-	if(merchantPlanKey !== "FOODVENDORS"){
+	if(merchantPlanKey !== "WHOLESALEANDRETAILERS"){
 		navigate('/')
 	}
-
 
 	return useMemo(() => {
 		function handleItemClick() {
@@ -28,8 +27,6 @@ function LogisticsNavigation(props) {
 				dispatch(navbarCloseMobile());
 			}
 		}
-
-
 		return (
 			<FuseNavigation
 				className={clsx('navigation flex-1', className)}
@@ -44,5 +41,4 @@ function LogisticsNavigation(props) {
 	}, [dispatch, isMobile, navigation, active, className, dense, layout]);
 }
 
-
-export default withSlices([logisticsNavigationSlice])(LogisticsNavigation);
+export default withSlices([wholesaleretailNavigationSlice])(WholesaleRetailNavigation);

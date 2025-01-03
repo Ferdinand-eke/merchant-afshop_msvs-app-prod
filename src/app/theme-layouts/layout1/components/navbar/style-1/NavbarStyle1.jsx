@@ -48,7 +48,7 @@ function NavbarStyle1() {
 	const config = useAppSelector(selectFuseCurrentLayoutConfig);
 	const navbar = useAppSelector(selectFuseNavbar);
 
-	// console.log("side-barUser", user)
+
 	return (
 		<>
 			<Hidden lgDown>
@@ -85,6 +85,7 @@ function NavbarStyle1() {
 					{/* {user?.role?.toString() === 'merchant' && <NavbarStyle1Content />} */}
 
 				</StyledNavBarMobile>}
+
 				
 			</Hidden>
 		</>

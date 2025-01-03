@@ -34,10 +34,6 @@ function ShopDashboardApp() {
 		return <FuseLoading />;
 	}
 
-	// const  token  = getAdminAccessToken()
-	// console.log("TokenFROM-DASHBOARD", token)
-
-
 	return (
 		<Root
 			header={<ShopDashboardAppHeader />}
@@ -61,12 +57,12 @@ function ShopDashboardApp() {
 							)
 						}}
 					>
-						<Tab
+						{/* <Tab
 							className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
 							disableRipple
 							label="Home"
-						/>
-						<Tab
+						/> */}
+						{/* <Tab
 							className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
 							disableRipple
 							label="Budget"
@@ -75,11 +71,12 @@ function ShopDashboardApp() {
 							className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12"
 							disableRipple
 							label="Team"
-						/>
+						/> */}
 					</Tabs>
 					{tabValue === 0 && <HomeTab />}
-					{tabValue === 1 && <BudgetTab />}
-					{tabValue === 2 && <TeamTab />}
+
+					{/* {tabValue === 1 && <BudgetTab />}
+					{tabValue === 2 && <TeamTab />} */}
 				</div>
 			}
 		/>

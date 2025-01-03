@@ -12,15 +12,12 @@ import {
   updateMyShopDetails,
 } from '../../client/clientToApiRoutes';
 import { toast } from 'react-toastify';
-// import { message } from 'antd';
 
 export default function useGetMyShopDetails() {
   return useQuery(['__myshop_details'], getMyShopDetails);
 }
 
 /*****Get just my shop details */
-// export const getMinimizedJustMyShopDetails = () =>
-
 export function useGetMinimizedJustMyShopDetailsQuery() {
   return useQuery(['__justmyshop'], getMinimizedJustMyShopDetails);
 }

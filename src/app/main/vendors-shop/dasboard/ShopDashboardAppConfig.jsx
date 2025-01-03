@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 
+
 const ShopDashboardApp = lazy(() => import('./ShopDashboardApp'));
 /**
  * The ProjectDashboardApp configuration.

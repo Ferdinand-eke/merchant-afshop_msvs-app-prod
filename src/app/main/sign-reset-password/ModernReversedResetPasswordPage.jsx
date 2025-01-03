@@ -52,10 +52,6 @@ function ModernReversedResetPasswordPage() {
 		const activationTokenToCheck = get_SHOP_FORGOTPASS_TOKEN()
 
 		setValue('activationToken', activationTokenToCheck)
-		// getValues({
-		// 	...defaultValues, activationToken:activationTokenToCheck
-		// })
-		console.log("Reset-PASS-DATA", getValues())
 
 
 		// return

@@ -6,15 +6,13 @@ import { memo, useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import FuseLoading from '@fuse/core/FuseLoading';
-// import { useGetProjectDashboardWidgetsQuery } from '../../../ProjectDashboardApi';
+import { formatCurrency } from 'src/app/main/vendors-shop/pos/PosUtils';
 
 /**
  * The SummaryWidget widget.
  */
 
 function SummaryWidget({shopData, isLoading}) {
-	// const { data: widgets, isLoading } = useGetProjectDashboardWidgetsQuery();
-	// const widget = widgets?.summary;
 
 	if (isLoading) {
 		return <FuseLoading />;
@@ -32,24 +30,12 @@ function SummaryWidget({shopData, isLoading}) {
 				<Select
 					className="mx-16"
 					classes={{ select: 'py-0 flex items-center' }}
-					// value={currentRange}
-					// onChange={handleChangeRange}
 					inputProps={{
 						name: 'currentRange'
 					}}
 					variant="filled"
 					size="small"
 				>
-					{/* {Object.entries(ranges).map(([key, n]) => {
-						return (
-							<MenuItem
-								key={key}
-								value={key}
-							>
-								{n}
-							</MenuItem>
-						);
-					})} */}
 					<MenuItem
 								
 							>
@@ -64,13 +50,10 @@ function SummaryWidget({shopData, isLoading}) {
 				</IconButton>
 			</div>
 			<div className="text-center mt-8">
-				{/* <Typography className="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">
 				
-					{shopData?.shopaccount?.accountbalance}00000
-				</Typography> */}
 				<Typography className="text-lg font-medium text-blue-600 dark:text-blue-500">
-					{/* {data.name} */}
-					NGN {shopData?.shopaccount?.accountbalance}
+					
+					NGN {formatCurrency(shopData?.shopaccount?.accountbalance)}
 					</Typography>
 					
 			</div>
@@ -79,7 +62,7 @@ function SummaryWidget({shopData, isLoading}) {
 				color="text.secondary"
 			>
 				<span className="truncate">Shop Earnings</span>
-				<b className="px-8">NGN {shopData?.shopaccount?.accountbalance}</b>
+				<b className="px-8">NGN {formatCurrency(shopData?.shopaccount?.accountbalance)}</b>
 			</Typography>
 		</Paper>
 	);

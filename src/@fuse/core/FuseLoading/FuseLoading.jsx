@@ -22,7 +22,7 @@ function FuseLoading(props) {
 			)}
 		>
 			<Typography
-				className="-mb-16 text-13 font-medium sm:text-20"
+				className="-mb-16 text-12 font-medium sm:text-16"
 				color="text.secondary"
 			>
 				Loading

@@ -4,24 +4,25 @@ import FuseNavigationHelper from '@fuse/utils/FuseNavigationHelper';
 import i18next from 'i18next';
 import FuseNavItemModel from '@fuse/core/FuseNavigation/models/FuseNavItemModel';
 import FuseUtils from '@fuse/utils';
+import manufacturersNavigationConfig from 'app/configs/manufacturersNavigationConfig';
 import { selectCurrentLanguageId } from 'app/store/i18nSlice';
 import { rootReducer } from 'app/store/lazyLoadedSlices';
-import bookingsNavigationConfig from 'app/configs/bookingsNavigationConfig';
+// import { useGetMyShopAndPlan } from 'app/configs/data/server-calls/shopdetails/useShopDetails';
 
 const navigationAdapter = createEntityAdapter();
 const emptyInitialState = navigationAdapter.getInitialState([]);
 
+
 const initialState = navigationAdapter.upsertMany(
 	emptyInitialState,
+	FuseNavigationHelper.flattenNavigation(manufacturersNavigationConfig)
 
-	FuseNavigationHelper.flattenNavigation(bookingsNavigationConfig)
-
-	
+	// FuseNavigationHelper.flattenNavigation(estatesmanufacturersNavigationConfig)
 
 );
-// console.log('navDATA', bookingsNavigationConfig)
 
-console.log("initialBOOKINGSNavSTate", initialState)
+
+
 /**
  * Redux Thunk actions related to the navigation store state
  */
@@ -30,7 +31,6 @@ console.log("initialBOOKINGSNavSTate", initialState)
  */
 export const appendNavigationItem = (item, parentId) => async (dispatch, getState) => {
 	const AppState = getState();
-	
 	const navigation = FuseNavigationHelper.unflattenNavigation(selectNavigationAll(AppState));
 	dispatch(setNavigation(FuseNavigationHelper.appendNavItem(navigation, FuseNavItemModel(item), parentId)));
 	return Promise.resolve();
@@ -66,13 +66,13 @@ export const {
 	selectAll: selectNavigationAll,
 	selectIds: selectNavigationIds,
 	selectById: selectNavigationItemById
-} = navigationAdapter.getSelectors((state) => state.bookingsnavigation);
+} = navigationAdapter.getSelectors((state) => state.navigation);
 /**
  * The navigation slice
  */
 
-export const bookingsNavigationSlice = createSlice({
-	name: 'bookingsnavigation',
+export const manufacturersNavigationSlice = createSlice({
+	name: 'manufacturersnavigation',
 	initialState,
 	reducers: {
 		setNavigation(state, action) {
@@ -85,9 +85,9 @@ export const bookingsNavigationSlice = createSlice({
  * Lazy load
  * */
 
-rootReducer.inject(bookingsNavigationSlice);
-bookingsNavigationSlice.injectInto(rootReducer);
-export const { setNavigation, resetNavigation } = bookingsNavigationSlice.actions;
+rootReducer.inject(manufacturersNavigationSlice);
+manufacturersNavigationSlice.injectInto(rootReducer);
+export const { setNavigation, resetNavigation } = manufacturersNavigationSlice.actions;
 export const selectNavigation = createSelector(
 	[selectNavigationAll, selectUserRole, selectCurrentLanguageId],
 	(navigationSimple, userRole) => {
@@ -109,5 +109,4 @@ export const selectNavigation = createSelector(
 export const selectFlatNavigation = createSelector([selectNavigation], (navigation) => {
 	return FuseNavigationHelper.flattenNavigation(navigation);
 });
-export default bookingsNavigationSlice.reducer;
-
+export default manufacturersNavigationSlice.reducer;

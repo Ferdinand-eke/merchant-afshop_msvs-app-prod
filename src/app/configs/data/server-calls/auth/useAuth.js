@@ -8,7 +8,6 @@ import { setShopResetMailPAYLOAD } from 'app/configs/utils/authUtils';
  */
 export function useShopSettingsResetPass() {
   const queryClient = useQueryClient();
-
   return useMutation(authShopResetPasword, {
     onSuccess: (data) => {
       if(data?.data && data?.data?.success){
@@ -34,7 +33,6 @@ export function useShopSettingsChangeEmail() {
 
   return useMutation(authShopChangeEmail, {
     onSuccess: (data) => {
-      // console.log("authChangeEMail", data)
       if(data?.data && data?.data?.success && data?.data?.changemail_activation_token){
         
         toast.success(data?.data?.message);

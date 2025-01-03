@@ -3,7 +3,6 @@ import ar from './navigation-i18n/ar';
 import en from './navigation-i18n/en';
 import tr from './navigation-i18n/tr';
 import { authRoles } from '../auth';
-import DocumentationNavigation from '../main/documentation/DocumentationNavigation';
 
 i18next.addResourceBundle('en', 'navigation', en);
 i18next.addResourceBundle('tr', 'navigation', tr);
@@ -60,38 +59,9 @@ const bookingsNavigationConfig = [
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/bookings/list-reservations'
 			},
-
-		
-
-			
 			
 		]
 	},
-
-	// {
-	// 	id: 'reservations',
-	// 	title: 'Manage Property reservations',
-	// 	subtitle: 'Bookings Properties management helpers',
-	// 	type: 'group',
-	// 	icon: 'heroicons-outline:home',
-	// 	translate: 'RESERVATIONS',
-	// 	children: [
-		
-
-
-	// 		{
-	// 			id: 'properties.reservations',
-	// 			title: 'Merchant Reservations',
-	// 			type: 'item',
-	// 			icon: 'heroicons-outline:clipboard-check',
-	// 			url: '/bookings/reservations'
-	// 		},
-		
-			
-	// 	]
-	// },
-
-	
 
 	/***Finance management pane */
 	{
@@ -110,15 +80,6 @@ const bookingsNavigationConfig = [
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/africanshops/finance'
 			},
-
-			// {
-			// 	id: 'withdrawals.list',
-			// 	title: 'Property Withdrawals',
-			// 	type: 'item',
-			// 	icon: 'heroicons-outline:clipboard-check',
-			// 	url: '/finance/withdrawals'
-			// },
-		
 			
 		]
 	},
@@ -139,11 +100,7 @@ const bookingsNavigationConfig = [
 				type: 'item',
 				icon: 'heroicons-outline:support',
 				url: '/support'
-			},
-
-			
-		
-			
+			},	
 		]
 	},
 
@@ -171,39 +128,6 @@ const bookingsNavigationConfig = [
 			
 		]
 	},
-
-	// {
-	// 	id: 'users',
-	// 	title: 'Manage users',
-	// 	subtitle: 'Users management helpers',
-	// 	type: 'group',
-	// 	icon: 'heroicons-outline:home',
-	// 	translate: 'SHOP-STAFF-USERS',
-	// 	children: [
-	// 		// {
-	// 		// 	id: 'users.admin',
-	// 		// 	title: 'Admin staff',
-	// 		// 	type: 'item',
-	// 		// 	icon: 'heroicons-outline:user-group',
-	// 		// 	url: '/users/admin'
-	// 		// },
-	// 		// {
-	// 		// 	id: 'users.user',
-	// 		// 	title: 'Uers',
-	// 		// 	type: 'item',
-	// 		// 	icon: 'heroicons-outline:user-group',
-	// 		// 	url: '/users/user'
-	// 		// },
-	// 		{
-	// 			id: 'users.shopstaff',
-	// 			title: 'Shop Staff',
-	// 			type: 'item',
-	// 			icon: 'heroicons-outline:user-group',
-	// 			url: '/users/shopstaff'
-	// 		},
-			
-	// 	]
-	// },
 
 	
 

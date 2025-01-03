@@ -10,8 +10,6 @@ import { useGetProjectDashboardWidgetsQuery } from '../../../ProjectDashboardApi
  * The IssuesWidget widget.
  */
 function IssuesWidget({orderItems, isLoading}) {
-	// const { data: widgets, isLoading } = useGetProjectDashboardWidgetsQuery();
-	// const widget = widgets?.issues;
 
 	if (isLoading) {
 		return <FuseLoading />;
@@ -21,7 +19,6 @@ function IssuesWidget({orderItems, isLoading}) {
 		return null;
 	}
 
-	// const { data, title } = widget;
 	return (
 		<Paper className="flex flex-col flex-auto shadow rounded-2xl overflow-hidden">
 			<div className="flex items-center justify-between px-8 pt-12">
@@ -29,7 +26,6 @@ function IssuesWidget({orderItems, isLoading}) {
 					className="px-16 text-lg font-medium tracking-tight leading-6 truncate"
 					color="text.secondary"
 				>
-					{/* {title} */}
 					Orders
 				</Typography>
 				<IconButton
@@ -41,10 +37,10 @@ function IssuesWidget({orderItems, isLoading}) {
 			</div>
 			<div className="text-center mt-8">
 				<Typography className="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">
-					{/* {String(data.count)} */}
+				
 				</Typography>
 				<Typography className="text-lg font-medium text-amber-600">
-					{/* {data.name} */}
+				
 					{orderItems?.length}
 					</Typography>
 			</div>
@@ -53,7 +49,7 @@ function IssuesWidget({orderItems, isLoading}) {
 				color="text.secondary"
 			>
 				<span className="truncate">Existing Orders</span>:<b className="px-8">
-					{/* {String(data.extra.count)} */}
+			
 					{orderItems?.length}
 					</b>
 			</Typography>

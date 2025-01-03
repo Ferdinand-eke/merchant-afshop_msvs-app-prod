@@ -147,10 +147,6 @@ const Root = styled("div")(({ theme }) => ({
  * The modern reversed sign up page.
  */
 function MerchantModernReversedSignUpPage() {
-  // const Map = useMemo(
-  //     () => (() => import('../../../../../components/map')),
-  //     [location]
-  // )
   const clientSignUpData = getResendMerchantSignUpOtp();
   const remoteResponseToken = getMerchantSignUpToken();
   const routeParams = useParams();
@@ -173,7 +169,7 @@ function MerchantModernReversedSignUpPage() {
   const { isValid, dirtyFields, errors } = formState;
 
   const location = watch("location");
-  //   const businessCountry = watch("businessCountry");
+  
   const businezState = watch("businezState");
   const businezLga = watch("businezLga");
   const market = watch("market");
@@ -202,12 +198,10 @@ function MerchantModernReversedSignUpPage() {
           console.log("uploadSnaps11", snapshot);
           getDownloadURL(snapshot.ref).then((downloadURL) => {
             setValue("coverimage", downloadURL);
-            console.log("merchant_redistration", shopregistry)
             sigupMerchant.mutate(shopregistry);
           });
         });
       } else {
-        console.log("merchant_redistration", shopregistry)
         sigupMerchant.mutate(shopregistry);
       }
     }else{
@@ -272,7 +266,6 @@ function MerchantModernReversedSignUpPage() {
 
   useEffect(() => {
     if (location?._id?.length > 0) {
-      console.log(`Getting stated in this country ${location?.name}`);
       findStatesByCountry(location?._id);
     }
 
@@ -333,7 +326,7 @@ function MerchantModernReversedSignUpPage() {
     }
   }
 
-  //**Get Marketss from lga_ID data */ getShopById
+  //**Get Marketss from lga_ID data  getShopById*/ 
   async function getMarketsFromLgaId(lid) {
     if (lid) {
       setLoading(true);
@@ -358,7 +351,6 @@ function MerchantModernReversedSignUpPage() {
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Typography
-        // as="h3"
         className="px-[10px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10"
       >
         Email Details :{" "}
@@ -367,7 +359,6 @@ function MerchantModernReversedSignUpPage() {
         </span>
       </Typography>
       <>
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[30vh] overflow-y-auto"> */}
         <>
           <Controller
             name="shopname"
@@ -453,8 +444,6 @@ function MerchantModernReversedSignUpPage() {
           />
         </>
 
-        {/* </div> */}
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[30vh] overflow-y-auto"></div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[30vh] overflow-y-auto"></div>
@@ -466,7 +455,6 @@ function MerchantModernReversedSignUpPage() {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Typography
-          // as="h3"
           className="px-[40px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10"
         >
           Business Location : Where is this merchant operations located
@@ -502,8 +490,6 @@ function MerchantModernReversedSignUpPage() {
             />
           )}
 
-          {/* <Map center={location?.latlng 
-                        } /> */}
         </>
       </div>
     );
@@ -513,13 +499,11 @@ function MerchantModernReversedSignUpPage() {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Typography
-          // as="h3"
           className="px-[40px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10"
         >
           More Info : Provide us some more info to set your business up nicely
         </Typography>
         <>
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[30vh] overflow-y-auto"></div> */}
           <TradehubSelect
             value={tradehub}
             onChange={(value) => setCustomValue("tradehub", value)}
@@ -577,14 +561,12 @@ function MerchantModernReversedSignUpPage() {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Typography
-          // as="h3"
           className="px-[40px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10"
         >
           Shop Cover Image : Provide an image to be used as your profile cover
           image
         </Typography>
         <>
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[30vh] overflow-y-auto"></div> */}
           <Controller
             name="images"
             control={control}
@@ -676,7 +658,6 @@ function MerchantModernReversedSignUpPage() {
     );
   }
 
-  //   console.log("IMAGES", images);
   if (step == STEPS.DESCRIPTION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
@@ -686,27 +667,6 @@ function MerchantModernReversedSignUpPage() {
           Business Bio : Provide a brief bio about your business
         </Typography>
         <>
-          {/* <Controller
-            name="shopbio"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                className="mt-8 mb-16"
-                required
-                label="Short Description"
-                autoFocus
-                type="shopbio"
-                id="shopbio"
-                variant="outlined"
-                fullWidth
-                multiline
-                rows={3}
-                error={!!errors.shopbio}
-                helperText={errors?.shopbio?.message}
-              />
-            )}
-          /> */}
 
           <Controller
             name="acceptTermsConditions"
@@ -794,14 +754,12 @@ function MerchantModernReversedSignUpPage() {
               You have chosen our {plan?.data?.plansname} plan
             </Typography>
             <div className="mt-24 text-lg leading-6 tracking-tight text-gray-400">
-              {/* This plan enables you to.... */}
               {plan?.data?.planinfo}
             </div>
           </div>
         </Box>
 
-        {/* {(plan?.data?.plankey === 'MANUFACTURERS' || plan?.data?.plankey === 'WHOLESALEANDRETAILERS' || plan?.data?.plankey === 'RETAIL' ) && */}
-        <>
+       <>
           {!remoteResponseToken.length > 0 ? (
             <div className="w-full px-16 py-32 ltr:border-l-1 rtl:border-r-1 sm:w-auto sm:p-48 md:p-64">
               <div className="mx-auto w-full max-w-320 sm:mx-0 sm:w-320">
@@ -884,30 +842,7 @@ function MerchantModernReversedSignUpPage() {
             <MerchantModernReversedActivatePage resendOTP={resendOTP} />
           )}
         </>
-        {/* } */}
 
-        {/* {(plan?.data?.plankey === 'REALESTATES') &&
-        
-        <div className="w-full px-16 py-32 ltr:border-l-1 rtl:border-r-1 sm:w-auto sm:p-48 md:p-64">
-            <div className="mx-auto w-full max-w-320 sm:mx-0 sm:w-320">
-              <img
-                className="w-48"
-                src="assets/images/afslogo/afLogo.svg"
-                alt="logo"
-              />
-
-              <Typography className="mt-32 text-4xl font-extrabold leading-tight tracking-tight">
-                Sign up for real estate based activities
-              </Typography>
-              <div className="mt-2 flex items-baseline font-medium">
-                <Typography>Already have an account?</Typography>
-                <Link className="ml-4" to="/sign-in">
-                  Sign in
-                </Link>
-              </div>
-            </div>
-        </div>
-        } */}
       </Paper>
     </div>
   );

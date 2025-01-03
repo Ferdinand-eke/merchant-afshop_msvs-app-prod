@@ -26,7 +26,9 @@ function HomeTab() {
 
 	const { data:shopData, isLoading, isError } = useGetMyShopDetails();
 	const fistFiveOrders = shopData?.data?.orderItems?.slice(0, 4);
-	// console.log("ShopData", shopData?.data)
+
+	console.log("ORDERS_LIST", shopData?.data)
+
 
 	return (
 		<motion.div
@@ -69,5 +71,6 @@ function HomeTab() {
 		</motion.div>
 	);
 }
+
 
 export default HomeTab;

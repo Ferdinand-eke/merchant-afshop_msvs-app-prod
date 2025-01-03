@@ -19,9 +19,6 @@ const initialState = navigationAdapter.upsertMany(
 	
 
 );
-// console.log('navDATA', logisticsNavigationConfig)
-
-// console.log("initialEstateNavSTate", initialState)
 /**
  * Redux Thunk actions related to the navigation store state
  */

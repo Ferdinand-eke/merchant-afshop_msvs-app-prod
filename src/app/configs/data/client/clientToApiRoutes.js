@@ -7,13 +7,6 @@ import { getAuthAdminTokens, resetSessionForShopUsers } from 'app/configs/utils/
 import { getAdminAccessToken,  } from '../utils/opsUtils'
 import { toast } from 'react-toastify'
 
-// const API_BASE_URL = `http://localhost:8000`
-// const API_BASE_URL = 'https://coral-app-n8ox9.ondigitalocean.app' VITE_API_BASE_URL_DEV
-
-
-
-// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL_DEV;
-
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL_PROD;
 
 
@@ -27,7 +20,6 @@ export const customHeaders = {
 export const baseUrl = `${API_BASE_URL}`
 
 export function Api() {
-    // const TOKEN = JSON.parse(Cookies.get('authClientUserInfo')).accessToken;
 
     const Api = axios.create({
         baseURL: baseUrl,
@@ -38,9 +30,9 @@ export function Api() {
 }
 
 export function AuthApi() {
-    // const TOKEN = JSON.parse(Cookies.get('authClientUserToken')); getAdminAccessToken
-    // const { token } = getAuthAdminTokens()
     const  token  = getAdminAccessToken() 
+
+    // console.log("AUTH_TOKEN", token)
 
     const customHeaders = {
         Accept: 'application/json',

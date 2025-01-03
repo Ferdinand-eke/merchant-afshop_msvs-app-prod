@@ -12,6 +12,8 @@ import RealEstateNavigation from "app/theme-layouts/shared-components/navigation
 import HotelsApartmentsNavigation from "app/theme-layouts/shared-components/navigation/hotelsnavigation/HotelsApartmentsNavigation";
 import LogisticsNavigation from "app/theme-layouts/shared-components/navigation/logisticsnavigation/LogisticsNavigation";
 import FoodMartNavigation from "app/theme-layouts/shared-components/navigation/foodmartnavigation/FoodMartNavigation";
+import ManufacturersNavigation from "app/theme-layouts/shared-components/navigation/manufacturersnavigation/ManufacturersNavigation";
+import WholesaleRetailNavigation from "app/theme-layouts/shared-components/navigation/wholealeretailnavigation/WholesaleRetailNavigation";
 
 
 const Root = styled("div")(({ theme }) => ({
@@ -75,19 +77,34 @@ useEffect(() =>{
           <Typography>loading...</Typography>
           </> :
           <>
-          {myshopData?.data?.shopplan?.plankey === 'RETAIL' && <><Navigation layout="vertical" /></> } 
+          {myshopData?.data?.shopplan?.plankey === 'RETAIL' && <><Navigation 
+          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
+          layout="vertical" /></> } 
           
-          {myshopData?.data?.shopplan?.plankey === 'WHOLESALEANDRETAILERS' && <><Navigation layout="vertical" /></>} 
-          {myshopData?.data?.shopplan?.plankey === 'MANUFACTURERS' && <><Navigation layout="vertical" /></> }
-
-
-          {myshopData?.data?.shopplan?.plankey === 'REALESTATES' && <><RealEstateNavigation layout="vertical"/></>}
-
-          {myshopData?.data?.shopplan?.plankey === 'HOTELSANDAPARTMENTS' && <><HotelsApartmentsNavigation layout="vertical"/></>}
+          {myshopData?.data?.shopplan?.plankey === 'WHOLESALEANDRETAILERS' && <><WholesaleRetailNavigation 
+          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
+          layout="vertical" /></>} 
           
-          {myshopData?.data?.shopplan?.plankey === 'FOODVENDORS' && <><FoodMartNavigation layout="vertical"/></>}
+          {myshopData?.data?.shopplan?.plankey === 'MANUFACTURERS' && <><ManufacturersNavigation 
+          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
+          layout="vertical" /></> }
 
-          {myshopData?.data?.shopplan?.plankey === 'LOGISTICS' && <><LogisticsNavigation layout="vertical"/></>}
+
+          {myshopData?.data?.shopplan?.plankey === 'REALESTATES' && <><RealEstateNavigation
+          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
+          layout="vertical"/></>}
+
+          {myshopData?.data?.shopplan?.plankey === 'HOTELSANDAPARTMENTS' && <><HotelsApartmentsNavigation
+          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
+          layout="vertical"/></>}
+          
+          {myshopData?.data?.shopplan?.plankey === 'FOODVENDORS' && <><FoodMartNavigation 
+          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
+          layout="vertical"/></>}
+
+          {myshopData?.data?.shopplan?.plankey === 'LOGISTICS' && <><LogisticsNavigation 
+          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
+          layout="vertical"/></>}
           
 
    
@@ -101,6 +118,7 @@ useEffect(() =>{
           </>
         }
        
+
 
         <div className="flex-0 flex items-center justify-center py-48 opacity-20">
           <img
