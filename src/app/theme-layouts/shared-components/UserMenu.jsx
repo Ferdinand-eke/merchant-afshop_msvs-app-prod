@@ -8,14 +8,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { selectUser } from 'src/app/auth/user/store/userSlice';
 import useAuth from 'src/app/auth/useAuth';
 import { darken } from '@mui/material/styles';
 import { useAppSelector } from 'app/store/hooks';
 import Divider from '@mui/material/Divider';
-// import { useGetShopAccountBalance } from 'app/configs/data/server-calls/shopdetails/useShopDetails';
 
 /**
  * The user menu.
@@ -23,10 +22,10 @@ import Divider from '@mui/material/Divider';
 
 
 function UserMenu() {
-	// const {data:shopAccount, isLoading:accountLoading} = useGetShopAccountBalance()
 	const user = useAppSelector(selectUser);
 	
 	const { signOut } = useAuth();
+	const navigate = useNavigate()
 	const [userMenu, setUserMenu] = useState(null);
 	const userMenuClick = (event) => {
 		setUserMenu(event.currentTarget);
@@ -35,11 +34,12 @@ function UserMenu() {
 		setUserMenu(null);
 	};
 
-	if (!user) {
-		return null;
-	}
+	
 
-	// console.log("Account-BALANCE", shopAccount?.data?.accountBalance)
+	// if (!user) {
+	// 	return null;
+	// }navigate
+
 
 	return (
 		<>
@@ -56,13 +56,12 @@ function UserMenu() {
 						{user.name ? user.name : user.data.displayName}
 					</Typography>
 					<Typography
-						className=" rounded-full font-semibold py-4 px-4  text-11 font-medium capitalize"
+						className=" rounded-full font-semibold py-4 px-4  text-11 capitalize"
 						color="text.secondary"
 					>
 						{user.role?.toString()}
 						{(!user.role || (Array.isArray(user.role) && user.role.length === 0)) && 'Guest'}
-						{/* 100000000000 */}
-						{/* NGN {shopAccount?.data?.accountBalance} */}
+					
 					</Typography>
 				</div>
 
@@ -117,16 +116,7 @@ function UserMenu() {
 							</ListItemIcon>
 							<ListItemText primary="Sign In" />
 						</MenuItem>
-						{/* <MenuItem
-							component={Link}
-							to="/sign-up"
-							role="button"
-						>
-							<ListItemIcon className="min-w-40">
-								<FuseSvgIcon>heroicons-outline:user-add </FuseSvgIcon>
-							</ListItemIcon>
-							<ListItemText primary="Sign up" />
-						</MenuItem> */}
+						
 					</>
 				) : (
 					<>
@@ -180,6 +170,7 @@ function UserMenu() {
 						<Divider variant="middle"  />
 						<MenuItem
 							onClick={() => {
+								navigate("/", { replace: true })
 								signOut();
 							}}
 						>
