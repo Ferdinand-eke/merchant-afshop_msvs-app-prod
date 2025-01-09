@@ -59,6 +59,7 @@ const defaultValues = {
   facebook: "",
   linkedin: "",
 };
+
 /**
  * Form Validation Schema
  */
@@ -98,11 +99,11 @@ function AccountTab() {
     mode: "all",
     resolver: zodResolver(schema),
   });
-  const { isValid, dirtyFields, errors } = formState;
 
+
+  const { isValid, dirtyFields, errors } = formState;
   const { avatar } = watch();
 
-  console.log("shopCover", avatar);
 
   const [loading, setLoading] = useState(false);
   const { data: justMyshop } = useGetJustMyShopDetails();
@@ -119,6 +120,7 @@ function AccountTab() {
   useEffect(() => {
     reset(justMyshop?.data);
   }, [justMyshop?.data, reset]);
+
 
   useEffect(() => {
     if (getValues()?.businessCountry) {

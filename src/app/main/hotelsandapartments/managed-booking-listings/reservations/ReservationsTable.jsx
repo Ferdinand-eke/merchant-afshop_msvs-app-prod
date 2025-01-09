@@ -63,9 +63,8 @@ function ReservationsTable() {
         Cell: ({ row }) => (
           <div className="flex flex-wrap space-x-2">
             <Chip
-              		component={Link}
+              component={Link}
               to={`/bookings/list-reservation/${row.original._id}/manage`}
-			//   list-reservation/:reservationId
               className="text-11 cursor-pointer  bg-orange-300"
               size="small"
               color="default"
@@ -98,11 +97,11 @@ function ReservationsTable() {
         Cell: ({ row }) => (
           <div className="flex flex-wrap space-x-2">
             <Chip
-            //   className="text-11 cursor-pointer"
-			  className={clsx(
-				"text-11 cursor-pointer",
-				`${row?.original?.isCheckIn ? 'bg-green text-white' : 'bg-yellow-500 text-black'}`
-			  )}
+              //   className="text-11 cursor-pointer"
+              className={clsx(
+                "text-11 cursor-pointer",
+                `${row?.original?.isCheckIn ? "bg-green text-white" : "bg-yellow-500 text-black"}`
+              )}
               size="small"
               color="default"
               label={new Date(row?.original?.startDate)?.toDateString()}
@@ -117,11 +116,11 @@ function ReservationsTable() {
         Cell: ({ row }) => (
           <div className="flex flex-wrap space-x-2">
             <Chip
-            //   className="text-11 cursor-pointer"
-			className={clsx(
-				"text-11 cursor-pointer",
-				`${row?.original?.isCheckOut ? 'bg-green text-white' : 'bg-teal-500 text-black'}`
-			  )}
+              //   className="text-11 cursor-pointer"
+              className={clsx(
+                "text-11 cursor-pointer",
+                `${row?.original?.isCheckOut ? "bg-green text-white" : "bg-teal-500 text-black"}`
+              )}
               size="small"
               color="default"
               label={new Date(row?.original?.endDate)?.toDateString()}
@@ -144,7 +143,9 @@ function ReservationsTable() {
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className="flex flex-col flex-1 items-center justify-center h-full"
       >
-        <MerchantErrorPage message={" Error occurred while retriving reservations"}/>
+        <MerchantErrorPage
+          message={" Error occurred while retriving reservations"}
+        />
       </motion.div>
     );
   }

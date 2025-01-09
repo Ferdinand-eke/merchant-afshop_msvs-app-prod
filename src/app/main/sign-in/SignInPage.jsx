@@ -77,28 +77,7 @@ function SignInPage() {
 						terms of compliance.
 					</Alert>
 
-					{/* <Tabs
-						value={_.findIndex(tabs, { id: selectedTabId })}
-						variant="fullWidth"
-						className="w-full mt-24 mb-32"
-						indicatorColor="secondary"
-					>
-						{tabs.map((item) => (
-							<Tab
-								onClick={() => handleSelectTab(item.id)}
-								key={item.id}
-								icon={
-									<img
-										className={item.logoClass}
-										src={item.logo}
-										alt={item.title}
-									/>
-								}
-								className="min-w-0"
-								label={item.title}
-							/>
-						))}
-					</Tabs> */}
+					
 
 					{selectedTabId === 'jwt' && <JwtLoginTab />}
 					{/* {selectedTabId === 'firebase' && <FirebaseSignInTab />} */}

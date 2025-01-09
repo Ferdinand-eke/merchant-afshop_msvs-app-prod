@@ -10,38 +10,27 @@ import Typography from "@mui/material/Typography";
 import { motion } from 'framer-motion';
 import { Link } from "react-router-dom";
 import FuseLoading from "@fuse/core/FuseLoading";
-import {
-  useDeleteECommerceOrdersMutation,
-  useGetECommerceOrdersQuery,
-} from "../ECommerceApi";
 import OrdersStatus from "../order/OrdersStatus";
 import { useShopItemsInOrders } from "app/configs/data/server-calls/orders/useShopOrders";
-// import { useShopItemsInOrders } from 'app/configs/data/server-calls/orders/useShopOrders';
+import MerchantClientErrorPage from 'src/app/main/MerchantClientErrorPage';
+import OrdersCreatedAndPaymentStatus from '../order/OrdersCreatedAndPaymentStatus';
 
 function OrdersTable() {
   const { data: shopOrderItems, isLoading: shopOrderItemsIsLoading, isError } =
     useShopItemsInOrders();
-  console.log("My-SHop-OrderItems", shopOrderItems?.data?.MDbItemsInOrders);
 
-//   const { data: orders, isLoading } = useGetECommerceOrdersQuery();
-//   const [removeOrders] = useDeleteECommerceOrdersMutation();
   
 
   const columns = useMemo(
     () => [
-      // {
-      // 	accessorKey: 'id',
-      // 	header: 'Id',
-      // 	size: 64
-      // },
       {
-        accessorKey: "reference",
+        accessorKey: "_id",
         header: "Reference",
         size: 25,
         Cell: ({ row }) => (
           <Typography
             component={Link}
-            to={`/shoporders-list/orders/${row.original._id}`}
+            to={`/shoporders-list/orders/${row.original._id}/item`}
             className="underline"
             color="secondary"
             role="button"
@@ -55,7 +44,6 @@ function OrdersTable() {
         header: "Product",
         accessorFn: (row) => row.featuredImageId,
         id: "featuredImageId",
-        // header: "",
         enableColumnFilter: false,
         enableColumnDragging: false,
         size: 100,
@@ -85,7 +73,6 @@ function OrdersTable() {
         header: "Name",
         Cell: ({ row }) => (
           <Typography
-            className="underline"
             color="secondary"
             role="button"
           >
@@ -98,12 +85,6 @@ function OrdersTable() {
         accessorFn: (row) => `${row?.orderId?.shippingAddress?.fullName} `,
         header: "Customer",
       },
-    //   {
-    //     id: "price",
-    //     accessorFn: (row) => `$${row?.price}`,
-    //     header: "Unit Price",
-    //     size: 64,
-    //   },
       {
         id: "quantity",
         accessorFn: (row) => `${row?.quantity}`,
@@ -119,65 +100,81 @@ function OrdersTable() {
       },
 
       {
-        id: "payment",
-        accessorFn: (row) => row?.orderId?.paymentMethod,
-        header: "Payment",
-        size: 64,
+        id: 'payment',
+        accessorFn: (row) => <OrdersCreatedAndPaymentStatus 
+        createdAt={row?.createdAt}
+        isPaid={row?.orderId?.isPaid} />,
+        accessorKey: 'isPaid',
+        header: 'Payment Status'
       },
-    //   {
-    //   	id: 'status',
-    //   	accessorFn: (row) => {
-	// 		<>
-			
-	// 		<OrdersStatus name={row?.status[0]?.name} />
-	// 		</>
-	// 	},
-    //   	accessorKey: 'status',
-    //   	header: 'Status'
-    //   },
+
+
       {
-        accessorKey: "date",
+        accessorKey: "createdAt",
+        accessorFn: (row) => <Typography>{new Date(row?.createdAt)?.toDateString()}</Typography>,
         header: "Date",
       },
     ],
     []
   );
 
+  
+
+  const rows = [];
+	shopOrderItems?.data?.shopMerchantItemsInOrders &&
+  shopOrderItems?.data?.shopMerchantItemsInOrders?.forEach((item) => {
+      rows.push({
+        id: item?._id,
+        name: item?.orderId?.shippingAddress?.fullName,
+        featuredImageId:item?.image,
+
+        quantity: item?.quantity,
+        
+        price: item?.price,
+
+        status: item.isPaid,
+        isPaid: item?.orderId?.isPaid,
+        createdAt: item.createdAt,
+      });
+    });
+
+
   if (shopOrderItemsIsLoading) {
     return <FuseLoading />;
   }
 
 
-  // if (!shopOrderItems?.data?.MDbItemsInOrders) {
-	// 	return (
-	// 		<div className="flex flex-1 items-center justify-center h-full">
-	// 			<Typography
-	// 				color="text.secondary"
-	// 				variant="h5"
-	// 			>
-	// 				There are no orders!
-	// 			</Typography>
-	// 		</div>
-	// 	);
-	// }
 
-  if (!shopOrderItems?.data?.MDbItemsInOrders) {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					Error occured retrieving orders!
-				</Typography>
-			
-			</motion.div>
-		);
-	}
+
+  if (isError) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className="flex flex-col flex-1 items-center justify-center h-full"
+      >
+        <MerchantClientErrorPage
+          message={"	Error occured retrieving orders!"}
+        />
+      </motion.div>
+    );
+  }
+
+  if (!shopOrderItems?.data?.shopMerchantItemsInOrders) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className="flex flex-col flex-1 items-center justify-center h-full"
+      >
+        <Typography color="text.secondary" variant="h5">
+          No orders found!
+        </Typography>
+      </motion.div>
+    );
+  }
+
+ 
 
   return (
     <Paper
@@ -198,19 +195,14 @@ function OrdersTable() {
             pageSize: 20,
           },
         }}
-        // data={orders}
-        data={shopOrderItems?.data?.MDbItemsInOrders}
+        data={shopOrderItems?.data?.shopMerchantItemsInOrders}
         columns={columns}
+        rows={rows}
         renderRowActionMenuItems={({ closeMenu, row, table }) => [
           <MenuItem
             key={0}
-            // onClick={() => {
-            // 	removeOrders([row.original.id]);
-            // 	closeMenu();
-            // 	table.resetRowSelection();
-            // }}
             component={Link}
-            to={`/shoporders-list/orders/${row.original._id}`}
+            to={`/shoporders-list/orders/${row.original._id}/item`}
           >
             <ListItemIcon>
               <FuseSvgIcon>heroicons-outline:trash</FuseSvgIcon>

@@ -1,6 +1,6 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import _ from "@lodash";
 import TextField from "@mui/material/TextField";
@@ -10,6 +10,8 @@ import Checkbox from "@mui/material/Checkbox";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import useJwtAuth from "../useJwtAuth";
+import { IconButton, InputAdornment } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 /**
  * Form Validation Schema
  */
@@ -28,9 +30,6 @@ shopemail: z
     .nonempty("Please enter your password."),
 });
 const defaultValues = {
-  // email: '',
-  // password: '',
-  // remember: true
 
   shopemail: "",
   password: "",
@@ -38,38 +37,35 @@ const defaultValues = {
 };
 
 function JwtSignInForm() {
-  const { signIn, isLoading } = useJwtAuth();
+  const { signIn, isLoginLoading } = useJwtAuth();
   const { control, formState, handleSubmit, setValue, setError } = useForm({
     mode: "onChange",
     defaultValues,
-    resolver: zodResolver(schema),
+    // resolver: zodResolver(schema),
   });
   const { isValid, dirtyFields, errors } = formState;
+  const [showPassword, setShowPassword] = useState(false) 
  
 
   function onSubmit(formData) {
     console.log("Login-Values", formData);
     const { 
-		// email,
 		shopemail,
 		password } = formData;
     signIn({
-      // email,
-      // password
       shopemail,
       password,
     }).catch((error) => {
       console.log("FormJSXError", error);
 
-      // const errorData = error.response.data;
-      // errorData.forEach((err) => {
-      // 	setError(err.type, {
-      // 		type: 'manual',
-      // 		message: err.message
-      // 	});
-      // });
+   
     });
   }
+
+  const toggleShowPassword = () =>{
+		setShowPassword(!showPassword)
+	}
+
   return (
     <form
       name="loginForm"
@@ -77,25 +73,6 @@ function JwtSignInForm() {
       className="mt-32 flex w-full flex-col justify-center"
       onSubmit={handleSubmit(onSubmit)}
     >
-      {/* <Controller
-				// name="email"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mb-24"
-						label="Email"
-						autoFocus
-						type="email"
-						error={!!errors.email}
-						helperText={errors?.email?.message}
-						variant="outlined"
-						required
-						fullWidth
-					/>
-				)}
-			/> */}
-
       <Controller
         name="shopemail"
         control={control}
@@ -123,12 +100,22 @@ function JwtSignInForm() {
             {...field}
             className="mb-24"
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             error={!!errors.password}
             helperText={errors?.password?.message}
             variant="outlined"
             required
             fullWidth
+            InputProps={{
+							endAdornment: <InputAdornment position="end">
+								<IconButton
+								onClick={() => toggleShowPassword()}
+								>
+
+									{showPassword ? <VisibilityOff/> : <Visibility/>}
+								</IconButton>
+								</InputAdornment>
+						}}
           />
         )}
       />
@@ -165,13 +152,12 @@ function JwtSignInForm() {
         color="secondary"
         className=" mt-16 w-full"
         aria-label="Sign in"
-        //|| isLoading
-        disabled={_.isEmpty(dirtyFields) || !isValid}
+        disabled={_.isEmpty(dirtyFields) || !isValid || isLoginLoading }
         type="submit"
         size="large"
       >
-        {/* {isLoading ? "processing..." : "Sign in"} */}
-        Sign in
+        {isLoginLoading ? "processing..." : "Sign in"}
+        {/* Sign in */}
       </Button>
     </form>
   );

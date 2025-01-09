@@ -20,6 +20,7 @@ const defaultAuthContext = {
   isLoading: false,
   user: null,
   updateUser: null,
+  isLoginLoading: false,
   signIn: null,
   signUp: null,
   signOut: null,
@@ -131,6 +132,7 @@ function JwtAuthProvider(props) {
 
   const [user, setUser] = useState(getUserCredentialsStorage());
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoginLoading, setLoginIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(
     getIsAuthenticatedStatus()
   );
@@ -301,32 +303,10 @@ function JwtAuthProvider(props) {
     //  handleFailure,
     handleSignInFailure
   ) => {
-    // const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     try {
-      // const response = await axios.post(url, data);
-
-      // if (response?.data?.data && response?.data?._nnip_shop_ASHP_ALOG) {
-      //   const transFormedUser = {
-      //     id: response?.data?.data?._id,
-      //     name: response?.data?.data?.shopname,
-      //     email: response?.data?.data?.shopemail,
-      //     role: "merchant",
-      //     shopplan: response?.data?.user?.shopplan,
-        
-      //   };
-
-   
-      //   const accessToken = response?.data?._nnip_shop_ASHP_ALOG;
-      //   handleSignInSuccess(transFormedUser, accessToken);
-      //   return transFormedUser;
-      // }
-
-      // if (response.data.error) {
-      //   toast.error(`${response?.data?.error?.message}`);
-      //   return;
-      // }
-
-      adminLogIn.mutate(data)
+      setLoginIsLoading(true)
+			adminLogIn.mutate(data)
+			setLoginIsLoading(false)
       
 
     } catch (error) {
@@ -337,11 +317,9 @@ function JwtAuthProvider(props) {
           ? error?.response?.data?.message
           : error?.message
       );
-
-      // return
-      //handleSignInFailure
-      // handleFailure(axiosError);
+     
       handleSignInFailure(axiosError);
+      setLoginIsLoading(false);
       return axiosError;
     }
   };

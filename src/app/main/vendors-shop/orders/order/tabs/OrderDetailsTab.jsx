@@ -54,11 +54,6 @@ function Marker(props) {
 function OrderDetailsTab({ order, isError }) {
   const routeParams = useParams();
   const { orderId } = routeParams;
-  // const { data: order, isError } = useGetECommerceOrderQuery(orderId, {
-  // 	skip: !orderId
-  // });
-
-//   console.log("OrderInDetails", order);
   const [map, setMap] = useState("shipping");
 
   if (!isError && !order) {
@@ -91,9 +86,6 @@ function OrderDetailsTab({ order, isError }) {
                   <th>
                     <Typography className="font-semibold">Phone</Typography>
                   </th>
-                  {/* <th>
-										<Typography className="font-semibold">Company</Typography>
-									</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -120,9 +112,6 @@ function OrderDetailsTab({ order, isError }) {
                       {order?.orderId?.shippingAddress?.phone}
                     </Typography>
                   </td>
-                  {/* <td>
-										<span className="truncate">{order?.customer?.company}</span>
-									</td> */}
                 </tr>
               </tbody>
             </table>
@@ -184,7 +173,7 @@ function OrderDetailsTab({ order, isError }) {
               </AccordionSummary>
               <AccordionDetails className="flex flex-col md:flex-row -mx-8">
                 <Typography className="w-full md:max-w-256 mb-16 md:mb-0 mx-8 text-16">
-                  {/* {order?.customer?.invoiceAddress.address} */}
+             
                   {order?.orderId?.shippingAddress?.address}
                 </Typography>
                 <div className="w-full h-320 rounded-16 overflow-hidden mx-8">
@@ -257,10 +246,10 @@ function OrderDetailsTab({ order, isError }) {
                     <span className="truncate">{order?.orderId?.shippingfee || 2000}</span>
                   </td>
                   <td>
-                    <span className="truncate">{order?.orderId?.shippedAt}</span>
+                    <span className="truncate">{new Date(order?.orderId?.shippedAt)?.toDateString()} </span>
                   </td>
                 </tr>
-              {/* ))} */}
+
             </tbody>
           </table>
         </div>
@@ -297,14 +286,6 @@ function OrderDetailsTab({ order, isError }) {
                 </TableCell>
                 <TableCell>{order?.orderId?.createdAt}</TableCell>
               </TableRow>
-              {/* {order?.status?.map((status) => (
-								<TableRow key={status?.id}>
-									<TableCell>
-										<OrdersStatus name={status?.name} />
-									</TableCell>
-									<TableCell>{status?.date}</TableCell>
-								</TableRow>
-							))} */}
 
               {order?.orderId?.isPaid && (
                 <>

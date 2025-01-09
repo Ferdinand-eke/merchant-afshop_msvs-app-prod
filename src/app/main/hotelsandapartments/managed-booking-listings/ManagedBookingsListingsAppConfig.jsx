@@ -43,6 +43,7 @@ const ManagedBookingsListingsAppConfig = {
 					path: 'list-reservations',
 					element: <ReservationsOfBookedProperties />
 				},
+				
 				{
 					path: 'list-reservation/:reservationId/manage',
 					element: <ReservationOrder />
