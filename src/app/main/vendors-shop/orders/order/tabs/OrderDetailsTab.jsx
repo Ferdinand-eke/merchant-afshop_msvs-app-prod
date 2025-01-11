@@ -21,6 +21,7 @@ import OrdersCreatedAndPaymentStatus from "../OrdersCreatedAndPaymentStatus";
 import OrdersShipmentStatus from "../OrdersShipmentStatus";
 import OrdersArrivalStatus from "../OrdersArrivalStatus";
 import OrdersDeliveryStatus from "../OrdersDeliveryStatus";
+import { formatCurrency } from "../../../pos/PosUtils";
 
 const mapKey = import.meta.env.VITE_MAP_KEY;
 
@@ -176,8 +177,8 @@ function OrderDetailsTab({ order, isError }) {
              
                   {order?.orderId?.shippingAddress?.address}
                 </Typography>
-                <div className="w-full h-320 rounded-16 overflow-hidden mx-8">
-                  {/* <GoogleMap
+                {/* <div className="w-full h-320 rounded-16 overflow-hidden mx-8">
+                  <GoogleMap
 										bootstrapURLKeys={{
 											key: mapKey
 										}}
@@ -192,8 +193,8 @@ function OrderDetailsTab({ order, isError }) {
 											lat={order?.customer?.invoiceAddress.lat}
 											lng={order?.customer?.invoiceAddress.lng}
 										/>
-									</GoogleMap> */}
-                </div>
+									</GoogleMap>
+                </div> */}
               </AccordionDetails>
             </Accordion>
           </div>
@@ -243,7 +244,7 @@ function OrderDetailsTab({ order, isError }) {
                     <span className="truncate">{order?.orderId?.shipmentWeight}</span>
                   </td>
                   <td>
-                    <span className="truncate">{order?.orderId?.shippingfee || 2000}</span>
+                    <span className="truncate">NGN {formatCurrency(order?.orderId?.shippingfee || 2000)}</span>
                   </td>
                   <td>
                     <span className="truncate">{new Date(order?.orderId?.shippedAt)?.toDateString()} </span>
@@ -284,7 +285,10 @@ function OrderDetailsTab({ order, isError }) {
                     isPaid={order?.orderId?.isPaid}
                   />
                 </TableCell>
-                <TableCell>{order?.orderId?.createdAt}</TableCell>
+                <TableCell>
+                  {/* {order?.orderId?.createdAt} */}
+                  {new Date(order?.orderId?.createdAt)?.toDateString()}
+                  </TableCell>
               </TableRow>
 
               {order?.orderId?.isPaid && (
@@ -293,7 +297,10 @@ function OrderDetailsTab({ order, isError }) {
                     <TableCell>
                       <OrdersPackedStatus isPacked={order?.orderId?.isPacked} />
                     </TableCell>
-                    <TableCell>{order?.orderId?.packedAt}</TableCell>
+                    <TableCell>
+                      {/* {order?.orderId?.packedAt} */}
+                      {new Date(order?.orderId?.packedAt)?.toDateString()}
+                      </TableCell>
                   </TableRow>
 
                   <TableRow>
@@ -302,7 +309,10 @@ function OrderDetailsTab({ order, isError }) {
                         isShipped={order?.orderId?.isShipped}
                       />
                     </TableCell>
-                    <TableCell>{order?.orderId?.shippedAt}</TableCell>
+                    <TableCell>
+                    {new Date(order?.orderId?.shippedAt)?.toDateString()}
+                      {/* {order?.orderId?.shippedAt} */}
+                      </TableCell>
                   </TableRow>
 
                   <TableRow>
@@ -313,7 +323,10 @@ function OrderDetailsTab({ order, isError }) {
                         }
                       />
                     </TableCell>
-                    <TableCell>{order?.orderId?.arrivedWarehouseAt}</TableCell>
+                    <TableCell>
+                    {new Date(order?.orderId?.arrivedWarehouseAt)?.toDateString()}
+                      {/* {order?.orderId?.arrivedWarehouseAt} */}
+                      </TableCell>
                   </TableRow>
 
                   <TableRow>
@@ -322,7 +335,7 @@ function OrderDetailsTab({ order, isError }) {
                         isDelivered={order?.orderId?.isDelivered}
                       />
                     </TableCell>
-                    <TableCell>{order?.orderId?.deliveredAt}</TableCell>
+                    <TableCell>{new Date(order?.orderId?.deliveredAt)?.toDateString()}</TableCell>
                   </TableRow>
                 </>
               )}
@@ -383,13 +396,13 @@ function OrderDetailsTab({ order, isError }) {
                   <span className="truncate">{order?.quantity}</span>
                 </td>
                 <td>
-                  <span className="truncate">{order?.price}</span>
+                  <span className="truncate">NGN {formatCurrency(order?.price)}</span>
                 </td>
 				<td>
-                  <span className="truncate">{order?.price * order?.quantity}</span>
+                  <span className="truncate">NGN {formatCurrency(order?.price * order?.quantity)}</span>
                 </td>
                 <td>
-                  <span className="truncate">{order?.createdAt}</span>
+                  <span className="truncate">{new Date(order?.createdAt)?.toDateString()}</span>
                 </td>
               </tr>
             </tbody>

@@ -15,7 +15,7 @@ import {
 import { useCashoutShopOrderItemsEarnings } from "app/configs/data/server-calls/orders/useShopOrders";
 import { Button } from "@mui/material";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 import { useThemeMediaQuery } from "@fuse/hooks";
 import { toast } from "react-toastify";
 
@@ -52,8 +52,8 @@ const Root = styled("div")(({ theme }) => ({
  * The invoice tab.
  */
 function InvoiceTab(props) {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-  
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
+
   const {
     mutate: cashingOutOrderItemSales,
     isLoading: cashingOutLoading,
@@ -63,7 +63,6 @@ function InvoiceTab(props) {
     toast.success(cashingOutError);
   }
 
-  
   /***Calculations for earnings starts */
   const { order, myshopData } = props;
   const shopEarning = calculateShopEarnings(
@@ -126,22 +125,23 @@ function InvoiceTab(props) {
                     {order?.orderId?.shippingAddress?.address}
                   </Typography>
                 )}
-                {order?.orderId?.shippingAddress?.phone && (
+                {/* {order?.orderId?.shippingAddress?.phone && (
                   <Typography color="text.secondary">
                     {order?.orderId?.shippingAddress?.phone}
                   </Typography>
-                )}
-                {order?.orderId?.shippingAddress?.prefContact && (
+                )} */}
+                {/* {order?.orderId?.shippingAddress?.prefContact && (
                   <Typography color="text.secondary">
                     {order?.orderId?.shippingAddress?.prefContact}
                   </Typography>
-                )}
+                )} */}
               </div>
 
               <div className="seller flex items-center p-16">
                 <img
                   className="w-80"
-                  src="assets/images/afslogo/afLogo.svg"
+                  // src="assets/images/afslogo/afLogo.svg"
+                  src="assets/images/afslogo/afslogo.png"
                   alt="logo"
                 />
 
@@ -313,66 +313,68 @@ function InvoiceTab(props) {
                   </TableRow>
                 </TableBody>
               </Table>
-
-              
             </div>
 
-            <div className="mt-96">
+            {order?.orderId?.isDelivered && order?.orderId?.isPaid && <>
+              <div className="mt-96">
               <Typography className="mb-24 print:mb-12" variant="body1">
-                 Thank you for your business.
+                Thank you for your business.
               </Typography>
 
               <div className="flex">
                 <div className="shrink-0">
                   <img
                     className="w-80"
-                    src="assets/images/afslogo/afLogo.svg"
+                    src="assets/images/afslogo/afslogo.png"
                     alt="logo"
                   />
                 </div>
-
                 <Typography
                   className="font-normal mb-64 px-24"
                   variant="caption"
                   color="text.secondary"
                 >
-                  In condimentum malesuada efficitur. Mauris volutpat placerat
-                  auctor. Ut ac congue dolor. Quisque scelerisque lacus sed
-                  feugiat fermentum. Cras aliquet facilisis pellentesque. Nunc
-                  hendrerit quam at leo commodo, a suscipit tellus dapibus.
-                  Etiam at felis volutpat est mollis lacinia. Mauris placerat
-                  sem sit amet velit mollis, in porttitor ex finibus. Proin eu
-                  nibh id libero tincidunt lacinia et eget eros.
+                  In honor of the above transaction with referrence{" "}
+                  {order?.orderId?._id}, We at Africanshops consider this
+                  Transaction as haven fulfilled the purpose for which it was
+                  intended and haven satisfied our consumers, duly consent the
+                  repatriation of funds to this merchant. Warmest Regards!..
                 </Typography>
               </div>
+             
             </div>
+            </>}
+            
 
-			{order?.orderId?.isDelivered && order?.orderId?.isPaid && (
-				<>
-				<div className="flex flex-1 items-center justify-end space-x-8">
-				<motion.div
-					className="flex flex-grow-0"
-					initial={{ opacity: 0, x: 20 }}
-					animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-				>
-					<Button
-						className=""
-						onClick={() => cashingOutOrderItemSales(order?._id)}
-						disabled={cashingOutLoading}
-						variant="contained"
-						color="secondary"
-						fullWidth
-						size={isMobile ? 'small' : 'medium'}
-					>
-						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-						<span className="mx-4 sm:mx-8"> {cashingOutLoading ? "Processing..." : "Cash Out Order"}</span>
-					</Button>
-				</motion.div>
-			</div>
-			
-
-				</>
-              )}
+            {order?.orderId?.isDelivered && order?.orderId?.isPaid && (
+              <>
+                <div className="flex flex-1 items-center justify-end space-x-8">
+                  <motion.div
+                    className="flex flex-grow-0"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+                  >
+                    <Button
+                      className=""
+                      onClick={() => cashingOutOrderItemSales(order?._id)}
+                      disabled={cashingOutLoading}
+                      variant="contained"
+                      color="secondary"
+                      fullWidth
+                      size={isMobile ? "small" : "medium"}
+                    >
+                      <FuseSvgIcon size={20}>
+                        heroicons-outline:plus
+                      </FuseSvgIcon>
+                      <span className="mx-4 sm:mx-8">
+                        {" "}
+                        {cashingOutLoading ? "Processing..." : "Cash Out Order"}
+                      </span>
+                    </Button>
+                  </motion.div>
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
       )}
