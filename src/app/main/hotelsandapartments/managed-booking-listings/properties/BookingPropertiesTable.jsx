@@ -15,9 +15,10 @@ import useMyShopBookingsProperties from 'app/configs/data/server-calls/hotelsand
 function BookingPropertiesTable() {
 	
 
-	const {data:listingData, isLoading:listingIsLoading} = useMyShopBookingsProperties()
-	// console.log("BOOKING LISTING_DATA", listingData)
+	const {data:listingData, isLoading:listingIsLoading, isError} = useMyShopBookingsProperties()
+
 	
+
 	const columns = useMemo(
 		() => [
 			// {
@@ -61,40 +62,14 @@ function BookingPropertiesTable() {
 					</Typography>
 				)
 			},
-			// {
-			// 	accessorKey: 'categories',
-			// 	header: 'Category',
-			// 	accessorFn: (row) => (
-			// 		<div className="flex flex-wrap space-x-2">
-			// 			{row.categories.map((item) => (
-			// 				<Chip
-			// 					key={item}
-			// 					className="text-11"
-			// 					size="small"
-			// 					color="default"
-			// 					label={item}
-			// 				/>
-			// 			))}
-			// 		</div>
-			// 	)
-			// },
+			
 			{
 				accessorKey: 'categories',
 				header: 'Category',
 				accessorFn: (row) => (
 					<div className="flex flex-wrap space-x-2">
-						{/* {row.categories.map((item) => (
-							<Chip
-								key={item}
-								className="text-11"
-								size="small"
-								color="default"
-								label={item}
-							/>
-						))}
-						 */}
+					
 						 <Chip
-								// key={item}
 								className="text-11"
 								size="small"
 								color="default"
@@ -102,6 +77,24 @@ function BookingPropertiesTable() {
 							/>
 					</div>
 				)
+			},
+			{
+				accessorKey: 'management',
+				header: 'Management Console',
+				Cell: ({ row }) => (
+					<div className="flex flex-wrap space-x-2">
+					
+						 <Chip
+								component={Link}
+						to={`/bookings/managed-listings/${row.original._id}/manage`}
+								className="text-11 cursor-pointer"
+								size="small"
+								color="default"
+								label="Manage this listing"
+							/>
+					</div>
+				)
+
 			},
 			{
 				accessorKey: 'priceTaxIncl',
@@ -114,14 +107,7 @@ function BookingPropertiesTable() {
 				accessorFn: (row) => (
 					<div className="flex items-center space-x-8">
 						<span>{row?.roomCount} rooms</span>
-						{/* <i
-							className={clsx(
-								'inline-block w-8 h-8 rounded',
-								row.quantity <= 5 && 'bg-red',
-								row.quantity > 5 && row.quantity <= 25 && 'bg-orange',
-								row.quantity > 25 && 'bg-green'
-							)}
-						/> */}
+				
 					</div>
 				)
 			},
@@ -149,25 +135,7 @@ function BookingPropertiesTable() {
 				)
 			},
 
-			{
-				accessorKey: 'management',
-				header: 'Management Console',
-				Cell: ({ row }) => (
-					<div className="flex flex-wrap space-x-2">
-					
-						 <Chip
-								// key={item}
-								component={Link}
-						to={`/bookings/managed-listings/${row.original._id}/manage`}
-								className="text-11 cursor-pointer"
-								size="small"
-								color="default"
-								label="Manage this listing"
-							/>
-					</div>
-				)
-
-			},
+			
 		],
 		[]
 	);
@@ -176,7 +144,7 @@ function BookingPropertiesTable() {
 		return <FuseLoading />;
 	}
 	
-//MBookingProperty
+
 	if (!listingData?.data?.data) {
 		return (
 			<div className="flex flex-1 items-center justify-center h-full">

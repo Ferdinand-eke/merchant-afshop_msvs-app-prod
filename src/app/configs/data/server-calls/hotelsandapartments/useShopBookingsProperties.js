@@ -17,7 +17,7 @@ import {
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 
-//get all Specific user shop-estate property
+//get all Specific user shop-estate property   /myshop/merchant-homes/get-my-reservations
 export default function useMyShopBookingsProperties() {
   return useQuery(['__myshop_bookingsproperties'], getShopBookingsProperties);
 }

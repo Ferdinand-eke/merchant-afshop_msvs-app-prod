@@ -43,13 +43,7 @@ const bookingsNavigationConfig = [
 		icon: 'heroicons-outline:home',
 		translate: 'BOOKINGSPROPERTIES',
 		children: [
-			// {
-			// 	id: 'properties.list',
-			// 	title: 'Properties',
-			// 	type: 'item',
-			// 	icon: 'heroicons-outline:clipboard-check',
-			// 	url: '/properties/listings'
-			// },
+		
 
 			{
 				id: 'properties.managedbooklist',
@@ -58,17 +52,44 @@ const bookingsNavigationConfig = [
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/bookings/managed-listings'
 			},
-			// {
-			// 	id: 'properties.manageduserlist',
-			// 	title: 'Managed USER Properties',
-			// 	type: 'item',
-			// 	icon: 'heroicons-outline:clipboard-check',
-			// 	url: '/userlistings'
-			// },
+
+			{
+				id: 'properties.reservationsList',
+				title: 'Merchant Reservations',
+				type: 'item',
+				icon: 'heroicons-outline:clipboard-check',
+				url: '/bookings/list-reservations'
+			},
+
+		
+
 			
 			
 		]
 	},
+
+	// {
+	// 	id: 'reservations',
+	// 	title: 'Manage Property reservations',
+	// 	subtitle: 'Bookings Properties management helpers',
+	// 	type: 'group',
+	// 	icon: 'heroicons-outline:home',
+	// 	translate: 'RESERVATIONS',
+	// 	children: [
+		
+
+
+	// 		{
+	// 			id: 'properties.reservations',
+	// 			title: 'Merchant Reservations',
+	// 			type: 'item',
+	// 			icon: 'heroicons-outline:clipboard-check',
+	// 			url: '/bookings/reservations'
+	// 		},
+		
+			
+	// 	]
+	// },
 
 	
 

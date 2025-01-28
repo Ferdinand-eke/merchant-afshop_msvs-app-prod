@@ -1,6 +1,6 @@
-// const baseUrl = 'http://localhost:8000'
+const baseUrl = 'http://localhost:8000'
 
-const baseUrl = 'https://coral-app-n8ox9.ondigitalocean.app' //Africanshops
+// const baseUrl = 'https://coral-app-n8ox9.ondigitalocean.app' //Africanshops
 
 
 

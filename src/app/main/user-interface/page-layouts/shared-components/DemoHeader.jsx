@@ -11,11 +11,11 @@ function DemoHeader(props) {
 	const { leftSidebarToggle, rightSidebarToggle } = props;
 
 	function handleClick() {}
-
+	// leftSidebarToggle
 	return (
 		<div className="flex flex-col p-24 w-full sm:py-32 sm:px-40">
 			<div>
-				<Breadcrumbs
+				{/* <Breadcrumbs
 					separator={<FuseSvgIcon size={20}>heroicons-solid:chevron-right</FuseSvgIcon>}
 					aria-label="breadcrumb"
 				>
@@ -44,7 +44,7 @@ function DemoHeader(props) {
 					>
 						Overview
 					</Typography>
-				</Breadcrumbs>
+				</Breadcrumbs> */}
 
 				<div className="flex sm:hidden" />
 			</div>

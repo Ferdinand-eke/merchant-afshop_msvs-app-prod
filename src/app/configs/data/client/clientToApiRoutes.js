@@ -7,9 +7,9 @@ import { getAuthAdminTokens, resetSessionForShopUsers } from 'app/configs/utils/
 import { getAdminAccessToken,  } from '../utils/opsUtils'
 import { toast } from 'react-toastify'
 
-// const API_BASE_URL = `http://localhost:8000`
+const API_BASE_URL = `http://localhost:8000`
 
-const API_BASE_URL = 'https://coral-app-n8ox9.ondigitalocean.app'
+// const API_BASE_URL = 'https://coral-app-n8ox9.ondigitalocean.app'
 
 
 /***================================================================================================================= */
@@ -336,7 +336,6 @@ export const MyShopCashOutOrderByOrderIdShopId = (id) =>
   AuthApi().post(`/api/myshop/cashout-order/${id}`);
 
 export const MyShopCashOutOrderItemsByOrderItemsIdShopId = (id) => {
-  console.log("ItemToCashout ID", id)
   return AuthApi().post(`/api/myshop/cashout-order-items/${id}`);
 }
 
@@ -418,10 +417,8 @@ export const deleteShopEstateProperty = (id) =>
 // {===============================shop estate property handling starts=======================================}
 export const getShopBookingsProperties = () => AuthApi().get('/api/myshop/get-my-booking-properties'); //newDashboard
 
-
 export const storeShopBookingsProperty = (formData) =>
   AuthApi().post('/api/myshop/create-booking-property', formData);
-
 
 export const getMyShopBookingsPropertyBySlug = (id) =>
   AuthApi().get(`/api/myshop-bookingproperty/${id}`);
@@ -432,10 +429,17 @@ export const updateMyShopBookingsPropertyById = (productFormData ) =>
     productFormData
   );
 
-
 export const deleteShopBookingsProperty = (id) =>
   AuthApi().delete(`/myshop/delete-bookingproperty/${id}`);
-// {===============================shop estate handling ends   =======================================}
+
+
+  /****Reservations */ 
+  export const getShopBookingsReservationsApi = () => AuthApi().get('/api/myshop/merchant-homes/get-my-reservations'); //newDashboard
+  export const getSingleMerchantReservationApi = (reservationId) => AuthApi().get(`/api/myshop/merchant-homes/get-my-reservations/${reservationId}`);
+  export const merchantCheckInGuestReservations = (id) => AuthApi().put(`/api/myshop/merchant-homes/checkin-guest-reservation/${id}`);
+  export const merchantCheckOutGuestReservations = (id) => AuthApi().put(`/api/myshop/merchant-homes/checkout-guest-reservation/${id}`);
+
+  // {===============================shop b=homes handling ends   =======================================}
 /***
  * #############################################################################################
  * HANDLE SHOP HOMES, HOTELS and APARTMENT BOOKINGS ENDS HERE

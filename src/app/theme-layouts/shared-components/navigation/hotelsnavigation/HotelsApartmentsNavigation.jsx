@@ -22,6 +22,8 @@ function HotelsApartmentsNavigation(props) {
 		}
 
 
+		
+		
 		return (
 			<FuseNavigation
 				className={clsx('navigation flex-1', className)}
