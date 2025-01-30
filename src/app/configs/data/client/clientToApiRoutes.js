@@ -438,7 +438,9 @@ export const deleteShopBookingsProperty = (id) =>
   export const getSingleMerchantReservationApi = (reservationId) => AuthApi().get(`/api/myshop/merchant-homes/get-my-reservations/${reservationId}`);
   export const merchantCheckInGuestReservations = (id) => AuthApi().put(`/api/myshop/merchant-homes/checkin-guest-reservation/${id}`);
   export const merchantCheckOutGuestReservations = (id) => AuthApi().put(`/api/myshop/merchant-homes/checkout-guest-reservation/${id}`);
-
+  export const merchantCashOutReservationEarning = (id) => {
+    return AuthApi().post(`/api/myshop/merchant-homes/cashout-reservation-erning/${id}`);
+  }
   // {===============================shop b=homes handling ends   =======================================}
 /***
  * #############################################################################################

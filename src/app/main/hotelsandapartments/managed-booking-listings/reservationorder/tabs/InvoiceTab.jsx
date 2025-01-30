@@ -12,13 +12,14 @@ import {
   calculateCompanyEarnings,
   calculateShopEarnings,
 } from "app/configs/Calculus";
-import { useCashoutShopOrderItemsEarnings } from "app/configs/data/server-calls/orders/useShopOrders";
+// import { useCashoutShopOrderItemsEarnings } from "app/configs/data/server-calls/orders/useShopOrders";
 import { Button } from "@mui/material";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import { motion } from 'framer-motion';
 import { useThemeMediaQuery } from "@fuse/hooks";
 import { toast } from "react-toastify";
 import { formatCurrency } from "src/app/main/vendors-shop/pos/PosUtils";
+import { useCashoutMerchantReservationEarnings } from "app/configs/data/server-calls/hotelsandapartments/useShopBookingsReservations";
 
 const Root = styled("div")(({ theme }) => ({
   "& table ": {
@@ -54,17 +55,32 @@ const Root = styled("div")(({ theme }) => ({
  */
 function InvoiceTab(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const { order, myshopData } = props;
+
   const {
     mutate: cashingOutOrderItemSales,
     isLoading: cashingOutLoading,
     error: cashingOutError,
-  } = useCashoutShopOrderItemsEarnings();
+  } = useCashoutMerchantReservationEarnings();
+
+
   if (cashingOutError) {
     toast.success(cashingOutError);
   }
 
+  const handleEarningsCashOut = async () => {
+    if (window.confirm("Cash out ernings?")) {
+      try {
+        // checkOutGuestReservation.mutate(reservation?._id);
+        cashingOutOrderItemSales(order?._id)
+      } catch (error) {
+        toast.error(error);
+      }
+    }
+  };
+
   /***Calculations for earnings starts */
-  const { order, myshopData } = props;
+  
   const shopEarning = calculateShopEarnings(
     order?.totalPrice,
     myshopData?.shopplan?.percetageCommissionChargeConversion
@@ -84,7 +100,7 @@ function InvoiceTab(props) {
 
   // console.log("SHOP_DATA", myshopData)
 
-  // console.log("Reservation_DATA", order)
+  // console.log("Reservation_DATA", order) /myshop/merchant-homes/cashout-reservation-erning/:reservationId
 
 
   return (
@@ -426,7 +442,7 @@ function InvoiceTab(props) {
 				>
 					<Button
 						className=""
-						// onClick={() => cashingOutOrderItemSales(order?._id)}
+						onClick={() =>handleEarningsCashOut()}
 						disabled={cashingOutLoading}
 						variant="contained"
 						color="secondary"

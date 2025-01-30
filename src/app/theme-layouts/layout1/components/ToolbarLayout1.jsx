@@ -33,7 +33,7 @@ function ToolbarLayout1(props) {
   const navbar = useAppSelector(selectFuseNavbar);
   const toolbarTheme = useAppSelector(selectToolbarTheme);
   const user = useAppSelector(selectUser);
-  console.log("ToolbarUser", user)
+
   return (
     <ThemeProvider theme={toolbarTheme}>
       <AppBar

@@ -24,16 +24,8 @@ import MerchantErrorPage from '../../MerchantErrorPage';
  */
 function ReservationOrder() {
 	const routeParams = useParams();
-	// const { orderId } = routeParams;
 	const { reservationId } = routeParams;
 
-	// const {
-	// 	data: order,
-	// 	isLoading,
-	// 	isError
-	// } = useGetECommerceOrderQuery(orderId, {
-	// 	skip: !orderId
-	// });
 
 	const [loading, setLoading] = useState(false);
 	const [myshopData, setMyshopData] = useState({});
@@ -42,7 +34,6 @@ function ReservationOrder() {
 	const {data:reservationItem, isLoading:reservationIsLoading, isError:reservationIsError} = useFindMerchantSingleReservation(reservationId, {
 		skip: !reservationId
 	});
-	// console.log("single_RESERVATION", reservationItem?.data)
 	
 	useEffect(() => {
 	  if (reservationId) {
@@ -65,7 +56,6 @@ function ReservationOrder() {
 	  }
 	}
 
-	// console.log("SingleReservation", reservationItem?.data?.data)
 
 	const theme = useTheme();
 	const isMobile = useThemeMediaQuery((_theme) => _theme.breakpoints.down('lg'));

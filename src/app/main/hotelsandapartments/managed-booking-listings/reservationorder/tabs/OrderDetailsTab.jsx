@@ -68,7 +68,7 @@ function OrderDetailsTab({ reservation, isError }) {
   const checkInGuest = useCheckInGuest();
   const checkOutGuestReservation = useCheckOutGuest();
 
-  console.log("ENV_DATA", mapKey)
+  // console.log("ENV_DATA", mapKey)
 
   const handleCheckIn = async () => {
     if (window.confirm("Check in reservation?")) {
@@ -89,6 +89,7 @@ function OrderDetailsTab({ reservation, isError }) {
       }
     }
   };
+
 
   if (!isError && !reservation) {
     return null;
@@ -259,7 +260,6 @@ function OrderDetailsTab({ reservation, isError }) {
                             "bg-green text-white"
                           )}
                         >
-                          {/* {reservation?.checkedInAt} */}
                           {new Date(reservation?.checkedInAt)?.toDateString()}
                         </div>
                       ) : (
@@ -305,7 +305,6 @@ function OrderDetailsTab({ reservation, isError }) {
                               "bg-green text-white"
                             )}
                           >
-                            {/* {reservation?.checkedOutAt} */}
                             {new Date(
                               reservation?.checkedOutAt
                             )?.toDateString()}
@@ -327,25 +326,6 @@ function OrderDetailsTab({ reservation, isError }) {
                     </TableRow>
                   )}
 
-                  {/* <TableRow>
-                    <TableCell>
-                      <OrdersArrivalStatus
-                        hasArrivedWarehouse={
-                          reservation?.orderId?.hasArrivedWarehouse
-                        }
-                      />
-                    </TableCell>
-                    <TableCell>{reservation?.orderId?.arrivedWarehouseAt}</TableCell>
-                  </TableRow> */}
-
-                  {/* <TableRow>
-                    <TableCell>
-                      <OrdersDeliveryStatus
-                        isDelivered={reservation?.orderId?.isDelivered}
-                      />
-                    </TableCell>
-                    <TableCell>{reservation?.orderId?.deliveredAt}</TableCell>
-                  </TableRow> */}
                 </>
               )}
             </TableBody>
@@ -377,12 +357,7 @@ function OrderDetailsTab({ reservation, isError }) {
                     Payment Method
                   </Typography>
                 </th>
-                {/* <th>
-                  <Typography className="font-semibold">Quantity</Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">Unit Amount</Typography>
-                </th> */}
+             
                 <th>
                   <Typography className="font-semibold">
                     Total Amount
@@ -405,23 +380,17 @@ function OrderDetailsTab({ reservation, isError }) {
                     {reservation?.paymentdatas?.paymentMethod}
                   </span>
                 </td>
-                {/* <td>
-                  <span className="truncate">{reservation?.quantity}</span>
-                </td> */}
+             
                 <td>
                   <span className="truncate">
                   ₦ {formatCurrency(reservation?.totalPrice)}
                   </span>
                 </td>
-                {/* <td>
-                  <span className="truncate">
-                    {reservation?.price * reservation?.quantity}
-                  </span>
-                </td> */}
+              
                 <td>
                   <span className="truncate">
                     {new Date(reservation?.PaidAt)?.toDateString()}
-                    {/* {reservation?.PaidAt} */}
+           
                   </span>
                 </td>
               </tr>
