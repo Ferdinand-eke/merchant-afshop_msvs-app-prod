@@ -19,14 +19,14 @@ const foodmartNavigationConfig = [
 	{
 		id: 'dashboards',
 		title: 'Dashboards',
-		subtitle: 'Navigation helpers',
+		subtitle: 'Restaurants,Spots & Clubs(RSC) helpers',
 		type: 'group',
 		icon: 'heroicons-outline:home',
 		translate: 'DASHBOARDS',
 		children: [
 			{
 				id: 'shop.dashboards',
-				title: 'Bookings Dashboard',
+				title: 'RSC Dashboard',
 				type: 'item',
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/shop-dashboard'
@@ -38,7 +38,7 @@ const foodmartNavigationConfig = [
 	{
 		id: 'foodmartlistings',
 		title: 'Manage Bookings properties',
-		subtitle: 'Bookings Properties management helpers',
+		subtitle: 'RSC management helpers',
 		type: 'group',
 		icon: 'heroicons-outline:home',
 		translate: 'FOODMART',
@@ -51,13 +51,14 @@ const foodmartNavigationConfig = [
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/foodmarts/managed-foodmerchants'
 			},
-			// {
-			// 	id: 'properties.manageduserlist',
-			// 	title: 'Managed USER Properties',
-			// 	type: 'item',
-			// 	icon: 'heroicons-outline:clipboard-check',
-			// 	url: '/userlistings'
-			// },
+			{
+				id: 'food.foodorderslistings',
+				title: 'Food Orders',
+				type: 'item',
+				icon: 'heroicons-outline:clipboard-check',
+				url: '/foodmarts/list/food-orders'
+			},
+		
 			
 			
 		]

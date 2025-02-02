@@ -13,47 +13,50 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import InvoiceTab from './tabs/InvoiceTab';
 import OrderDetailsTab from './tabs/OrderDetailsTab';
 import ProductsTab from './tabs/ProductsTab';
-import { useGetECommerceOrderQuery } from '../ECommerceApi';
-import { useFindShopItemsInOrders } from 'app/configs/data/server-calls/orders/useShopOrders';
+import { useMerchantFindSingleFoodOrder } from 'app/configs/data/server-calls/foodmartmenuitems/useMerchantFoodOrder';
 import { getJustMyShopDetailsAndPlan } from 'app/configs/data/client/clientToApiRoutes';
 
 /**
  * The order.
  */
-function Order() {
+function FoodOrder() {
 	const routeParams = useParams();
 	const { orderId } = routeParams;
 
-	
 	const [loading, setLoading] = useState(false);
 	const [myshopData, setMyshopData] = useState({});
 
-	const {data:orderItem, isLoading:orderItemIsLoading, isError:itemIsError} = useFindShopItemsInOrders(orderId, {
+
+	const {
+		data: order,
+		isLoading,
+		isError
+	} = useMerchantFindSingleFoodOrder(orderId, {
 		skip: !orderId
 	});
 	
 	useEffect(() => {
-	  if (orderId) {
-		getSingleApiShopDetails();
+		if (orderId) {
+		  getSingleApiShopDetails();
+		}
+	  }, [orderId]);
+	
+	  async function getSingleApiShopDetails() {
+		setLoading(true);
+		const responseData = await getJustMyShopDetailsAndPlan();
+		if (responseData) {
+		  setMyshopData(responseData?.data);
+	
+		  setTimeout(
+			function () {
+			  setLoading(false);
+			}.bind(this),
+			250
+		  );
+		}
 	  }
-	}, [orderId]);
-  
-	async function getSingleApiShopDetails() {
-	  setLoading(true);
-	  const responseData = await getJustMyShopDetailsAndPlan();
-	  if (responseData) {
-		setMyshopData(responseData?.data);
-  
-		setTimeout(
-		  function () {
-			setLoading(false);
-		  }.bind(this),
-		  250
-		);
-	  }
-	}
 
-	// console.log("SingleOrderItem", orderItem?.data?.data)
+
 
 	const theme = useTheme();
 	const isMobile = useThemeMediaQuery((_theme) => _theme.breakpoints.down('lg'));
@@ -63,11 +66,11 @@ function Order() {
 		setTabValue(value);
 	}
 
-	if (orderItemIsLoading) {
+	if (isLoading) {
 		return <FuseLoading />;
 	}
 
-	if (itemIsError) {
+	if (isError) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -78,13 +81,13 @@ function Order() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such order!
+					Error occured while retrieving order!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/shoporders-list/orders"
+					to="/admin-manage/orders"
 					color="inherit"
 				>
 					Go to Orders Page
@@ -93,11 +96,10 @@ function Order() {
 		);
 	}
 
-	
 	return (
 		<FusePageCarded
 			header={
-				orderItem?.data && (
+				order && (
 					<div className="flex flex-1 flex-col py-32 px-24 md:px-32">
 						<motion.div
 							initial={{ x: 20, opacity: 0 }}
@@ -107,7 +109,7 @@ function Order() {
 								className="flex items-center sm:mb-12"
 								component={Link}
 								role="button"
-								to="/shoporders-list/orders"
+								to="/foodmarts/list/food-orders"
 								color="inherit"
 							>
 								<FuseSvgIcon size={20}>
@@ -115,7 +117,7 @@ function Order() {
 										? 'heroicons-outline:arrow-sm-left'
 										: 'heroicons-outline:arrow-sm-right'}
 								</FuseSvgIcon>
-								<span className="mx-4 font-medium">Orders</span>
+								<span className="mx-4 font-medium">Food Orders</span>
 							</Typography>
 						</motion.div>
 
@@ -125,13 +127,13 @@ function Order() {
 							className="flex flex-col min-w-0"
 						>
 							<Typography className="text-20 truncate font-semibold">
-								{`Order Item ${orderItem?.data?._id}`}
+								{`Order ${order?.data?._id}`}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{`From ${orderItem?.data.orderId?.shippingAddress?.fullName} `}
+								{`From ${order?.data?.shippingAddress?.fullName} `}
 							</Typography>
 						</motion.div>
 					</div>
@@ -154,18 +156,18 @@ function Order() {
 						/>
 						<Tab
 							className="h-64"
-							label="Products"
+							label="Items"
 						/>
 						<Tab
 							className="h-64"
 							label="Invoice"
 						/>
 					</Tabs>
-					{orderItem?.data && (
+					{order?.data && (
 						<div className="p-16 sm:p-24 max-w-3xl w-full">
-							{tabValue === 0 && <OrderDetailsTab order={orderItem?.data} isError={itemIsError}/>}
-							{tabValue === 1 && <ProductsTab order={orderItem?.data} isError={itemIsError}/>}
-							{tabValue === 2 && <InvoiceTab order={orderItem?.data} myshopData={myshopData}/>}
+							{tabValue === 0 && <OrderDetailsTab order={order?.data} isError={isError}/>}
+							{tabValue === 1 && <ProductsTab />}
+							{tabValue === 2 && <InvoiceTab order={order?.data}  myshopData={myshopData}/>}
 						</div>
 					)}
 				</>
@@ -175,4 +177,4 @@ function Order() {
 	);
 }
 
-export default Order;
+export default FoodOrder;

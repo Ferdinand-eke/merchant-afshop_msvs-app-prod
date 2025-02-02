@@ -185,6 +185,7 @@ function FoodMartListing() {
 							<div className={tabValue !== 1 ? 'hidden' : ''}>
 								<ProductImagesTabProperty />
 							</div>
+							
 
 							{/* <div className={tabValue !== 2 ? 'hidden' : ''}>
 								<PricingTabProperty shopData={shopData}/>

@@ -8,16 +8,17 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { memo } from "react";
+import { motion } from "framer-motion";
+import { useParams } from "react-router";
+import { useGetMerchantFoodOrderItems } from "app/configs/data/server-calls/foodmartmenuitems/useMerchantFoodOrder";
 import {
   calculateCompanyEarnings,
   calculateShopEarnings,
 } from "app/configs/Calculus";
-import { useCashoutShopOrderItemsEarnings } from "app/configs/data/server-calls/orders/useShopOrders";
 import { Button } from "@mui/material";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
-import { motion } from 'framer-motion';
 import { useThemeMediaQuery } from "@fuse/hooks";
-import { toast } from "react-toastify";
+import { formatCurrency } from "src/app/main/vendors-shop/pos/PosUtils";
 
 const Root = styled("div")(({ theme }) => ({
   "& table ": {
@@ -53,41 +54,39 @@ const Root = styled("div")(({ theme }) => ({
  */
 function InvoiceTab(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-  
-  const {
-    mutate: cashingOutOrderItemSales,
-    isLoading: cashingOutLoading,
-    error: cashingOutError,
-  } = useCashoutShopOrderItemsEarnings();
-  if (cashingOutError) {
-    toast.success(cashingOutError);
-  }
 
-  
-  /***Calculations for earnings starts */
   const { order, myshopData } = props;
-  const shopEarning = calculateShopEarnings(
-    order?.price * order?.quantity,
-    myshopData?.shopplan?.percetageCommissionChargeConversion
-  );
-  const companyEarnings = calculateCompanyEarnings(
-    order?.price * order?.quantity,
-    myshopData?.shopplan?.percetageCommissionChargeConversion
-  );
-  /***Calculations for earnings ends */
-
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "NGN",
     minimumFractionDigits: 2,
   });
+
+  const routeParams = useParams();
+  const { orderId } = routeParams;
+  const { data: orderItems } = useGetMerchantFoodOrderItems(orderId, {
+    skip: !orderId,
+  });
+
+  /***Calculations for earnings starts */
+
+  const shopEarning = calculateShopEarnings(
+    order?.itemsPrice,
+    myshopData?.shopplan?.percetageCommissionChargeConversion
+  );
+  const companyEarnings = calculateCompanyEarnings(
+    order?.itemsPrice,
+    myshopData?.shopplan?.percetageCommissionChargeConversion
+  );
+  /***Calculations for earnings ends */
+
   return (
     <Root className="grow shrink-0 p-0">
       {order && (
         <Card className="w-xl mx-auto shadow-0">
           <CardContent className="p-88 print:p-0">
             <Typography color="text.secondary" className="mb-32">
-              {order?.createddAt}
+              {order?.createdAT}
             </Typography>
 
             <div className="flex justify-between">
@@ -110,7 +109,7 @@ function InvoiceTab(props) {
                           variant="h6"
                           color="inherit"
                         >
-                          {order?.orderId?._id}
+                          {order?._id}
                         </Typography>
                       </td>
                     </tr>
@@ -118,22 +117,22 @@ function InvoiceTab(props) {
                 </table>
 
                 <Typography color="text.secondary">
-                  {`${order?.orderId?.shippingAddress?.fullName} `}
+                  {`${order?.shippingAddress?.fullName} `}
                 </Typography>
 
-                {order?.orderId?.shippingAddress?.address && (
+                {order?.shippingAddress?.address && (
                   <Typography color="text.secondary">
-                    {order?.orderId?.shippingAddress?.address}
+                    {order?.shippingAddress?.address}
                   </Typography>
                 )}
-                {order?.orderId?.shippingAddress?.phone && (
+                {order?.shippingAddress?.phone && (
                   <Typography color="text.secondary">
-                    {order?.orderId?.shippingAddress?.phone}
+                    {order?.shippingAddress?.phone}
                   </Typography>
                 )}
-                {order?.orderId?.shippingAddress?.prefContact && (
+                {order?.shippingAddress?.prefContact && (
                   <Typography color="text.secondary">
-                    {order?.orderId?.shippingAddress?.prefContact}
+                    {order?.shippingAddress?.prefContact}
                   </Typography>
                 )}
               </div>
@@ -141,14 +140,14 @@ function InvoiceTab(props) {
               <div className="seller flex items-center p-16">
                 <img
                   className="w-80"
-                  src="assets/images/afslogo/afLogo.svg"
+                 src="assets/images/afslogo/afslogo.png"
                   alt="logo"
                 />
 
                 <div className="divider mx-8 h-96" />
 
                 <div className="px-8">
-                  <Typography color="inherit">AFRICANSHOPS LTD.</Typography>
+                  <Typography color="inherit">AFRICANSHOPS.</Typography>
 
                   <Typography color="inherit">
                     The Paradise Court, Idu, Abuja, 900288
@@ -163,6 +162,8 @@ function InvoiceTab(props) {
             </div>
 
             <div className="mt-64">
+             
+
               <Table className="simple">
                 <TableHead>
                   <TableRow>
@@ -173,24 +174,24 @@ function InvoiceTab(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {/* {order?.products?.map((product) => ( */}
-                  <TableRow
-                  // key={product.id}
-                  >
-                    <TableCell>
-                      <Typography variant="subtitle1">{order?.name}</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      {order?.price && formatter.format(+order?.price)}
-                    </TableCell>
-                    <TableCell align="right">{order?.quantity}</TableCell>
-                    <TableCell align="right">
-                      {order?.price &&
-                        order?.quantity &&
-                        formatter.format(+order?.price * order?.quantity)}
-                    </TableCell>
-                  </TableRow>
-                  {/* ))} */}
+                  {orderItems?.data?.map((product) => (
+                    <TableRow key={product?._id}>
+                      <TableCell>
+                        <Typography variant="subtitle1">
+                          {product?.name}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        {product?.price && formatter.format(+product?.price)}
+                      </TableCell>
+                      <TableCell align="right">{product?.quantity}</TableCell>
+                      <TableCell align="right">
+                        {product?.price &&
+                          product?.quantity &&
+                          formatter.format(+product?.price * product?.quantity)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
 
@@ -207,7 +208,7 @@ function InvoiceTab(props) {
                   {" "}
                   N
                   {calculateShopEarnings(
-                    order?.price * order?.quantity,
+                    order?.itemsPrice,
                     myshopData?.shopplan?.percetageCommissionChargeConversion
                   )}
                 </span>{" "}
@@ -218,7 +219,7 @@ function InvoiceTab(props) {
                 >
                   N
                   {calculateCompanyEarnings(
-                    order?.price * order?.quantity,
+                    order?.itemsPrice,
                     myshopData?.shopplan?.percetageCommissionChargeConversion
                   )}
                 </span>
@@ -243,14 +244,14 @@ function InvoiceTab(props) {
                         variant="subtitle1"
                         color="text.secondary"
                       >
-                        {formatter.format(+order?.price * order?.quantity)}
+                        {formatter.format(+order?.totalPrice)}
                       </Typography>
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>
                       <Typography
-                        className="font-normal"
+                        className="font-normal text-md"
                         variant="subtitle1"
                         color="text.secondary"
                       >
@@ -260,7 +261,7 @@ function InvoiceTab(props) {
                     </TableCell>
                     <TableCell align="right">
                       <Typography
-                        className="font-normal"
+                      className="font-normal text-md"
                         variant="subtitle1"
                         color="text.secondary"
                       >
@@ -270,20 +271,20 @@ function InvoiceTab(props) {
                       </Typography>
                     </TableCell>
                   </TableRow>
-                  <TableRow>
+
+				  <TableRow>
                     <TableCell>
                       <Typography
-                        className="font-normal"
+                     className="font-normal text-md"
                         variant="subtitle1"
                         color="text.secondary"
                       >
-                        {/* DISCOUNT */}
                         While Africanshops earns:
                       </Typography>
                     </TableCell>
                     <TableCell align="right">
                       <Typography
-                        className="font-normal"
+                       className="font-normal text-md"
                         variant="subtitle1"
                         color="text.secondary"
                       >
@@ -291,6 +292,55 @@ function InvoiceTab(props) {
                       </Typography>
                     </TableCell>
                   </TableRow>
+
+
+				  <TableRow>
+                    <TableCell>
+                      <Typography
+                      className="font-normal text-md"
+                        variant="subtitle1"
+                        color="text.secondary"
+                      >
+                        Tax
+                    
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography
+                      className="font-normal text-md"
+                        variant="subtitle1"
+                        color="text.secondary"
+                      >
+
+                        {formatter.format(+order?.taxPrice)}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+
+				  <TableRow>
+                    <TableCell>
+                      <Typography
+                      className="font-normal text-md"
+                        variant="subtitle1"
+                        color="text.secondary"
+                      >
+                        Delivery
+                    
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography
+                    className="font-normal text-md"
+                        variant="subtitle1"
+                        color="text.secondary"
+                      >
+
+                        {formatter.format(+order?.shippingPrice)}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+
+                  
                   <TableRow>
                     <TableCell>
                       <Typography
@@ -313,20 +363,18 @@ function InvoiceTab(props) {
                   </TableRow>
                 </TableBody>
               </Table>
-
-              
             </div>
 
             <div className="mt-96">
               <Typography className="mb-24 print:mb-12" variant="body1">
-                 Thank you for your business.
+                Please pay within 15 days. Thank you for your business.
               </Typography>
 
               <div className="flex">
                 <div className="shrink-0">
                   <img
-                    className="w-80"
-                    src="assets/images/afslogo/afLogo.svg"
+                    className="w-32"
+                   src="assets/images/afslogo/afslogo.png"
                     alt="logo"
                   />
                 </div>
@@ -336,43 +384,44 @@ function InvoiceTab(props) {
                   variant="caption"
                   color="text.secondary"
                 >
-                  In condimentum malesuada efficitur. Mauris volutpat placerat
-                  auctor. Ut ac congue dolor. Quisque scelerisque lacus sed
-                  feugiat fermentum. Cras aliquet facilisis pellentesque. Nunc
-                  hendrerit quam at leo commodo, a suscipit tellus dapibus.
-                  Etiam at felis volutpat est mollis lacinia. Mauris placerat
-                  sem sit amet velit mollis, in porttitor ex finibus. Proin eu
-                  nibh id libero tincidunt lacinia et eget eros.
+                In honor of order with Ref: {order?.refOrderId}, We at Africanshops consider this Transaction
+                  as haven fulfilled the purpose for which it was intended and haven satisfied our consumers, duly
+                  consent the repatriation of funds to this merchant. Warmest Regards!.
                 </Typography>
               </div>
             </div>
 
-			{order?.orderId?.isDelivered && order?.orderId?.isPaid && (
-				<>
-				<div className="flex flex-1 items-center justify-end space-x-8">
-				<motion.div
-					className="flex flex-grow-0"
-					initial={{ opacity: 0, x: 20 }}
-					animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-				>
-					<Button
-						className=""
-						onClick={() => cashingOutOrderItemSales(order?._id)}
-						disabled={cashingOutLoading}
-						variant="contained"
-						color="secondary"
-						fullWidth
-						size={isMobile ? 'small' : 'medium'}
-					>
-						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-						<span className="mx-4 sm:mx-8"> {cashingOutLoading ? "Processing..." : "Cash Out Order"}</span>
-					</Button>
-				</motion.div>
-			</div>
-			
+			{order?.isPaid && order?.isDelivered && (
+              <>
+                <div className="flex flex-1 items-center justify-end space-x-8">
+                  <motion.div
+                    className="flex flex-grow-0"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+                  >
+                    <Button
+                      className="bg-orange-300 hover:bg-orange-500"
+                    //   onClick={() => cashingOutOrderItemSales(order?._id)}
+                    //   disabled={cashingOutLoading}
+                      variant="contained"
+                      color="secondary"
+                      fullWidth
+                      size={isMobile ? "small" : "medium"}
+                    >
+                      <FuseSvgIcon size={20}>
+                        heroicons-outline:plus
+                      </FuseSvgIcon>
+                      <span className="mx-4 sm:mx-8">
+                        {" "}
+                        {/* {cashingOutLoading ? "Processing..." : "Cash Out Order"} */}
+						Cash Out NGN {formatCurrency(shopEarning) } Order Earning
+                      </span>
+                    </Button>
+                  </motion.div>
+                </div>
+              </>
+            )}
 
-				</>
-              )}
           </CardContent>
         </Card>
       )}

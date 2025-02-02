@@ -7,9 +7,16 @@ import { getAuthAdminTokens, resetSessionForShopUsers } from 'app/configs/utils/
 import { getAdminAccessToken,  } from '../utils/opsUtils'
 import { toast } from 'react-toastify'
 
-const API_BASE_URL = `http://localhost:8000`
+// const API_BASE_URL = `http://localhost:8000`
+// const API_BASE_URL = 'https://coral-app-n8ox9.ondigitalocean.app' VITE_API_BASE_URL_DEV
 
-// const API_BASE_URL = 'https://coral-app-n8ox9.ondigitalocean.app'
+
+
+// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL_DEV;
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL_PROD;
+
+
 
 
 /***================================================================================================================= */
@@ -18,8 +25,6 @@ export const customHeaders = {
 }
 
 export const baseUrl = `${API_BASE_URL}`
-
-console.log('BASE_ENDPOINT', baseUrl)
 
 export function Api() {
     // const TOKEN = JSON.parse(Cookies.get('authClientUserInfo')).accessToken;
@@ -494,6 +499,23 @@ export const getMyShopFoodMartMenuBySlug = (slug) =>
 export const storeShopFoodMartMenu = (formData) =>
   AuthApi().post(`/api/myshop/food-mart/create-menu/${formData?.martId}`, formData);
 
+
+  /****
+   * Merchant Handling of Food Orders
+   **/
+  export const getMerchantFoodOrdersApi = () => AuthApi().get('/api/myshop/food-mart/get-merchant-foodorders'); //newDashboard
+  
+  export const merchantGetFoodOrderByIdApi = (id) => AuthApi().get(`/api/myshop/food-mart/get-foodorder/${id}`);
+  export const merchantGetFoodOrderItemsInFoodOrderById = (id) =>
+    AuthApi().get(`/api/myshop/food-mart/get-foodorderitems/${id}`);
+
+  export const merchantDeleteFoodOrders = (id) => AuthApi().delete(`/api/myshop/food-mart/deleteorder/${id}`);
+  export const merchantPackFoodOrders = (id) =>
+    AuthApi().put(`/api/myshop/food-mart/pack-unpack/${id}`);
+  export const merchantShipFoodOrders = (id) =>
+    AuthApi().put(`/api/myshop/food-mart/ship-unship/${id}`);
+  export const merchantDeliverFoodOrdersApi = (id) =>
+    AuthApi().put(`/api/myshop/food-mart/deliver-undeliver/${id}`);
 /***
  * #############################################################################################
  * HANDLE SHOP FOOD  MART-MENUS ITEMS ENDS HERE
