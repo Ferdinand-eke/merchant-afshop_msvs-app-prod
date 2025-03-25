@@ -7,6 +7,7 @@ import withSlices from 'app/store/withSlices';
 import { bookingsNavigationSlice, selectNavigation } from '../store/bookingsNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
 import { useNavigate } from 'react-router';
+const AFS_HOTELHOMES = import.meta.env.VITE_AFS_HOTELHOMES;
 
 
 function HotelsApartmentsNavigation(props) {

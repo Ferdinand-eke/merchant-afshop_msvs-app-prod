@@ -7,10 +7,9 @@ import { styled } from '@mui/material/styles';
 import FuseLoading from '@fuse/core/FuseLoading';
 import ShopDashboardAppHeader from './ShopDashboardAppHeader';
 import HomeTab from './tabs/home/HomeTab';
-import TeamTab from './tabs/team/TeamTab';
-import BudgetTab from './tabs/budget/BudgetTab';
+// import TeamTab from './tabs/team/TeamTab';
+// import BudgetTab from './tabs/budget/BudgetTab';
 import { useGetProjectDashboardWidgetsQuery } from './ProjectDashboardApi';
-import { getAdminAccessToken } from 'src/app/aaqueryhooks/utils/opsUtils';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
@@ -26,12 +25,14 @@ function ShopDashboardApp() {
 	const { isLoading } = useGetProjectDashboardWidgetsQuery();
 	const [tabValue, setTabValue] = useState(0);
 
+
 	function handleChangeTab(event, value) {
 		setTabValue(value);
 	}
 
-	if (isLoading) {
-		return <FuseLoading />;
+
+	if(isLoading){
+		return <FuseLoading />
 	}
 
 	return (
@@ -73,7 +74,13 @@ function ShopDashboardApp() {
 							label="Team"
 						/> */}
 					</Tabs>
-					{tabValue === 0 && <HomeTab />}
+					{tabValue === 0 && <>
+					
+						<HomeTab />
+
+					
+
+					</>}
 
 					{/* {tabValue === 1 && <BudgetTab />}
 					{tabValue === 2 && <TeamTab />} */}

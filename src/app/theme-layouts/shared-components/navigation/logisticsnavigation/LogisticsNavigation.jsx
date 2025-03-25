@@ -7,6 +7,7 @@ import withSlices from 'app/store/withSlices';
 import { logisticsNavigationSlice, selectNavigation } from '../store/logisticsNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
 import { useNavigate } from 'react-router';
+const AFS_LOGISTICS = import.meta.env.VITE_AFS_LOGISTICS;
 
 function LogisticsNavigation(props) {
 	const { className = '', layout = 'vertical', dense, active, merchantPlanKey } = props;
@@ -17,7 +18,7 @@ function LogisticsNavigation(props) {
 
 	const navigate = useNavigate()
 
-	if(merchantPlanKey !== "FOODVENDORS"){
+	if(merchantPlanKey !== "LOGISTICS"){
 		navigate('/')
 	}
 

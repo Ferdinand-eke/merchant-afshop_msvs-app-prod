@@ -95,7 +95,7 @@ export function AuthApi() {
     return Api;
 }
 
-export const adminSignIn = (formData) => {
+export const merchantSignIn = (formData) => {
     console.log('DATA_IN_FORM', formData)
     return Api().post(`/api/shop/login`, formData)
 }
@@ -432,6 +432,7 @@ export const deleteShopBookingsProperty = (id) =>
 
   /****Reservations */ 
   export const getShopBookingsReservationsApi = () => AuthApi().get('/api/myshop/merchant-homes/get-my-reservations'); //newDashboard
+  export const getShopSealedBookingsReservationsApi = () => AuthApi().get('/api/myshop/merchant-homes/get-my-sealed-reservations'); //newDashboard
   export const getSingleMerchantReservationApi = (reservationId) => AuthApi().get(`/api/myshop/merchant-homes/get-my-reservations/${reservationId}`);
   export const merchantCheckInGuestReservations = (id) => AuthApi().put(`/api/myshop/merchant-homes/checkin-guest-reservation/${id}`);
   export const merchantCheckOutGuestReservations = (id) => AuthApi().put(`/api/myshop/merchant-homes/checkout-guest-reservation/${id}`);

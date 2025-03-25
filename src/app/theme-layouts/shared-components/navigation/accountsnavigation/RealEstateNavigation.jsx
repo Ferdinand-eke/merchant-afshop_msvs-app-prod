@@ -6,6 +6,7 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import withSlices from 'app/store/withSlices';
 import { estatesNavigationSlice, selectNavigation } from '../store/estatesNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
+const AFS_ESTATES = import.meta.env.VITE_AFS_ESTATES;
 
 function RealEstateNavigation(props) {
 	const { className = '', layout = 'vertical', dense, active } = props;

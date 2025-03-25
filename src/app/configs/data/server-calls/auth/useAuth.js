@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { setShopResetMailPAYLOAD } from 'app/configs/utils/authUtils';
 
 /***
- * update user password by logged in merchant
+ *  1) update user password by logged in merchant
  */
 export function useShopSettingsResetPass() {
   const queryClient = useQueryClient();
@@ -27,7 +27,7 @@ export function useShopSettingsResetPass() {
 }
 
 
-/****change user email while logged in */
+/**** 2) change user email while logged in */
 export function useShopSettingsChangeEmail() {
   const queryClient = useQueryClient();
 
@@ -52,19 +52,13 @@ export function useShopSettingsChangeEmail() {
 }
 
 
-/****change user email while logged in */
+/**** 3) close user account and log out user */
 export function useShopSettingsCloseShopAccount() {
   const queryClient = useQueryClient();
 
   return useMutation(authShopCloseAccountCall, {
     onSuccess: (data) => {
       console.log("closeAccountDetasil", data)
-      // if(data?.data && data?.data?.success && data?.data?.changemail_activation_token){
-        
-      //   toast.success(data?.data?.message);
-
-      //   setShopResetMailPAYLOAD(data?.data?.changemail_activation_token)
-      // }
     },
 
     onError: (error) => {

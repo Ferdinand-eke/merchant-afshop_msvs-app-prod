@@ -7,6 +7,7 @@ import withSlices from 'app/store/withSlices';
 import { navigationSlice, selectNavigation } from './store/navigationSlice';
 import { navbarCloseMobile } from '../navbar/navbarSlice';
 import { useNavigate } from 'react-router';
+const RETAIL_KEY = import.meta.env.VITE_AFS_RETAIL;
 
 function Navigation(props) {
 	const { className = '', layout = 'vertical', dense, active, merchantPlanKey } = props;

@@ -1,10 +1,8 @@
 import { useMutation } from 'react-query';
 import {
-  adminSignIn,
+  merchantSignIn,
   resetshopPasswordWithcode,
   shopForgotPasswordInit,
-  // adminClientLogin, adminSignIn,
-  //  logOutAdmin,
 } from '../client/clientToApiRoutes';
 import {
   remove_SHOP_FORGOTPASS_TOKEN,
@@ -15,16 +13,17 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+
+/***1) Login for merchants account */
 export function useAdminLogin() {
-  return useMutation(adminSignIn, {
+  return useMutation(merchantSignIn, {
     onSuccess: (data) => {
       if (data?.data?.data && data?.data?._nnip_shop_ASHP_ALOG) {
-        console.log("Merchant logging in")
         setAuthCredentials(data?.data?.data);
         setAuthTokens(data?.data?._nnip_shop_ASHP_ALOG);
         toast.success('logged in successfully');
 
-        window.location.replace('/admin');
+        window.location.replace('/shop-dashboard');
 
         return;
       } else if (data) {
@@ -44,6 +43,7 @@ export function useAdminLogin() {
   });
 }
 
+/***2) Forgot password for merchants account */
 export function useShopForgotPass() {
   const navigate = useNavigate();
   return useMutation(shopForgotPasswordInit, {
@@ -64,7 +64,6 @@ export function useShopForgotPass() {
       }
     },
     onError: (error) => {
-      console.log('LoginError22', error);
       const {
         response: { data },
       } = error ?? {};
@@ -73,11 +72,11 @@ export function useShopForgotPass() {
   });
 }
 
+/***3) Reset password for merchants account */
 export function useResetShopPass() {
   const navigate = useNavigate();
   return useMutation(resetshopPasswordWithcode, {
     onSuccess: (data) => {
-      console.log("RESET_DATA", data)
       if (data?.data?.success) {
         remove_SHOP_FORGOTPASS_TOKEN()
         toast.success(data?.data?.message);
@@ -94,7 +93,6 @@ export function useResetShopPass() {
       }
     },
     onError: (error) => {
-      console.log('LoginError22__', error);
       const {
         response: { data },
       } = error ?? {};

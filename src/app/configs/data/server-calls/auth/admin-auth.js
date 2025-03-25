@@ -5,13 +5,13 @@ import jwtDecode from "jwt-decode";
 import Cookie from "js-cookie";
 
 import { toast } from "react-toastify";
-import { adminSignIn } from "../../client/clientToApiRoutes";
+import { merchantSignIn } from "../../client/clientToApiRoutes";
 // import { adminSigin } from "../apiRoutes";
 
 export function useShopAdminLogin() {
   
   // const navigate = useNavigate();
-  return useMutation(adminSignIn, {
+  return useMutation(merchantSignIn, {
     onSuccess: (data) => {
       console.log("userFromAuthentication", data?.data?.data);
       console.log("tokenFromAuthentication", data?.data?._nnip_shop_ASHP_ALOG);

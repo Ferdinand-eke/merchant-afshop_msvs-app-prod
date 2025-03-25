@@ -8,6 +8,7 @@ import {
   getMyOtherShopsList,
   getMyShopAccountApiDetails,
   getMyShopDetails,
+  getShopSealedBookingsReservationsApi,
   updateMyShopBranch,
   updateMyShopDetails,
 } from '../../client/clientToApiRoutes';
@@ -120,4 +121,16 @@ export function useUpdateVendorShopBranch() {
       // queryClient.invalidateQueries('__myshop_orders');
     },
   });
+}
+
+
+/****
+ * #######################################################################
+ *               HANDLE HOTELS & APARTMENTS DATAS
+ * #######################################################################
+ */
+
+/*****Get Hotel & Apartments Sealed Reservations*/
+export function useGetMerchantSealedReservations() {
+  return useQuery(['__justmyshop'], getShopSealedBookingsReservationsApi);
 }

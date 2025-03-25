@@ -43,7 +43,6 @@ function NavbarStyle1Content(props) {
   const {data:myshopData, isLoading} = useGetMyShopAndPlan()
   const { className = "" } = props;
 
-
 useEffect(() =>{
 
 },[
@@ -84,7 +83,7 @@ useEffect(() =>{
           {myshopData?.data?.shopplan?.plankey === 'WHOLESALEANDRETAILERS' && <><WholesaleRetailNavigation 
           merchantPlanKey={myshopData?.data?.shopplan?.plankey}
           layout="vertical" /></>} 
-          
+
           {myshopData?.data?.shopplan?.plankey === 'MANUFACTURERS' && <><ManufacturersNavigation 
           merchantPlanKey={myshopData?.data?.shopplan?.plankey}
           layout="vertical" /></> }
