@@ -7,22 +7,18 @@ import withSlices from 'app/store/withSlices';
 import { wholesaleretailNavigationSlice, selectNavigation } from '../store/wholesaleretailNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
 import { useNavigate } from 'react-router';
-// const RETAIL_KEY = import.meta.env.VITE_AFS_RETAIL;
-const WHOLESALE_KEY = import.meta.env.VITE_AFS_WHOLESALERETAIL;
-// const MANUFACTURER_KEY = import.meta.env.VITE_AFS_MANUFACTURERS;
+
 
 function WholesaleRetailNavigation(props) {
-	const { className = '', layout = 'vertical', dense, active, merchantPlanKey } = props;
+	const { className = '', layout = 'vertical', dense, active, 
+	
+ } = props;
 
 	const navigation = useAppSelector(selectNavigation);
 	
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate()
 
-	if(merchantPlanKey !== "WHOLESALEANDRETAILERS"){
-		navigate('/')
-	}
 
 	return useMemo(() => {
 		function handleItemClick() {

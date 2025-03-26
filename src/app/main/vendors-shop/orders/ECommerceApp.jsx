@@ -9,31 +9,6 @@ const MANUFACTURER_KEY = import.meta.env.VITE_AFS_MANUFACTURERS;
  * The E-Commerce app.
  */
 function ECommerceApp() {
-//   const { data: myshopData, isLoading } = useGetMyShopAndPlan();
-//   const navigate = useNavigate();
-
-
-//   useEffect(() => {
-//     if (isLoading) {
-//       return null;
-//     } else {
-//       if (
-
-// 		myshopData?.data?.shopplan?.plankey.toString() !== RETAIL_KEY ||
-//         myshopData?.data?.shopplan?.plankey.toString() !== WHOLESALE_KEY ||
-//         myshopData?.data?.shopplan?.plankey.toString() !== MANUFACTURER_KEY
-//       ) {
-//         // navigate("/");
-//       }
-//     }
-//   }, [
-//     myshopData?.data?.shopplan?.plankey,
-//     RETAIL_KEY,
-//     WHOLESALE_KEY,
-//     MANUFACTURER_KEY,
-
-//     navigate,
-//   ]);
 
   return <Outlet />;
 }

@@ -484,6 +484,7 @@ export const deleteShopFoodMart = (id) =>
  * ############################################################################################
  */
 // {===============================shop estate property handling starts /myshop/food-mart/get-my-menu/:foodMartId=======================================}
+export const getAllMerchantOwnedMartMenus = () => AuthApi().get(`/api/myshop/food-mart/get-all-merchant-menu`); //newDashboard
 export const getShopFoodMartMenus = (foodMartId) => AuthApi().get(`/api/myshop/food-mart/get-my-menu/${foodMartId}`); //newDashboard
 
 export const getMyShopFoodMartMenuBySlug = (slug) =>

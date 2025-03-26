@@ -15,7 +15,6 @@ import FoodMartNavigation from "app/theme-layouts/shared-components/navigation/f
 import ManufacturersNavigation from "app/theme-layouts/shared-components/navigation/manufacturersnavigation/ManufacturersNavigation";
 import WholesaleRetailNavigation from "app/theme-layouts/shared-components/navigation/wholealeretailnavigation/WholesaleRetailNavigation";
 
-
 const Root = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   color: theme.palette.text.primary,
@@ -36,19 +35,18 @@ const StyledContent = styled(FuseScrollbars)(() => ({
   backgroundAttachment: "local, scroll",
 }));
 
+// const RETAIL_KEY = import.meta.env.VITE_AFS_RETAIL;
+// const WHOLESALE_KEY = import.meta.env.VITE_AFS_WHOLESALERETAIL;
+// const MANUFACTURER_KEY = import.meta.env.VITE_AFS_MANUFACTURERS;
+
 /**
  * The navbar style 1 content.
  */
 function NavbarStyle1Content(props) {
-  const {data:myshopData, isLoading} = useGetMyShopAndPlan()
+  const { data: myshopData, isLoading } = useGetMyShopAndPlan();
   const { className = "" } = props;
 
-useEffect(() =>{
-
-},[
-  myshopData?.data?.shopplan?.plankey
-])
-  // console.log("navigationSliceUser", myshopData?.data?.shopplan?.plankey)
+  useEffect(() => {}, [myshopData?.data?.shopplan?.plankey]);
   return (
     <Root
       className={clsx(
@@ -69,65 +67,65 @@ useEffect(() =>{
         option={{ suppressScrollX: true, wheelPropagation: false }}
       >
         <UserNavbarHeader />
-        
 
-        {
-          isLoading ? <>
-          <Typography>loading...</Typography>
-          </> :
+        {isLoading ? (
           <>
-          {myshopData?.data?.shopplan?.plankey === 'RETAIL' && <><Navigation 
-          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
-          layout="vertical" /></> } 
-          
-          {myshopData?.data?.shopplan?.plankey === 'WHOLESALEANDRETAILERS' && <><WholesaleRetailNavigation 
-          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
-          layout="vertical" /></>} 
-
-          {myshopData?.data?.shopplan?.plankey === 'MANUFACTURERS' && <><ManufacturersNavigation 
-          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
-          layout="vertical" /></> }
-
-
-          {myshopData?.data?.shopplan?.plankey === 'REALESTATES' && <><RealEstateNavigation
-          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
-          layout="vertical"/></>}
-
-          {myshopData?.data?.shopplan?.plankey === 'HOTELSANDAPARTMENTS' && <><HotelsApartmentsNavigation
-          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
-          layout="vertical"/></>}
-          
-          {myshopData?.data?.shopplan?.plankey === 'FOODVENDORS' && <><FoodMartNavigation 
-          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
-          layout="vertical"/></>}
-
-          {myshopData?.data?.shopplan?.plankey === 'LOGISTICS' && <><LogisticsNavigation 
-          merchantPlanKey={myshopData?.data?.shopplan?.plankey}
-          layout="vertical"/></>}
-          
-
-   
-          {/* {  
-          ( myshopData?.data?.shopplan?.plankey !== 'RETAIL' || 
-           myshopData?.data?.shopplan?.plankey !== 'WHOLESALEANDRETAILERS' ||
-           myshopData?.data?.shopplan?.plankey !== 'MANUFACTURERS' ||
-           myshopData?.data?.shopplan?.plankey !== 'REALESTATES') &&
-           <><Typography>Merchant has no account plan</Typography></>} */}
-          {/* <Navigation layout="vertical" /> */}
+            <Typography>loading...</Typography>
           </>
-        }
-       
+        ) : (
+          <>
+            {myshopData?.data?.shopplan?.plankey === "RETAIL" && (
+              <>
+                <Navigation layout="vertical" />
+              </>
+            )}
 
+            {myshopData?.data?.shopplan?.plankey ===
+              "WHOLESALEANDRETAILERS" && (
+              <>
+                <WholesaleRetailNavigation layout="vertical" />
+              </>
+            )}
+
+            {myshopData?.data?.shopplan?.plankey === "MANUFACTURERS" && (
+              <>
+                <ManufacturersNavigation layout="vertical" />
+              </>
+            )}
+
+            {myshopData?.data?.shopplan?.plankey === "REALESTATES" && (
+              <>
+                <RealEstateNavigation layout="vertical" />
+              </>
+            )}
+
+            {myshopData?.data?.shopplan?.plankey === "HOTELSANDAPARTMENTS" && (
+              <>
+                <HotelsApartmentsNavigation layout="vertical" />
+              </>
+            )}
+
+            {myshopData?.data?.shopplan?.plankey === "FOODVENDORS" && (
+              <>
+                <FoodMartNavigation layout="vertical" />
+              </>
+            )}
+
+            {myshopData?.data?.shopplan?.plankey === "LOGISTICS" && (
+              <>
+                <LogisticsNavigation layout="vertical" />
+              </>
+            )}
+          </>
+        )}
 
         <div className="flex-0 flex items-center justify-center py-48 opacity-20">
           <img
             className="w-full max-w-64"
-            // src="assets/images/logo/logo.svg"
-            // src="assets/images/afslogo/afLogo.svg"
             src="assets/images/afslogo/afslogo.png"
             alt="footer logo"
             width={45}
-				height={45}
+            height={45}
           />
         </div>
       </StyledContent>

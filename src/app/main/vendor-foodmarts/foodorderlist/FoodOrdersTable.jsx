@@ -10,16 +10,10 @@ import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import Button from "@mui/material/Button";
-// import useMyShopEstateProperties from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
-// import useMyShopBookingsProperties from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
-import useMyPropertiesReservations from "app/configs/data/server-calls/hotelsandapartments/useShopBookingsReservations";
 import MerchantErrorPage from "../FoodMerchantErrorPage";
 import useMerchantFoodOrders from "app/configs/data/server-calls/foodmartmenuitems/useMerchantFoodOrder";
-// import OrdersCreatedAndPaymentStatus from "../../vendors-shop/orders/order/OrdersCreatedAndPaymentStatus";
-// import FoodOrdersCreatedAndPaymentStatus from "../foodorder/FoodOrdersCreatedAndPaymentStatus";
 import { formatCurrency } from "../../vendors-shop/pos/PosUtils";
 import FoodOrdersCreatedAndPaymentStatus from "../foodorder/FoodOrdersCreatedAndPaymentStatus";
-// import MerchantErrorPage from "../../MerchantErrorPage";
 
 function FoodOrdersTable() {
   const {
@@ -32,11 +26,6 @@ function FoodOrdersTable() {
 
   const columns = useMemo(
 		() => [
-			// {
-			// 	accessorKey: 'id',
-			// 	header: 'Id',
-			// 	size: 64
-			// },
 			{
 				accessorKey: 'refOrderId',
 				header: 'Reference',
@@ -64,7 +53,6 @@ function FoodOrdersTable() {
 				header: 'Total',
 				size: 64
 			},
-			// { id: 'payment', accessorFn: (row) => row.payment.method, header: 'Payment', size: 128 },
 			{
 				id: 'isPaid',
 				accessorFn: (row) => <FoodOrdersCreatedAndPaymentStatus 

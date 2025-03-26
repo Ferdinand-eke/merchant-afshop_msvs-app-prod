@@ -20,7 +20,6 @@ function FoodOrdersPlaced() {
 				
 				<ReservationsTable />
 				
-				
 			</div>
 		</>
 	);

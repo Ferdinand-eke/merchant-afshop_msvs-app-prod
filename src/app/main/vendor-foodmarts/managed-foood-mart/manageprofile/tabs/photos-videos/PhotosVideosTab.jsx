@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { useGetProfilePhotosVideosQuery } from '../../ProfileApi';
+// import { useGetProfilePhotosVideosQuery } from '../../ProfileApi';
 import { Box, Drawer } from '@mui/material';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
@@ -24,14 +24,9 @@ import { useParams } from 'react-router';
 function PhotosVideosTab() {
 	const routeParams = useParams();
   const { foodMartId } = routeParams;
-	const dispatch = useAppDispatch();
-	const { data: photosVideos, isLoading } = useGetProfilePhotosVideosQuery();
+	// const dispatch = useAppDispatch();
 
 	const { data: martMenu, isLoading: martMenuLoading, error } = useMyShopFoodMartMenus(foodMartId)
-
-	// console.log("myFoodMartMenu", martMenu.data)
-
-
 	const [openNewEntry, setOpenNewEntry] = React.useState(false);
 
 	const toggleNewEntryDrawer = (newOpen) => () => {
@@ -45,10 +40,6 @@ function PhotosVideosTab() {
 		  />
 		</Box>
 	  );
-
-
-
-
 
 	if (martMenuLoading) {
 		return <FuseLoading />;

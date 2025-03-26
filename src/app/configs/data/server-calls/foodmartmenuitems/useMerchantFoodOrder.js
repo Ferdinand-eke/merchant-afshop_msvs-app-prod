@@ -3,12 +3,12 @@ import { getMerchantFoodOrdersApi, merchantDeliverFoodOrdersApi, merchantGetFood
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 
-/***get all Specific user shop-estate property */   
+/*** 1) get food-mart orders */   
 export default function useMerchantFoodOrders() {
   return useQuery(['__merchant_foodorders'], getMerchantFoodOrdersApi);
 }
 
-/***get a single food-order */
+/*** 2) get a single food-order */
 export function useMerchantFindSingleFoodOrder(orderId) {
   return useQuery(['__merchant_foodorders', orderId], () =>
   merchantGetFoodOrderByIdApi(orderId)
@@ -16,15 +16,16 @@ export function useMerchantFindSingleFoodOrder(orderId) {
 }
 
 
-/***merchant mark food-orderas packed */
+/*** 3) merchant mark food-orderas packed */
 export function useMerchantPackFoodOrder() {
   const queryClient = useQueryClient();
   return useMutation(merchantPackFoodOrders, {
     onSuccess: (data) => {
-      console.log("PACK_ORDER", data)
       if(data?.data?.success){
         toast.success('Order Packed successfully!');
         queryClient.invalidateQueries('__merchant_foodorders');
+      }else{
+        toast.info('Something alien occured!');
       }
   
     },
@@ -39,21 +40,20 @@ export function useMerchantPackFoodOrder() {
 }
 
 
-/***merchant mark food-orderas as shipped */
+/*** 4) merchant mark food-orderas as shipped */
 export function useMerchantShipFoodOrder() {
   const queryClient = useQueryClient();
   return useMutation(merchantShipFoodOrders, {
     onSuccess: (data) => {
-      console.log("SHIP_ORDER", data)
       if(data?.data?.success){
         toast.success('Order Shipped successfully!');
         queryClient.invalidateQueries('__merchant_foodorders');
+      }else{
+        toast.info('Something alien occured!');
       }
     
     },
     onError: (err) => {
-      // toast.success('Oops!, an error occured');
-
       toast.error(
         err.response && err.response.data.message
           ? err.response.data.message
@@ -62,39 +62,21 @@ export function useMerchantShipFoodOrder() {
   });
 }
 
-/***merchant Handle for order arrival */
-// export function useMerchantHandleFoodOrderArrival() {
-//   const queryClient = useQueryClient();
-//   return useMutation(adminConfirmOrderArrival, {
-//     onSuccess: () => {
-//       toast.success('Order Arrived Warehouse successfully!');
-//       queryClient.invalidateQueries('__merchant_foodorders');
-//     },
-//     onError: (err) => {
-//       // toast.success('Oops!, an error occured');
-//       toast.error(
-//         err.response && err.response.data.message
-//           ? err.response.data.message
-//           : err.message
-//       );
-//     },
-//   });
-// }
 
-/***Merchant deliver food-order */
+/*** 5) Merchant deliver food-order */
 export function useMerchantDeliverFoodOrder() {
   const queryClient = useQueryClient();
   return useMutation(merchantDeliverFoodOrdersApi, {
     onSuccess: (data) => {
-      console.log("DELIVER_ORDER", data)
       if(data?.data?.success){
         toast.success('Order Delivered successfully!');
         queryClient.invalidateQueries('__merchant_foodorders');
+      }else{
+        toast.info('Something alien occured!');
       }
     
     },
     onError: (err) => {
-      // toast.success('Oops!, an error occured while processing request');
       toast.error(
         err.response && err.response.data.message
           ? err.response.data.message
@@ -107,10 +89,11 @@ export function useMerchantDeliverFoodOrder() {
 
 /******
  * ==================================================
- * HANDLING OF ORDER ITEMS  
+ * HANDLING OF FOOD ORDER ITEMS  
  * =====================================================
  */
 
+/**** 1) Get food-order items */
 export function useGetMerchantFoodOrderItems(orderId) {
   return useQuery(['foodorders_items', orderId], () =>
   merchantGetFoodOrderItemsInFoodOrderById(orderId)

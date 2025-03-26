@@ -7,20 +7,15 @@ import withSlices from 'app/store/withSlices';
 import { logisticsNavigationSlice, selectNavigation } from '../store/logisticsNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
 import { useNavigate } from 'react-router';
-const AFS_LOGISTICS = import.meta.env.VITE_AFS_LOGISTICS;
 
 function LogisticsNavigation(props) {
-	const { className = '', layout = 'vertical', dense, active, merchantPlanKey } = props;
+	const { className = '', layout = 'vertical', dense, active,
+
+	 } = props;
 	const navigation = useAppSelector(selectNavigation);
 	
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const dispatch = useAppDispatch();
-
-	const navigate = useNavigate()
-
-	if(merchantPlanKey !== "LOGISTICS"){
-		navigate('/')
-	}
 
 
 	return useMemo(() => {

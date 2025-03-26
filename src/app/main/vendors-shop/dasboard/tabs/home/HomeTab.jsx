@@ -9,6 +9,7 @@ import ScheduleWidget from "./widgets/ScheduleWidget";
 import useGetMyShopDetails from "app/configs/data/server-calls/shopdetails/useShopDetails";
 import HotelsHospitalityBoard from "./hotels-boards/HotelsHospitalityBoard";
 import EcommerceBoard from "./ecom-boards/EcommerceBoard";
+import FoodmartBoard from "./foodmart-boards/FoodmartBoard";
 
 /**
  * The HomeTab component.
@@ -27,10 +28,7 @@ function HomeTab() {
   };
 
   const { data: shopData, isLoading, isError } = useGetMyShopDetails();
-  const fistFiveOrders = shopData?.data?.orderItems?.slice(0, 4);
-
-  //   console.log("SHOP_DATA_PLAN?", shopData?.data?.data?.shopplan?.plankey);
-  //   console.log("SHOP_DATA", shopData?.data)
+//   const fistFiveOrders = shopData?.data?.orderItems?.slice(0, 4);
 
   return (
     <motion.div
@@ -39,52 +37,30 @@ function HomeTab() {
       initial="hidden"
       animate="show"
     >
-      {/* <>
-        <motion.div variants={item}>
-          <SummaryWidget
-            shopData={shopData?.data?.data}
-            isLoading={isLoading}
-          />
-        </motion.div>
-        <motion.div variants={item}>
-          <OverdueWidget
-            merchantProducts={shopData?.data?.products}
-            isLoading={isLoading}
-          />
-        </motion.div>
-        <motion.div variants={item}>
-          <IssuesWidget
-            orderItems={shopData?.data?.orderItems}
-            isLoading={isLoading}
-          />
-        </motion.div>
-        <motion.div variants={item}>
-          <FeaturesWidget
-            sealedOrderItems={shopData?.data?.sealedOrderItems}
-            isLoading={isLoading}
-          />
-        </motion.div>
-
-        <motion.div variants={item} className="sm:col-span-2 md:col-span-4">
-          <GithubIssuesWidget />
-        </motion.div>
-        <motion.div
-          variants={item}
-          className="sm:col-span-2 md:col-span-4 lg:col-span-2"
-        >
-          <TaskDistributionWidget />
-        </motion.div>
-        <motion.div
-          variants={item}
-          className="sm:col-span-2 md:col-span-4 lg:col-span-2"
-        >
-          <ScheduleWidget />
-        </motion.div>
-      </> */}
-      {/* {shopData?.data?.data?.shopplan?.plankey && } */}
-
       {shopData?.data?.data?.shopplan?.plankey === "RETAIL" && (
         <>
+          <EcommerceBoard
+            merchantData={shopData?.data}
+            isLoading={isLoading}
+            layout="vertical"
+          />
+        </>
+      )}
+
+      {shopData?.data?.data?.shopplan?.plankey === "WHOLESALEANDRETAILERS" && (
+        <>
+          {/* Change this to wholesale specific dashboard later on */}
+          <EcommerceBoard
+            merchantData={shopData?.data}
+            isLoading={isLoading}
+            layout="vertical"
+          />
+        </>
+      )}
+
+      {shopData?.data?.data?.shopplan?.plankey === "MANUFACTURERS" && (
+        <>
+          {/* Change this to manufacturer specific dashboard later on */}
           <EcommerceBoard
             merchantData={shopData?.data}
             isLoading={isLoading}
@@ -103,15 +79,15 @@ function HomeTab() {
         </>
       )}
 
-      {/* {shopData?.data?.data?.shopplan?.plankey === "FOODVENDORS" && (
+      {shopData?.data?.data?.shopplan?.plankey === "FOODVENDORS" && (
         <>
-          <EcommerceBoard
+          <FoodmartBoard
             merchantData={shopData?.data}
             isLoading={isLoading}
             layout="vertical"
           />
         </>
-      )} */}
+      )}
     </motion.div>
   );
 }

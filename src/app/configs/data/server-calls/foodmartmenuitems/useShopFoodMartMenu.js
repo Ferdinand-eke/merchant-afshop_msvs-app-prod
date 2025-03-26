@@ -1,73 +1,57 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-// import { toast } from 'react-toastify';
-// import { storeShopProduct } from '../../store-redux/api/apiRoutes';
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
-  getMyShopEstatePropertyBySlug,
-  getMyShopFoodMartBySlug,
+  getAllMerchantOwnedMartMenus,
   getMyShopFoodMartMenuBySlug,
-  // getMyShopProductById,
-  getShopEstateProperties,
   getShopFoodMartMenus,
-  getShopFoodMarts,
-  // getShopProducts,
-  // pullMyShopProductByIdFromExport,
-  // pushMyShopProductByIdToExport,
-  storeShopEstateProperty,
-  storeShopFoodMart,
   storeShopFoodMartMenu,
-  // storeShopProduct,
-  updateMyShopEstatePropertyById,
   updateMyShopFoodMartById,
-  // updateMyShopProductById,
-} from '../../client/clientToApiRoutes';
-// import { message } from 'antd';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router';
+} from "../../client/clientToApiRoutes";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
-//get all Specific user shop-food mart
+/****1) get all food-menu for a Specific merchant-FOOD_MART=> shop-food mart */
 export default function useMyShopFoodMartMenus(foodMartId) {
-  return useQuery(['__myshop_foodmart_menu', foodMartId], 
-  () => getShopFoodMartMenus(foodMartId), {
-    enabled: Boolean(foodMartId),
-    // staleTime: 5000,
-  });
+  return useQuery(
+    ["__myshop_foodmart_menu", foodMartId],
+    () => getShopFoodMartMenus(foodMartId),
+    {
+      enabled: Boolean(foodMartId),
+    }
+  );
 }
 
-// export function useSingleShopFoodMartMenu(slug) {
-//   if (!slug || slug === "new") {
-//     return {};
-//   }
-//   return useQuery(
-//     ['singlefoodmartmenu', slug],
-//     () => getMyShopFoodMartMenuBySlug(slug),
-//     {
-//       enabled: Boolean(slug),
-//       // staleTime: 5000,
-//     }
-//   );
-// }
+/***##########################################################################################################
+ * *1.1) get all food-menu for a Specific merchant
+ * (Note: All menu items irrespective of which "foodMart" ite belongs) so long as it belongs to merchant
+ * ###########################################################################################################
+ *  */
+export function useAuthMerchantMenus() {
+  return useQuery(
+    ["__myshop_foodmart_menu" ],
+    () => getAllMerchantOwnedMartMenus(),
+    {
+      // enabled: Boolean(),
+    }
+  );
+}
 
-//get single food mart details
+/***2) get single food-menu details */
 export function useSingleShopFoodMartMenu(slug) {
   if (!slug || slug === "new") {
     return {};
   }
   return useQuery(
-    ['singlefoodmartmenu', slug],
+    ["singlefoodmartmenu", slug],
     () => getMyShopFoodMartMenuBySlug(slug),
     {
       enabled: Boolean(slug),
-      // staleTime: 5000,
     }
   );
 }
 
-
-
-
-//create new food mart menu || store Shop FoodMart Menu
+/****3) create new food mart menu || store Shop FoodMart Menu */
 export function useAddShopFoodMartMenuMutation() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   return useMutation(
     (newFoodMart) => {
@@ -75,48 +59,39 @@ export function useAddShopFoodMartMenuMutation() {
     },
     {
       onSuccess: (data) => {
-        if (data?.data?.success && data?.data?.newMFoodMartMenu) {
-          // console.log('New ESTATEPROPERTY  Data', data);
-
-          toast.success('food mart added successfully!');
-          queryClient.invalidateQueries(['__myshop_foodmart_menu']);
-          queryClient.refetchQueries('__myshop_foodmart_menu', { force: true });
-          navigate('/foodmarts/managed-foodmerchants')
+        if (data?.data?.success) {
+          toast.success("food mart added successfully!");
+          queryClient.invalidateQueries(["__myshop_foodmart_menu"]);
+          queryClient.refetchQueries("__myshop_foodmart_menu", { force: true });
+          navigate("/foodmarts/managed-foodmerchants");
         }
       },
     },
     {
       onError: (error, rollback) => {
-        // return;
         toast.error(
           error.response && error.response.data.message
             ? error.response.data.message
             : error.message
         );
-        console.log('MutationError', error.response.data);
-        console.log('MutationError', error.data);
         rollback();
       },
     }
   );
 }
 
-//update existing property
+/****4) update a food-menu property */
 export function useFoodMartMenUpdateMutation() {
   const queryClient = useQueryClient();
 
   return useMutation(updateMyShopFoodMartById, {
     onSuccess: (data) => {
-      // console.log('Updated Producr clientController', data);
 
       if (data?.data?.success) {
-       toast.success('food mart updated successfully!!');
+        toast.success("food mart updated successfully!!");
 
-        queryClient.invalidateQueries('__myshop_foodmart_menu');
-        // queryClient.refetchQueries('__myshop_foodmart_menu', { force: true });
+        queryClient.invalidateQueries("__myshop_foodmart_menu");
       }
-
-      // navigate('/transaction-list');
     },
     onError: (error) => {
       toast.error(
@@ -124,65 +99,6 @@ export function useFoodMartMenUpdateMutation() {
           ? error.response.data.message
           : error.message
       );
-      // queryClient.invalidateQueries('__myshop_orders');
     },
   });
 }
-
-//update existing product: Pushing it for export
-// export function usePushProductForExportMutation() {
-//   const queryClient = useQueryClient();
-
-//   return useMutation(pushMyShopProductByIdToExport, {
-//     onSuccess: (data) => {
-//       console.log('push Product clientController', data);
-
-//       if (data) {
-//        toast.success('product pushed to export successfully!!');
-
-//         queryClient.invalidateQueries('__myshop_foodmart_menu');
-//         queryClient.invalidateQueries([
-//           '__myshop_foodmart_menu',
-//           '__myshop_details',
-//         ]);
-//       }
-//     },
-//     onError: (error) => {
-//       console.log('PushingExportError', error);
-//       toast.error('Error occured while pushing product!!');
-//       // toast.error(
-//       //   error.response && error.response.data.message
-//       //     ? error.response.data.message
-//       //     : error.message
-//       // );
-//     },
-//   });
-// }
-
-//update existing product: Pulling it from export
-// export function usePullProductFromExportMutation() {
-//   const queryClient = useQueryClient();
-
-//   return useMutation(pullMyShopProductByIdFromExport, {
-//     onSuccess: (data) => {
-//       console.log('Pull Product clientController', data);
-
-//       if (data) {
-//        toast.success('product pulled successfully!!');
-
-//         // queryClient.invalidateQueries('__myshop_foodmart_menu');
-//         queryClient.invalidateQueries([
-//           '__myshop_foodmart_menu',
-//           '__myshop_details',
-//         ]);
-//       }
-//     },
-//     onError: (error) => {
-//       toast.error(
-//         error.response && error.response.data.message
-//           ? error.response.data.message
-//           : error.message
-//       );
-//     },
-//   });
-// }

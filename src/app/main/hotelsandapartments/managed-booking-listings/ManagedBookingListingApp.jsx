@@ -1,4 +1,4 @@
-import { useGetMyShopAndPlan } from 'app/configs/data/server-calls/shopdetails/useShopDetails';
+// import { useGetMyShopAndPlan } from 'app/configs/data/server-calls/shopdet/ails/useShopDetails';
 import { Navigate, Outlet } from 'react-router-dom';
 
 /**
@@ -6,10 +6,10 @@ import { Navigate, Outlet } from 'react-router-dom';
  */
 function ManagedBookingListingApp() {
 
-	const {data:myshopData, isLoading} = useGetMyShopAndPlan()
-	if(myshopData?.data?.shopplan?.plankey !== 'HOTELSANDAPARTMENTS'){
-		return <Navigate to={`/shop-dashboard`} />
-	}
+	// const {data:myshopData, isLoading} = useGetMyShopAndPlan()
+	// if(myshopData?.data?.shopplan?.plankey !== 'HOTELSANDAPARTMENTS'){
+	// 	return <Navigate to={`/shop-dashboard`} />
+	// }
 
 	return <Outlet />;
 }

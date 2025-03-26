@@ -7,20 +7,14 @@ import withSlices from 'app/store/withSlices';
 import { foodmartNavigationSlice, selectNavigation } from '../store/foodmartNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
 import { useNavigate } from 'react-router';
-const AFS_FOODMART = import.meta.env.VITE_AFS_FOODMART;
 
 function FoodMartNavigation(props) {
-	const { className = '', layout = 'vertical', dense, active, merchantPlanKey } = props;
+	const { className = '', layout = 'vertical', dense, active, 
+	
+} = props;
 	const navigation = useAppSelector(selectNavigation);
 	
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const dispatch = useAppDispatch();
-
-	const navigate = useNavigate()
-
-	if(merchantPlanKey !== "FOODVENDORS"){
-		navigate('/')
-	}
 
 
 	return useMemo(() => {

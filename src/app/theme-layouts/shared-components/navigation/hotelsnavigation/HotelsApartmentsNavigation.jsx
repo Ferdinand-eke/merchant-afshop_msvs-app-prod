@@ -7,32 +7,17 @@ import withSlices from 'app/store/withSlices';
 import { bookingsNavigationSlice, selectNavigation } from '../store/bookingsNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
 import { useNavigate } from 'react-router';
-const AFS_HOTELHOMES = import.meta.env.VITE_AFS_HOTELHOMES;
 
 
 function HotelsApartmentsNavigation(props) {
-	const { className = '', layout = 'vertical', dense, active, merchantPlanKey } = props;
+	const { className = '', layout = 'vertical', dense, active,
+	
+	 } = props;
 	const navigation = useAppSelector(selectNavigation);
 	
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate()
-
-	const checkTruthy = (merchantPlanKey === "HOTELSANDAPARTMENTS")
-
-	console.log
-	console.log("merchant_Ket_Truthy", checkTruthy)
-
 	
-	useEffect(()=>{
-		if(!(merchantPlanKey === "HOTELSANDAPARTMENTS")){
-			navigate('/')
-		}
-	},[
-		merchantPlanKey,
-		"HOTELSANDAPARTMENTS",
-		navigate,
-	])
 
 	return useMemo(() => {
 

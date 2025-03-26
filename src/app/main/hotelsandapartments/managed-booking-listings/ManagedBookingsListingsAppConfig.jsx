@@ -25,6 +25,7 @@ const ManagedBookingsListingsAppConfig = {
 		layout: {}
 	},
 	
+	
 	routes: [
 		{
 			path: 'bookings',

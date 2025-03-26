@@ -7,22 +7,18 @@ import withSlices from 'app/store/withSlices';
 import { manufacturersNavigationSlice, selectNavigation } from '../store/manufacturersNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
 import { useNavigate } from 'react-router';
-const MANUFACTURER_KEY = import.meta.env.VITE_AFS_MANUFACTURERS;
 
 function ManufacturersNavigation(props) {
-	const { className = '', layout = 'vertical', dense, active, merchantPlanKey } = props;
+	const { className = '', layout = 'vertical', dense, active, 
+	
+ } = props;
 
 	const navigation = useAppSelector(selectNavigation);
 	
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const dispatch = useAppDispatch();
 
-	const navigate = useNavigate()
-
-	if(merchantPlanKey !== "MANUFACTURERS"){
-		navigate('/')
-	}
-
+	
 
 	return useMemo(() => {
 		function handleItemClick() {

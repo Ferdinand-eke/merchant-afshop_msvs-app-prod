@@ -58,8 +58,6 @@ function FoodMartProfileApp() {
           >
             <Typography
               className="flex items-center sm:mb-12"
-              // component={Link}
-              // to="/property/managed-listings"
               onClick={() => navigate(-1)}
               role="button"
               color="inherit"
@@ -152,6 +150,7 @@ function FoodMartProfileApp() {
 
           {selectedTab === 1 && <AboutTab />}
 		  {selectedTab === 2 && <TimelineTab />}
+
         
         </div>
       }
