@@ -7,6 +7,7 @@ import GithubIssuesWidget from "./ecoom-widgets/GithubIssuesWidget";
 import TaskDistributionWidget from "./ecoom-widgets/TaskDistributionWidget";
 import ScheduleWidget from "./ecoom-widgets/ScheduleWidget";
 import { Typography } from "@mui/material";
+import FuseLoading from "@fuse/core/FuseLoading";
 
 const EcommerceBoard = (props) => {
   const item = {
@@ -15,6 +16,10 @@ const EcommerceBoard = (props) => {
   };
 
   const { merchantData, isLoading } = props;
+
+  if (isLoading) {
+		return <FuseLoading />;
+	}
   return (
     <>
       <motion.div variants={item}>
@@ -47,17 +52,17 @@ const EcommerceBoard = (props) => {
           {/* <GithubIssuesWidget /> */}
         </motion.div>
         {/* <motion.div
-      variants={item}
-      className="sm:col-span-2 md:col-span-4 lg:col-span-2"
-    >
-      <TaskDistributionWidget />
-    </motion.div> */}
-        {/* <motion.div
-      variants={item}
-      className="sm:col-span-2 md:col-span-4 lg:col-span-2"
-    >
-      <ScheduleWidget />
-    </motion.div> */}
+            variants={item}
+            className="sm:col-span-2 md:col-span-4 lg:col-span-2"
+          >
+            <TaskDistributionWidget />
+          </motion.div> */}
+              {/* <motion.div
+            variants={item}
+            className="sm:col-span-2 md:col-span-4 lg:col-span-2"
+          >
+            <ScheduleWidget />
+          </motion.div> */}
       </>
     </>
   );

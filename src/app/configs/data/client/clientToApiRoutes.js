@@ -86,7 +86,7 @@ export function AuthApi() {
 
 
             return Promise.reject({
-                status: error.response?.status,
+                status: error.response?.status ? error.response?.status : 500,
                 errors: ['Oops!'],
             });
         }
