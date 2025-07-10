@@ -7,6 +7,7 @@ import clsx from 'clsx';
 
 function OrdersCreatedAndPaymentStatus(props) {
 	const {createdAt, isPaid } = props;
+	
 
 	return (
 		<>

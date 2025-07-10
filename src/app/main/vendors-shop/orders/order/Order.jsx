@@ -57,6 +57,8 @@ function Order() {
     }
   }
 
+  console.log("ORDER-ITEM", orderItem?.data?.orderItem);
+
   const theme = useTheme();
   const isMobile = useThemeMediaQuery((_theme) =>
     _theme.breakpoints.down("lg")
@@ -92,7 +94,7 @@ function Order() {
     );
   }
 
-  if (!orderItem?.data) {
+  if (!orderItem?.data?.orderItem) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -119,7 +121,7 @@ function Order() {
   return (
     <FusePageCarded
       header={
-        orderItem?.data && (
+        orderItem?.data?.orderItem && (
           <div className="flex flex-1 flex-col py-32 px-24 md:px-32">
             <motion.div
               initial={{ x: 20, opacity: 0 }}
@@ -147,10 +149,10 @@ function Order() {
               className="flex flex-col min-w-0"
             >
               <Typography className="text-20 truncate font-semibold">
-                {`Order Item ${orderItem?.data?._id}`}
+                {`Order Item ${orderItem?.data?.orderItem?._id}`}
               </Typography>
               <Typography variant="caption" className="font-medium">
-                {`From ${orderItem?.data.orderId?.shippingAddress?.fullName} `}
+                {`From ${orderItem?.data?.orderItem.order?.shippingAddress?.fullName} `}
               </Typography>
             </motion.div>
           </div>
@@ -171,19 +173,19 @@ function Order() {
             <Tab className="h-64" label="Products" />
             <Tab className="h-64" label="Invoice" />
           </Tabs>
-          {orderItem?.data && (
+          {orderItem?.data?.orderItem && (
             <div className="p-16 sm:p-24 max-w-3xl w-full">
               {tabValue === 0 && (
                 <OrderDetailsTab
-                  order={orderItem?.data}
+                  order={orderItem?.data?.orderItem}
                   isError={itemIsError}
                 />
               )}
               {tabValue === 1 && (
-                <ProductsTab order={orderItem?.data} isError={itemIsError} />
+                <ProductsTab order={orderItem?.data?.orderItem} isError={itemIsError} />
               )}
               {tabValue === 2 && (
-                <InvoiceTab order={orderItem?.data} myshopData={myshopData} />
+                <InvoiceTab order={orderItem?.data?.orderItem} myshopData={myshopData} />
               )}
             </div>
           )}

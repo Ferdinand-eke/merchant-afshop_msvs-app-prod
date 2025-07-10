@@ -318,12 +318,12 @@ export const myShopOrderByShopId = (id) =>
   AuthApi().get(`/api/myshop/find-one-order/${id}`); //newDashboard
 
 export const GetShopItemsInOrders = () =>
-  AuthApi().get(`/api/myshop/items-in-orders`); //newDashboard
+  AuthApi().get(`/merchant-orders/orderitems`); //newDashboard // (Msvs => Done)
 
 export const myShopItemsInOrdersByShopId = (id) =>{
   // console.log('ID_TO_FIND1', id)
 
-  return AuthApi().get(`/api/myshop/find-one-orderitems/${id}`); //newDashboard
+  return AuthApi().get(`/merchant-orders/order-item/${id}/view`); //newDashboard (Msvs => Done)
 }
   
 

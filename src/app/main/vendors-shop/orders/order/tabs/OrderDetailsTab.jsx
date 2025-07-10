@@ -94,23 +94,23 @@ function OrderDetailsTab({ order, isError }) {
                   <td>
                     <div className="flex items-center">
                       <Avatar
-                        src={order?.orderId?.shippingAddress?.fullName.charAt(
+                        src={order?.order?.shippingAddress?.fullName.charAt(
                           0
                         )}
                       />
                       <Typography className="truncate mx-8">
-                        {`${order?.orderId?.shippingAddress?.fullName} `}
+                        {`${order?.order?.shippingAddress?.fullName} `}
                       </Typography>
                     </div>
                   </td>
                   <td>
                     <Typography className="truncate">
-                      {order?.orderId?.shippingAddress?.prefContact}
+                      {order?.order?.shippingAddress?.prefContact}
                     </Typography>
                   </td>
                   <td>
                     <Typography className="truncate">
-                      {order?.orderId?.shippingAddress?.phone}
+                      {order?.order?.shippingAddress?.phone}
                     </Typography>
                   </td>
                 </tr>
@@ -135,7 +135,7 @@ function OrderDetailsTab({ order, isError }) {
               </AccordionSummary>
               <AccordionDetails className="flex flex-col md:flex-row">
                 <Typography className="w-full md:max-w-256 mb-16 md:mb-0 mx-8 text-16">
-                  {order?.orderId?.shippingAddress?.address}
+                  {order?.order?.shippingAddress?.address}
                 </Typography>
                 {/* <div className="w-full h-320 rounded-16 overflow-hidden mx-8">
 									<GoogleMap
@@ -175,7 +175,7 @@ function OrderDetailsTab({ order, isError }) {
               <AccordionDetails className="flex flex-col md:flex-row -mx-8">
                 <Typography className="w-full md:max-w-256 mb-16 md:mb-0 mx-8 text-16">
              
-                  {order?.orderId?.shippingAddress?.address}
+                  {order?.order?.shippingAddress?.address}
                 </Typography>
                 {/* <div className="w-full h-320 rounded-16 overflow-hidden mx-8">
                   <GoogleMap
@@ -235,19 +235,19 @@ function OrderDetailsTab({ order, isError }) {
             <tbody>
                 <tr>
                   <td>
-                    <span className="truncate">{order?.orderId?._id}</span>
+                    <span className="truncate">{order?.order?._id}</span>
                   </td>
                   <td>
-                    <span className="truncate">Africanshops Express,{order?.orderId?.shippingMethod}</span>
+                    <span className="truncate">Africanshops Express,{order?.order?.shippingMethod}</span>
                   </td>
                   <td>
-                    <span className="truncate">{order?.orderId?.shipmentWeight}</span>
+                    <span className="truncate">{order?.order?.shipmentWeight}</span>
                   </td>
                   <td>
-                    <span className="truncate">NGN {formatCurrency(order?.orderId?.shippingfee || 2000)}</span>
+                    <span className="truncate">NGN {formatCurrency(order?.order?.shippingfee || 2000)}</span>
                   </td>
                   <td>
-                    <span className="truncate">{new Date(order?.orderId?.shippedAt)?.toDateString()} </span>
+                    <span className="truncate">{new Date(order?.order?.shippedAt)?.toDateString()} </span>
                   </td>
                 </tr>
 
@@ -281,37 +281,37 @@ function OrderDetailsTab({ order, isError }) {
               <TableRow>
                 <TableCell>
                   <OrdersCreatedAndPaymentStatus
-                    createdAt={order?.orderId?.createdAt}
-                    isPaid={order?.orderId?.isPaid}
+                    createdAt={order?.order?.createdAt}
+                    isPaid={order?.order?.isPaid}
                   />
                 </TableCell>
                 <TableCell>
-                  {/* {order?.orderId?.createdAt} */}
-                  {new Date(order?.orderId?.createdAt)?.toDateString()}
+                  {/* {order?.order?.createdAt} */}
+                  {new Date(order?.order?.createdAt)?.toDateString()}
                   </TableCell>
               </TableRow>
 
-              {order?.orderId?.isPaid && (
+              {order?.order?.isPaid && (
                 <>
                   <TableRow>
                     <TableCell>
-                      <OrdersPackedStatus isPacked={order?.orderId?.isPacked} />
+                      <OrdersPackedStatus isPacked={order?.order?.isPacked} />
                     </TableCell>
                     <TableCell>
-                      {/* {order?.orderId?.packedAt} */}
-                      {new Date(order?.orderId?.packedAt)?.toDateString()}
+                      {/* {order?.order?.packedAt} */}
+                      {new Date(order?.order?.packedAt)?.toDateString()}
                       </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell>
                       <OrdersShipmentStatus
-                        isShipped={order?.orderId?.isShipped}
+                        isShipped={order?.order?.isShipped}
                       />
                     </TableCell>
                     <TableCell>
-                    {new Date(order?.orderId?.shippedAt)?.toDateString()}
-                      {/* {order?.orderId?.shippedAt} */}
+                    {new Date(order?.order?.shippedAt)?.toDateString()}
+                      {/* {order?.order?.shippedAt} */}
                       </TableCell>
                   </TableRow>
 
@@ -319,23 +319,23 @@ function OrderDetailsTab({ order, isError }) {
                     <TableCell>
                       <OrdersArrivalStatus
                         hasArrivedWarehouse={
-                          order?.orderId?.hasArrivedWarehouse
+                          order?.order?.hasArrivedWarehouse
                         }
                       />
                     </TableCell>
                     <TableCell>
-                    {new Date(order?.orderId?.arrivedWarehouseAt)?.toDateString()}
-                      {/* {order?.orderId?.arrivedWarehouseAt} */}
+                    {new Date(order?.order?.arrivedWarehouseAt)?.toDateString()}
+                      {/* {order?.order?.arrivedWarehouseAt} */}
                       </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell>
                       <OrdersDeliveryStatus
-                        isDelivered={order?.orderId?.isDelivered}
+                        isDelivered={order?.order?.isDelivered}
                       />
                     </TableCell>
-                    <TableCell>{new Date(order?.orderId?.deliveredAt)?.toDateString()}</TableCell>
+                    <TableCell>{new Date(order?.order?.deliveredAt)?.toDateString()}</TableCell>
                   </TableRow>
                 </>
               )}
@@ -386,11 +386,11 @@ function OrderDetailsTab({ order, isError }) {
               <tr>
                 <td>
                   <span className="truncate">
-                    {order?.orderId?._id}
+                    {order?.order?.id}
                   </span>
                 </td>
                 <td>
-                  <span className="truncate">{order?.orderId?.paymentMethod}</span>
+                  <span className="truncate">{order?.order?.paymentMethod}</span>
                 </td>
 				<td>
                   <span className="truncate">{order?.quantity}</span>

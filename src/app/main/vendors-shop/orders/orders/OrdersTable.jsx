@@ -19,26 +19,27 @@ function OrdersTable() {
   const { data: shopOrderItems, isLoading: shopOrderItemsIsLoading, isError } =
     useShopItemsInOrders();
 
-  
+
+  console.log("SHOP-ORDER-ITEMS", shopOrderItems?.data?.merchantOrders);
 
   const columns = useMemo(
     () => [
-      {
-        accessorKey: "_id",
-        header: "Reference",
-        size: 25,
-        Cell: ({ row }) => (
-          <Typography
-            component={Link}
-            to={`/shoporders-list/orders/${row.original._id}/item`}
-            className="underline"
-            color="secondary"
-            role="button"
-          >
-            {row.original._id}
-          </Typography>
-        ),
-      },
+      // {
+      //   accessorKey: "id",
+      //   header: "Reference",
+      //   size: 25,
+      //   Cell: ({ row }) => (
+      //     <Typography
+      //       component={Link}
+      //       to={`/shoporders-list/orders/${row.id}/item`}
+      //       className="underline"
+      //       color="secondary"
+      //       role="button"
+      //     >
+      //       {row.original._id}
+      //     </Typography>
+      //   ),
+      // },
       {
 		accessorKey: "product",
         header: "Product",
@@ -82,7 +83,7 @@ function OrdersTable() {
       },
       {
         id: "customer",
-        accessorFn: (row) => `${row?.orderId?.shippingAddress?.fullName} `,
+        accessorFn: (row) => `${row?.order?.shippingAddress?.fullName} `,
         header: "Customer",
       },
       {
@@ -103,7 +104,7 @@ function OrdersTable() {
         id: 'payment',
         accessorFn: (row) => <OrdersCreatedAndPaymentStatus 
         createdAt={row?.createdAt}
-        isPaid={row?.orderId?.isPaid} />,
+        isPaid={row?.order?.isPaid} />,
         accessorKey: 'isPaid',
         header: 'Payment Status'
       },
@@ -121,11 +122,11 @@ function OrdersTable() {
   
 
   const rows = [];
-	shopOrderItems?.data?.shopMerchantItemsInOrders &&
-  shopOrderItems?.data?.shopMerchantItemsInOrders?.forEach((item) => {
+	shopOrderItems?.data?.merchantOrders &&
+  shopOrderItems?.data?.merchantOrders?.forEach((item) => {
       rows.push({
-        id: item?._id,
-        name: item?.orderId?.shippingAddress?.fullName,
+        id: item?.id,
+        name: item?.order?.shippingAddress?.fullName,
         featuredImageId:item?.image,
 
         quantity: item?.quantity,
@@ -133,7 +134,7 @@ function OrdersTable() {
         price: item?.price,
 
         status: item.isPaid,
-        isPaid: item?.orderId?.isPaid,
+        isPaid: item?.order?.isPaid,
         createdAt: item.createdAt,
       });
     });
@@ -160,7 +161,7 @@ function OrdersTable() {
     );
   }
 
-  if (!shopOrderItems?.data?.shopMerchantItemsInOrders) {
+  if (!shopOrderItems?.data?.merchantOrders) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -195,14 +196,14 @@ function OrdersTable() {
             pageSize: 20,
           },
         }}
-        data={shopOrderItems?.data?.shopMerchantItemsInOrders}
+        data={shopOrderItems?.data?.merchantOrders}
         columns={columns}
         rows={rows}
         renderRowActionMenuItems={({ closeMenu, row, table }) => [
           <MenuItem
             key={0}
             component={Link}
-            to={`/shoporders-list/orders/${row.original._id}/item`}
+            to={`/shoporders-list/orders/${row.original.id}/item`}
           >
             <ListItemIcon>
               <FuseSvgIcon>heroicons-outline:trash</FuseSvgIcon>
