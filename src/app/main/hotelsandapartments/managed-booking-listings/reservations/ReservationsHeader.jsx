@@ -16,7 +16,7 @@ function ReservationsHeader() {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Manage Bookings Reservations</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">**Manage Bookings Reservations</Typography>
 				
 			</motion.span>
 

@@ -18,6 +18,7 @@ function ReservationsOfBookedProperties() {
 			<div className="w-full h-full container flex flex-col">
 				<ReservationsHeader />
 				
+				
 				<ReservationsTable />
 				
 				

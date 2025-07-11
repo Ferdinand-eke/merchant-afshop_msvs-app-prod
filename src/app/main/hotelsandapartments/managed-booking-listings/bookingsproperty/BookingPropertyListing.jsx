@@ -27,12 +27,32 @@ import { useSingleShopBookingsProperty } from 'app/configs/data/server-calls/hot
  * Form Validation Schema
  */
 const schema = z.object({
-	title: z.string().nonempty('You must enter a property name').min(5, 'The property title must be at least 5 characters'),
-	propertyCountry: z.string().nonempty("Country is required"),
-	propertyState: z.string().nonempty("State is required"),
-	propertyLga: z.string().nonempty("L.G.A/County is required"),
-	// price: z.number(),
+	title: z.string().min(5, 'The property title must be at least 5 characters'),
+	propertyCountry: z.string(),
+	propertyState: z.string(),
+	propertyLga: z.string(),
+	// images : z.array().nullable()
+	latitude: z.string(),
+	longitude: z.string(),
+	
 	// z.number().safe(),
+
+	// roomCount: z.string(),
+	// guestCount: z.string(),
+	// bathroomCount: z.string(),
+	// sittingroomCount: z.string().optional(),
+	
+
+	
+	// images: z.string().array(),
+
+	// price: z.string(),
+	// listprice: z.number(),
+	// bookingPeriod: z.string(),
+	// isRentIndividualRoom: z.boolean()
+
+
+	
 
 });
 
@@ -54,39 +74,35 @@ function BookingPropertyListing() {
 		skip: !productId || productId === 'new'
 	});
 
-	console.log("SINGLE-BOOKING", propertyList?.data)
+	console.log("PropertyList", propertyList?.data?.bookingList?.bookingList);
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {
-			title: '',
-			category: '',
-            guestCount: 0,
             roomCount: 0,
             sittingroomCount: 0,
             price: 0,
            
-            description: '',
-            // servicetypeId: '',
-            // proptypeId: '',
 		},
 		resolver: zodResolver(schema)
 	});
 	const { reset, watch } = methods;
 	const form = watch();
+
 	useEffect(() => {
 		if (productId === 'new') {
 			reset(ProductModel({}));
 		}
 	}, [productId, reset]);
+
+
 	useEffect(() => {
-		if (propertyList?.data) {
-			reset({ ...propertyList?.data });
+		if (propertyList?.data?.bookingList) {
+			reset({ ...propertyList?.data?.bookingList });
 		}
 	}, [propertyList, reset]);
 
-	// console.log("EstatePropertyData", propertyList?.data)
 
 	/**
 	 * Tab Change
@@ -130,9 +146,9 @@ function BookingPropertyListing() {
 	}
 
 	/**
-	 * Wait while propertyList data is loading and form is setted
+	 * Wait while propertyList data is loading and form is setted 
 	 */
-	if (_.isEmpty(form) || (propertyList?.data && routeParams.productId !== propertyList?.data?.slug && routeParams.productId !== 'new')) {
+	if (_.isEmpty(form) || (propertyList?.data?.bookingList && routeParams.productId !== propertyList?.data?.bookingList?.slug && routeParams.productId !== 'new')) {
 		return <FuseLoading />;
 	}
 

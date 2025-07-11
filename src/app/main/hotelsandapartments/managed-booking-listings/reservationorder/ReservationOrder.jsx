@@ -34,6 +34,7 @@ function ReservationOrder() {
 	const {data:reservationItem, isLoading:reservationIsLoading, isError:reservationIsError} = useFindMerchantSingleReservation(reservationId, {
 		skip: !reservationId
 	});
+
 	
 	useEffect(() => {
 	  if (reservationId) {
@@ -56,6 +57,7 @@ function ReservationOrder() {
 	  }
 	}
 
+console.log("MyShop", myshopData)
 
 	const theme = useTheme();
 	const isMobile = useThemeMediaQuery((_theme) => _theme.breakpoints.down('lg'));
@@ -91,6 +93,10 @@ function ReservationOrder() {
 		);
 	}
 
+	// console.log("RESERVATION-ITEM", reservationItem?.data?.reservationBooked);
+
+	// console.log("USER-IN-RESERVATION", reservationItem?.data?.userInReservedBooking?.user);
+
 	
 	return (
 		<FusePageCarded
@@ -123,13 +129,13 @@ function ReservationOrder() {
 							className="flex flex-col min-w-0"
 						>
 							<Typography className="text-20 truncate font-semibold">
-								{`Reservation Item ${reservationItem?.data?._id}`}
+								{`Reservation Reference: ${reservationItem?.data?.reservationBooked?.reservation?.paymentResult?.reference}`}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{`Expectant Guest:  ${reservationItem?.data?.userCreatorId?.name} `}
+								{`Expectant Guest:  ${reservationItem?.data?.userInReservedBooking?.user?.name} `}
 							</Typography>
 						</motion.div>
 					</div>
@@ -161,9 +167,9 @@ function ReservationOrder() {
 					</Tabs>
 					{reservationItem?.data && (
 						<div className="p-16 sm:p-24 max-w-3xl w-full">
-							{tabValue === 0 && <OrderDetailsTab reservation={reservationItem?.data} isError={reservationIsError}/>}
+							{tabValue === 0 && <OrderDetailsTab reservation={reservationItem?.data?.reservationBooked?.reservation} isError={reservationIsError}/>}
 							{/* {tabValue === 1 && <ProductsTab order={reservationItem?.data} isError={reservationIsError}/>} */}
-							{tabValue === 1 && <InvoiceTab order={reservationItem?.data} myshopData={myshopData}/>}
+							{tabValue === 1 && <InvoiceTab order={reservationItem?.data?.reservationBooked?.reservation} myshopData={myshopData?.merchant}/>}
 						</div>
 					)}
 				</>

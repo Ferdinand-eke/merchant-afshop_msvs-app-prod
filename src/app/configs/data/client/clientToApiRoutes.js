@@ -52,24 +52,18 @@ export function AuthApi() {
         /*****************Previous for Here starts  ends*/
 
         // headers: { accesstoken: `${token}` },
-        headers: { shoparccreed: `Bearer ${token}` },
+        // headers: { shoparccreed: `Bearer ${token}` },
+
+        headers: { shoparccreed: `${token}` },
     });
 
     Api.interceptors.response.use(
         (response) => response,
         (error) => {
-            // if (error?.response?.status === 403) {
-            //     // logOutUser();
-
-            //     return Promise.reject({
-            //         status: 401,
-            //         errors: ['Unauthorized'],
-            //     });
-            // }
 
             if (error?.response?.status === 403) {
                 let errors = Object.values(error?.response?.data?.errors || {});
-                merchantLogOutCall();
+                // merchantLogOutCall();
 
                 return Promise.reject({
                     status: 403,
@@ -97,7 +91,7 @@ export function AuthApi() {
 
 export const merchantSignIn = (formData) => {
     console.log('DATA_IN_FORM', formData)
-    return Api().post(`/api/shop/login`, formData)
+    return Api().post(`/auth-merchant/login`, formData)
 }
 
 export const shopForgotPasswordInit = (formData) => {
@@ -260,10 +254,14 @@ export const getJustMyShopDetails = () =>
   export const getMinimizedJustMyShopDetails = () =>
   AuthApi().get('/api/myshop/get-minimized-just-details');
 
-export const getJustMyShopDetailsAndPlan = () =>
-  AuthApi().get('/api/myshop/get-just-details/plan');
+export const getJustMyShopDetailsAndPlan = (queryParam) => {
+//?queryAllData=${queryParam}
+// console.log("PARAM", queryParam)
+  return AuthApi().get(`/auth-merchant/myshop/get-just-details/plan`); //* (Msvs => Done)
+}
+  
 
-export const getMyShopDetails = () => AuthApi().get('/api/myshop/get-details'); //*
+export const getMyShopDetails = () => AuthApi().get('/auth-merchant/myshop/get-just-details/plan'); 
 
 export const getMyOtherShopsList = () =>
   AuthApi().get('/api/myshop/get-my-other-shops'); 
@@ -309,7 +307,6 @@ export const withdrawFromMyShopNow = (productFormData) =>
 // {===============================user shop transferlogs handling ends=======================================}
 export const getMyShopTransactionsLogs = () =>
   AuthApi().get('/api/myshop/get-myshop-transfertransactions');
-
 
 
 // {===============================shop orders handling starts=======================================}
@@ -382,10 +379,8 @@ export const storePreShopUserData = (formData) =>
 // {===============================shop estate property handling starts=======================================}
 export const getShopEstateProperties = () => AuthApi().get('/api/myshop/get-my-estate-properties'); //newDashboard
 
-
 export const storeShopEstateProperty = (formData) =>
   AuthApi().post('/api/myshop/create-estate-property', formData);
-
 
 export const getMyShopEstatePropertyBySlug = (id) =>
   AuthApi().get(`/api/myshop-estateproperty/${id}`);
@@ -395,8 +390,6 @@ export const updateMyShopEstatePropertyById = (productFormData ) =>
     `/api/myshop/update-estateproperty/${productFormData?._id}`,
     productFormData
   );
-
-
 export const deleteShopEstateProperty = (id) =>
   AuthApi().delete(`/myshop/delete-estateproperty/${id}`);
 // {===============================shop estate handling ends   =======================================}
@@ -412,13 +405,14 @@ export const deleteShopEstateProperty = (id) =>
  * ############################################################################################
  */
 // {===============================shop estate property handling starts=======================================}
-export const getShopBookingsProperties = () => AuthApi().get('/api/myshop/get-my-booking-properties'); //newDashboard
+export const getShopBookingsProperties = () => AuthApi().get('/bookings/get-merchant-bookings'); //(Msvs => Done)
+
 
 export const storeShopBookingsProperty = (formData) =>
   AuthApi().post('/api/myshop/create-booking-property', formData);
 
 export const getMyShopBookingsPropertyBySlug = (id) =>
-  AuthApi().get(`/api/myshop-bookingproperty/${id}`);
+  AuthApi().get(`/bookings/merchant-listing/${id}/view`); //(Msvs => )
 
 export const updateMyShopBookingsPropertyById = (productFormData ) =>
   AuthApi().put(
@@ -430,10 +424,10 @@ export const deleteShopBookingsProperty = (id) =>
   AuthApi().delete(`/myshop/delete-bookingproperty/${id}`);
 
 
-  /****Reservations */ 
-  export const getShopBookingsReservationsApi = () => AuthApi().get('/api/myshop/merchant-homes/get-my-reservations'); //newDashboard
-  export const getShopSealedBookingsReservationsApi = () => AuthApi().get('/api/myshop/merchant-homes/get-my-sealed-reservations'); //newDashboard
-  export const getSingleMerchantReservationApi = (reservationId) => AuthApi().get(`/api/myshop/merchant-homes/get-my-reservations/${reservationId}`);
+  /****Reservations */ //reservations/get-merchant-reservations
+  export const getShopBookingsReservationsApi = () => AuthApi().get('/reservations/get-merchant-reservations'); //newDashboard (Msvs => Done)
+  export const getShopSealedBookingsReservationsApi = () => AuthApi().get('/reservations/get-merchant-sealed-reservations'); //newDashboard //(Msvs : => :)
+  export const getSingleMerchantReservationApi = (reservationId) => AuthApi().get(`/reservations/merchant-reservation/${reservationId}/view`);
   export const merchantCheckInGuestReservations = (id) => AuthApi().put(`/api/myshop/merchant-homes/checkin-guest-reservation/${id}`);
   export const merchantCheckOutGuestReservations = (id) => AuthApi().put(`/api/myshop/merchant-homes/checkout-guest-reservation/${id}`);
   export const merchantCashOutReservationEarning = (id) => {

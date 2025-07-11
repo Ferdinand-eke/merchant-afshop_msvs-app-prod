@@ -24,6 +24,7 @@ const AfricanshopsFinanceDashboardAppConfig = {
 			// element: <FinanceDashboardApp />
 		}
 	],
+	
 	// routes: [
 	// 	{
 	// 		path: 'shopproducts-list',

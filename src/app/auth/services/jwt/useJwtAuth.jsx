@@ -13,3 +13,4 @@ function UseJwtAuth() {
 }
 
 export default UseJwtAuth;
+

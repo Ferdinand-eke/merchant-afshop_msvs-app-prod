@@ -31,7 +31,6 @@ const defaultAuthContext = {
 
 export const JwtAuthContext = createContext(defaultAuthContext);
 
-
 function JwtAuthProvider(props) {
   /**
 	 * Handle set authenticated boolean status starts
@@ -232,6 +231,7 @@ function JwtAuthProvider(props) {
       if (isTokenValid(accessToken)) {
         try {
           setIsLoading(true);
+          
           const response = await axios.get(
             config.getAuthAdminInBravortAdminUrl,
             {
@@ -246,9 +246,8 @@ function JwtAuthProvider(props) {
             // role:response?.data?.user?.role.toLowerCase(),
             role: "merchant",
             shopplan: response?.data?.user?.shopplan,
-            // name:response?.data?.user?.name,
-            // name:response?.data?.user?.name,
           };
+
           // const userData = transFormedUser;
           // console.log("GETING-AUTHENTICATED-USER", userData)
           handleSignInSuccess(transFormedUser, accessToken);
@@ -305,6 +304,7 @@ function JwtAuthProvider(props) {
   ) => {
     try {
       setLoginIsLoading(true)
+      
 			adminLogIn.mutate(data)
 			setLoginIsLoading(false)
       

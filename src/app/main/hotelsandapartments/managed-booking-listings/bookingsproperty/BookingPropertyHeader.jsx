@@ -34,16 +34,21 @@ function BookingPropertyHeader() {
 	const updateBookingsProperty = useBookingsPropertyUpdateMutation()
 
 	function handleSaveProduct() {
+		console.log("BOOKING_PROP_DETAILS", getValues())
+		return
 		updateBookingsProperty.mutate(getValues());
 	}
 
 	function handleCreateProduct() {
+		console.log("BOOKING_PROP_DETAILS", getValues())
+
+		return
 		addBookingsProperty.mutate(getValues())
 	}
 
 
-	function handleRemoveProduct() {
-		console.log("Deleting UpdateEstateProperty-Values", getValues())
+	function handleRemoveListing() {
+		console.log("Deleting BookingProperty_List-Values", getValues())
 	
 	}
 
@@ -119,7 +124,7 @@ function BookingPropertyHeader() {
 							className="whitespace-nowrap mx-4"
 							variant="contained"
 							color="secondary"
-							onClick={handleRemoveProduct}
+							onClick={handleRemoveListing}
 							startIcon={<FuseSvgIcon className="hidden sm:flex">heroicons-outline:trash</FuseSvgIcon>}
 						>
 							Remove
@@ -128,8 +133,11 @@ function BookingPropertyHeader() {
 							className="whitespace-nowrap mx-4"
 							variant="contained"
 							color="secondary"
-							disabled={_.isEmpty(dirtyFields) || !isValid
-							|| updateBookingsProperty.isLoading
+							disabled={
+								_.isEmpty(dirtyFields) 
+								|| !isValid
+							|| 
+							updateBookingsProperty.isLoading
 							}
 							onClick={handleSaveProduct}
 						>
@@ -141,9 +149,7 @@ function BookingPropertyHeader() {
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid  
-						|| addBookingsProperty.isLoading
-						}
+						disabled={_.isEmpty(dirtyFields) || !isValid  || addBookingsProperty.isLoading }
 						onClick={handleCreateProduct}
 					>
 						Add Bookings|Property
@@ -152,6 +158,7 @@ function BookingPropertyHeader() {
 			</motion.div>
 			
 		</div>
+
 	);
 }
 

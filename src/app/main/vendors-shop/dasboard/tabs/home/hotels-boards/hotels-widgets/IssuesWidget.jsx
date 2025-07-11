@@ -8,7 +8,7 @@ import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
  * The IssuesWidget widget.
  */
 function IssuesWidget(props) {
-	const {reservationsData} = props
+	const {reservationsCount} = props
   return (
     <Paper className="flex flex-col flex-auto shadow rounded-2xl overflow-hidden">
       <div className="flex items-center justify-between px-8 pt-12">
@@ -25,7 +25,7 @@ function IssuesWidget(props) {
       <div className="text-center mt-8">
         <Typography className="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500"></Typography>
         <Typography className="text-lg font-medium text-amber-600">
-		{reservationsData?.length}
+		{reservationsCount}
 		
           
         </Typography>
@@ -35,7 +35,7 @@ function IssuesWidget(props) {
         color="text.secondary"
       >
         <span className="truncate">Existing Reservations</span>:
-        <b className="px-8">{reservationsData?.length}</b>
+        <b className="px-8">{reservationsCount}</b>
       </Typography>
     </Paper>
   );

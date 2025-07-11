@@ -13,32 +13,31 @@ export function useShopAdminLogin() {
   // const navigate = useNavigate();
   return useMutation(merchantSignIn, {
     onSuccess: (data) => {
-      console.log("userFromAuthentication", data?.data?.data);
-      console.log("tokenFromAuthentication", data?.data?._nnip_shop_ASHP_ALOG);
+      console.log("userFromAuthentication", data?.data?.user);
+      // console.log("tokenFromAuthentication", data?.data?.merchantAccessToken);
+      console.log("tokenFromAuthentication", data?.data?.merchantAccessToken);
 
       //  return
-      if (data?.data?.data && data?.data?._nnip_shop_ASHP_ALOG) {
+      if (data?.data?.user && data?.data?.merchantAccessToken) {
         /**============================================================================== */
 
         const transFormedUser = {
-          id: data?.data?.data?._id,
-          name: data?.data?.data?.shopname,
-          email: data?.data?.data?.shopemail,
+          id: data?.data?.user?._id,
+          name: data?.data?.user?.shopname,
+          email: data?.data?.user?.shopemail,
           role: "merchant",
 
-          isAdmin: data?.data?.data?.isAdmin,
-          avatar: data?.data?.data?.avatar,
+          isAdmin: data?.data?.user?.isAdmin,
+          avatar: data?.data?.user?.avatar,
         };
-
-        // setSession(_nnip_shop_ASHP_ALOG);   
-        if (data?.data?._nnip_shop_ASHP_ALOG) {
-          localStorage.setItem(config.tokenStorageKey, data?.data?._nnip_shop_ASHP_ALOG);
+ 
+        if (data?.data?.merchantAccessToken) {
+          localStorage.setItem(config.tokenStorageKey, data?.data?.merchantAccessToken);
           // axios.defaults.headers.common.Authorization = `Bearer ${_nnip_shop_ASHP_ALOG}`;
-          axios.defaults.headers.common.accessToken = `${data?.data?._nnip_shop_ASHP_ALOG}`;
+          axios.defaults.headers.common.accessToken = `${data?.data?.merchantAccessToken}`;
         }
 
-        // setIsAuthenticated(setIsAthenticatedStorage(_nnip_shop_ASHP_ALOG));
-        if (isTokenValid(data?.data?._nnip_shop_ASHP_ALOG)) {
+        if (isTokenValid(data?.data?.merchantAccessToken)) {
           localStorage.setItem(config.isAuthenticatedStatus, true);
         } else {
           localStorage.setItem(config.isAuthenticatedStatus, false);
@@ -52,7 +51,7 @@ export function useShopAdminLogin() {
        
 
         // return;
-      } else if (data) {
+      } else if (data.data?.error) {
         console.log("LoginError22_", data.data);
 
         Array.isArray(data?.data?.message)

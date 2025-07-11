@@ -1,4 +1,4 @@
-import { MenuItem, Select, Typography } from "@mui/material";
+import { Button, MenuItem, Select, Typography } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import {
@@ -6,15 +6,40 @@ import {
   calculateShopEarnings,
 } from "app/configs/Calculus";
 import { Controller, useFormContext } from "react-hook-form";
+import { useTheme } from '@mui/material/styles';
+import { motion } from 'framer-motion';
+import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
+import { useParams } from "react-router";
+import { useEffect, useState } from "react";
 
 /**
  * The pricing tab.
  */
 function PricingTabProperty({ shopData }) {
+  const routeParams = useParams();
+	const { productId } = routeParams;
+  // const methods = useFormContext();
+	// const { formState, watch, getValues } = methods;
+	
+	const theme = useTheme();
+
   const methods = useFormContext();
   const { control, formState, watch, getValues } = methods;
-  //   const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const [addRoomsDiv, setAddRoomsDiv] = useState(getValues()?.isRentIndividualRoom)
 
+  useEffect(() => {
+    if(getValues()?.isRentIndividualRoom){
+      setAddRoomsDiv(true)
+    }else{
+      setAddRoomsDiv(false)
+    }
+
+  },[getValues()?.isRentIndividualRoom])
+  // const detectChange =
+
+
+// console.log("rentinINdividual_ROom", getValues()?.isRentIndividualRoom)
   return (
     <div>
       <div className="flex -mx-4">
@@ -60,27 +85,7 @@ function PricingTabProperty({ shopData }) {
           )}
         />
 
-        {/* <Controller
-          name="priceCommissionIncl"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className="mt-8 mb-16 mx-4"
-              label="Commission Included Price"
-              id="priceCommissionIncl"
-              disabled
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">$</InputAdornment>
-                ),
-              }}
-              type="number"
-              variant="outlined"
-              fullWidth
-            />
-          )}
-        /> */}
+       
       </div>
       
 
@@ -129,8 +134,6 @@ function PricingTabProperty({ shopData }) {
           Booking Period
         </Typography>
         <Controller
-          // control={control}
-          // name="propertyLga"
           name={`bookingPeriod`}
           control={control}
           defaultValue={[]}
@@ -183,91 +186,8 @@ function PricingTabProperty({ shopData }) {
         />
       </div>
 
-      {/* <Controller
-        name="priceTaxExcl"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className="mt-8 mb-16"
-            label="Tax Excluded Price"
-            id="priceTaxExcl"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
-            type="number"
-            variant="outlined"
-            autoFocus
-            fullWidth
-          />
-        )}
-      />
-
-      <Controller
-        name="priceTaxIncl"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className="mt-8 mb-16"
-            label="Tax Included Price"
-            id="priceTaxIncl"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
-            type="number"
-            variant="outlined"
-            fullWidth
-          />
-        )}
-      />
-
-      <Controller
-        name="taxRate"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className="mt-8 mb-16"
-            label="Tax Rate"
-            id="taxRate"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
-            type="number"
-            variant="outlined"
-            fullWidth
-          />
-        )}
-      />
-
-      <Controller
-        name="comparedPrice"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className="mt-8 mb-16"
-            label="Compared Price"
-            id="comparedPrice"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
-            type="number"
-            variant="outlined"
-            fullWidth
-            helperText="Add a compare price to show next to the real price"
-          />
-        )}
-      /> */}
+     
+     
     </div>
   );
 }

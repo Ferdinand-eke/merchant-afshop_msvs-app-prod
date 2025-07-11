@@ -61,6 +61,7 @@ function NavbarStyle1() {
 					{/* {user?.role?.toString() === 'merchant' && <NavbarStyle1Content />} */}
 				</StyledNavBar>}
 				
+				
 			</Hidden>
 
 			<Hidden lgUp>

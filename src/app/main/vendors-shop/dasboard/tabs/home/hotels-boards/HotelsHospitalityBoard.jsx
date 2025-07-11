@@ -13,6 +13,11 @@ import useMyPropertiesReservations from 'app/configs/data/server-calls/hotelsand
 
 const HotelsHospitalityBoard = (props) => {
   const {data:reservations, isLoading:reserveLoading} = useMyPropertiesReservations()
+
+  // console.log("RESRVATIONS", reservations?.data)
+
+
+
   const item = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
@@ -23,15 +28,16 @@ const { merchantData, isLoading} = props
     <>
     <motion.div variants={item}>
       <SummaryWidget
-        shopData={merchantData?.data}
+        hosMerchantData={merchantData}
         isLoading={isLoading}
       />
     </motion.div>
    
     <motion.div variants={item}>
       <IssuesWidget
-      reservationsData={reservations?.data?.data}
+      reservationsCount={reservations?.data?.count}
       />
+
     </motion.div>
 
   
@@ -40,6 +46,7 @@ const { merchantData, isLoading} = props
       <FeaturesWidget
       />
     </motion.div>
+    
 
       <motion.div variants={item}>
       <OverdueWidget

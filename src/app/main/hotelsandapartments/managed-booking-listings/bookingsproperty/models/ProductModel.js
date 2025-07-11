@@ -4,28 +4,12 @@ import _ from '@lodash';
  */
 const ProductModel = (data) =>
 	_.defaults(data || {}, {
-		id: _.uniqueId('product-'),
-		// name: '',
-		// handle: '',
-		description: '',
-		categories: [],
-		tags: [],
-		featuredImageId: '',
+		// id: _.uniqueId('product-'),
+		title: '',
+		// description: '',
 		images: [],
-		// priceTaxExcl: 0,
-		// priceTaxIncl: 0,
-		taxRate: 0,
-		// comparedPrice: 0,
-		// quantity: 0,
-		// sku: '',
-		width: '',
-		// height: '',
-		length: '',
-		// weight: '',
-		// extraShippingFee: 0,
-		price: '',
-		active: true,
-		image: '',
-		total: ''
+		// width: '',
+		// length: '',
+		// price: '',
 	});
 export default ProductModel;

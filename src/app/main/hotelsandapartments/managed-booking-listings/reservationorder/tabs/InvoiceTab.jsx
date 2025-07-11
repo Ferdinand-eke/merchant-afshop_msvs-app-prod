@@ -12,7 +12,6 @@ import {
   calculateCompanyEarnings,
   calculateShopEarnings,
 } from "app/configs/Calculus";
-// import { useCashoutShopOrderItemsEarnings } from "app/configs/data/server-calls/orders/useShopOrders";
 import { Button } from "@mui/material";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import { motion } from 'framer-motion';
@@ -71,7 +70,6 @@ function InvoiceTab(props) {
   const handleEarningsCashOut = async () => {
     if (window.confirm("Cash out ernings?")) {
       try {
-        // checkOutGuestReservation.mutate(reservation?._id);
         cashingOutOrderItemSales(order?._id)
       } catch (error) {
         toast.error(error);
@@ -83,11 +81,11 @@ function InvoiceTab(props) {
   
   const shopEarning = calculateShopEarnings(
     order?.totalPrice,
-    myshopData?.shopplan?.percetageCommissionChargeConversion
+    myshopData?.merchantShopplan?.percetageCommissionChargeConversion
   );
   const companyEarnings = calculateCompanyEarnings(
     order?.totalPrice,
-    myshopData?.shopplan?.percetageCommissionChargeConversion
+    myshopData?.merchantShopplan?.percetageCommissionChargeConversion
   );
   /***Calculations for earnings ends */
 
@@ -97,10 +95,6 @@ function InvoiceTab(props) {
     currency: "NGN",
     minimumFractionDigits: 2,
   });
-
-  // console.log("SHOP_DATA", myshopData)
-
-  // console.log("Reservation_DATA", order) /myshop/merchant-homes/cashout-reservation-erning/:reservationId
 
 
   return (
@@ -153,19 +147,12 @@ function InvoiceTab(props) {
                     {order?.paymentdatas?.bookingPhone}
                   </Typography>
                 )}
-                {/* {order?.orderId?.shippingAddress?.prefContact && (
-                  <Typography color="text.secondary">
-                    {order?.orderId?.shippingAddress?.prefContact}
-                  </Typography>
-                )} */}
-
 
               </div>
 
               <div className="seller flex items-center p-16">
                 <img
-                  className="w-80"
-                  // src="assets/images/afslogo/afLogo.svg"
+                  className="w-60"
                   src="assets/images/afslogo/afslogo.png"
                   alt="logo"
                 />
@@ -188,30 +175,7 @@ function InvoiceTab(props) {
             </div>
 
             <div className="mt-64">
-              {/* <Table className="simple">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>PRODUCT</TableCell>
-                    <TableCell>PRICE</TableCell>
-                    <TableCell align="right">QUANTITY</TableCell>
-                    <TableCell align="right">TOTAL</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow
-                  >
-                    <TableCell>
-                      <Typography variant="subtitle1">{order?.name}</Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      {order?.totalPrice && formatter.format(+order?.totalPrice)}
-                    </TableCell>
-                    <TableCell align="right">{order?.quantity}</TableCell>
-                 
-                  </TableRow>
-        
-                </TableBody>
-              </Table> */}
+              
 
 <div className="table-responsive">
           <table className="simple">
@@ -227,12 +191,7 @@ function InvoiceTab(props) {
                     Payment Method
                   </Typography>
                 </th>
-                {/* <th>
-                  <Typography className="font-semibold">Quantity</Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">Unit Amount</Typography>
-                </th> */}
+               
                 <th>
                   <Typography className="font-semibold">
                     Total Amount
@@ -255,23 +214,14 @@ function InvoiceTab(props) {
                     {order?.paymentdatas?.paymentMethod}
                   </span>
                 </td>
-                {/* <td>
-                  <span className="truncate">{order?.quantity}</span>
-                </td> */}
                 <td>
                   <span className="truncate">
                   ₦ {formatCurrency(order?.totalPrice)}
                   </span>
                 </td>
-                {/* <td>
-                  <span className="truncate">
-                    {order?.price * order?.quantity}
-                  </span>
-                </td> */}
                 <td>
                   <span className="truncate">
                     {new Date(order?.PaidAt)?.toDateString()}
-                    {/* {order?.PaidAt} */}
                   </span>
                 </td>
               </tr>
@@ -281,20 +231,19 @@ function InvoiceTab(props) {
 
               <div className="flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5 mb-5">
                 <div className="font-medium text-base truncate">
-                  Payment Details For Parent Order
+                  Payment Details For Reservation:   
                 </div>
-                At {myshopData?.shopplan?.percetageCommissionCharge}% commission
+                  At {myshopData?.merchantShopplan?.percetageCommissionCharge}% commission
                 you earn
                 <span
                   className="text-primary font-medium"
                   style={{ marginLeft: "5px", marginRight: "5px" }}
                 >
                   {" "}
-                  {/* <span>{myshopData?.shopplan?.percetageCommissionChargeConversion}</span> */}
                   ₦
                   {formatCurrency(calculateShopEarnings(
                     order?.totalPrice ,
-                    myshopData?.shopplan?.percetageCommissionChargeConversion
+                    myshopData?.merchantShopplan?.percetageCommissionChargeConversion
                   ))}
                 </span>{" "}
                 while we earn{" "}
@@ -305,7 +254,7 @@ function InvoiceTab(props) {
                   ₦
                   {formatCurrency(calculateCompanyEarnings(
                     order?.totalPrice ,
-                    myshopData?.shopplan?.percetageCommissionChargeConversion
+                    myshopData?.merchantShopplan?.percetageCommissionChargeConversion
                   ))}
                 </span>
               </div>

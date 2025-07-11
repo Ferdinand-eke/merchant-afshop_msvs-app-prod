@@ -6,7 +6,7 @@ import FeaturesWidget from "./widgets/FeaturesWidget";
 import GithubIssuesWidget from "./widgets/GithubIssuesWidget";
 import TaskDistributionWidget from "./widgets/TaskDistributionWidget";
 import ScheduleWidget from "./widgets/ScheduleWidget";
-import useGetMyShopDetails from "app/configs/data/server-calls/shopdetails/useShopDetails";
+import useGetMyShopDetails, { useGetMyShopAndPlan } from "app/configs/data/server-calls/shopdetails/useShopDetails";
 import HotelsHospitalityBoard from "./hotels-boards/HotelsHospitalityBoard";
 import EcommerceBoard from "./ecom-boards/EcommerceBoard";
 import FoodmartBoard from "./foodmart-boards/FoodmartBoard";
@@ -27,8 +27,14 @@ function HomeTab() {
     show: { opacity: 1, y: 0 },
   };
 
-  const { data: shopData, isLoading, isError } = useGetMyShopDetails();
+  // const { data: shopData, isLoading, isError } = useGetMyShopDetails();
+    const { data: shopData, isLoading } = useGetMyShopAndPlan();
+  
+    console.log("MerchantPROFILE", shopData?.data?.merchant?.merchantShopplan?.plankey)
+  
+
 //   const fistFiveOrders = shopData?.data?.orderItems?.slice(0, 4);
+
 
   return (
     <motion.div
@@ -37,52 +43,54 @@ function HomeTab() {
       initial="hidden"
       animate="show"
     >
-      {shopData?.data?.data?.shopplan?.plankey === "RETAIL" && (
+      {shopData?.data?.merchant?.merchantShopplan?.plankey === "RETAIL" && (
         <>
           <EcommerceBoard
-            merchantData={shopData?.data}
+            merchantData={shopData?.data?.merchant}
             isLoading={isLoading}
             layout="vertical"
           />
         </>
       )}
 
-      {shopData?.data?.data?.shopplan?.plankey === "WHOLESALEANDRETAILERS" && (
+      {shopData?.data?.merchant?.merchantShopplan?.plankey === "WHOLESALEANDRETAILERS" && (
         <>
           {/* Change this to wholesale specific dashboard later on */}
           <EcommerceBoard
-            merchantData={shopData?.data}
+            merchantData={shopData?.data?.merchant}
             isLoading={isLoading}
             layout="vertical"
           />
         </>
       )}
 
-      {shopData?.data?.data?.shopplan?.plankey === "MANUFACTURERS" && (
+      {shopData?.data?.merchant?.merchantShopplan?.plankey === "MANUFACTURERS" && (
         <>
           {/* Change this to manufacturer specific dashboard later on */}
           <EcommerceBoard
-            merchantData={shopData?.data}
+            merchantData={shopData?.data?.merchant}
             isLoading={isLoading}
             layout="vertical"
           />
         </>
       )}
 
-      {shopData?.data?.data?.shopplan?.plankey === "HOTELSANDAPARTMENTS" && (
+      {shopData?.data?.merchant?.merchantShopplan?.plankey === "HOTELSANDAPARTMENTS" && (
         <>
           <HotelsHospitalityBoard
-            merchantData={shopData?.data}
+            merchantData={shopData?.data?.merchant}
             isLoading={isLoading}
             layout="vertical"
           />
         </>
       )}
 
-      {shopData?.data?.data?.shopplan?.plankey === "FOODVENDORS" && (
+
+
+      {shopData?.data?.merchant?.merchantShopplan?.plankey === "FOODVENDORS" && (
         <>
           <FoodmartBoard
-            merchantData={shopData?.data}
+            merchantData={shopData?.data?.merchant}
             isLoading={isLoading}
             layout="vertical"
           />

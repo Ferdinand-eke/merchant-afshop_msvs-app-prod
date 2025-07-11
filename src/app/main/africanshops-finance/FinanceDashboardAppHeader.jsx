@@ -179,6 +179,7 @@ function FinanceDashboardAppHeader(props) {
         <Drawer open={withdarwopen} onClose={toggleWithdrawDrawer(false)}>
           {DrawerWithdraw}
         </Drawer>
+        
       </div>
     </div>
   );

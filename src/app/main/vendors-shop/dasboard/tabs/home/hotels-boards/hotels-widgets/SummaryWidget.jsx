@@ -12,12 +12,12 @@ import { formatCurrency } from "src/app/main/vendors-shop/pos/PosUtils";
  * The SummaryWidget widget.
  */
 
-function SummaryWidget({ shopData, isLoading }) {
+function SummaryWidget({ hosMerchantData, isLoading }) {
   if (isLoading) {
     return <FuseLoading />;
   }
 
-  if (!shopData) {
+  if (!hosMerchantData) {
     return null;
   }
 
@@ -41,7 +41,7 @@ function SummaryWidget({ shopData, isLoading }) {
       </div>
       <div className="text-center mt-8">
         <Typography className="text-lg font-medium text-green-600 dark:text-green-500">
-          NGN {formatCurrency(shopData?.shopaccount?.accountbalance)}
+          NGN {formatCurrency(hosMerchantData?.shopaccount?.accountbalance)}
         </Typography>
       </div>
       <Typography
@@ -50,7 +50,7 @@ function SummaryWidget({ shopData, isLoading }) {
       >
         <span className="truncate">Merchant Earnings</span>
         <b className="px-8">
-          NGN {formatCurrency(shopData?.shopaccount?.accountbalance)}
+          NGN {formatCurrency(hosMerchantData?.shopaccount?.accountbalance)}
         </b>
       </Typography>
     </Paper>

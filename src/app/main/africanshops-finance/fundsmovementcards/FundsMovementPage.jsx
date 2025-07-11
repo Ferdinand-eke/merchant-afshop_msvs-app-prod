@@ -74,7 +74,7 @@ function FundsMovementPage(props) {
     }
 
     if (
-      shopData?.data?.data?.shopaccount?.accountbalance <
+      shopData?.data?.merchant?.shopaccount?.accountbalance <
       getValues()?.transferAmount
     ) {
       setDrawerError('insufficient balance to transfer')
@@ -146,7 +146,7 @@ function FundsMovementPage(props) {
 
                 <motion.div variants={item}>
                   <AccountSummaryWidget
-                    shopData={shopData?.data?.data}
+                    shopData={shopData?.data?.merchant}
                     isLoading={isLoading}
                   />
                 </motion.div>

@@ -18,6 +18,7 @@ export default function useGetMyShopDetails() {
   return useQuery(['__myshop_details'], getMyShopDetails);
 }
 
+
 /*****Get just my shop details */
 export function useGetMinimizedJustMyShopDetailsQuery() {
   return useQuery(['__justmyshop'], getMinimizedJustMyShopDetails);
@@ -34,6 +35,8 @@ export function useGetMyOtherShopLists() {
 
 //Shop details and shop plan
 export function useGetMyShopAndPlan() {
+  //'?queryAllData=${queryParam}');
+  //
   return useQuery(['__myshop_and_accountplan'], getJustMyShopDetailsAndPlan);
 }
 
@@ -133,4 +136,4 @@ export function useUpdateVendorShopBranch() {
 /*****Get Hotel & Apartments Sealed Reservations*/
 export function useGetMerchantSealedReservations() {
   return useQuery(['__justmyshop'], getShopSealedBookingsReservationsApi);
-}
+}  //(Msvs : => :)

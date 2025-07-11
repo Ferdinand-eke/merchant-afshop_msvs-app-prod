@@ -10,8 +10,6 @@ import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import Button from "@mui/material/Button";
-// import useMyShopEstateProperties from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
-// import useMyShopBookingsProperties from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
 import useMyPropertiesReservations from "app/configs/data/server-calls/hotelsandapartments/useShopBookingsReservations";
 import MerchantErrorPage from "../../MerchantErrorPage";
 
@@ -22,13 +20,12 @@ function ReservationsTable() {
     isError,
   } = useMyPropertiesReservations();
 
-  // console.log("_MY-RESERVATIONS", reservations?.data?.data)
 
   const columns = useMemo(
     () => [
       {
         accessorKey: "name",
-        header: "Apartment",
+        header: "Booking Reference",
         Cell: ({ row }) => (
           <>
             <div className="flex flex-wrap space-x-2">
@@ -36,7 +33,7 @@ function ReservationsTable() {
                 className="text-11"
                 size="small"
                 color="default"
-                label={row?.original?.bookingPropertyId?.title}
+                label={row?.original?.paymentResult?.reference}
               />
             </div>
           </>
@@ -44,27 +41,13 @@ function ReservationsTable() {
       },
 
       {
-        accessorKey: "categories",
-        header: "Guest",
-        accessorFn: (row) => (
-          <div className="flex flex-wrap space-x-2">
-            <Chip
-              className="text-11"
-              size="small"
-              color="default"
-              label={row?.userCreatorId?.name}
-            />
-          </div>
-        ),
-      },
-      {
         accessorKey: "management",
         header: "Management Console",
         Cell: ({ row }) => (
           <div className="flex flex-wrap space-x-2">
             <Chip
               component={Link}
-              to={`/bookings/list-reservation/${row.original._id}/manage`}
+              to={`/bookings/list-reservation/${row.original.id}/manage`}
               className="text-11 cursor-pointer  bg-orange-300"
               size="small"
               color="default"
@@ -97,7 +80,6 @@ function ReservationsTable() {
         Cell: ({ row }) => (
           <div className="flex flex-wrap space-x-2">
             <Chip
-              //   className="text-11 cursor-pointer"
               className={clsx(
                 "text-11 cursor-pointer",
                 `${row?.original?.isCheckIn ? "bg-green text-white" : "bg-yellow-500 text-black"}`
@@ -116,7 +98,6 @@ function ReservationsTable() {
         Cell: ({ row }) => (
           <div className="flex flex-wrap space-x-2">
             <Chip
-              //   className="text-11 cursor-pointer"
               className={clsx(
                 "text-11 cursor-pointer",
                 `${row?.original?.isCheckOut ? "bg-green text-white" : "bg-teal-500 text-black"}`
@@ -150,7 +131,7 @@ function ReservationsTable() {
     );
   }
 
-  if (!reservations?.data?.data) {
+  if (!reservations?.data?.reservations) {
     return (
       <div className="flex flex-1 items-center justify-center h-full">
         <Typography color="text.secondary" variant="h5">
@@ -165,7 +146,7 @@ function ReservationsTable() {
       className="flex flex-col flex-auto shadow-3 rounded-t-16 overflow-hidden rounded-b-0 w-full h-full"
       elevation={0}
     >
-      <DataTable data={reservations?.data?.data} columns={columns} />
+      <DataTable data={reservations?.data?.reservations} columns={columns} />
     </Paper>
   );
 }

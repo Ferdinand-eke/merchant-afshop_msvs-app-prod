@@ -14,6 +14,8 @@ import LogisticsNavigation from "app/theme-layouts/shared-components/navigation/
 import FoodMartNavigation from "app/theme-layouts/shared-components/navigation/foodmartnavigation/FoodMartNavigation";
 import ManufacturersNavigation from "app/theme-layouts/shared-components/navigation/manufacturersnavigation/ManufacturersNavigation";
 import WholesaleRetailNavigation from "app/theme-layouts/shared-components/navigation/wholealeretailnavigation/WholesaleRetailNavigation";
+import { Troubleshoot } from "@mui/icons-material";
+import { useSearchParams } from "react-router-dom/dist";
 
 const Root = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -43,10 +45,14 @@ const StyledContent = styled(FuseScrollbars)(() => ({
  * The navbar style 1 content.
  */
 function NavbarStyle1Content(props) {
+  //  const [searchParams, setSearchParams] = useSearchParams();
+  // setSearchParams( {"queryAllData":true});
   const { data: myshopData, isLoading } = useGetMyShopAndPlan();
+
+  console.log("MerchantPROFILE", myshopData?.data?.merchant?.merchantShopplan?.plankey)
   const { className = "" } = props;
 
-  useEffect(() => {}, [myshopData?.data?.shopplan?.plankey]);
+  useEffect(() => {}, [myshopData?.data?.merchant?.merchantShopplan?.plankey]);
   return (
     <Root
       className={clsx(
@@ -74,44 +80,44 @@ function NavbarStyle1Content(props) {
           </>
         ) : (
           <>
-            {myshopData?.data?.shopplan?.plankey === "RETAIL" && (
+            {myshopData?.data?.merchant?.merchantShopplan?.plankey === "RETAIL" && (
               <>
                 <Navigation layout="vertical" />
               </>
             )}
 
-            {myshopData?.data?.shopplan?.plankey ===
+            {myshopData?.data?.merchant?.merchantShopplan?.plankey ===
               "WHOLESALEANDRETAILERS" && (
               <>
                 <WholesaleRetailNavigation layout="vertical" />
               </>
             )}
 
-            {myshopData?.data?.shopplan?.plankey === "MANUFACTURERS" && (
+            {myshopData?.data?.merchant?.merchantShopplan?.plankey === "MANUFACTURERS" && (
               <>
                 <ManufacturersNavigation layout="vertical" />
               </>
             )}
 
-            {myshopData?.data?.shopplan?.plankey === "REALESTATES" && (
+            {myshopData?.data?.merchant?.merchantShopplan?.plankey === "REALESTATES" && (
               <>
                 <RealEstateNavigation layout="vertical" />
               </>
             )}
 
-            {myshopData?.data?.shopplan?.plankey === "HOTELSANDAPARTMENTS" && (
+            {myshopData?.data?.merchant?.merchantShopplan?.plankey === "HOTELSANDAPARTMENTS" && (
               <>
                 <HotelsApartmentsNavigation layout="vertical" />
               </>
             )}
 
-            {myshopData?.data?.shopplan?.plankey === "FOODVENDORS" && (
+            {myshopData?.data?.merchant?.merchantShopplan?.plankey === "FOODVENDORS" && (
               <>
                 <FoodMartNavigation layout="vertical" />
               </>
             )}
 
-            {myshopData?.data?.shopplan?.plankey === "LOGISTICS" && (
+            {myshopData?.data?.merchant?.merchantShopplan?.plankey === "LOGISTICS" && (
               <>
                 <LogisticsNavigation layout="vertical" />
               </>

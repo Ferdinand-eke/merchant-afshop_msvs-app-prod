@@ -30,7 +30,6 @@ function ShopDashboardApp() {
 		setTabValue(value);
 	}
 
-
 	if(isLoading){
 		return <FuseLoading />
 	}
@@ -77,6 +76,7 @@ function ShopDashboardApp() {
 					{tabValue === 0 && <>
 					
 						<HomeTab />
+						
 
 					
 

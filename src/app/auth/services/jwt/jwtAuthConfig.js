@@ -24,9 +24,6 @@ const jwtAuthConfig = {
 	signInBravortAdminUrl: `${baseUrl}/api/shop/login`,    
 
 
-
-	// getAuthAdminInBravortAdminUrl: `${baseUrl}/admin/get-auth-admin`,
-
 	getAuthAdminInBravortAdminUrl: `${baseUrl}/shop/get-auth-shop`,
 	isAuthenticatedStatus: 'jwt_is_authenticated_status',
 	authStatus: 'jwt_is_authStatus',

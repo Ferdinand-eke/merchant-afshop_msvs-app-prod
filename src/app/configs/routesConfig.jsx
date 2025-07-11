@@ -58,6 +58,7 @@ const routeConfigs = [
   ManagedListingsAppConfig,
 
   /******Hotels, apartment and suites management */
+  
   ManagedBookingsListingsAppConfig,
 
   // PropertyTypesAppConfig,

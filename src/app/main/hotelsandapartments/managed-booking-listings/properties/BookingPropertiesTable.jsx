@@ -7,9 +7,6 @@ import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import clsx from 'clsx';
-import Button from '@mui/material/Button';
-// import useMyShopEstateProperties from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
 import useMyShopBookingsProperties from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
 
 function BookingPropertiesTable() {
@@ -17,36 +14,11 @@ function BookingPropertiesTable() {
 
 	const {data:listingData, isLoading:listingIsLoading, isError} = useMyShopBookingsProperties()
 
-	
+
 
 	const columns = useMemo(
 		() => [
-			// {
-			// 	accessorFn: (row) => row.featuredImageId,
-			// 	id: 'featuredImageId',
-			// 	header: '',
-			// 	enableColumnFilter: false,
-			// 	enableColumnDragging: false,
-			// 	size: 64,
-			// 	enableSorting: false,
-			// 	Cell: ({ row }) => (
-			// 		<div className="flex items-center justify-center">
-			// 			{row.original?.images?.length > 0 && row.original.featuredImageId ? (
-			// 				<img
-			// 					className="w-full max-h-40 max-w-40 block rounded"
-			// 					src={_.find(row.original.images, { id: row.original.featuredImageId })?.url}
-			// 					alt={row.original.name}
-			// 				/>
-			// 			) : (
-			// 				<img
-			// 					className="w-full max-h-40 max-w-40 block rounded"
-			// 					src="assets/images/apps/ecommerce/product-image-placeholder.png"
-			// 					alt={row.original.name}
-			// 				/>
-			// 			)}
-			// 		</div>
-			// 	)
-			// },
+			
 			{
 				accessorKey: 'name',
 				header: 'Name',
@@ -86,7 +58,7 @@ function BookingPropertiesTable() {
 					
 						 <Chip
 								component={Link}
-						to={`/bookings/managed-listings/${row.original._id}/manage`}
+						to={`/bookings/managed-listings/${row.original.id}/manage`}
 								className="text-11 cursor-pointer"
 								size="small"
 								color="default"
@@ -145,7 +117,7 @@ function BookingPropertiesTable() {
 	}
 	
 
-	if (!listingData?.data?.data) {
+	if (!listingData?.data?.bookingLists) {
 		return (
 			<div className="flex flex-1 items-center justify-center h-full">
 				<Typography
@@ -164,7 +136,7 @@ function BookingPropertiesTable() {
 			elevation={0}
 		>
 			<DataTable
-				data={listingData?.data?.data}
+				data={listingData?.data?.bookingLists}
 				columns={columns}
 			
 			/>

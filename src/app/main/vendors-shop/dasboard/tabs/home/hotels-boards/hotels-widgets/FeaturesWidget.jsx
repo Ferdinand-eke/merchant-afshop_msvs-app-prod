@@ -17,6 +17,8 @@ function FeaturesWidget({}) {
     return <FuseLoading />;
   }
 
+  console.log("Sealed Reservations Data", sealedReservation?.data?.count);
+
   return (
     <Paper className="flex flex-col flex-auto shadow rounded-2xl overflow-hidden">
       <div className="flex items-center justify-between px-8 pt-12">
@@ -33,7 +35,7 @@ function FeaturesWidget({}) {
       <div className="text-center mt-8">
         <Typography className="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500"></Typography>
         <Typography className="text-lg font-medium text-green-600">
-          {sealedReservation?.data?.payload?.length}
+          {sealedReservation?.data?.count}
         </Typography>
       </div>
       <Typography
@@ -41,7 +43,7 @@ function FeaturesWidget({}) {
         color="text.secondary"
       >
         <span className="truncate">Sealed Reservations Count</span>:
-        <b className="px-8">{sealedReservation?.data?.payload?.length}</b>
+        <b className="px-8">{sealedReservation?.data?.count}</b>
       </Typography>
     </Paper>
   );

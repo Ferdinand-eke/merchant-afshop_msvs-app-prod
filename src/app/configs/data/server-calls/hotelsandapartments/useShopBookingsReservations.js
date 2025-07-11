@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router';
 
 /***get all Specific user shop-estate property */   
 export default function useMyPropertiesReservations() {
-  return useQuery(['__merchant_reservations'], getShopBookingsReservationsApi);
+  return useQuery(['__merchant_reservations'], getShopBookingsReservationsApi); ("Msvs: => : Done")
 }
+
 
 /****Get single Guest Bookded Reservation */
 export function useFindMerchantSingleReservation(itemId) {
