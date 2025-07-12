@@ -20,9 +20,7 @@ function ShopProductsTable() {
   const { data: myshop_products, isLoading: shopProductdIsLoading, isError } =
     useMyShopProducts();
 
-  // console.log("MyShop-Products:", myshop_products?.data?.data);
 
-  // const { data: products, isLoading } = useGetECommerceProductsQuery();
   const [removeProducts] = useDeleteECommerceProductsMutation();
   const columns = useMemo(
     () => [
@@ -36,19 +34,7 @@ function ShopProductsTable() {
         enableSorting: false,
         Cell: ({ row }) => (
           <div className="flex items-center justify-center">
-            {/* {row?.original?.images?.length > 0 && row?.original?.featuredImageId ? (
-							<img
-								className="w-full max-h-40 max-w-40 block rounded"
-								src={_.find(row?.original.images, { id: row?.original?.featuredImageId })?.url}
-								alt={row?.original?.name}
-							/>
-						) : (
-							<img
-								className="w-full max-h-40 max-w-40 block rounded"
-								src="assets/images/apps/ecommerce/product-image-placeholder.png"
-								alt={row.original.name}
-							/>
-						)} */}
+          
 
             {row?.original?.images?.length ? (
               <img
@@ -189,7 +175,7 @@ function ShopProductsTable() {
 	}
 
 // console.log("STATES=DATA", states?.data?.data)
-if (!myshop_products?.data?.data) {
+if (!myshop_products?.data?.merchantProducts) {
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
@@ -214,47 +200,8 @@ if (!myshop_products?.data?.data) {
     >
       <DataTable
         // data={products}
-        data={myshop_products?.data?.data}
+        data={myshop_products?.data?.merchantProducts}
         columns={columns}
-        renderRowActionMenuItems={({ closeMenu, row, table }) => [
-          <MenuItem
-            key={0}
-            onClick={() => {
-              removeProducts([row.original.id]);
-              closeMenu();
-              table.resetRowSelection();
-            }}
-          >
-            <ListItemIcon>
-              <FuseSvgIcon>heroicons-outline:trash</FuseSvgIcon>
-            </ListItemIcon>
-            Delete
-          </MenuItem>,
-        ]}
-        renderTopToolbarCustomActions={({ table }) => {
-          const { rowSelection } = table.getState();
-
-          if (Object.keys(rowSelection).length === 0) {
-            return null;
-          }
-
-          return (
-            <Button
-              variant="contained"
-              size="small"
-              onClick={() => {
-                const selectedRows = table.getSelectedRowModel().rows;
-                removeProducts(selectedRows.map((row) => row.original.id));
-                table.resetRowSelection();
-              }}
-              className="flex shrink min-w-40 ltr:mr-8 rtl:ml-8"
-              color="secondary"
-            >
-              <FuseSvgIcon size={16}>heroicons-outline:trash</FuseSvgIcon>
-              <span className="hidden sm:flex mx-8">Delete selected items</span>
-            </Button>
-          );
-        }}
       />
     </Paper>
   );

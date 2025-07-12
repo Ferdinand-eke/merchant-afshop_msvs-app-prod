@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import useJwtAuth from "../useJwtAuth";
 import { IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useShopAdminLogin } from "app/configs/data/server-calls/auth/admin-auth";
 /**
  * Form Validation Schema
  */
@@ -37,6 +38,7 @@ const defaultValues = {
 };
 
 function JwtSignInForm() {
+  const adminLogIn = useShopAdminLogin()
   const { signIn, isLoginLoading } = useJwtAuth();
   const { control, formState, handleSubmit, setValue, setError } = useForm({
     mode: "onChange",
@@ -153,11 +155,11 @@ function JwtSignInForm() {
         color="secondary"
         className=" mt-16 w-full"
         aria-label="Sign in"
-        disabled={_.isEmpty(dirtyFields) || !isValid || isLoginLoading }
+        disabled={_.isEmpty(dirtyFields) || !isValid || adminLogIn.isLoading }
         type="submit"
         size="large"
       >
-        {isLoginLoading ? "processing..." : "Sign in"}
+        { adminLogIn.isLoading ? "processing..." : "Sign in"}
         {/* Sign in */}
       </Button>
     </form>

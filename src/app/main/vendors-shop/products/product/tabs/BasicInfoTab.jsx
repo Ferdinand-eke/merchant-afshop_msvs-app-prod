@@ -17,7 +17,8 @@ function BasicInfoTab() {
     data: catData,
     //  isLoading: catIsLoading
   } = useProductCats();
-  //   console.log("categoryDATA", catData);
+
+    // console.log("categoryDATA", catData?.data);
   const methods = useFormContext();
   const { control, formState } = methods;
   const { errors } = formState;
@@ -135,9 +136,9 @@ function BasicInfoTab() {
             //  {...(error && {error: true, helperText: error})}
           >
             <MenuItem value="">Select a product category</MenuItem>
-            {catData?.data?.data &&
-              catData?.data?.data?.map((option, id) => (
-                <MenuItem key={option._id} value={option._id}>
+            {catData?.data?.categories &&
+              catData?.data?.categories?.map((option, id) => (
+                <MenuItem key={option.id} value={option.id}>
                   {option.name}
                 </MenuItem>
               ))}

@@ -188,7 +188,7 @@ export const getMarketsByLgaId = (id) => Api().get(`/markets/lga/${id}`);
  */
 
 //Product Categories Routes
-export const getProdCats = () => AuthApi().get('/productcats');
+export const getProdCats = () => AuthApi().get('/categories'); //(Msvs => Done)
 export const getProdCatById = (id) => AuthApi().get(`/productcats/${id}`);
 
 //Product Units Routes
@@ -207,7 +207,8 @@ export const storeProductImages = (formData) =>
 export const removeProductImagesById = (formData) =>
   AuthApi().post('/api/usersprodimages/removeimage', formData);
 
-export const getShopProducts = () => AuthApi().get('/api/myshop/get-my-products'); //newDashboard
+export const getShopProducts = () => AuthApi().get('/productsbymerchant/get-merchant-products'); //(Msvs => Done)
+
 
 
 export const storeShopProduct = (formData) =>
@@ -216,13 +217,13 @@ export const storeShopProduct = (formData) =>
 // export const getMyShopProductById = (id) =>
 //   AuthApi().get(`/api/myshop-products/${id}`);
 export const getMyShopProductById = (id) =>
-  AuthApi().get(`/api/myshop-products/${id}`);
+  AuthApi().get(`/productsbymerchant/merchant-product/${id}/view`); // (Msvs : 'Done)
 
 export const updateMyShopProductById = (productFormData ) =>
   AuthApi().put(
-    `/api/myshop/update-product/${productFormData?._id}`,
+    `/productsbymerchant/merchant-product/${productFormData?.id}/update`,
     productFormData
-  );
+  ); //(Msvs : 'Done)
 
 //pushing for export
 export const pushMyShopProductByIdToExport = (productFormData) =>

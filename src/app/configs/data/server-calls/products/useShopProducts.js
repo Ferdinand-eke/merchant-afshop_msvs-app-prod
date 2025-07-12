@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router';
 //get all Specific user shop-products
 export default function useMyShopProducts() {
   return useQuery(['__myshop_products'], getShopProducts);
-}
+} //(Msvs : 'Done)
 
 //get single prooduct details
 export function useSingleShopProduct(productId) {
@@ -27,10 +27,9 @@ export function useSingleShopProduct(productId) {
     () => getMyShopProductById(productId),
     {
       enabled: Boolean(productId),
-      // staleTime: 5000,
     }
   );
-}
+} // (Msvs : 'Done)
 
 //create new product
 export function useAddShopProductMutation() {
@@ -81,12 +80,13 @@ export function useProductUpdateMutation() {
   return useMutation(updateMyShopProductById, {
     onSuccess: (data) => {
      
+      console.log('Updated Product Data', data);
 
       if (data?.data?.success) {
         console.log('Updated Producr clientController', data);
 
         // return;
-        toast.success('product updated successfully!!');
+        toast.success(`${data?.data?.message ? data?.data?.message : 'product updated successfully!!'} `);
 
         queryClient.invalidateQueries('__myshop_products');
         // queryClient.refetchQueries('__myshop_products', { force: true });

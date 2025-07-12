@@ -51,7 +51,7 @@ function ShopProduct() {
 		skip: !productId || productId === 'new'
 	})
 
-	// console.log("SINGLE_SHOP-PRODUCT", products?.data)
+	// console.log("SINGLE_SHOP-PRODUCT", products?.data?.product?.product)
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
@@ -67,10 +67,10 @@ function ShopProduct() {
 		}
 	}, [productId, reset]);
 	useEffect(() => {
-		if (products?.data) {
-			reset({ ...products?.data });
+		if (products?.data?.product) {
+			reset({ ...products?.data?.product });
 		}
-	}, [products?.data, reset]);
+	}, [products?.data?.product, reset]);
 
 	/**
 	 * Tab Change
@@ -115,7 +115,7 @@ function ShopProduct() {
 	/**
 	 * Wait while product data is loading and form is setted
 	 */
-	if (_.isEmpty(form) || (products?.data && routeParams.productId !== products?.data.slug && routeParams.productId !== 'new')) {
+	if (_.isEmpty(form) || (products?.data?.product && routeParams.productId !== products?.data?.product.slug && routeParams.productId !== 'new')) {
 		return <FuseLoading />;
 	}
 
