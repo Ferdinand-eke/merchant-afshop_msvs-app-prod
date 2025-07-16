@@ -1,6 +1,5 @@
 import Typography from '@mui/material/Typography';
 import { Link, useParams } from 'react-router-dom';
-import { useGetECommerceOrderQuery } from '../../ECommerceApi';
 
 /**
  * The products tab.
@@ -9,10 +8,7 @@ function ProductsTab({ order, isError }) {
 
 	const routeParams = useParams();
 	const { orderId } = routeParams;
-	// const { data: order } = useGetECommerceOrderQuery(orderId, {
-	// 	skip: !orderId
-	// });
-
+	
 	if (!isError && !order) {
 		return null;
 	  }
@@ -40,9 +36,8 @@ function ProductsTab({ order, isError }) {
 					</tr>
 				</thead>
 				<tbody>
-					{/* {order?.products?.map((product) => ( */}
 						<tr 
-						// key={product.id}
+						
 						>
 							<td className="w-64">{order._id}</td>
 							<td className="w-80">
@@ -54,8 +49,6 @@ function ProductsTab({ order, isError }) {
 							</td>
 							<td>
 								<Typography
-									// component={Link}
-									// to={`/apps/e-commerce/products/${product.id}`}
 									className="truncate"
 									style={{
 										color: 'inherit',
@@ -72,7 +65,7 @@ function ProductsTab({ order, isError }) {
 								<span className="truncate">{order.quantity}</span>
 							</td>
 						</tr>
-					{/* ))} */}
+				
 				</tbody>
 			</table>
 		</div>

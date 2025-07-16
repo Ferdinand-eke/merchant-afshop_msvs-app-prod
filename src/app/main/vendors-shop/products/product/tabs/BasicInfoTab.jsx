@@ -17,8 +17,9 @@ function BasicInfoTab() {
     data: catData,
     //  isLoading: catIsLoading
   } = useProductCats();
+  
 
-    // console.log("categoryDATA", catData?.data);
+    // console.log("tradeHUBS", hubs?.data);
   const methods = useFormContext();
   const { control, formState } = methods;
   const { errors } = formState;
@@ -46,9 +47,9 @@ function BasicInfoTab() {
             helpertext={errors?.category?.message}
           >
             <MenuItem value="">Select a product category</MenuItem>
-            {hubs?.data?.data &&
-              hubs?.data?.data?.map((option) => (
-                <MenuItem key={option._id} value={option._id}>
+            {hubs?.data?.tradehubs &&
+              hubs?.data?.tradehubs?.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
                   {option.hubname}
                 </MenuItem>
               ))}

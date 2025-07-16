@@ -54,6 +54,7 @@ function Marker(props) {
 
 function OrderDetailsTab({ order, isError }) {
   const routeParams = useParams();
+
   const { orderId } = routeParams;
   const [map, setMap] = useState("shipping");
 
@@ -94,9 +95,7 @@ function OrderDetailsTab({ order, isError }) {
                   <td>
                     <div className="flex items-center">
                       <Avatar
-                        src={order?.order?.shippingAddress?.fullName.charAt(
-                          0
-                        )}
+                        src={order?.order?.shippingAddress?.fullName.charAt(0)}
                       />
                       <Typography className="truncate mx-8">
                         {`${order?.order?.shippingAddress?.fullName} `}
@@ -174,7 +173,6 @@ function OrderDetailsTab({ order, isError }) {
               </AccordionSummary>
               <AccordionDetails className="flex flex-col md:flex-row -mx-8">
                 <Typography className="w-full md:max-w-256 mb-16 md:mb-0 mx-8 text-16">
-             
                   {order?.order?.shippingAddress?.address}
                 </Typography>
                 {/* <div className="w-full h-320 rounded-16 overflow-hidden mx-8">
@@ -201,7 +199,7 @@ function OrderDetailsTab({ order, isError }) {
         </div>
       </div>
 
-	  <div className="pb-48">
+      <div className="pb-48">
         <div className="pb-16 flex items-center">
           <FuseSvgIcon color="action">heroicons-outline:truck</FuseSvgIcon>
           <Typography className="h2 mx-12 font-medium" color="text.secondary">
@@ -233,24 +231,31 @@ function OrderDetailsTab({ order, isError }) {
               </tr>
             </thead>
             <tbody>
-                <tr>
-                  <td>
-                    <span className="truncate">{order?.order?._id}</span>
-                  </td>
-                  <td>
-                    <span className="truncate">Africanshops Express,{order?.order?.shippingMethod}</span>
-                  </td>
-                  <td>
-                    <span className="truncate">{order?.order?.shipmentWeight}</span>
-                  </td>
-                  <td>
-                    <span className="truncate">NGN {formatCurrency(order?.order?.shippingfee || 2000)}</span>
-                  </td>
-                  <td>
-                    <span className="truncate">{new Date(order?.order?.shippedAt)?.toDateString()} </span>
-                  </td>
-                </tr>
-
+              <tr>
+                <td>
+                  <span className="truncate">{order?.order?._id}</span>
+                </td>
+                <td>
+                  <span className="truncate">
+                    Africanshops Express,{order?.order?.shippingMethod}
+                  </span>
+                </td>
+                <td>
+                  <span className="truncate">
+                    {order?.order?.shipmentWeight}
+                  </span>
+                </td>
+                <td>
+                  <span className="truncate">
+                    NGN {formatCurrency(order?.order?.shippingfee || 2000)}
+                  </span>
+                </td>
+                <td>
+                  <span className="truncate">
+                    {new Date(order?.order?.shippedAt)?.toDateString()}{" "}
+                  </span>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -288,7 +293,7 @@ function OrderDetailsTab({ order, isError }) {
                 <TableCell>
                   {/* {order?.order?.createdAt} */}
                   {new Date(order?.order?.createdAt)?.toDateString()}
-                  </TableCell>
+                </TableCell>
               </TableRow>
 
               {order?.order?.isPaid && (
@@ -298,9 +303,8 @@ function OrderDetailsTab({ order, isError }) {
                       <OrdersPackedStatus isPacked={order?.order?.isPacked} />
                     </TableCell>
                     <TableCell>
-                      {/* {order?.order?.packedAt} */}
                       {new Date(order?.order?.packedAt)?.toDateString()}
-                      </TableCell>
+                    </TableCell>
                   </TableRow>
 
                   <TableRow>
@@ -310,23 +314,21 @@ function OrderDetailsTab({ order, isError }) {
                       />
                     </TableCell>
                     <TableCell>
-                    {new Date(order?.order?.shippedAt)?.toDateString()}
-                      {/* {order?.order?.shippedAt} */}
-                      </TableCell>
+                      {new Date(order?.order?.shippedAt)?.toDateString()}
+                    </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell>
                       <OrdersArrivalStatus
-                        hasArrivedWarehouse={
-                          order?.order?.hasArrivedWarehouse
-                        }
+                        hasArrivedWarehouse={order?.order?.hasArrivedWarehouse}
                       />
                     </TableCell>
                     <TableCell>
-                    {new Date(order?.order?.arrivedWarehouseAt)?.toDateString()}
-                      {/* {order?.order?.arrivedWarehouseAt} */}
-                      </TableCell>
+                      {new Date(
+                        order?.order?.arrivedWarehouseAt
+                      )?.toDateString()}
+                    </TableCell>
                   </TableRow>
 
                   <TableRow>
@@ -335,7 +337,9 @@ function OrderDetailsTab({ order, isError }) {
                         isDelivered={order?.order?.isDelivered}
                       />
                     </TableCell>
-                    <TableCell>{new Date(order?.order?.deliveredAt)?.toDateString()}</TableCell>
+                    <TableCell>
+                      {new Date(order?.order?.deliveredAt)?.toDateString()}
+                    </TableCell>
                   </TableRow>
                 </>
               )}
@@ -368,14 +372,16 @@ function OrderDetailsTab({ order, isError }) {
                     Payment Method
                   </Typography>
                 </th>
-				<th>
+                <th>
                   <Typography className="font-semibold">Quantity</Typography>
                 </th>
                 <th>
                   <Typography className="font-semibold">Unit Amount</Typography>
                 </th>
-				<th>
-                  <Typography className="font-semibold">Totak Amount</Typography>
+                <th>
+                  <Typography className="font-semibold">
+                    Totak Amount
+                  </Typography>
                 </th>
                 <th>
                   <Typography className="font-semibold">Date</Typography>
@@ -385,32 +391,36 @@ function OrderDetailsTab({ order, isError }) {
             <tbody>
               <tr>
                 <td>
+                  <span className="truncate">{order?.order?.id}</span>
+                </td>
+                <td>
                   <span className="truncate">
-                    {order?.order?.id}
+                    {order?.order?.paymentMethod}
                   </span>
                 </td>
                 <td>
-                  <span className="truncate">{order?.order?.paymentMethod}</span>
-                </td>
-				<td>
                   <span className="truncate">{order?.quantity}</span>
                 </td>
                 <td>
-                  <span className="truncate">NGN {formatCurrency(order?.price)}</span>
-                </td>
-				<td>
-                  <span className="truncate">NGN {formatCurrency(order?.price * order?.quantity)}</span>
+                  <span className="truncate">
+                    NGN {formatCurrency(order?.price)}
+                  </span>
                 </td>
                 <td>
-                  <span className="truncate">{new Date(order?.createdAt)?.toDateString()}</span>
+                  <span className="truncate">
+                    NGN {formatCurrency(order?.price * order?.quantity)}
+                  </span>
+                </td>
+                <td>
+                  <span className="truncate">
+                    {new Date(order?.createdAt)?.toDateString()}
+                  </span>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-
-      
     </div>
   );
 }

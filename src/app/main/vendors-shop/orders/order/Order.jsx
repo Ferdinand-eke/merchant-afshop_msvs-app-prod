@@ -17,6 +17,7 @@ import { useGetECommerceOrderQuery } from "../ECommerceApi";
 import { useFindShopItemsInOrders } from "app/configs/data/server-calls/orders/useShopOrders";
 import { getJustMyShopDetailsAndPlan } from "app/configs/data/client/clientToApiRoutes";
 import MerchantClientErrorPage from "src/app/main/MerchantClientErrorPage";
+import { useGetMyShopAndPlan } from "app/configs/data/server-calls/shopdetails/useShopDetails";
 
 /**
  * The order.
@@ -28,6 +29,8 @@ function Order() {
   const [loading, setLoading] = useState(false);
   const [myshopData, setMyshopData] = useState({});
 
+
+
   const {
     data: orderItem,
     isLoading: orderItemIsLoading,
@@ -36,28 +39,31 @@ function Order() {
     skip: !orderId,
   });
 
+  const {data:merchantShopData} = useGetMyShopAndPlan()
+    // console.log("MERCHANT___PLAN", merchantShopData?.data)
+
   useEffect(() => {
-    if (orderId) {
-      getSingleApiShopDetails();
-    }
+    // if (orderId) {
+    //   getSingleApiShopDetails();
+    // }
   }, [orderId]);
 
-  async function getSingleApiShopDetails() {
-    setLoading(true);
-    const responseData = await getJustMyShopDetailsAndPlan();
-    if (responseData) {
-      setMyshopData(responseData?.data);
+  // async function getSingleApiShopDetails() {
+  //   setLoading(true);
+  //   const responseData = await getJustMyShopDetailsAndPlan();
+  //   if (responseData) {
+  //     setMyshopData(responseData?.data);
 
-      setTimeout(
-        function () {
-          setLoading(false);
-        }.bind(this),
-        250
-      );
-    }
-  }
+  //     setTimeout(
+  //       function () {
+  //         setLoading(false);
+  //       }.bind(this),
+  //       250
+  //     );
+  //   }
+  // }
 
-  console.log("ORDER-ITEM", orderItem?.data?.orderItem);
+  // console.log("ORDER-ITEM", orderItem?.data?.orderItem);
 
   const theme = useTheme();
   const isMobile = useThemeMediaQuery((_theme) =>
@@ -185,7 +191,7 @@ function Order() {
                 <ProductsTab order={orderItem?.data?.orderItem} isError={itemIsError} />
               )}
               {tabValue === 2 && (
-                <InvoiceTab order={orderItem?.data?.orderItem} myshopData={myshopData} />
+                <InvoiceTab order={orderItem?.data?.orderItem} myshopData={merchantShopData?.data?.merchant} />
               )}
             </div>
           )}

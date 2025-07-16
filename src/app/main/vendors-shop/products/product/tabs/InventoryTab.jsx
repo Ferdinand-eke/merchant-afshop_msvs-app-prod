@@ -11,7 +11,11 @@ import { MenuItem, Select } from "@mui/material";
  */
 function InventoryTab({shopData}) {
 	// const user = useAppSelector(selectUser);
-	const { data: unitsByPlan } = useProductUnitsByShopPlan(shopData?.shopplan?._id);
+	const { data: unitsByPlan } = useProductUnitsByShopPlan(shopData?.merchantShopplan?.id);
+
+  // console.log("merchant_Plan", shopData?.merchantShopplan?.id)
+  // console.log("Unit_WEIGHTS", unitsByPlan)
+
 	const methods = useFormContext();
 	const { control, formState } = methods;
 
@@ -29,11 +33,11 @@ function InventoryTab({shopData}) {
               className="mt-8 mb-16 mx-4"
               label=" Quantity In Stock"
               id="quantityInStock"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">$</InputAdornment>
-                ),
-              }}
+              // InputProps={{
+              //   startAdornment: (
+              //     <InputAdornment position="start">$</InputAdornment>
+              //   ),
+              // }}
               type="number"
               variant="outlined"
               fullWidth
@@ -61,9 +65,9 @@ function InventoryTab({shopData}) {
             helpertext={errors?.category?.message}
           >
             <MenuItem value="">Select a product unit weight</MenuItem>
-            {unitsByPlan?.data &&
-              unitsByPlan?.data?.map((option) => (
-                <MenuItem key={option._id} value={option._id}>
+            {unitsByPlan?.data?.unitweight &&
+              unitsByPlan?.data?.unitweight?.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
                   {option.unitname}
                 </MenuItem>
               ))}

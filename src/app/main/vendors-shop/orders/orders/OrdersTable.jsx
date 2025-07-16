@@ -20,26 +20,8 @@ function OrdersTable() {
     useShopItemsInOrders();
 
 
-  console.log("SHOP-ORDER-ITEMS", shopOrderItems?.data?.merchantOrders);
-
   const columns = useMemo(
     () => [
-      // {
-      //   accessorKey: "id",
-      //   header: "Reference",
-      //   size: 25,
-      //   Cell: ({ row }) => (
-      //     <Typography
-      //       component={Link}
-      //       to={`/shoporders-list/orders/${row.id}/item`}
-      //       className="underline"
-      //       color="secondary"
-      //       role="button"
-      //     >
-      //       {row.original._id}
-      //     </Typography>
-      //   ),
-      // },
       {
 		accessorKey: "product",
         header: "Product",

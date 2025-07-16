@@ -63,17 +63,19 @@ function InvoiceTab(props) {
     toast.success(cashingOutError);
   }
 
+  
   /***Calculations for earnings starts */
   const { order, myshopData } = props;
   const shopEarning = calculateShopEarnings(
     order?.price * order?.quantity,
-    myshopData?.shopplan?.percetageCommissionChargeConversion
+    myshopData?.merchantShopplan?.percetageCommissionChargeConversion
   );
   const companyEarnings = calculateCompanyEarnings(
     order?.price * order?.quantity,
-    myshopData?.shopplan?.percetageCommissionChargeConversion
+    myshopData?.merchantShopplan?.percetageCommissionChargeConversion
   );
   /***Calculations for earnings ends */
+
 
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -109,7 +111,7 @@ function InvoiceTab(props) {
                           variant="h6"
                           color="inherit"
                         >
-                          {order?.orderId?._id}
+                          {order?.order?.id}
                         </Typography>
                       </td>
                     </tr>
@@ -117,22 +119,22 @@ function InvoiceTab(props) {
                 </table>
 
                 <Typography color="text.secondary">
-                  {`${order?.orderId?.shippingAddress?.fullName} `}
+                  {`${order?.order?.shippingAddress?.fullName} `}
                 </Typography>
 
-                {order?.orderId?.shippingAddress?.address && (
+                {order?.order?.shippingAddress?.address && (
                   <Typography color="text.secondary">
-                    {order?.orderId?.shippingAddress?.address}
+                    {order?.order?.shippingAddress?.address}
                   </Typography>
                 )}
-                {/* {order?.orderId?.shippingAddress?.phone && (
+                {/* {order?.order?.shippingAddress?.phone && (
                   <Typography color="text.secondary">
-                    {order?.orderId?.shippingAddress?.phone}
+                    {order?.order?.shippingAddress?.phone}
                   </Typography>
                 )} */}
-                {/* {order?.orderId?.shippingAddress?.prefContact && (
+                {/* {order?.order?.shippingAddress?.prefContact && (
                   <Typography color="text.secondary">
-                    {order?.orderId?.shippingAddress?.prefContact}
+                    {order?.order?.shippingAddress?.prefContact}
                   </Typography>
                 )} */}
               </div>
@@ -140,7 +142,6 @@ function InvoiceTab(props) {
               <div className="seller flex items-center p-16">
                 <img
                   className="w-80"
-                  // src="assets/images/afslogo/afLogo.svg"
                   src="assets/images/afslogo/afslogo.png"
                   alt="logo"
                 />
@@ -173,9 +174,9 @@ function InvoiceTab(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {/* {order?.products?.map((product) => ( */}
+           
                   <TableRow
-                  // key={product.id}
+                  
                   >
                     <TableCell>
                       <Typography variant="subtitle1">{order?.name}</Typography>
@@ -208,7 +209,7 @@ function InvoiceTab(props) {
                   N
                   {calculateShopEarnings(
                     order?.price * order?.quantity,
-                    myshopData?.shopplan?.percetageCommissionChargeConversion
+                    myshopData?.merchantShopplan?.percetageCommissionChargeConversion
                   )}
                 </span>{" "}
                 while we earn{" "}
@@ -219,7 +220,7 @@ function InvoiceTab(props) {
                   N
                   {calculateCompanyEarnings(
                     order?.price * order?.quantity,
-                    myshopData?.shopplan?.percetageCommissionChargeConversion
+                    myshopData?.merchantShopplan?.percetageCommissionChargeConversion
                   )}
                 </span>
               </div>
@@ -315,7 +316,7 @@ function InvoiceTab(props) {
               </Table>
             </div>
 
-            {order?.orderId?.isDelivered && order?.orderId?.isPaid && <>
+            {order?.order?.isDelivered && order?.order?.isPaid && <>
               <div className="mt-96">
               <Typography className="mb-24 print:mb-12" variant="body1">
                 Thank you for your business.
@@ -335,7 +336,7 @@ function InvoiceTab(props) {
                   color="text.secondary"
                 >
                   In honor of the above transaction with referrence{" "}
-                  {order?.orderId?._id}, We at Africanshops consider this
+                  {order?.order?._id}, We at Africanshops consider this
                   Transaction as haven fulfilled the purpose for which it was
                   intended and haven satisfied our consumers, duly consent the
                   repatriation of funds to this merchant. Warmest Regards!..
@@ -346,7 +347,7 @@ function InvoiceTab(props) {
             </>}
             
 
-            {order?.orderId?.isDelivered && order?.orderId?.isPaid && (
+            {order?.order?.isDelivered && order?.order?.isPaid && (
               <>
                 <div className="flex flex-1 items-center justify-end space-x-8">
                   <motion.div

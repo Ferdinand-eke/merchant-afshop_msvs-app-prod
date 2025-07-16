@@ -39,9 +39,6 @@ const item = {
  * The finance dashboard app.
  */
 function FinanceDashboardAppWithdarwals() {
-//   const { data: myshopWithdrawals, isLoading: withdrawalsLoading } =
-//     useGetMyShopWthdrawals();
-  // const { data: widgets, isLoading } = useGetFinanceDashboardWidgetsQuery();
 
   const {
     data: shopData,

@@ -15,10 +15,12 @@ import {
   useGetECommerceProductsQuery,
 } from "../ECommerceApi";
 import useMyShopProducts from "app/configs/data/server-calls/products/useShopProducts";
+import MerchantShopClientErrorPage from "src/app/main/MerchantClientErrorPage";
 
 function ShopProductsTable() {
   const { data: myshop_products, isLoading: shopProductdIsLoading, isError } =
     useMyShopProducts();
+
 
 
   const [removeProducts] = useDeleteECommerceProductsMutation();
@@ -163,13 +165,15 @@ function ShopProductsTable() {
 				animate={{ opacity: 1, transition: { delay: 0.1 } }}
 				className="flex flex-col flex-1 items-center justify-center h-full"
 			>
-				<Typography
+				{/* <Typography
 					color="text.secondary"
 					variant="h5"
 				>
 				Nework Error While Retrieving products!
-				</Typography>
-			
+				</Typography> */}
+
+        <MerchantShopClientErrorPage message="Network Error While Retrieving products!" />
+
 			</motion.div>
 		);
 	}

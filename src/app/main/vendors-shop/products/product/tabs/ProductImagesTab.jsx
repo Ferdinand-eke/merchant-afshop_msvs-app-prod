@@ -57,6 +57,7 @@ function ProductImagesTab() {
   const imageLinks = watch("imageLinks")
   const deleteSingleImage = useDeleteProductSingleImage()
 
+  
   function handleRemoveProductImage(image_id) {
 
     const imageData = {

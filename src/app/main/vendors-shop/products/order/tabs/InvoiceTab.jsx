@@ -40,6 +40,7 @@ const Root = styled('div')(({ theme }) => ({
  * The invoice tab.
  */
 function InvoiceTab(props) {
+	
 	const { order } = props;
 	const formatter = new Intl.NumberFormat('en-US', {
 		style: 'currency',

@@ -163,8 +163,9 @@ export const getBlogPosts = () => Api().get("/posts");
 export const getBlogPostsById = (slug) => Api().get(`/posts/by/${slug}`);
 
 //Tradehubs
-export const getTradehubs = () => Api().get("/tradehubs");
-export const getTradehubById = (id) => Api().get(`/tradehubs/${id}`);
+export const getTradehubs = () => Api().get("/trade-hubs"); //(Msvs => Done)
+
+export const getTradehubById = (id) => Api().get(`/trade-hubs/${id}`); //(Msvs => Done)
 
 //Country Routes
 export const getCountries = () => Api().get("/buzcountries/operational"); //(Msvs => Done)
@@ -206,16 +207,17 @@ export const getMarketsByLgaId = (id) => Api().get(`/markets/lga/${id}`);
 
 //Product Categories Routes
 export const getProdCats = () => AuthApi().get("/categories"); //(Msvs => Done)
-export const getProdCatById = (id) => AuthApi().get(`/productcats/${id}`);
+export const getProdCatById = (id) => AuthApi().get(`/productcats/${id}`); 
 
 //Product Units Routes
-export const getProdUnits = () => AuthApi().get("/productunits");
+export const getProdUnits = () => AuthApi().get("/unit-weights"); //(Msvs => Done)
 export const getProdUnitByShopPlan = (id) =>
-  Api().get(`/productunits/by-shopplan/${id}`);
-export const getProdUnitById = (id) => AuthApi().get(`/productunits/${id}`);
+  Api().get(`/unit-weights/by-shopplan/${id}`); //(Msvs => Done)
+
+export const getProdUnitById = (id) => AuthApi().get(`/unit-weights/${id}`);
 
 //Product Shipping Weight Units Routes
-export const getProdShippingWeightUnit = () => Api().get("/shippingweights");
+export const getProdShippingWeightUnit = () => Api().get("/shipping-weights");
 
 // {===============================shop product handling starts=======================================}
 export const storeProductImages = (formData) =>
@@ -255,6 +257,7 @@ export const deleteShopProductImage = (imageData) => {
   );
 };
 
+
 export const deleteShopProduct = (id) => {
   console.log("productToDelete", id);
   return AuthApi().delete(`/api/myshop/delete-product/${id}`);
@@ -269,6 +272,7 @@ export const getJustMyShopDetails = () =>
 export const getMinimizedJustMyShopDetails = () =>
   AuthApi().get("/api/myshop/get-minimized-just-details");
 
+
 export const getJustMyShopDetailsAndPlan = (queryParam) => {
   //?queryAllData=${queryParam}
   // console.log("PARAM", queryParam)
@@ -276,7 +280,8 @@ export const getJustMyShopDetailsAndPlan = (queryParam) => {
 };
 
 export const getMyShopDetails = () =>
-  AuthApi().get("/auth-merchant/myshop/get-just-details/plan");
+  AuthApi().get("/auth-merchant/myshop/get-just-details/plan"); //* (Msvs => Done)
+
 
 export const getMyOtherShopsList = () =>
   AuthApi().get("/api/myshop/get-my-other-shops");

@@ -6,6 +6,7 @@ import ShopProductsTable from './ShopProductsTable';
  * The products page.
  */
 function ShopProducts() {
+	
 	return (
 		<>
 			<GlobalStyles

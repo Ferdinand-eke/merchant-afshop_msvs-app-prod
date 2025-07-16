@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 /**
  * The error 500 page.
  */
-function MerchantClientErrorPage({message}) {
+function MerchantShopClientErrorPage({message}) {
 	return (
 		<div className="flex flex-1 flex-col items-center justify-center p-16">
 			<div className="w-full max-w-3xl text-center">
@@ -317,4 +317,4 @@ function MerchantClientErrorPage({message}) {
 	);
 }
 
-export default MerchantClientErrorPage;
+export default MerchantShopClientErrorPage;

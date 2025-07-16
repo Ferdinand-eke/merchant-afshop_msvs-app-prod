@@ -51,7 +51,9 @@ function ShopProduct() {
 		skip: !productId || productId === 'new'
 	})
 
-	// console.log("SINGLE_SHOP-PRODUCT", products?.data?.product?.product)
+
+
+	console.log("AUT_SHOP_DATA", shopData?.data)
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
@@ -166,12 +168,14 @@ function ShopProduct() {
 								<ProductImagesTab />
 							</div>
 
+
 							<div className={tabValue !== 2 ? 'hidden' : ''}>
-								<PricingTab shopData={shopData}/>
+								<PricingTab shopData={shopData?.data?.merchant}/>
 							</div>
 
+
 							<div className={tabValue !== 3 ? 'hidden' : ''}>
-								<InventoryTab shopData={shopData?.data?.data}/>
+								<InventoryTab shopData={shopData?.data?.merchant}/>
 							</div>
 
 							<div className={tabValue !== 4 ? 'hidden' : ''}>

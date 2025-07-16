@@ -16,13 +16,15 @@ import { toast } from 'react-toastify';
 
 export default function useGetMyShopDetails() {
   return useQuery(['__myshop_details'], getMyShopDetails);
-}
+}  
+
 
 
 /*****Get just my shop details */
 export function useGetMinimizedJustMyShopDetailsQuery() {
   return useQuery(['__justmyshop'], getMinimizedJustMyShopDetails);
 }
+
 
 export function useGetJustMyShopDetails() {
   return useQuery(['__justmyshop'], getJustMyShopDetails);
