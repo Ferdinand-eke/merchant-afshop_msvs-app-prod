@@ -396,17 +396,17 @@ export const storePreShopUserDataWithOtp = (formData) =>
  */
 // {===============================shop estate property handling starts=======================================}
 export const getShopEstateProperties = () =>
-  AuthApi().get("/api/myshop/get-my-estate-properties"); //newDashboard
+  AuthApi().get("/properties/get-merchant-properties"); //(newDashboard) //(Msvs => Done)
 
 export const storeShopEstateProperty = (formData) =>
-  AuthApi().post("/api/myshop/create-estate-property", formData);
+  AuthApi().post("/properties/merchant-property/create", formData);
 
-export const getMyShopEstatePropertyBySlug = (id) =>
-  AuthApi().get(`/api/myshop-estateproperty/${id}`);
+export const getMyShopEstatePropertyBySlug = (slug) =>
+  AuthApi().get(`/properties/merchant-property/${slug}/view`);
 
 export const updateMyShopEstatePropertyById = (productFormData) =>
   AuthApi().put(
-    `/api/myshop/update-estateproperty/${productFormData?._id}`,
+    `/properties/merchant-property/${productFormData?.id}/update`,
     productFormData
   );
 export const deleteShopEstateProperty = (id) =>
@@ -501,19 +501,21 @@ export const merchantCashOutReservationEarning = (id) => {
  */
 // {===============================shop estate property handling starts=======================================}
 export const getShopFoodMarts = () =>
-  AuthApi().get("/api/myshop/food-mart/get-my-food-marts"); //newDashboard
+  AuthApi().get("/rcs/get-merchant-rcs"); //newDashboard //(Msvs => Done)
 
 export const storeShopFoodMart = (formData) =>
-  AuthApi().post("/api/myshop/food-mart/create-new-food-mart", formData);
+  AuthApi().post("/rcs/merchant-rcs/create", formData); //(Msvs => Done)
 
 export const getMyShopFoodMartBySlug = (slug) =>
-  AuthApi().get(`/api/myshop-foodmart/${slug}`);
+  AuthApi().get(`/rcs/merchant-rcs/${slug}/view`);  //(Msvs => Done)
 
-export const updateMyShopFoodMartById = (productFormData) =>
-  AuthApi().put(
-    `/api/myshop/update-foodmart/${productFormData?._id}`,
+export const updateMyShopFoodMartById = (productFormData) => {
+  console.log("updateMyShopFoodMartById_PAYLOAD", productFormData);
+  return   AuthApi().put(`/rcs/merchant-rcs/${productFormData?.id}/update`,
     productFormData
-  );
+  ); 
+} //(Msvs => Done)
+
 
 export const deleteShopFoodMart = (id) =>
   AuthApi().delete(`/myshop/delete-foodmart/${id}`);

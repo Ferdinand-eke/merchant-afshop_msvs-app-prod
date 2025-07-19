@@ -22,6 +22,7 @@ export default function useMyShopEstateProperties() {
   return useQuery(['__myshop_estateproperties'], getShopEstateProperties);
 }
 
+
 //get single estate property details
 export function useSingleShopEstateProperty(slug) {
   if (!slug || slug === "new") {

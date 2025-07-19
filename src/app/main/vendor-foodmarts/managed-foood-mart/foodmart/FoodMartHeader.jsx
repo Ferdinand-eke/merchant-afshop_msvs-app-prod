@@ -6,14 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import {
-	useCreateECommerceProductMutation,
-	useDeleteECommerceProductMutation,
-	useUpdateECommerceProductMutation
-} from '../ECommerceApi';
-// import { useAddShopEstatePropertyMutation, useEstatePropertyUpdateMutation } from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
-import { useAddShopBookingsPropertyMutation, useBookingsPropertyUpdateMutation } from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
-import { useAddShopFoodMartMutation } from 'app/configs/data/server-calls/foodmart/useShopFoodMarts';
+import { useAddShopFoodMartMutation, useFoodMartUpdateMutation } from 'app/configs/data/server-calls/foodmart/useShopFoodMarts';
 
 /**
  * The product header.
@@ -32,10 +25,10 @@ function FoodMartHeader() {
 	const {title, name, images, featuredImageId } = watch();
 
 	const addNewFoodMart = useAddShopFoodMartMutation()
-	// const updateBookingsProperty = useBookingsPropertyUpdateMutation()
+	const updateMerchantRcs = useFoodMartUpdateMutation()  
 
 	function handleSaveFoodMart() {
-		// updateBookingsProperty.mutate(getValues());
+		updateMerchantRcs.mutate(getValues());
 	}
 
 	function handleCreateFoodMart() {
@@ -131,7 +124,7 @@ function FoodMartHeader() {
 							variant="contained"
 							color="secondary"
 							disabled={_.isEmpty(dirtyFields) || !isValid
-							// || updateBookingsProperty.isLoading
+							// || updateMerchantRcs.isLoading
 							}
 							onClick={handleSaveFoodMart}
 						>

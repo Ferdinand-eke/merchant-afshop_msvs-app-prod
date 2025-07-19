@@ -50,7 +50,6 @@ function FinanceDashboardAppHeader(props) {
     defaultValues: {},
     // resolver: zodResolver(schema)
   });
-  // const methods = useFormContext();
   
   const { control, formState, watch, getValues } = methods;
 

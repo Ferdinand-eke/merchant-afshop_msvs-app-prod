@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import { useDeleteECommerceProductsMutation, useGetECommerceProductsQuery } from '../ECommerceApi';
 import useGetAllListings from 'src/app/aaqueryhooks/listingssHandlingQuery';
 import useMyShopEstateProperties from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
+import { formatCurrency } from 'src/app/main/vendors-shop/pos/PosUtils';
 
 function PropertiesTable() {
 	
@@ -19,37 +20,14 @@ function PropertiesTable() {
 	// const [removeProducts] = useDeleteECommerceProductsMutation();
 
 	const {data:listingData, isLoading:listingIsLoading} = useMyShopEstateProperties()
+
+	// console.log("The listing data is here: ", listingData?.data);
+
 	
 
 
 	const columns = useMemo(
 		() => [
-			// {
-			// 	accessorFn: (row) => row.featuredImageId,
-			// 	id: 'featuredImageId',
-			// 	header: '',
-			// 	enableColumnFilter: false,
-			// 	enableColumnDragging: false,
-			// 	size: 64,
-			// 	enableSorting: false,
-			// 	Cell: ({ row }) => (
-			// 		<div className="flex items-center justify-center">
-			// 			{row.original?.images?.length > 0 && row.original.featuredImageId ? (
-			// 				<img
-			// 					className="w-full max-h-40 max-w-40 block rounded"
-			// 					src={_.find(row.original.images, { id: row.original.featuredImageId })?.url}
-			// 					alt={row.original.name}
-			// 				/>
-			// 			) : (
-			// 				<img
-			// 					className="w-full max-h-40 max-w-40 block rounded"
-			// 					src="assets/images/apps/ecommerce/product-image-placeholder.png"
-			// 					alt={row.original.name}
-			// 				/>
-			// 			)}
-			// 		</div>
-			// 	)
-			// },
 			{
 				accessorKey: 'name',
 				header: 'Name',
@@ -65,52 +43,26 @@ function PropertiesTable() {
 					</Typography>
 				)
 			},
+			
 			// {
 			// 	accessorKey: 'categories',
 			// 	header: 'Category',
 			// 	accessorFn: (row) => (
 			// 		<div className="flex flex-wrap space-x-2">
-			// 			{row.categories.map((item) => (
-			// 				<Chip
-			// 					key={item}
+						
+			// 			 <Chip
 			// 					className="text-11"
 			// 					size="small"
 			// 					color="default"
-			// 					label={item}
+			// 					label={row?.category}
 			// 				/>
-			// 			))}
 			// 		</div>
 			// 	)
 			// },
 			{
-				accessorKey: 'categories',
-				header: 'Category',
-				accessorFn: (row) => (
-					<div className="flex flex-wrap space-x-2">
-						{/* {row.categories.map((item) => (
-							<Chip
-								key={item}
-								className="text-11"
-								size="small"
-								color="default"
-								label={item}
-							/>
-						))}
-						 */}
-						 <Chip
-								// key={item}
-								className="text-11"
-								size="small"
-								color="default"
-								label={row?.category}
-							/>
-					</div>
-				)
-			},
-			{
 				accessorKey: 'priceTaxIncl',
 				header: 'Price',
-				accessorFn: (row) => `$${row?.price}`
+				accessorFn: (row) => `N${formatCurrency(row?.price)}`
 			},
 			{
 				accessorKey: 'quantity',
@@ -118,14 +70,6 @@ function PropertiesTable() {
 				accessorFn: (row) => (
 					<div className="flex items-center space-x-8">
 						<span>{row?.roomCount} rooms</span>
-						{/* <i
-							className={clsx(
-								'inline-block w-8 h-8 rounded',
-								row.quantity <= 5 && 'bg-red',
-								row.quantity > 5 && row.quantity <= 25 && 'bg-orange',
-								row.quantity > 25 && 'bg-green'
-							)}
-						/> */}
 					</div>
 				)
 			},
@@ -160,7 +104,6 @@ function PropertiesTable() {
 					<div className="flex flex-wrap space-x-2">
 					
 						 <Chip
-								// key={item}
 								component={Link}
 						to={`/property/managed-listings/${row.original.id}/manage`}
 								className="text-11 cursor-pointer"
@@ -181,7 +124,7 @@ function PropertiesTable() {
 	}
 	
 
-	if (!listingData?.data?.data) {
+	if (!listingData?.data?.properties) {
 		return (
 			<div className="flex flex-1 items-center justify-center h-full">
 				<Typography
@@ -200,45 +143,9 @@ function PropertiesTable() {
 			elevation={0}
 		>
 			<DataTable
-				data={listingData?.data?.data}
+				data={listingData?.data?.properties}
 				columns={columns}
-				// renderRowActionMenuItems={({ closeMenu, row, table }) => [
-				// 	<MenuItem
-				// 		key={0}
-				// 		onClick={() => {
-				// 			closeMenu();
-				// 			table.resetRowSelection();
-				// 		}}
-				// 	>
-				// 		<ListItemIcon>
-				// 			<FuseSvgIcon>heroicons-outline:trash</FuseSvgIcon>
-				// 		</ListItemIcon>
-				// 		Delete
-				// 	</MenuItem>
-				// ]}
-				// renderTopToolbarCustomActions={({ table }) => {
-				// 	const { rowSelection } = table.getState();
-
-				// 	if (Object.keys(rowSelection).length === 0) {
-				// 		return null;
-				// 	}
-
-				// 	return (
-				// 		<Button
-				// 			variant="contained"
-				// 			size="small"
-				// 			onClick={() => {
-				// 				const selectedRows = table.getSelectedRowModel().rows;
-				// 				table.resetRowSelection();
-				// 			}}
-				// 			className="flex shrink min-w-40 ltr:mr-8 rtl:ml-8"
-				// 			color="secondary"
-				// 		>
-				// 			<FuseSvgIcon size={16}>heroicons-outline:trash</FuseSvgIcon>
-				// 			<span className="hidden sm:flex mx-8">Delete selected items</span>
-				// 		</Button>
-				// 	);
-				// }}
+				
 			/>
 		</Paper>
 	);

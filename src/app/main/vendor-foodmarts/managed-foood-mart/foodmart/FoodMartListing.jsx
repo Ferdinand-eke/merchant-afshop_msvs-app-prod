@@ -45,7 +45,6 @@ function FoodMartListing() {
 	const routeParams = useParams();
 	const { productId } = routeParams;
 
-	const { data: shopData, isLoading: shopDataLoading } = useGetMyShopDetails();
 
 	const {
 		data: foodMartList,
@@ -54,9 +53,6 @@ function FoodMartListing() {
 	} = useSingleShopFoodMart(productId, {
 		skip: !productId || productId === 'new'
 	});
-
-	// console.log("SINGLE-BOOKING", foodMartList?.data)
-
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
@@ -85,8 +81,8 @@ function FoodMartListing() {
 		}
 	}, [productId, reset]);
 	useEffect(() => {
-		if (foodMartList?.data) {
-			reset({ ...foodMartList?.data });
+		if (foodMartList?.data?.foodMart) {
+			reset({ ...foodMartList?.data?.foodMart });
 		}
 	}, [foodMartList, reset]);
 
@@ -135,7 +131,7 @@ function FoodMartListing() {
 	/**
 	 * Wait while foodMartList data is loading and form is setted
 	 */
-	if (_.isEmpty(form) || (foodMartList?.data && routeParams.productId !== foodMartList?.data?.slug && routeParams.productId !== 'new')) {
+	if (_.isEmpty(form) || (foodMartList?.data?.foodMart && routeParams.productId !== foodMartList?.data?.foodMart?.slug && routeParams.productId !== 'new')) {
 		return <FuseLoading />;
 	}
 

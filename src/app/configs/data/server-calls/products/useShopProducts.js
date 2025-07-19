@@ -60,14 +60,14 @@ export function useAddShopProductMutation() {
     {
       onError: (error, rollback) => {
         // return;
-        toast.error(
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message
-        );
-        console.log('MutationError', error.response.data);
-        console.log('MutationError', error.data);
+         const {
+          response: { data },
+        } = error ?? {};
+        Array.isArray(data?.message)
+          ? data?.message?.map((m) => toast.error(m))
+          : toast.error(data?.message);
         rollback();
+        // rollback();
       },
     }
   );
@@ -97,11 +97,13 @@ export function useProductUpdateMutation() {
      
     },
     onError: (error) => {
-      toast.error(
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message
-      );
+      const {
+          response: { data },
+        } = error ?? {};
+        Array.isArray(data?.message)
+          ? data?.message?.map((m) => toast.error(m))
+          : toast.error(data?.message);
+        rollback();
       // queryClient.invalidateQueries('__myshop_orders');
     },
   });
@@ -156,11 +158,13 @@ export function usePullProductFromExportMutation() {
       }
     },
     onError: (error) => {
-      toast.error(
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message
-      );
+      const {
+          response: { data },
+        } = error ?? {};
+        Array.isArray(data?.message)
+          ? data?.message?.map((m) => toast.error(m))
+          : toast.error(data?.message);
+        rollback();
     },
   });
 }

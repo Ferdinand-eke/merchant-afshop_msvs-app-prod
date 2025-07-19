@@ -2,6 +2,7 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 import FoodMerchantsHeader from './FoodMerchantsHeader';
 import FoodMerchantsTable from './FoodMerchantsTable';
 
+
 /**
  * The products page.
  */

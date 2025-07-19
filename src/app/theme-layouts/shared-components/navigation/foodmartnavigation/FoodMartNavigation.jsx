@@ -15,6 +15,7 @@ function FoodMartNavigation(props) {
 	const navigation = useAppSelector(selectNavigation);
 	
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+	const dispatch = useAppDispatch();
 
 
 	return useMemo(() => {
@@ -23,6 +24,7 @@ function FoodMartNavigation(props) {
 				dispatch(navbarCloseMobile());
 			}
 		}
+
 
 
 		return (

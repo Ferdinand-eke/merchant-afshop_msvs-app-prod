@@ -39,14 +39,7 @@ const ManagedListingsAppConfig = {
 					element: <ProfileApp />
 				},
 
-				// {
-				// 	path: 'orders',
-				// 	element: <Orders />
-				// },
-				// {
-				// 	path: 'orders/:orderId',
-				// 	element: <Order />
-				// }
+				
 			]
 		}
 	]

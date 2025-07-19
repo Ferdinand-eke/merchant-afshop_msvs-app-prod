@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import ProductHeader from './PropertyHeader';
 import BasicInfoTabProperty from './tabs/BasicInfoTabProperty';
-import InventoryTabProperty from './tabs/InventoryTabProperty';
+// import InventoryTabProperty from './tabs/InventoryTabProperty';
 import PricingTabProperty from './tabs/PricingTabProperty';
 import ProductImagesTabProperty from './tabs/ProductImagesTabProperty';
 import ShippingTabProperty from './tabs/ShippingTabProperty';
@@ -53,6 +53,7 @@ function PropertyListing() {
 		skip: !productId || productId === 'new'
 	});
 
+
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
 		mode: 'onChange',
@@ -65,8 +66,6 @@ function PropertyListing() {
             price: 0,
            
             description: '',
-            // servicetypeId: '',
-            // proptypeId: '',
 		},
 		resolver: zodResolver(schema)
 	});
@@ -78,12 +77,12 @@ function PropertyListing() {
 		}
 	}, [productId, reset]);
 	useEffect(() => {
-		if (propertyList?.data) {
-			reset({ ...propertyList?.data });
+		if (propertyList?.data?.propertyList) {
+			reset({ ...propertyList?.data?.propertyList });
 		}
 	}, [propertyList, reset]);
 
-	// console.log("EstatePropertyData", propertyList?.data)
+	// console.log("EstatePropertyData", propertyList?.data?.propertyList)
 
 	/**
 	 * Tab Change
@@ -129,7 +128,7 @@ function PropertyListing() {
 	/**
 	 * Wait while propertyList data is loading and form is setted
 	 */
-	if (_.isEmpty(form) || (propertyList?.data && routeParams.productId !== propertyList?.data?.slug && routeParams.productId !== 'new')) {
+	if (_.isEmpty(form) || (propertyList?.data?.propertyList && routeParams.productId !== propertyList?.data?.propertyList?.slug && routeParams.productId !== 'new')) {
 		return <FuseLoading />;
 	}
 
@@ -181,12 +180,10 @@ function PropertyListing() {
 							</div>
 
 							<div className={tabValue !== 2 ? 'hidden' : ''}>
-								<PricingTabProperty shopData={shopData}/>
+								<PricingTabProperty shopData={shopData?.data?.merchant}/>
 							</div>
 
-							{/* <div className={tabValue !== 3 ? 'hidden' : ''}>
-								<InventoryTabProperty />
-							</div> */}
+							
 
 							<div className={tabValue !== 3 ? 'hidden' : ''}>
 								<ShippingTabProperty />

@@ -68,7 +68,6 @@ function BasicInfoTabFoodMart() {
       getStateDFromCountryId(getValues()?.foodMartCountry);
     }
     if (getValues()?.foodMartState?.length > 0) {
-      console.log("Entered......");
       getLgasFromState(getValues()?.foodMartState);
     }
   }, [getValues()?.foodMartCountry, getValues()?.foodMartState]);
@@ -78,8 +77,10 @@ function BasicInfoTabFoodMart() {
 
     const responseData = await getStateByCountryId(pid);
 
+    console.log("STATES_FETCHED", responseData?.data);
+
     if (responseData) {
-      setBstates(responseData?.data);
+      setBstates(responseData?.data?.states);
       setTimeout(
         function () {
           setLoading(false);
@@ -92,14 +93,9 @@ function BasicInfoTabFoodMart() {
   //**Get L.G.As from state_ID data */
   async function getLgasFromState(sid) {
     setLoading(true);
-    // const responseData = await ProductRepository.getProductsById(pid);
     const responseData = await getLgaByStateId(sid);
-
-    // console.log("gettingLGA (2) with state ID of:", responseData?.data)
-    // return
     if (responseData?.data) {
-      // console.log('LGAs From State:', responseData);
-      setBlgas(responseData?.data);
+      setBlgas(responseData?.data.lgas);
       setTimeout(
         function () {
           setLoading(false);
@@ -108,9 +104,6 @@ function BasicInfoTabFoodMart() {
       );
     }
   }
-
-  //   console.log("LGA ID", getValues()?.foodMartLga)
-  // // console.log("LGA location", getLgasFromState(getValues()?.foodMartLga))
 
   return (
     <div>
@@ -178,127 +171,6 @@ function BasicInfoTabFoodMart() {
         />
       </>
 
-      {/* <Controller
-        name="categories"
-        control={control}
-        defaultValue={[]}
-        render={({ field: { onChange, value } }) => (
-          <Autocomplete
-            className="mt-8 mb-16"
-            multiple
-            freeSolo
-            options={[]}
-            value={value}
-            onChange={(event, newValue) => {
-              onChange(newValue);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder="Select multiple categories"
-                label="Categories"
-                variant="outlined"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            )}
-          />
-        )}
-      /> */}
-
-      {/* <Controller
-        name="tags"
-        control={control}
-        defaultValue={[]}
-        render={({ field: { onChange, value } }) => (
-          <Autocomplete
-            className="mt-8 mb-16"
-            multiple
-            freeSolo
-            options={[]}
-            value={value}
-            onChange={(event, newValue) => {
-              onChange(newValue);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder="Select multiple tags"
-                label="Tags"
-                variant="outlined"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            )}
-          />
-        )}
-      /> */}
-
-      {/* <Controller
-          name="roomCount"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className="mt-8 mb-16 mx-4"
-              label="Number of rooms"
-              id="roomCount"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">Rooms</InputAdornment>
-                ),
-              }}
-              type="number"
-              variant="outlined"
-              fullWidth
-            />
-          )}
-        /> */}
-
-      {/* <Controller
-          name="bathroomCount"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className="mt-8 mb-16 mx-4"
-              label="Number of Bathrooms"
-              id="bathroomCount"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">BathRooms</InputAdornment>
-                ),
-              }}
-              type="number"
-              variant="outlined"
-              fullWidth
-            />
-          )}
-        /> */}
-
-      {/* <Controller
-          name="sittingroomCount"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              className="mt-8 mb-16 mx-4"
-              label="Number of Sitting rooms"
-              id="sittingroomCount"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">sitting Room(s)</InputAdornment>
-                ),
-              }}
-              type="number"
-              variant="outlined"
-              fullWidth
-            />
-          )}
-        /> */}
-
       <>
         <Typography style={{ fontSize: "12px", fontWeight: "800" }}>
           Country of location?
@@ -309,7 +181,6 @@ function BasicInfoTabFoodMart() {
           defaultValue={[]}
           render={({ field: { onChange, value } }) => (
             <Select
-              // disabled 
               className="mt-8 mb-16"
               id="foodMartCountry"
               label="business country"
@@ -321,9 +192,9 @@ function BasicInfoTabFoodMart() {
               helpertext={errors?.foodMartCountry?.message}
             >
               <MenuItem value="">Select a country</MenuItem>
-              {countries?.data?.data &&
-                countries?.data?.data?.map((option, id) => (
-                  <MenuItem key={option._id} value={option._id}>
+              {countries?.data?.countries &&
+                countries?.data?.countries?.map((option, id) => (
+                  <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
                 ))}
@@ -342,7 +213,6 @@ function BasicInfoTabFoodMart() {
           defaultValue={[]}
           render={({ field: { onChange, value } }) => (
             <Select
-              // disabled
               className="mt-8 mb-16"
               id="foodMartState"
               label="business state"
@@ -356,7 +226,7 @@ function BasicInfoTabFoodMart() {
               <MenuItem value="">Select a state</MenuItem>
               {bstates &&
                 bstates?.map((option, id) => (
-                  <MenuItem key={option._id} value={option._id}>
+                  <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
                 ))}
@@ -370,8 +240,6 @@ function BasicInfoTabFoodMart() {
           L.G.A/County location
         </Typography>
         <Controller
-          // control={control}
-          // name="foodMartLga"
           name={`foodMartLga`}
           control={control}
           defaultValue={[]}
@@ -390,9 +258,8 @@ function BasicInfoTabFoodMart() {
             >
               {blgas.length > 0 ? (
                 blgas?.map((lga, index) => (
-                  <MenuItem key={index} value={lga?._id}>
+                  <MenuItem key={index} value={lga?.id}>
                     {lga?.name}
-                    {/* {lga?._id} */}
                   </MenuItem>
                 ))
               ) : (
@@ -409,7 +276,7 @@ function BasicInfoTabFoodMart() {
         render={({ field }) => (
           <TimePicker
             {...field}
-            views={['hours']}
+            views={["hours"]}
             className="mt-8 mb-16"
             label="Open At"
             id="busniessOpenPeriod"
@@ -420,13 +287,13 @@ function BasicInfoTabFoodMart() {
         )}
       />
 
-<Controller
+      <Controller
         name="busniessClosePeriod"
         control={control}
         render={({ field }) => (
           <TimePicker
             {...field}
-            views={['hours']}
+            views={["hours"]}
             className="ml-8 px-8 mt-8 mb-16"
             label="Close At"
             id="busniessClosePeriod"
@@ -437,7 +304,7 @@ function BasicInfoTabFoodMart() {
         )}
       />
 
-<Controller
+      <Controller
         name="address"
         control={control}
         render={({ field }) => (
@@ -452,6 +319,53 @@ function BasicInfoTabFoodMart() {
             fullWidth
             error={!!errors.address}
             helperText={errors?.address?.message}
+          />
+        )}
+      />
+
+
+       <Controller
+        name="latitude"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            // views={["hours"]}
+            className="mt-8 mb-16"
+            label="latitude"
+            id="latitude"
+            variant="outlined"
+            fullWidth
+             error={!!errors.latitude}
+            helperText={errors?.latitude?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="longitude"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            // views={["hours"]}
+            className="mt-8 mb-16"
+            label="longitude"
+            id="longitude"
+            variant="outlined"
+            fullWidth
+             error={!!errors.longitude}
+            helperText={errors?.longitude?.message}
+
+            // className="mt-8 mb-16"
+            
+            // label="Name"
+            // autoFocus
+            // id="title"
+            // variant="outlined"
+            // fullWidth
+            // error={!!errors.title}
+            // helperText={errors?.title?.message}
           />
         )}
       />

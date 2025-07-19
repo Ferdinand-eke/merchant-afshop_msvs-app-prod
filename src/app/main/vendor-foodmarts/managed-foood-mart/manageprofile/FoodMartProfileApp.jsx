@@ -13,7 +13,9 @@ import PhotosVideosTab from "./tabs/photos-videos/PhotosVideosTab";
 import TimelineTab from "./tabs/timeline/TimelineTab";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import { useTheme } from "@mui/material/styles";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import useGetMyShopDetails from "app/configs/data/server-calls/shopdetails/useShopDetails";
+import { useSingleShopFoodMart } from "app/configs/data/server-calls/foodmart/useShopFoodMarts";
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   "& .FusePageSimple-header": {
@@ -31,15 +33,27 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
  * The profile page.
  */
 function FoodMartProfileApp() {
+  const routeParams = useParams();
+    const { foodMartId } = routeParams;
   const theme = useTheme();
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState(0);
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
+  const {
+      data: foodMartList,
+      isLoading,
+      isError
+    } = useSingleShopFoodMart(foodMartId, {
+      skip: !foodMartId || foodMartId === 'new'
+    });
+
+  const { data: shopData, isLoading: shopDataLoading } = useGetMyShopDetails();
+
+  console.log("FOODMART_IN_ROOT", foodMartList?.data?.foodMart)
 
   function handleTabChange(event, value) {
     setSelectedTab(value);
   }
-
 
   return (
     <Root
@@ -72,12 +86,11 @@ function FoodMartProfileApp() {
           </motion.div>
 
           <div className="mt-24 flex flex-col flex-0 lg:flex-row items-center max-w-5xl w-full mx-auto px-32 lg:h-52">
-        
             <div className="flex flex-col items-center lg:items-start mt-16 lg:mt-0 lg:ml-32">
               <Typography className="text-lg font-bold leading-none">
-                Brian Hughes
+                {foodMartList?.data?.foodMart?.title}
               </Typography>
-              <Typography color="text.secondary">London, UK</Typography>
+              <Typography color="text.secondary">{foodMartList?.data?.foodMart?.address}</Typography>
             </div>
 
             <div className="hidden lg:flex h-32 mx-32 border-l-2" />
@@ -146,12 +159,12 @@ function FoodMartProfileApp() {
       }
       content={
         <div className="flex flex-auto justify-center w-full max-w-5xl mx-auto p-24 sm:p-32">
-			  {selectedTab === 0 && <PhotosVideosTab />}
+          {selectedTab === 0 && <PhotosVideosTab 
+          merchantData={shopData?.data?.merchant}
+          />}
 
           {selectedTab === 1 && <AboutTab />}
-		  {selectedTab === 2 && <TimelineTab />}
-
-        
+          {selectedTab === 2 && <TimelineTab />}
         </div>
       }
       scroll={isMobile ? "normal" : "page"}

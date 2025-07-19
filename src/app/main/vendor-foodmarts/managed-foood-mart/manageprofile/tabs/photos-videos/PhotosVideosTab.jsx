@@ -17,14 +17,17 @@ import FoodMartMenuPanel from '../../formpanels/FoodMartMenuPanel';
 import React from 'react';
 import useMyShopFoodMartMenus from 'app/configs/data/server-calls/foodmartmenuitems/useShopFoodMartMenu';
 import { useParams } from 'react-router';
+import MerchantShopClientErrorPage from 'src/app/main/MerchantClientErrorPage';
 
 /**
  * The photos videos tab.
  */
-function PhotosVideosTab() {
+function PhotosVideosTab(props) {
+	const {merchantData} = props;
 	const routeParams = useParams();
   const { foodMartId } = routeParams;
-	// const dispatch = useAppDispatch();
+
+//   console.log("Merchant in photos videos tab", merchantData)
 
 	const { data: martMenu, isLoading: martMenuLoading, error } = useMyShopFoodMartMenus(foodMartId)
 	const [openNewEntry, setOpenNewEntry] = React.useState(false);
@@ -47,13 +50,14 @@ function PhotosVideosTab() {
 
 	if(error){
 		return (
-			<div className="bg-red-300 flex flex-1 items-center justify-center h-full">
-				<Typography
+			<div className="flex flex-1 items-center justify-center h-full">
+				{/* <Typography
 					color="text.secondary"
 					variant="h5"
 				>
 					Netork Error!
-				</Typography>
+				</Typography> */}
+				<MerchantShopClientErrorPage  message={`Error occured while retrieving menu`}/>
 			</div>
 		);
 	}
