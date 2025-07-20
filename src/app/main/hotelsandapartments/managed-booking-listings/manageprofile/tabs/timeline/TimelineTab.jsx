@@ -35,6 +35,7 @@ function TimelineTab() {
 		hidden: { opacity: 0, y: 40 },
 		show: { opacity: 1, y: 0 }
 	};
+	/**Consider adding a loading state */
 	return (
 		<motion.div
 			variants={container}
