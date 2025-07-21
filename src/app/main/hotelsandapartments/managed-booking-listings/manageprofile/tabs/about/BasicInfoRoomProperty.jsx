@@ -13,6 +13,7 @@ import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import _ from "@lodash";
 import {
   useAddRoomPropertyMutation,
+  useGetSingleRoomOfProperty,
   useRoomOnPropertyUpdateMutation,
 } from "app/configs/data/server-calls/hotelsandapartments/useRoomsOnProps";
 
@@ -54,11 +55,17 @@ function BasicInfoRoomTabProperty(props) {
   const addRoomProperty = useAddRoomPropertyMutation();
   const updateRoomOnBookingsProperty = useRoomOnPropertyUpdateMutation();
 
-  function handleSaveRoomOnApartment() {
-    // console.log("BOOKING_PROP_DETAILS", getValues())
-    // return
-    // updateRoomOnBookingsProperty.mutate(getValues());
-  }
+  const {
+      data: room,
+      isLoading,
+      isError
+    } = useGetSingleRoomOfProperty(roomId, {
+      skip: !roomId 
+      // || roomId === 'new'
+    });
+
+
+  
 
   function handleCreateRoomOnApartmentCall() {
     console.log("BOOKING_PROP_DETAILS", getValues());
@@ -66,16 +73,22 @@ function BasicInfoRoomTabProperty(props) {
     parseInt(getValues().price);
     const formattedData = {
       ...getValues(),
-      // roomNumber:  parseInt(getValues().roomNumber),
       price: parseInt(getValues().price),
-      // title: '',
-      // bookingPropertyId: apartmentId,
     };
-
-    // console.log("BOOKING_PROP_DETAILS 22", formattedData);
-    // return
     addRoomProperty.mutate(formattedData);
   }
+
+  function handleSaveRoomOnApartment() {
+    console.log("BOOKING_PROP_DETAILS", getValues())
+    // return
+     const formattedData = {
+      ...getValues(),
+      price: parseInt(getValues().price),
+    };
+    updateRoomOnBookingsProperty.mutate(formattedData);
+  }
+
+
 
   function handleRemoveRoomOnApartment() {
     console.log("Deleting BookingProperty_List-Values", getValues());
@@ -87,7 +100,15 @@ function BasicInfoRoomTabProperty(props) {
       methods.clearErrors();
       // methods.dirtyFields.
     }
-  }, [addRoomProperty.isSuccess]);
+  }, [
+    addRoomProperty.isSuccess]);
+
+    useEffect(() => {
+        if (room?.data?.room) {
+          reset({ ...room?.data?.room });
+        }
+      }, [room, reset]);
+    
 
 
   return (

@@ -5,6 +5,7 @@ import {
   createRoomOnProperty,
    updateRoomOnProperty,
   getBookingsPropertyRoomsById,
+  getSingleRoomOfProperty,
  
 } from "../../client/clientToApiRoutes";
 
@@ -17,17 +18,23 @@ import {
 
 /****1) get rooms from single booking property by Property-ID */
 
-// export function useGetRoomsFromBookingProperty(slug) {
-//   return useQuery(["roomsOnBookingProperty"], getBookingsPropertyRoomsById(slug));
-// }
-
 export function useGetRoomsFromBookingProperty(slug) {
-  console.log("Fetching rooms for booking property:", slug)
+//   console.log("Fetching rooms for booking property:", slug)
 
   return useQuery({
     queryKey: ["roomsOnBookingProperty", slug],
     queryFn: () => getBookingsPropertyRoomsById(slug),
     enabled: Boolean(slug), // only run if slug is truthy
+  });
+}
+
+export function useGetSingleRoomOfProperty(roomId) {
+  console.log("Fetching single room :", roomId)
+
+  return useQuery({
+    queryKey: ["_roomsOnBookingProperty", roomId],
+    queryFn: () => getSingleRoomOfProperty(roomId),
+    enabled: Boolean(roomId), // only run if slug is truthy
   });
 }
 
@@ -89,15 +96,23 @@ export function useRoomOnPropertyUpdateMutation() {
         toast.success(
           `${data?.data?.message ? data?.data?.message : "room updated successfully!!"}`
         );
-        queryClient.invalidateQueries("__roomsOnBookingProperty");
+        queryClient.invalidateQueries("roomsOnBookingProperty");
       }
     },
     onError: (error) => {
-      toast.error(
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message
-      );
+    //   toast.error(
+    //     error.response && error.response.data.message
+    //       ? error.response.data.message
+    //       : error.message
+    //   );
+    const {
+        response: { data },
+      } = error ?? {};
+      Array.isArray(data?.message)
+        ? data?.message?.map((m) => toast.error(m))
+        : toast.error(data?.message);
+        rollback();
+      
     },
   });
 }

@@ -434,16 +434,22 @@ export const getBookingsPropertyRoomsById = (propertyId) => {
   return  AuthApi().get(`/bookings/property-rooms/${propertyId}/view`); //(Msvs => done)
 }
 
+export const getSingleRoomOfProperty = (roomId) => {
+
+  return  AuthApi().get(`/bookings/${roomId}/get-room`); //(Msvs => done)
+}
+
 export const createRoomOnProperty = (formData) =>
   AuthApi().post('/bookings/create-room', formData); //(Msvs => done)
 
 
-export const updateRoomOnProperty = (productFormData ) =>
-  AuthApi().put(
-    `/bookings/${productFormData?.id}/update-room`,
-    productFormData
-  );//(Msvs => done)
- 
+export const updateRoomOnProperty = (productFormData ) => {
+
+  console.log("updateRoomOnProperty_PAYLOAD", productFormData)
+
+  // return
+  return AuthApi().put(`/bookings/${productFormData?.id}/update-room`,  productFormData);//(Msvs => done)
+}
 
 
   /****Reservations */ //reservations/get-merchant-reservations

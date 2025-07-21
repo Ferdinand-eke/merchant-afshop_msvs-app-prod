@@ -11,7 +11,7 @@ import { formatCurrency } from "src/app/main/vendors-shop/pos/PosUtils";
 
 function RoomsTable(props) {
   
-  const { rooms, roomsIsLoading, roomsIsError } = props;
+  const { rooms, roomsIsLoading, roomsIsError, setRoomId } = props;
 
 
 
@@ -42,6 +42,7 @@ function RoomsTable(props) {
             <Chip
               // component={Link}
               // to={`/bookings/list-reservation/${row.original.id}/manage`}
+              onClick={() => setRoomId(row.original.id)}
               className="text-11 cursor-pointer  bg-orange-300"
               size="small"
               color="default"

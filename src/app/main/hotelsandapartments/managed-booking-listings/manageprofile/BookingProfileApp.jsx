@@ -136,12 +136,7 @@ function BookingProfileApp() {
 				<div className="flex flex-auto justify-center w-full max-w-5xl mx-auto p-24 sm:p-32">
 					{selectedTab === 0 && <TimelineTab />}
 
-					{selectedTab === 1 && <AboutTab 
-					
-
-					/>}
-
-
+					{selectedTab === 1 && <AboutTab />}
 
 					{selectedTab === 2 && <PhotosVideosTab />}
 				</div>
