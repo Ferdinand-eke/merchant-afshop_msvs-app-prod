@@ -110,6 +110,7 @@ function BasicInfoRoomTabProperty(props) {
       }, [room, reset]);
     
 
+      console.log("ROOM_DETAILS", room?.data?.room)
 
   return (
     <div>

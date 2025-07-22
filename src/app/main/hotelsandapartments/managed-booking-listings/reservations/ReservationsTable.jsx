@@ -114,8 +114,6 @@ function ReservationsTable() {
     []
   );
 
-  console.log("Reservations_LIST". reservations)
-
   if (reservationsIsLoading) {
     return <FuseLoading />;
   }

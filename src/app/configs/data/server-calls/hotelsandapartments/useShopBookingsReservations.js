@@ -1,15 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { getShopBookingsReservationsApi, getSingleMerchantReservationApi, merchantCashOutReservationEarning, merchantCheckInGuestReservations, merchantCheckOutGuestReservations } from '../../client/clientToApiRoutes';
+import { getReservationsOnPropertyApi, getShopBookingsReservationsApi, getSingleMerchantReservationApi, merchantCashOutReservationEarning, merchantCheckInGuestReservations, merchantCheckOutGuestReservations } from '../../client/clientToApiRoutes';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 
 /***get all Specific user shop-estate property */   
 export default function useMyPropertiesReservations() {
-  return useQuery(['__merchant_reservations'], getShopBookingsReservationsApi); ("Msvs: => : Done")
+  return useQuery(['__merchant_reservations'], getShopBookingsReservationsApi); //("Msvs: => : Done")
 }
 
+/****Get  Reservations on a particular property */
+export function useFetchReservationsOnProperty(propertyId) {
+  return useQuery(['__merchant_reservations_on_property', propertyId], () => {
+    return getReservationsOnPropertyApi(propertyId)
+  }
+  );
+}//("Msvs: => : Done")
 
 
+// 
 /****Get single Guest Bookded Reservation */
 export function useFindMerchantSingleReservation(itemId) {
   return useQuery(['__merchant_reservations', itemId], () => {

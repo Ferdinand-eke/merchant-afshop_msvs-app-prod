@@ -452,10 +452,11 @@ export const updateRoomOnProperty = (productFormData ) => {
 }
 
 
-  /****Reservations */ //reservations/get-merchant-reservations
+  /****Reservations */ //reservations/get-merchant-reservations on-property/:propertyId/get-reservations
   export const getShopBookingsReservationsApi = () => AuthApi().get('/reservations/get-merchant-reservations'); //newDashboard (Msvs => Done)
-  export const getShopSealedBookingsReservationsApi = () => AuthApi().get('/reservations/get-merchant-sealed-reservations'); //newDashboard //(Msvs : => :)
-  export const getSingleMerchantReservationApi = (reservationId) => AuthApi().get(`/reservations/merchant-reservation/${reservationId}/view`);
+  export const getShopSealedBookingsReservationsApi = () => AuthApi().get('/reservations/get-merchant-sealed-reservations'); //newDashboard //(Msvs : => :done)
+  export const getSingleMerchantReservationApi = (reservationId) => AuthApi().get(`/reservations/merchant-reservation/${reservationId}/view`);//(Msvs : => :done)
+  export const getReservationsOnPropertyApi = (propertyId) => AuthApi().get(`/reservations/on-prop/${propertyId}/get-reservations`);//(Msvs : => :done)
   export const merchantCheckInGuestReservations = (id) => AuthApi().put(`/api/myshop/merchant-homes/checkin-guest-reservation/${id}`);
   export const merchantCheckOutGuestReservations = (id) => AuthApi().put(`/api/myshop/merchant-homes/checkout-guest-reservation/${id}`);
   export const merchantCashOutReservationEarning = (id) => {
