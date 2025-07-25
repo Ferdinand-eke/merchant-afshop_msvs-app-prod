@@ -175,6 +175,7 @@ function FinanceDashboardAppHeader(props) {
         <Drawer open={open} onClose={toggleDrawer(false)}>
           {DrawerMoveFunds}
         </Drawer>
+        
 
         <Drawer open={withdarwopen} onClose={toggleWithdrawDrawer(false)}>
           {DrawerWithdraw}

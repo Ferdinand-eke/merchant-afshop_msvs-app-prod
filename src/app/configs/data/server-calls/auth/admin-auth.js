@@ -9,10 +9,8 @@ import { merchantSignIn } from "../../client/clientToApiRoutes";
 // import { adminSigin } from "../apiRoutes";
 
 export function useShopAdminLogin() {
-  
   return useMutation(merchantSignIn, {
     onSuccess: (data) => {
-
       if (data?.data?.user && data?.data?.merchantAccessToken) {
         /**Transform user and store locally*/
 
@@ -25,9 +23,12 @@ export function useShopAdminLogin() {
           isAdmin: data?.data?.user?.isAdmin,
           avatar: data?.data?.user?.avatar,
         };
- 
+
         if (data?.data?.merchantAccessToken) {
-          localStorage.setItem(config.tokenStorageKey, data?.data?.merchantAccessToken);
+          localStorage.setItem(
+            config.tokenStorageKey,
+            data?.data?.merchantAccessToken
+          );
           // axios.defaults.headers.common.Authorization = `Bearer ${_nnip_shop_ASHP_ALOG}`;
           axios.defaults.headers.common.accessToken = `${data?.data?.merchantAccessToken}`;
         }
@@ -38,12 +39,10 @@ export function useShopAdminLogin() {
           localStorage.setItem(config.isAuthenticatedStatus, false);
         }
 
-        if(transFormedUser){
+        if (transFormedUser) {
           setUserCredentialsStorage(transFormedUser);
           window.location.reload();
         }
-
-       
 
         // return;
       } else if (data.data?.error) {
@@ -75,7 +74,6 @@ const isTokenValid = (accessToken) => {
   if (accessToken) {
     try {
       const decoded = jwtDecode(accessToken);
-      // console.log("DECODED Token-DATA", decoded)
       const currentTime = Date.now() / 1000;
       return decoded.exp > currentTime;
     } catch (error) {

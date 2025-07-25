@@ -31,8 +31,10 @@ export function useCheckInGuest() {
   const queryClient = useQueryClient();
   return useMutation(merchantCheckInGuestReservations, {
     onSuccess: (data) => {
-      if(data){
-        toast.success('Reservation Checked In successfully!');
+      console.log("CHECK[IN-RESPONSE-DATA", data?.data)
+      if(data?.data?.success){
+        toast.success(`${data?.data?.message ? data?.data?.message : 'Reservation Checked In successfully!'} `);
+        toast.success('Reservation Checked In successfully!')
         queryClient.invalidateQueries('__merchant_reservations');
       }
     },

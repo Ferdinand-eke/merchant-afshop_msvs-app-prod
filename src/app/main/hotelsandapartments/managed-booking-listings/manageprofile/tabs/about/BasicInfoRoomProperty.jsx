@@ -68,7 +68,7 @@ function BasicInfoRoomTabProperty(props) {
   
 
   function handleCreateRoomOnApartmentCall() {
-    console.log("BOOKING_PROP_DETAILS", getValues());
+
     parseInt(getValues().roomNumber);
     parseInt(getValues().price);
     const formattedData = {
@@ -79,9 +79,9 @@ function BasicInfoRoomTabProperty(props) {
   }
 
   function handleSaveRoomOnApartment() {
-    console.log("BOOKING_PROP_DETAILS", getValues())
-    // return
-     const formattedData = {
+    parseInt(getValues().roomNumber);
+    parseInt(getValues().price);
+    const formattedData = {
       ...getValues(),
       price: parseInt(getValues().price),
     };
@@ -108,9 +108,7 @@ function BasicInfoRoomTabProperty(props) {
           reset({ ...room?.data?.room });
         }
       }, [room, reset]);
-    
-
-      console.log("ROOM_DETAILS", room?.data?.room)
+   
 
   return (
     <div>

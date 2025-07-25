@@ -1,5 +1,7 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
+const AddStaffContactForm = lazy(() => import('./manageprofile/tabs/photos-videos/AddUserForm')); 
+const ManageReservationContent =lazy(() => import('./manageprofile/tabs/photos-videos/ManageReservationContent'));  
 const ManagedBookingListingApp = lazy(() => import('./ManagedBookingListingApp'));
 const BookingPropertyListing = lazy(() => import('./bookingsproperty/BookingPropertyListing'));
 const BookingProperties = lazy(() => import('./properties/BookingProperties'));
@@ -7,6 +9,7 @@ const BookingProfileApp = lazy(() => import('./manageprofile/BookingProfileApp')
 
 const ReservationsOfBookedProperties = lazy(() => import('./reservations/ReservationsOfBookedProperties'));
 const ReservationOrder = lazy(() => import('./reservationorder/ReservationOrder'));
+
 
 const SimpleWithSidebarsContentScrollComponent = lazy(() => import('../../user-interface/page-layouts/simple/with-sidebars/SimpleWithSidebarsContentScrollComponent'));
 /**
@@ -40,9 +43,21 @@ const ManagedBookingsListingsAppConfig = {
 
 				{
 					path: 'managed-listings/:productId/manage',
-					element: <BookingProfileApp />
-				},
+					element: <BookingProfileApp />,
+					children: [
+						{
+							element: <ManageReservationContent />,
+							children: [
+								{
+									path: ':reservationId/handle-arrival',
+									element: <AddStaffContactForm />
+								}
+							]
 
+						}
+					]
+				},
+				
 
 				{
 					path: 'list-reservations',
@@ -55,6 +70,7 @@ const ManagedBookingsListingsAppConfig = {
 					element: <ReservationOrder />
 				},//(Msvs: => : Done)
 
+				
 				
 				
 

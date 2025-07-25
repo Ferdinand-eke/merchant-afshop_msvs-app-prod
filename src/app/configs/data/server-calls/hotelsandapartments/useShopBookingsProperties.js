@@ -85,11 +85,28 @@ export function useBookingsPropertyUpdateMutation() {
       }
     },
     onError: (error) => {
-      toast.error(
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message
-      );
+
+      console.log("Update Booking Property Error__11:", error);
+
+      const {
+          response: { data },
+        } = error ?? {};
+        Array.isArray(data?.message)
+          ? data?.message?.map((m) =>{
+
+            console.log("Update Booking Property Error:", m);
+            return toast.error(m)
+          })
+          : toast.error(data?.message);
+        rollback();
+
+        
+      // toast.error(
+
+      //   error.response && error.response.data.message
+      //     ? error.response.data.message
+      //     : error.message
+      // );
     },
   });
 }

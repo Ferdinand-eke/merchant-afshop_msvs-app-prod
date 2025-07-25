@@ -1,117 +1,138 @@
-
-import { CONTROL_API_ENDPOINTS } from '../endpoints'
-import axios from 'axios'
-import Cookies from 'js-cookie'
+import { CONTROL_API_ENDPOINTS } from "../endpoints";
+import axios from "axios";
+import Cookies from "js-cookie";
 // import { message } from 'antd'
-import { getAuthAdminTokens, resetSessionForShopUsers } from 'app/configs/utils/authUtils'
-import { getAdminAccessToken,  } from '../utils/opsUtils'
-import { toast } from 'react-toastify'
+import {
+  getAuthAdminTokens,
+  resetSessionForShopUsers,
+} from "app/configs/utils/authUtils";
+import { getAdminAccessToken } from "../utils/opsUtils";
+import { toast } from "react-toastify";
+import { rest } from "lodash";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL_PROD;
 
-
-
-
 /***================================================================================================================= */
 export const customHeaders = {
-    Accept: 'application/json',
-}
+  Accept: "application/json",
+};
 
-export const baseUrl = `${API_BASE_URL}`
+export const baseUrl = `${API_BASE_URL}`;
 
 export function Api() {
+  const Api = axios.create({
+    baseURL: baseUrl,
+    headers: customHeaders,
+  });
 
-    const Api = axios.create({
-        baseURL: baseUrl,
-        headers: customHeaders,
-    })
-
-    return Api
+  return Api;
 }
 
 export function AuthApi() {
-    const  token  = getAdminAccessToken() 
+  const token = getAdminAccessToken();
 
-    // console.log("AUTH_TOKEN", token)
+  // console.log("AUTH_TOKEN", token)
 
-    const customHeaders = {
-        Accept: 'application/json',
-        withcredentials: true,
-        headers: {
-            // 'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        // token: `Bearer ${TOKEN}`,
-    };
+  const customHeaders = {
+    Accept: "application/json",
+    withcredentials: true,
+    headers: {
+      // 'Access-Control-Allow-Origin': '*',
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    // token: `Bearer ${TOKEN}`,
+  };
 
-    const Api = axios.create({
-        /*************Previous for Here starts */
-        baseURL: baseUrl,
-        // headers: customHeaders,
-        /*****************Previous for Here starts  ends*/
+  const Api = axios.create({
+    /*************Previous for Here starts */
+    baseURL: baseUrl,
+    // headers: customHeaders,
+    /*****************Previous for Here starts  ends*/
 
-        // headers: { accesstoken: `${token}` },
-        // headers: { shoparccreed: `Bearer ${token}` },
+    // headers: { accesstoken: `${token}` },
+    // headers: { shoparccreed: `Bearer ${token}` },
 
-        headers: { shoparccreed: `${token}` },
-    });
+    headers: { shoparccreed: `${token}` },
+  });
 
-    Api.interceptors.response.use(
-        (response) => response,
-        (error) => {
+  // Api.interceptors.response.use(
+  //   (response) => response,
+  //   (error) => {
+  //     if (error?.response?.status === 403) {
+  //       let errors = Object.values(error?.response?.data?.errors || {});
+  //       // merchantLogOutCall();
 
-            if (error?.response?.status === 403) {
-                let errors = Object.values(error?.response?.data?.errors || {});
-                // merchantLogOutCall();
+  //       return Promise.reject({
+  //         status: 403,
+  //         errorsRaw: errors,
+  //         errors: errors.reduce((error) => error),
+  //       });
+  //     }
 
-                return Promise.reject({
-                    status: 403,
-                    errorsRaw: errors,
-                    errors: errors.reduce((error) => error),
-                });
-            }
+  //     toast.error(
+  //       error?.response && error?.response?.data?.message
+  //         ? error?.response?.data?.message
+  //         : error?.message
+  //     );
 
-            toast.error(
-                error?.response && error?.response?.data?.message
-                    ? error?.response?.data?.message
-                    : error?.message
-            );
+  //     return Promise.reject({
+  //         status: error.response?.status ? error.response?.status : 500,
+  //         errors: ['Oops!'],
+  //     });
+  //   }
+  // );
 
+  Api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      console.error("Interceptor---ERROR", error);
+      if (error?.response?.status === 403) {
+        console.log("responseSTATS", error?.response?.status);
+        // merchantLogOutCall();
+        // toast.error(
+        //   error.response && error.response.data.message
+        //     ? error.response.data.message
+        //     : error.message
+        // );
 
-            return Promise.reject({
-                status: error.response?.status ? error.response?.status : 500,
-                errors: ['Oops!'],
-            });
-        }
-    );
+        return Promise.reject({ status: 401, errors: ["Unauthorized"] });
+      }
 
-    return Api;
+      if (error.response?.status === 422) {
+        let errors = Object.values(error?.response?.data?.errors || {});
+
+       
+      }
+
+       return Promise.reject(error);
+   
+    }
+  );
+
+  return Api;
 }
 
 export const merchantSignIn = (formData) => {
-    console.log('DATA_IN_FORM', formData)
-    return Api().post(`/auth-merchant/login`, formData)
-}
+  console.log("DATA_IN_FORM", formData);
+  return Api().post(`/auth-merchant/login`, formData);
+};
 
 export const shopForgotPasswordInit = (formData) => {
-  console.log('DATA_IN_FORM', formData)
-  return Api().post(`/api/shop/forgot-password-withcode`, formData)
-}
+  console.log("DATA_IN_FORM", formData);
+  return Api().post(`/api/shop/forgot-password-withcode`, formData);
+};
 
 export const resetshopPasswordWithcode = (formData) => {
-  console.log('RESETPASS_DATA_INTORM', formData)
-  return Api().post(`/api/shop/reset-password-withcode`, formData)
-}
-
-
-    
+  console.log("RESETPASS_DATA_INTORM", formData);
+  return Api().post(`/api/shop/reset-password-withcode`, formData);
+};
 
 export const logOutAdmin = () => {
-    // Api().post(`${CONTROL_API_ENDPOINTS.ADMIN_LOGIN}`, formData);
-    const ok = true
-    return ok
-}
+  // Api().post(`${CONTROL_API_ENDPOINTS.ADMIN_LOGIN}`, formData);
+  const ok = true;
+  return ok;
+};
 
 /**==============================================================|
  *   Shop authenticated settings start routes    
@@ -119,17 +140,15 @@ export const logOutAdmin = () => {
 export const authShopResetPasword = (formData) =>
   AuthApi().put(`/api/shop/settings/reset-password`, formData);
 
-  export const authShopChangeEmail = (formData) =>
+export const authShopChangeEmail = (formData) =>
   AuthApi().put(`/api/shop/settings/change-email`, formData);
 
-  export const authShopCloseAccountCall = () =>
+export const authShopCloseAccountCall = () =>
   AuthApi().post(`/api/shop/close-shop-account`);
 
 /**==============================================================|
  *   Shop authenticated settings start routes   
 ================================================================*/
-
-
 
 /**
  * =============================================================
@@ -140,42 +159,39 @@ export const authShopResetPasword = (formData) =>
 /***Post categories */
 export const getPostcats = () => Api().get("/postcats"); //done
 //Posts
-export const getBlogPosts = () => Api().get('/posts');
-export const getBlogPostsById = (slug) =>
-  Api().get(`/posts/by/${slug}`);
+export const getBlogPosts = () => Api().get("/posts");
+export const getBlogPostsById = (slug) => Api().get(`/posts/by/${slug}`);
 
 //Tradehubs
-export const getTradehubs = () => Api().get('/tradehubs');
-export const getTradehubById = (id) =>
-  Api().get(`/tradehubs/${id}`);
+export const getTradehubs = () => Api().get("/tradehubs");
+export const getTradehubById = (id) => Api().get(`/tradehubs/${id}`);
 
 //Country Routes
-export const getCountries = () => Api().get('/buzcountries/operational'); //(Msvs => Done)
-export const getCountryDataById = (id) =>
-  Api().get(`/buzcountries/${id}`);
+export const getCountries = () => Api().get("/buzcountries/operational"); //(Msvs => Done)
+export const getCountryDataById = (id) => Api().get(`/buzcountries/${id}`);
 
 //State Routes
-export const getBStates = () => Api().get('/buzstates');
-export const getStateById = (id ) => Api().get(`/buzstates/${id}`);
+export const getBStates = () => Api().get("/buzstates");
+export const getStateById = (id) => Api().get(`/buzstates/${id}`);
 
 export const getStateByCountryId = (cid) =>
   Api().get(`/buzstates/in-country/${cid}/operational`); //(Msvs => Done)
 
-
-  //lgas Routes''
-export const getBLgas = () => Api().get('/buz-lgas'); //done
+//lgas Routes''
+export const getBLgas = () => Api().get("/buz-lgas"); //done
 export const getLgaById = (id) => Api().get(`/buz-lgas/${id}`); //done
-export const getLgaByStateId = (id) => Api().get(`/buz-lgas/in-state/${id}/operational`); // (Msvs => Done)
+export const getLgaByStateId = (id) =>
+  Api().get(`/buz-lgas/in-state/${id}/operational`); // (Msvs => Done)
 
 //========================================Market Routes starts
-export const getAfMarkets = () => Api().get('/markets');
+export const getAfMarkets = () => Api().get("/markets");
 export const getMarketById = (id) => Api().get(`/markets/${id}`);
 export const getMarketsByStateId = (id) => Api().get(`/markets/states/${id}`);
 export const getMarketsByLgaId = (id) => Api().get(`/markets/lga/${id}`);
 
 //========================================Market Routes ends
 
-  /**
+/**
  * =============================================================
  * GUEST ROUTES AND CTIVITIES STARTS HERE
  * ==========================================================
@@ -189,38 +205,37 @@ export const getMarketsByLgaId = (id) => Api().get(`/markets/lga/${id}`);
  */
 
 //Product Categories Routes
-export const getProdCats = () => AuthApi().get('/categories'); //(Msvs => Done)
+export const getProdCats = () => AuthApi().get("/categories"); //(Msvs => Done)
 export const getProdCatById = (id) => AuthApi().get(`/productcats/${id}`);
 
 //Product Units Routes
-export const getProdUnits = () => AuthApi().get('/productunits');
+export const getProdUnits = () => AuthApi().get("/productunits");
 export const getProdUnitByShopPlan = (id) =>
   Api().get(`/productunits/by-shopplan/${id}`);
 export const getProdUnitById = (id) => AuthApi().get(`/productunits/${id}`);
 
 //Product Shipping Weight Units Routes
-export const getProdShippingWeightUnit = () => Api().get('/shippingweights');
+export const getProdShippingWeightUnit = () => Api().get("/shippingweights");
 
 // {===============================shop product handling starts=======================================}
 export const storeProductImages = (formData) =>
-  AuthApi().post('/api/usersprodimages/uploadimages', formData);
+  AuthApi().post("/api/usersprodimages/uploadimages", formData);
 
 export const removeProductImagesById = (formData) =>
-  AuthApi().post('/api/usersprodimages/removeimage', formData);
+  AuthApi().post("/api/usersprodimages/removeimage", formData);
 
-export const getShopProducts = () => AuthApi().get('/productsbymerchant/get-merchant-products'); //(Msvs => Done)
-
-
+export const getShopProducts = () =>
+  AuthApi().get("/productsbymerchant/get-merchant-products"); //(Msvs => Done)
 
 export const storeShopProduct = (formData) =>
-  AuthApi().post('/api/myshop/create-product', formData);
+  AuthApi().post("/api/myshop/create-product", formData);
 
 // export const getMyShopProductById = (id) =>
 //   AuthApi().get(`/api/myshop-products/${id}`);
 export const getMyShopProductById = (id) =>
   AuthApi().get(`/productsbymerchant/merchant-product/${id}/view`); // (Msvs : 'Done)
 
-export const updateMyShopProductById = (productFormData ) =>
+export const updateMyShopProductById = (productFormData) =>
   AuthApi().put(
     `/productsbymerchant/merchant-product/${productFormData?.id}/update`,
     productFormData
@@ -233,43 +248,41 @@ export const pushMyShopProductByIdToExport = (productFormData) =>
 export const pullMyShopProductByIdFromExport = (productFormData) =>
   AuthApi().put(`/myshop/pull-product-from-export/${productFormData}`);
 
- 
-  export const deleteShopProductImage = (imageData) => {
-
-    console.log("imageDataPayload", imageData)
-    return  AuthApi().delete(`/api/myshop/delete-product-image/${imageData?.id}/${imageData?.public_id}`);
-  }
- 
+export const deleteShopProductImage = (imageData) => {
+  console.log("imageDataPayload", imageData);
+  return AuthApi().delete(
+    `/api/myshop/delete-product-image/${imageData?.id}/${imageData?.public_id}`
+  );
+};
 
 export const deleteShopProduct = (id) => {
-  console.log("productToDelete", id)
+  console.log("productToDelete", id);
   return AuthApi().delete(`/api/myshop/delete-product/${id}`);
-}
-  
-// {===============================shop product handling ends   =======================================}
+};
 
+// {===============================shop product handling ends   =======================================}
 
 // {===============================shop detals handling starts   =======================================}
 export const getJustMyShopDetails = () =>
-  AuthApi().get('/api/myshop/get-just-details');
+  AuthApi().get("/api/myshop/get-just-details");
 
-  export const getMinimizedJustMyShopDetails = () =>
-  AuthApi().get('/api/myshop/get-minimized-just-details');
+export const getMinimizedJustMyShopDetails = () =>
+  AuthApi().get("/api/myshop/get-minimized-just-details");
 
 export const getJustMyShopDetailsAndPlan = (queryParam) => {
-//?queryAllData=${queryParam}
-// console.log("PARAM", queryParam)
+  //?queryAllData=${queryParam}
+  // console.log("PARAM", queryParam)
   return AuthApi().get(`/auth-merchant/myshop/get-just-details/plan`); //* (Msvs => Done)
-}
-  
+};
 
-export const getMyShopDetails = () => AuthApi().get('/auth-merchant/myshop/get-just-details/plan'); 
+export const getMyShopDetails = () =>
+  AuthApi().get("/auth-merchant/myshop/get-just-details/plan");
 
 export const getMyOtherShopsList = () =>
-  AuthApi().get('/api/myshop/get-my-other-shops'); 
+  AuthApi().get("/api/myshop/get-my-other-shops");
 
 export const createMyShopBranch = (shopFormData) =>
-  AuthApi().post(`/api/myshop/create-branch`, shopFormData); 
+  AuthApi().post(`/api/myshop/create-branch`, shopFormData);
 
 export const updateMyShopBranch = (shopFormData) =>
   AuthApi().put(`/api/myshop/update-branch/${shopFormData?._id}`, shopFormData); //newDashboard Not-done
@@ -288,32 +301,32 @@ export const updateMyShopBankAccountPin = (shopFormData) =>
   AuthApi().put(`/api/myshop/update-account-pin`, shopFormData); //newDashboard done
 
 export const getMyShopWithdrawals = () =>
-  AuthApi().get('/api/myshop/get-my-Withdrawals'); //newDashboard done
+  AuthApi().get("/api/myshop/get-my-Withdrawals"); //newDashboard done
 
 /***##########################################################################
  * Handle shop acoount tasks for separate "AACOUNT" model
  *#############################################################################*/
 export const getMyShopAccountApiDetails = () =>
-  AuthApi().get('/api/myshop/get-account-details'); //newDashboards //done
+  AuthApi().get("/api/myshop/get-account-details"); //newDashboards //done
 export const updateMyShopAccountBankDetails = (shopFormData) =>
   AuthApi().put(`/api/myshop/update-account-details`, shopFormData);
 
 export const transferToWalletEndpoint = (productFormData) =>
-  AuthApi().post('/api/myshop/transfer-funds-to-wallet', productFormData);
+  AuthApi().post("/api/myshop/transfer-funds-to-wallet", productFormData);
 
 export const withdrawFromMyShopNow = (productFormData) =>
-  AuthApi().post('/api/myshop/place-myshop-withdrawal', productFormData);
+  AuthApi().post("/api/myshop/place-myshop-withdrawal", productFormData);
 
 // {===============================user shop transferlogs handling starts=======================================}
 
 // {===============================user shop transferlogs handling ends=======================================}
 export const getMyShopTransactionsLogs = () =>
-  AuthApi().get('/api/myshop/get-myshop-transfertransactions');
-
+  AuthApi().get("/api/myshop/get-myshop-transfertransactions");
 
 // {===============================shop orders handling starts=======================================}
 //user order Items Routes
-export const GetShopOrderItems = () => AuthApi().get(`/api/myshop/get-my-orders`); //newDashboard
+export const GetShopOrderItems = () =>
+  AuthApi().get(`/api/myshop/get-my-orders`); //newDashboard
 
 export const myShopOrderByShopId = (id) =>
   AuthApi().get(`/api/myshop/find-one-order/${id}`); //newDashboard
@@ -321,19 +334,18 @@ export const myShopOrderByShopId = (id) =>
 export const GetShopItemsInOrders = () =>
   AuthApi().get(`/merchant-orders/orderitems`); //newDashboard // (Msvs => Done)
 
-export const myShopItemsInOrdersByShopId = (id) =>{
+export const myShopItemsInOrdersByShopId = (id) => {
   // console.log('ID_TO_FIND1', id)
 
   return AuthApi().get(`/merchant-orders/order-item/${id}/view`); //newDashboard (Msvs => Done)
-}
-  
+};
 
 export const MyShopCashOutOrderByOrderIdShopId = (id) =>
   AuthApi().post(`/api/myshop/cashout-order/${id}`);
 
 export const MyShopCashOutOrderItemsByOrderItemsIdShopId = (id) => {
   return AuthApi().post(`/api/myshop/cashout-order-items/${id}`);
-}
+};
 
 /******HAndle SHop Point of Sale Activities below  myshop/create-invoiceorder */
 export const GetShopPointOfSalesItems = () =>
@@ -342,34 +354,33 @@ export const CreateShopPointOfSales = (invoiceFormData) =>
   AuthApi().post(`/api/myshop/create-invoiceorder`, invoiceFormData); //newDashboard
 
 /**
- * 
- * @returns HANDLE SHOP_PLANS 
+ *
+ * @returns HANDLE SHOP_PLANS
  */
-//SHopPlans Routes 
-export const getShopPlans = () => Api().get('/shopplans'); //done
+//SHopPlans Routes
+export const getShopPlans = () => Api().get("/shopplans"); //done
 export const getShopPlanById = (id) => Api().get(`/shopplans/${id}`); //done
-  
 
 // {===============================shop orders handling ends =======================================}
 // export const createProduct = (productFormData) =>
 //   AuthApi().post('/usersproducts', productFormData);
 
 /****
- * 
+ *
  * HANDLE MERCHANT UNBOADING STARTS
  */
 export const newShopSignup = (formData) =>
-    Api().post('/api/pre-shop-signup', formData);
-    export const newShopSignupWithOtp = (formData) =>
-    Api().post('/api/pre-shop-signup/with-otp', formData);
+  Api().post("/api/pre-shop-signup", formData);
+export const newShopSignupWithOtp = (formData) =>
+  Api().post("/api/pre-shop-signup/with-otp", formData);
 // export const getAfPostById = (id) => Api().get(`/posts/${id}`);
 export const storePreShopUserData = (formData) =>
-    Api().post('/api/register-preshop-user', formData);
-    export const storePreShopUserDataWithOtp = (formData) =>
-    Api().post('/api/register-preshop-user/with-otp', formData);
+  Api().post("/api/register-preshop-user", formData);
+export const storePreShopUserDataWithOtp = (formData) =>
+  Api().post("/api/register-preshop-user/with-otp", formData);
 
-    /****
- * 
+/****
+ *
  * HANDLE MERCHANT UNBOADING ENDS
  */
 
@@ -379,15 +390,16 @@ export const storePreShopUserData = (formData) =>
  * ############################################################################################
  */
 // {===============================shop estate property handling starts=======================================}
-export const getShopEstateProperties = () => AuthApi().get('/api/myshop/get-my-estate-properties'); //newDashboard
+export const getShopEstateProperties = () =>
+  AuthApi().get("/api/myshop/get-my-estate-properties"); //newDashboard
 
 export const storeShopEstateProperty = (formData) =>
-  AuthApi().post('/api/myshop/create-estate-property', formData);
+  AuthApi().post("/api/myshop/create-estate-property", formData);
 
 export const getMyShopEstatePropertyBySlug = (id) =>
   AuthApi().get(`/api/myshop-estateproperty/${id}`);
 
-export const updateMyShopEstatePropertyById = (productFormData ) =>
+export const updateMyShopEstatePropertyById = (productFormData) =>
   AuthApi().put(
     `/api/myshop/update-estateproperty/${productFormData?._id}`,
     productFormData
@@ -407,62 +419,70 @@ export const deleteShopEstateProperty = (id) =>
  * ############################################################################################
  */
 // {===============================shop estate property handling starts=======================================}
-export const getShopBookingsProperties = () => AuthApi().get('/bookings/get-merchant-bookings'); //(Msvs => Done)
-
-
+export const getShopBookingsProperties = () =>
+  AuthApi().get("/bookings/get-merchant-bookings"); //(Msvs => Done)
 
 export const storeShopBookingsProperty = (formData) =>
-  AuthApi().post('/bookings/create-listing', formData); //(Msvs => done)
+  AuthApi().post("/bookings/create-listing", formData); //(Msvs => done)
 
 export const getMyShopBookingsPropertyBySlug = (id) =>
   AuthApi().get(`/bookings/merchant-listing/${id}/view`); //(Msvs => done)
 
-export const updateMyShopBookingsPropertyById = (productFormData ) =>
-  AuthApi().put(
-    `/bookings/merchant-listing/${productFormData?.id}/update`,
-    productFormData
-  );//(Msvs => done)
+export const updateMyShopBookingsPropertyById = (productFormData) => {
+  const { id, ...rest } = productFormData;
+  return AuthApi().put(
+    `/bookings/merchant-listing/${id}/update`,
+    rest
+  );
+}; //(Msvs => done)
 
 export const deleteShopBookingsProperty = (id) =>
   AuthApi().delete(`/myshop/delete-bookingproperty/${id}`);
 
-/***Manage rooms 
+/***Manage rooms
  * of prperties */
 export const getBookingsPropertyRoomsById = (propertyId) => {
-
-  console.log ("In Route TABLE", propertyId)
-  return  AuthApi().get(`/bookings/property-rooms/${propertyId}/view`); //(Msvs => done)
-}
+  console.log("In Route TABLE", propertyId);
+  return AuthApi().get(`/bookings/property-rooms/${propertyId}/view`); //(Msvs => done)
+};
 
 export const getSingleRoomOfProperty = (roomId) => {
-
-  return  AuthApi().get(`/bookings/${roomId}/get-room`); //(Msvs => done)
-}
+  return AuthApi().get(`/bookings/${roomId}/get-room`); //(Msvs => done)
+};
 
 export const createRoomOnProperty = (formData) =>
-  AuthApi().post('/bookings/create-room', formData); //(Msvs => done)
+  AuthApi().post("/bookings/create-room", formData); //(Msvs => done)
 
-
-export const updateRoomOnProperty = (productFormData ) => {
-
-  console.log("updateRoomOnProperty_PAYLOAD", productFormData)
+export const updateRoomOnProperty = (productFormData) => {
+  console.log("updateRoomOnProperty_PAYLOAD", productFormData);
 
   // return
-  return AuthApi().put(`/bookings/${productFormData?.id}/update-room`,  productFormData);//(Msvs => done)
-}
+  return AuthApi().put(
+    `/bookings/${productFormData?.id}/update-room`,
+    productFormData
+  ); //(Msvs => done)
+};
 
+/****Reservations */ //reservations/get-merchant-reservations on-property/:propertyId/get-reservations
+export const getShopBookingsReservationsApi = () =>
+  AuthApi().get("/reservations/get-merchant-reservations"); //newDashboard (Msvs => Done)
+export const getShopSealedBookingsReservationsApi = () =>
+  AuthApi().get("/reservations/get-merchant-sealed-reservations"); //newDashboard //(Msvs : => :done)
+export const getSingleMerchantReservationApi = (reservationId) =>
+  AuthApi().get(`/reservations/merchant-reservation/${reservationId}/view`); //(Msvs : => :done)
+export const getReservationsOnPropertyApi = (propertyId) =>
+  AuthApi().get(`/reservations/on-prop/${propertyId}/get-reservations`); //(Msvs : => :done)
 
-  /****Reservations */ //reservations/get-merchant-reservations on-property/:propertyId/get-reservations
-  export const getShopBookingsReservationsApi = () => AuthApi().get('/reservations/get-merchant-reservations'); //newDashboard (Msvs => Done)
-  export const getShopSealedBookingsReservationsApi = () => AuthApi().get('/reservations/get-merchant-sealed-reservations'); //newDashboard //(Msvs : => :done)
-  export const getSingleMerchantReservationApi = (reservationId) => AuthApi().get(`/reservations/merchant-reservation/${reservationId}/view`);//(Msvs : => :done)
-  export const getReservationsOnPropertyApi = (propertyId) => AuthApi().get(`/reservations/on-prop/${propertyId}/get-reservations`);//(Msvs : => :done)
-  export const merchantCheckInGuestReservations = (id) => AuthApi().put(`/api/myshop/merchant-homes/checkin-guest-reservation/${id}`);
-  export const merchantCheckOutGuestReservations = (id) => AuthApi().put(`/api/myshop/merchant-homes/checkout-guest-reservation/${id}`);
-  export const merchantCashOutReservationEarning = (id) => {
-    return AuthApi().post(`/api/myshop/merchant-homes/cashout-reservation-erning/${id}`);
-  }
-  // {===============================shop b=homes handling ends   =======================================}
+export const merchantCheckInGuestReservations = (id) =>
+  AuthApi().put(`/reservations/merchant-handle-reservation/${id}/check-in-guest`); //(Msvs : => :done)
+export const merchantCheckOutGuestReservations = (id) =>
+  AuthApi().put(`/reservations/merchant-handle-reservation/${id}/check-out-guest`);
+export const merchantCashOutReservationEarning = (id) => {
+  return AuthApi().post(
+    `/reservations/merchant-handle-reservation/${id}/cashout-reservation-earning`
+  );
+};
+// {===============================shop b=homes handling ends   =======================================}
 /***
  * #############################################################################################
  * HANDLE SHOP HOMES, HOTELS and APARTMENT BOOKINGS ENDS HERE
@@ -475,22 +495,20 @@ export const updateRoomOnProperty = (productFormData ) => {
  * ############################################################################################
  */
 // {===============================shop estate property handling starts=======================================}
-export const getShopFoodMarts = () => AuthApi().get('/api/myshop/food-mart/get-my-food-marts'); //newDashboard
-
+export const getShopFoodMarts = () =>
+  AuthApi().get("/api/myshop/food-mart/get-my-food-marts"); //newDashboard
 
 export const storeShopFoodMart = (formData) =>
-  AuthApi().post('/api/myshop/food-mart/create-new-food-mart', formData);
-
+  AuthApi().post("/api/myshop/food-mart/create-new-food-mart", formData);
 
 export const getMyShopFoodMartBySlug = (slug) =>
   AuthApi().get(`/api/myshop-foodmart/${slug}`);
 
-export const updateMyShopFoodMartById = (productFormData ) =>
+export const updateMyShopFoodMartById = (productFormData) =>
   AuthApi().put(
     `/api/myshop/update-foodmart/${productFormData?._id}`,
     productFormData
   );
-
 
 export const deleteShopFoodMart = (id) =>
   AuthApi().delete(`/myshop/delete-foodmart/${id}`);
@@ -507,38 +525,44 @@ export const deleteShopFoodMart = (id) =>
  * ############################################################################################
  */
 // {===============================shop estate property handling starts /myshop/food-mart/get-my-menu/:foodMartId=======================================}
-export const getAllMerchantOwnedMartMenus = () => AuthApi().get(`/api/myshop/food-mart/get-all-merchant-menu`); //newDashboard
-export const getShopFoodMartMenus = (foodMartId) => AuthApi().get(`/api/myshop/food-mart/get-my-menu/${foodMartId}`); //newDashboard
+export const getAllMerchantOwnedMartMenus = () =>
+  AuthApi().get(`/api/myshop/food-mart/get-all-merchant-menu`); //newDashboard
+export const getShopFoodMartMenus = (foodMartId) =>
+  AuthApi().get(`/api/myshop/food-mart/get-my-menu/${foodMartId}`); //newDashboard
 
 export const getMyShopFoodMartMenuBySlug = (slug) =>
   AuthApi().get(`/myshop/foodmart-menu/${slug}`);
 
 export const storeShopFoodMartMenu = (formData) =>
-  AuthApi().post(`/api/myshop/food-mart/create-menu/${formData?.martId}`, formData);
+  AuthApi().post(
+    `/api/myshop/food-mart/create-menu/${formData?.martId}`,
+    formData
+  );
 
+/****
+ * Merchant Handling of Food Orders
+ **/
+export const getMerchantFoodOrdersApi = () =>
+  AuthApi().get("/api/myshop/food-mart/get-merchant-foodorders"); //newDashboard
 
-  /****
-   * Merchant Handling of Food Orders
-   **/
-  export const getMerchantFoodOrdersApi = () => AuthApi().get('/api/myshop/food-mart/get-merchant-foodorders'); //newDashboard
-  
-  export const merchantGetFoodOrderByIdApi = (id) => AuthApi().get(`/api/myshop/food-mart/get-foodorder/${id}`);
-  export const merchantGetFoodOrderItemsInFoodOrderById = (id) =>
-    AuthApi().get(`/api/myshop/food-mart/get-foodorderitems/${id}`);
+export const merchantGetFoodOrderByIdApi = (id) =>
+  AuthApi().get(`/api/myshop/food-mart/get-foodorder/${id}`);
+export const merchantGetFoodOrderItemsInFoodOrderById = (id) =>
+  AuthApi().get(`/api/myshop/food-mart/get-foodorderitems/${id}`);
 
-  export const merchantDeleteFoodOrders = (id) => AuthApi().delete(`/api/myshop/food-mart/deleteorder/${id}`);
-  export const merchantPackFoodOrders = (id) =>
-    AuthApi().put(`/api/myshop/food-mart/pack-unpack/${id}`);
-  export const merchantShipFoodOrders = (id) =>
-    AuthApi().put(`/api/myshop/food-mart/ship-unship/${id}`);
-  export const merchantDeliverFoodOrdersApi = (id) =>
-    AuthApi().put(`/api/myshop/food-mart/deliver-undeliver/${id}`);
+export const merchantDeleteFoodOrders = (id) =>
+  AuthApi().delete(`/api/myshop/food-mart/deleteorder/${id}`);
+export const merchantPackFoodOrders = (id) =>
+  AuthApi().put(`/api/myshop/food-mart/pack-unpack/${id}`);
+export const merchantShipFoodOrders = (id) =>
+  AuthApi().put(`/api/myshop/food-mart/ship-unship/${id}`);
+export const merchantDeliverFoodOrdersApi = (id) =>
+  AuthApi().put(`/api/myshop/food-mart/deliver-undeliver/${id}`);
 /***
  * #############################################################################################
  * HANDLE SHOP FOOD  MART-MENUS ITEMS ENDS HERE
  * ############################################################################################
  */
-
 
 /***
  * #############################################################################################
@@ -548,19 +572,19 @@ export const storeShopFoodMartMenu = (formData) =>
 //Shop Users Logout functionality  usersproducts
 export const MyShopLogOutSession = () => AuthApi().post(`/shop/logout`);
 export const logOut = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     // remove logged in user's cookie and redirect to login page 'authUserCookie', state.user, 60 * 24
     // try {
     // AuthApi();
     MyShopLogOutSession()
       .then((response) => {
-        console.log('logged out successfully', response);
+        console.log("logged out successfully", response);
 
-        Cookies.remove('_auth');
-        Cookies.remove('_auth_storage');
-        Cookies.remove('_auth_state');
-        Cookies.remove('AMD_AFSP_Show_Hide_tmp_Lead_ARC');
-        Cookies.remove('SLG_GWPT_Show_Hide_tmp');
+        Cookies.remove("_auth");
+        Cookies.remove("_auth_storage");
+        Cookies.remove("_auth_state");
+        Cookies.remove("AMD_AFSP_Show_Hide_tmp_Lead_ARC");
+        Cookies.remove("SLG_GWPT_Show_Hide_tmp");
 
         window.location.reload();
       })
@@ -571,12 +595,11 @@ export const logOut = () => {
             : error.message
         );
       });
-
   }
 };
 
 export const merchantLogOutCall = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     // Cookies.set(
     //   'AMD_AFSP_Show_Hide_tmp_Lead_ARC',
     //   JSON.stringify(response?._nnip_shop_ASHP_ALOG),
@@ -585,28 +608,25 @@ export const merchantLogOutCall = () => {
 
     try {
       /**Fuse admin starts */
-      resetSessionForShopUsers()
+      resetSessionForShopUsers();
 
-      Cookies.remove('jwt_auth_credentials');
+      Cookies.remove("jwt_auth_credentials");
       /***Fuse admin ends */
 
+      Cookies.remove("authUserInfo");
+      Cookies.remove("isloggedin");
+      Cookies.remove("_auth");
+      Cookies.remove("_auth_state");
+      Cookies.remove("_auth_type");
+      Cookies.remove("_auth_storage");
+      Cookies.remove("_ga");
+      Cookies.remove("_ga_WJH9CH067R");
+      Cookies.remove("SLG_G_WPT_TO");
+      Cookies.remove("ADMIN_AFSP_Show_Hide_tmp_Lead");
+      Cookies.remove("ADMIN_AFSP_Show_Hide_tmp_Lead_ARC");
 
-      Cookies.remove('authUserInfo');
-      Cookies.remove('isloggedin');
-      Cookies.remove('_auth');
-      Cookies.remove('_auth_state');
-      Cookies.remove('_auth_type');
-      Cookies.remove('_auth_storage');
-      Cookies.remove('_ga');
-      Cookies.remove('_ga_WJH9CH067R');
-      Cookies.remove('SLG_G_WPT_TO');
-      Cookies.remove('ADMIN_AFSP_Show_Hide_tmp_Lead');
-      Cookies.remove('ADMIN_AFSP_Show_Hide_tmp_Lead_ARC');
-
-
-
-      localStorage.removeItem('jwt_auth_credentials')
-      localStorage.clear()
+      localStorage.removeItem("jwt_auth_credentials");
+      localStorage.clear();
 
       // Cookies.set(
       //   'ADMIN_AFSP_Show_Hide_tmp_Lead',

@@ -26,6 +26,7 @@ function BookingPropertyHeader() {
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
+	
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const {title, name, images, featuredImageId } = watch();
@@ -34,9 +35,20 @@ function BookingPropertyHeader() {
 	const updateBookingsProperty = useBookingsPropertyUpdateMutation()
 
 	function handleSaveApartment() {
-		// console.log("BOOKING_PROP_DETAILS", getValues())
-		// return
-		updateBookingsProperty.mutate(getValues());
+
+		console.log("BOOKING_PROP_DETAILS", getValues());
+		const formData = {
+			...getValues(),
+			price : parseInt(getValues()?.price),
+			listprice : parseInt(getValues()?.listprice),
+			guestCount : parseInt(getValues()?.guestCount),
+			sittingroomCount : parseInt(getValues()?.sittingroomCount),
+			bathroomCount : parseInt(getValues()?.bathroomCount),
+			roomCount : parseInt(getValues()?.roomCount),
+			
+		};
+		updateBookingsProperty.mutate(formData);
+
 	}
 
 	function handleCreateApartment() {
@@ -51,6 +63,7 @@ function BookingPropertyHeader() {
 		console.log("Deleting BookingProperty_List-Values", getValues())
 	
 	}
+
 
 
 

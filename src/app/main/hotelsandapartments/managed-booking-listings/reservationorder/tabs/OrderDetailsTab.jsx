@@ -73,7 +73,7 @@ function OrderDetailsTab({ reservation, isError }) {
   const handleCheckIn = async () => {
     if (window.confirm("Check in reservation?")) {
       try {
-        checkInGuest.mutate(reservation?._id);
+        checkInGuest.mutate(reservation?.id);
       } catch (error) {
         toast.error(error);
       }
@@ -83,7 +83,7 @@ function OrderDetailsTab({ reservation, isError }) {
   const handleCheckOutGuest = async () => {
     if (window.confirm("Check out this reservation?")) {
       try {
-        checkOutGuestReservation.mutate(reservation?._id);
+        checkOutGuestReservation.mutate(reservation?.id);
       } catch (error) {
         toast.error(error);
       }
@@ -91,9 +91,9 @@ function OrderDetailsTab({ reservation, isError }) {
   };
 
 
-  if (!isError && !reservation) {
-    return null;
-  }
+  // if (!isError && !reservation) {
+  //   return null;
+  // }
 
   return (
     <div>

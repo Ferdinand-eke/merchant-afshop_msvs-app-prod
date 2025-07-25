@@ -94,7 +94,8 @@ console.log("MyShop", myshopData)
 		);
 	}
 
-	console.log("RESERVATION-ITEM", reservationItem?.data?.reservationBooked);
+	// console.log("RESERVATION-ITEM", reservationItem?.data?.reservationBooked);
+	
 
 	// console.log("USER-IN-RESERVATION", reservationItem?.data?.userInReservedBooking?.user);
 
@@ -166,6 +167,7 @@ console.log("MyShop", myshopData)
 							label="Invoice"
 						/>
 					</Tabs>
+
 					{reservationItem?.data && (
 						<div className="p-16 sm:p-24 max-w-3xl w-full">
 							{tabValue === 0 && <OrderDetailsTab reservation={reservationItem?.data?.reservationBooked?.reservation} isError={reservationIsError}/>}

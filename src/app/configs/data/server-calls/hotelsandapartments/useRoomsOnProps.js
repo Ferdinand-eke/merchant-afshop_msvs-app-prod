@@ -3,12 +3,10 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import {
   createRoomOnProperty,
-   updateRoomOnProperty,
+  updateRoomOnProperty,
   getBookingsPropertyRoomsById,
   getSingleRoomOfProperty,
- 
 } from "../../client/clientToApiRoutes";
-
 
 /*****
  *
@@ -19,7 +17,7 @@ import {
 /****1) get rooms from single booking property by Property-ID */
 
 export function useGetRoomsFromBookingProperty(slug) {
-//   console.log("Fetching rooms for booking property:", slug)
+  //   console.log("Fetching rooms for booking property:", slug)
 
   return useQuery({
     queryKey: ["roomsOnBookingProperty", slug],
@@ -29,7 +27,7 @@ export function useGetRoomsFromBookingProperty(slug) {
 }
 
 export function useGetSingleRoomOfProperty(roomId) {
-  console.log("Fetching single room :", roomId)
+  console.log("Fetching single room :", roomId);
 
   return useQuery({
     queryKey: ["_roomsOnBookingProperty", roomId],
@@ -56,7 +54,7 @@ export function useAddRoomPropertyMutation() {
           queryClient.refetchQueries("roomsOnBookingProperty", {
             force: true,
           });
-        //   navigate("/bookings/managed-listings");
+          //   navigate("/bookings/managed-listings");
         }
       },
     },
@@ -72,17 +70,16 @@ export function useAddRoomPropertyMutation() {
         // );
         console.log("LoginError22Block", error);
 
-      const {
-        response: { data },
-      } = error ?? {};
-      Array.isArray(data?.message)
-        ? data?.message?.map((m) => toast.error(m))
-        : toast.error(data?.message);
+        const {
+          response: { data },
+        } = error ?? {};
+        Array.isArray(data?.message)
+          ? data?.message?.map((m) => toast.error(m))
+          : toast.error(data?.message);
         rollback();
       },
     }
   );
-
 }
 
 /*****3) update existing room on bookings-property */
@@ -100,19 +97,18 @@ export function useRoomOnPropertyUpdateMutation() {
       }
     },
     onError: (error) => {
-    //   toast.error(
-    //     error.response && error.response.data.message
-    //       ? error.response.data.message
-    //       : error.message
-    //   );
-    const {
+      //   toast.error(
+      //     error.response && error.response.data.message
+      //       ? error.response.data.message
+      //       : error.message
+      //   );
+      const {
         response: { data },
       } = error ?? {};
       Array.isArray(data?.message)
         ? data?.message?.map((m) => toast.error(m))
         : toast.error(data?.message);
-        rollback();
-      
+      rollback();
     },
   });
 }

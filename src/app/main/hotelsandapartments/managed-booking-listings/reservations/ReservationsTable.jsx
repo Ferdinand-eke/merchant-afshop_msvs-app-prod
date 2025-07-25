@@ -89,6 +89,7 @@ function ReservationsTable() {
               color="default"
               label={new Date(row?.original?.startDate)?.toDateString()}
             />
+             {/* <p>{JSON.stringify(Boolean(row?.original?.isCheckIn))}...</p> */}
           </div>
         ),
       },

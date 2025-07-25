@@ -23,7 +23,7 @@ import { useState } from "react";
 /**
  * The about tab.
  */
-function AboutTab() {
+function AboutManageRoomsTab() {
   const routeParams = useParams();
   const { productId } = routeParams;
   const [roomId, setRoomId] = useState('');
@@ -62,6 +62,7 @@ function AboutTab() {
 		roomsIsError={roomsIsError}
 		setRoomId={setRoomId}
 		 />
+
 
 
 
@@ -119,4 +120,4 @@ function AboutTab() {
   );
 }
 
-export default AboutTab;
+export default AboutManageRoomsTab;

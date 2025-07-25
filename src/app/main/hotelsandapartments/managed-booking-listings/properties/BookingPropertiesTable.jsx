@@ -59,7 +59,7 @@ function BookingPropertiesTable() {
 					
 						 <Chip
 								component={Link}
-						to={`/bookings/managed-listings/${row.original.id}/manage`}
+						to={`/bookings/managed-listings/${row.original.slug}/manage`}
 								className="text-11 cursor-pointer"
 								size="small"
 								color="default"
