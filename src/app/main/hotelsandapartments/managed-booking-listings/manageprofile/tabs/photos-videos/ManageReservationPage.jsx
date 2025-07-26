@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { motion } from "framer-motion";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
 // import FuseLoading from '@fuse/core/FuseLoading';
@@ -47,7 +47,8 @@ function BirtdayIcon() {
  * The contact form.
  */
 
-const AddStaffContactForm = () => {
+const ManageReservationPage = () => {
+  const navigate = useNavigate();
   const routeParams = useParams();
   const { reservationId } = routeParams;
 
@@ -112,23 +113,20 @@ const AddStaffContactForm = () => {
         <MerchantErrorPage
           message={" Error occurred while retriving reservation data"}
         />
-        {/* <Button
-            className="mt-24"
-            component={Link}
-            variant="outlined"
-            to="/shoporders-list/orders"
-            color="inherit"
-          >
-            Go to reservations Page
-          </Button> */}
+        <Button
+          className="mt-24"
+          component={Link}
+          variant="outlined"
+          to="/bookings/managed-listings"
+          color="inherit"
+        >
+          Go to reservations
+        </Button>
       </motion.div>
     );
   }
 
   function handleRemoveAdmin() {}
-
-  // const background = watch("background");
-  // const name = watch("name");
 
   return (
     <>
@@ -136,6 +134,20 @@ const AddStaffContactForm = () => {
         header={
           reservationItem?.data && (
             <div className="flex flex-1 flex-col py-32 px-24 md:px-32">
+              <Typography
+                className="flex items-center sm:mb-12"
+                component={Link}
+                onClick={() => navigate(-1)}
+                color="inherit"
+              >
+                <FuseSvgIcon size={20}>
+                  {theme.direction === "ltr"
+                    ? "heroicons-outline:arrow-sm-left"
+                    : "heroicons-outline:arrow-sm-right"}
+                </FuseSvgIcon>
+                <span className="flex mx-4 font-medium">Go Back</span>
+              </Typography>
+
               <motion.div
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}
@@ -148,43 +160,49 @@ const AddStaffContactForm = () => {
                   {`Expectant Guest:  ${reservationItem?.data?.userInReservedBooking?.user?.name} `}
                 </Typography>
               </motion.div>
-
-
             </div>
           )
         }
         content={
           <>
             <>
-                <Tabs
-                  value={tabValue}
-                  onChange={handleTabChange}
-                  indicatorColor="secondary"
-                  textColor="secondary"
-                  variant="scrollable"
-                  scrollButtons="auto"
-                  classes={{ root: 'w-full h-64 border-b-1' }}
-                >
-                  <Tab
-                    className="h-64"
-                    label="Reservation Details"
-                  />
-                  <Tab
-                    className="h-64"
-                    label="Invoice"
-                  />
-                </Tabs>
-                
-                {reservationItem?.data && (
-                  <div 
+              <Tabs
+                value={tabValue}
+                onChange={handleTabChange}
+                indicatorColor="secondary"
+                textColor="secondary"
+                variant="scrollable"
+                scrollButtons="auto"
+                classes={{ root: "w-full h-64 border-b-1" }}
+              >
+                <Tab className="h-64" label="Reservation Details" />
+                <Tab className="h-64" label="Invoice" />
+              </Tabs>
+
+              {reservationItem?.data && (
+                <div
                   className="p-16 sm:p-24 max-w-3xl w-full"
                   // className="flex flex-1 flex-col py-32 px-24 md:px-32"
-                  >
-                    {tabValue === 0 && <OrderDetailsTab reservation={reservationItem?.data?.reservationBooked?.reservation} isError={reservationIsError}/>}
-                     {tabValue === 1 && <InvoiceTab order={reservationItem?.data?.reservationBooked?.reservation} myshopData={myshopData?.merchant}/>}
-                  </div>
-                )}
-                </>
+                >
+                  {tabValue === 0 && (
+                    <OrderDetailsTab
+                      reservation={
+                        reservationItem?.data?.reservationBooked?.reservation
+                      }
+                      isError={reservationIsError}
+                    />
+                  )}
+                  {tabValue === 1 && (
+                    <InvoiceTab
+                      order={
+                        reservationItem?.data?.reservationBooked?.reservation
+                      }
+                      myshopData={myshopData?.merchant}
+                    />
+                  )}
+                </div>
+              )}
+            </>
           </>
         }
       />
@@ -192,4 +210,4 @@ const AddStaffContactForm = () => {
   );
 };
 
-export default AddStaffContactForm;
+export default ManageReservationPage;

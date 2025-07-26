@@ -10,6 +10,7 @@ export default function useMyPropertiesReservations() {
 
 /****Get  Reservations on a particular property */
 export function useFetchReservationsOnProperty(propertyId) {
+  if(!propertyId) return { data: null, isLoading: false, isError: true };
   return useQuery(['__merchant_reservations_on_property', propertyId], () => {
     return getReservationsOnPropertyApi(propertyId)
   }
@@ -20,6 +21,7 @@ export function useFetchReservationsOnProperty(propertyId) {
 // 
 /****Get single Guest Bookded Reservation */
 export function useFindMerchantSingleReservation(itemId) {
+  if(!itemId) return { data: null, isLoading: false, isError: true };
   return useQuery(['__merchant_reservations', itemId], () => {
     return getSingleMerchantReservationApi(itemId)
   }
@@ -31,10 +33,10 @@ export function useCheckInGuest() {
   const queryClient = useQueryClient();
   return useMutation(merchantCheckInGuestReservations, {
     onSuccess: (data) => {
-      console.log("CHECK[IN-RESPONSE-DATA", data?.data)
+      // console.log("CHECK[IN-RESPONSE-DATA", data?.data)
       if(data?.data?.success){
-        toast.success(`${data?.data?.message ? data?.data?.message : 'Reservation Checked In successfully!'} `);
-        toast.success('Reservation Checked In successfully!')
+        toast.success(`${data?.data?.message ? data?.data?.message : 'Reservation Checked In successfully!'}`, { position: toast.POSITION.TOP_LEFT });
+        // toast.success('Reservation Checked In successfully!', { position: toast.POSITION.TOP_LEFT });
         queryClient.invalidateQueries('__merchant_reservations');
       }
     },
@@ -53,9 +55,10 @@ export function useCheckOutGuest() {
   const queryClient = useQueryClient();
   return useMutation(merchantCheckOutGuestReservations, {
     onSuccess: (data) => {
-      if(data){
-
-        toast.success('Reservation Checked Out successfully!');
+      // console.log("Check-OUT-RESPONSE-DATA", data?.data)
+      if(data?.data?.success){
+        //, { position: toast.POSITION.TOP_LEFT }
+        toast.success(`${data?.data?.message ? data?.data?.message : 'Reservation Checked Out successfully!'}`);
         queryClient.invalidateQueries('__merchant_reservations');
       }
    

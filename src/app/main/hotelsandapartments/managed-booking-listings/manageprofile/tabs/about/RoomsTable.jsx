@@ -61,9 +61,6 @@ function RoomsTable(props) {
     []
   );
 
-
-
-
   if (roomsIsLoading) {
     return <FuseLoading />;
   }

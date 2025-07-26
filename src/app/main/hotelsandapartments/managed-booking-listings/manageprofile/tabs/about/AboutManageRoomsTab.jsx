@@ -45,6 +45,7 @@ function AboutManageRoomsTab() {
   };
 	  
 
+  // console.log("ROOMS-ON-PROPERTY", rooms?.data?.rooms)
 
   return (
     <motion.div
@@ -69,30 +70,7 @@ function AboutManageRoomsTab() {
         </div>
 
         <div className="flex flex-col md:w-320 ">
-          {/* <Card component={motion.div} variants={item} className="w-full mb-32">
-            <div className="flex items-center px-32 pt-24">
-              <Typography className="flex flex-1 text-2xl font-semibold leading-tight">
-                Room Images
-              </Typography>
-
-              <Button className="-mx-8" size="small">
-                Add images
-              </Button>
-            </div>
-
-            <CardContent className="flex flex-wrap px-32">
-              {friends.map((friend) => (
-                <Avatar
-                  key={friend.id}
-                  className="w-64 h-64 rounded-12 m-4"
-                  src={friend.avatar}
-                  alt={friend.name}
-                />
-              ))}
-            </CardContent>
-            <br />
-          </Card> */}
-
+          
           <Card
             component={motion.div}
             variants={item}

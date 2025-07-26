@@ -25,4 +25,6 @@ function ManageReservationContent() {
 	);
 }
 
+
+
 export default ManageReservationContent;

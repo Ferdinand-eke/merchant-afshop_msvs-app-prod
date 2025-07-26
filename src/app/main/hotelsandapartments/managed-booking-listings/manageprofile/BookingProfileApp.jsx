@@ -12,8 +12,8 @@ import AboutManageRoomsTab from "./tabs/about/AboutManageRoomsTab";
 import PhotosVideosTab from "./tabs/photos-videos/PhotosVideosTab";
 import TimelineTab from "./tabs/timeline/TimelineTab";
 import { useSingleShopBookingsProperty } from "app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties";
-import { useParams } from "react-router";
-import AddStaffContactForm from "./tabs/photos-videos/AddUserForm";
+import { useNavigate, useParams } from "react-router";
+import ManageReservationPage from "./tabs/photos-videos/ManageReservationPage";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
@@ -41,15 +41,17 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 function BookingProfileApp() {
   const theme = useTheme();
   const routeParams = useParams();
+  const {productId, reservationId} = routeParams;
   const [selectedTab, setSelectedTab] = useState(0);
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const {
     data: propertyList,
     isLoading,
     isError,
-  } = useSingleShopBookingsProperty(routeParams?.productId, {
-    skip: !routeParams?.productId || routeParams?.productId === "new",
+  } = useSingleShopBookingsProperty(productId, {
+    skip: !productId 
   });
+  //|| productId === "new",
 
   function handleTabChange(event, value) {
     setSelectedTab(value);
@@ -58,11 +60,17 @@ function BookingProfileApp() {
   }
 
   //   console.log("PROPERTY_LIST", propertyList);
+  const navigate = useNavigate();
   const pageLayout = useRef(null);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(false);
   useEffect(() => {
-    setRightSidebarOpen(Boolean(routeParams?.reservationId));
-  }, [routeParams]);
+    setRightSidebarOpen(Boolean(reservationId));
+  }, [reservationId]);
+
+  const handleRightSidebarToggle = () => {
+	setRightSidebarOpen(false)
+	navigate(`/bookings/managed-listings/${productId}/manage`);
+  }
 
   //   console.log("RIGHT_SIDEBAR_OPEN", rightSidebarOpen, routeParams?.reservationId);
 
@@ -173,6 +181,8 @@ function BookingProfileApp() {
           </div>
         </div>
       }
+
+
       content={
         <div className="flex flex-auto justify-center w-full max-w-5xl mx-auto p-24 sm:p-32">
           {selectedTab === 0 && <TimelineTab />}
@@ -186,10 +196,12 @@ function BookingProfileApp() {
           )}
         </div>
       }
+	
       ref={pageLayout}
-      rightSidebarContent={<AddStaffContactForm />}
+      rightSidebarContent={<ManageReservationPage />}
       rightSidebarOpen={rightSidebarOpen}
       rightSidebarOnClose={() => setRightSidebarOpen(false)}
+	// rightSidebarOnClose={() => handleRightSidebarToggle()}
       rightSidebarWidth={640}
       rightSidebarVariant="temporary"
       //   scroll={isMobile ? "normal" : "page"}

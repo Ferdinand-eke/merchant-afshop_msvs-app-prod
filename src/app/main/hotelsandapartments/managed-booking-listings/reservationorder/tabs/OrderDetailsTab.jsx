@@ -56,11 +56,17 @@ function Marker(props) {
   );
 }
 
+
+
 /**
  * The order details tab.
  */
 
 function OrderDetailsTab({ reservation, isError }) {
+
+  console.log("FIX-DATE-DISPLAY", reservation)
+
+  
   const routeParams = useParams();
   const { orderId } = routeParams;
 

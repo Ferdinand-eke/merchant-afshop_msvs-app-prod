@@ -28,6 +28,8 @@ function PhotosVideosTab(props) {
     isError: reservationsIsError,
   } = useFetchReservationsOnProperty(Listing?.id);
 
+//   console.log("RESERVATION__LIST", reservationsOnProperty?.data?.reservations)
+
   const columns = useMemo(
     () => [
       {
@@ -54,7 +56,7 @@ function PhotosVideosTab(props) {
           <div className="flex flex-wrap space-x-2">
             <Chip
                 component={NavLinkAdapter}
-                to={`/bookings/managed-listings/${Listing?.slug}/manage/${row.original.id}/handle-arrival`}
+                to={`/bookings/${row.original.id}/handle-arrival`}
 				// to={`/${row.original.id}/handle-arrival`}
               className="text-11 cursor-pointer  bg-orange-300"
               size="small"
