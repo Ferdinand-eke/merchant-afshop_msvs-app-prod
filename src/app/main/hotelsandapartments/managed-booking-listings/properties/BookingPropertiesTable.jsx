@@ -15,6 +15,7 @@ function BookingPropertiesTable() {
 	const {data:listingData, isLoading:listingIsLoading, isError} = useMyShopBookingsProperties()
 
 
+	
 
 	const columns = useMemo(
 		() => [

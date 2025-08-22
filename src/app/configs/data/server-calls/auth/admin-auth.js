@@ -10,16 +10,11 @@ import { merchantSignIn } from "../../client/clientToApiRoutes";
 
 export function useShopAdminLogin() {
   
-  // const navigate = useNavigate();
   return useMutation(merchantSignIn, {
     onSuccess: (data) => {
-      console.log("userFromAuthentication", data?.data?.user);
-      // console.log("tokenFromAuthentication", data?.data?.merchantAccessToken);
-      console.log("tokenFromAuthentication", data?.data?.merchantAccessToken);
 
-      //  return
       if (data?.data?.user && data?.data?.merchantAccessToken) {
-        /**============================================================================== */
+        /**Transform user and store locally*/
 
         const transFormedUser = {
           id: data?.data?.user?._id,

@@ -28,4 +28,5 @@ function BookingProperties() {
 }
 
 
+
 export default BookingProperties;

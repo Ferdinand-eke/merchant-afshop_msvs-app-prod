@@ -74,7 +74,6 @@ function BookingPropertyListing() {
 		skip: !productId || productId === 'new'
 	});
 
-	console.log("PropertyList", propertyList?.data?.bookingList?.bookingList);
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
@@ -144,6 +143,8 @@ function BookingPropertyListing() {
 			</motion.div>
 		);
 	}
+
+	
 
 	/**
 	 * Wait while propertyList data is loading and form is setted 

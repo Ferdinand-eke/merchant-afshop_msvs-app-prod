@@ -76,6 +76,8 @@ export const categoryset = [
   },
 ];
 
+
+
 function BasicInfoTabProperty() {
   const generateSingleOptions = () => {
     return categoryset.map((option, index) => {
@@ -116,7 +118,7 @@ function BasicInfoTabProperty() {
     const responseData = await getStateByCountryId(pid);
 
     if (responseData) {
-      setBstates(responseData?.data);
+      setBstates(responseData?.data?.states);
       setTimeout(
         function () {
           setLoading(false);
@@ -132,7 +134,7 @@ function BasicInfoTabProperty() {
     const responseData = await getLgaByStateId(sid);
 
     if (responseData?.data) {
-      setBlgas(responseData?.data);
+      setBlgas(responseData?.data?.lgas || []);
       setTimeout(
         function () {
           setLoading(false);
@@ -318,9 +320,9 @@ function BasicInfoTabProperty() {
               helpertext={errors?.propertyCountry?.message}
             >
               <MenuItem value="">Select a country</MenuItem>
-              {countries?.data?.data &&
-                countries?.data?.data?.map((option, id) => (
-                  <MenuItem key={option._id} value={option._id}>
+              {countries?.data?.countries &&
+                countries?.data?.countries?.map((option, id) => (
+                  <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
                 ))}
@@ -353,7 +355,7 @@ function BasicInfoTabProperty() {
               <MenuItem value="">Select a state</MenuItem>
               {bstates &&
                 bstates?.map((option, id) => (
-                  <MenuItem key={option._id} value={option._id}>
+                  <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
                 ))}
@@ -385,7 +387,7 @@ function BasicInfoTabProperty() {
             >
               {blgas.length > 0 ? (
                 blgas?.map((lga, index) => (
-                  <MenuItem key={index} value={lga?._id}>
+                  <MenuItem key={index} value={lga?.id}>
                     {lga?.name}
                   </MenuItem>
                 ))

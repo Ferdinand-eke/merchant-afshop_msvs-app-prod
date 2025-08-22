@@ -19,6 +19,7 @@ const ManagedBookingsListingsAppConfig = {
 	},
 	
 
+	
 	routes: [
 		{
 			path: 'bookings',

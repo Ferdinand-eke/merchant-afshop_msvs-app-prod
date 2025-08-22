@@ -52,6 +52,7 @@ const Root = styled("div")(({ theme }) => ({
 /**
  * The invoice tab.
  */
+
 function InvoiceTab(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const { order, myshopData } = props;

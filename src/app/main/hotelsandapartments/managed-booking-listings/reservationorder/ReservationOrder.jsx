@@ -45,6 +45,7 @@ function ReservationOrder() {
 	async function getSingleApiShopDetails() {
 	  setLoading(true);
 	  const responseData = await getJustMyShopDetailsAndPlan();
+
 	  if (responseData) {
 		setMyshopData(responseData?.data);
   
@@ -93,7 +94,7 @@ console.log("MyShop", myshopData)
 		);
 	}
 
-	// console.log("RESERVATION-ITEM", reservationItem?.data?.reservationBooked);
+	console.log("RESERVATION-ITEM", reservationItem?.data?.reservationBooked);
 
 	// console.log("USER-IN-RESERVATION", reservationItem?.data?.userInReservedBooking?.user);
 

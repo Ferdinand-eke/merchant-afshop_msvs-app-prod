@@ -22,6 +22,7 @@ function ReservationsOfBookedProperties() {
 				<ReservationsTable />
 				
 				
+				
 			</div>
 		</>
 	);

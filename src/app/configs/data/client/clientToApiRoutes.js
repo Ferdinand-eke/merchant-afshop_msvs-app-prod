@@ -150,7 +150,7 @@ export const getTradehubById = (id) =>
   Api().get(`/tradehubs/${id}`);
 
 //Country Routes
-export const getCountries = () => Api().get('/buzcountries/operational');
+export const getCountries = () => Api().get('/buzcountries/operational'); //(Msvs => Done)
 export const getCountryDataById = (id) =>
   Api().get(`/buzcountries/${id}`);
 
@@ -159,12 +159,13 @@ export const getBStates = () => Api().get('/buzstates');
 export const getStateById = (id ) => Api().get(`/buzstates/${id}`);
 
 export const getStateByCountryId = (cid) =>
-  Api().get(`/buzstates/operational/country/${cid}`);
+  Api().get(`/buzstates/in-country/${cid}/operational`); //(Msvs => Done)
+
 
   //lgas Routes''
 export const getBLgas = () => Api().get('/buz-lgas'); //done
 export const getLgaById = (id) => Api().get(`/buz-lgas/${id}`); //done
-export const getLgaByStateId = (id) => Api().get(`/buz-lgas/state/${id}`); //done
+export const getLgaByStateId = (id) => Api().get(`/buz-lgas/in-state/${id}/operational`); // (Msvs => Done)
 
 //========================================Market Routes starts
 export const getAfMarkets = () => Api().get('/markets');
@@ -409,20 +410,40 @@ export const deleteShopEstateProperty = (id) =>
 export const getShopBookingsProperties = () => AuthApi().get('/bookings/get-merchant-bookings'); //(Msvs => Done)
 
 
+
 export const storeShopBookingsProperty = (formData) =>
-  AuthApi().post('/api/myshop/create-booking-property', formData);
+  AuthApi().post('/bookings/create-listing', formData); //(Msvs => done)
 
 export const getMyShopBookingsPropertyBySlug = (id) =>
-  AuthApi().get(`/bookings/merchant-listing/${id}/view`); //(Msvs => )
+  AuthApi().get(`/bookings/merchant-listing/${id}/view`); //(Msvs => done)
 
 export const updateMyShopBookingsPropertyById = (productFormData ) =>
   AuthApi().put(
-    `/api/myshop/update-bookingproperty/${productFormData?._id}`,
+    `/bookings/merchant-listing/${productFormData?.id}/update`,
     productFormData
-  );
+  );//(Msvs => done)
 
 export const deleteShopBookingsProperty = (id) =>
   AuthApi().delete(`/myshop/delete-bookingproperty/${id}`);
+
+/***Manage rooms 
+ * of prperties */
+export const getBookingsPropertyRoomsById = (propertyId) => {
+
+  console.log ("In Route TABLE", propertyId)
+  return  AuthApi().get(`/bookings/property-rooms/${propertyId}/view`); //(Msvs => done)
+}
+
+export const createRoomOnProperty = (formData) =>
+  AuthApi().post('/bookings/create-room', formData); //(Msvs => done)
+
+
+export const updateRoomOnProperty = (productFormData ) =>
+  AuthApi().put(
+    `/bookings/${productFormData?.id}/update-room`,
+    productFormData
+  );//(Msvs => done)
+ 
 
 
   /****Reservations */ //reservations/get-merchant-reservations

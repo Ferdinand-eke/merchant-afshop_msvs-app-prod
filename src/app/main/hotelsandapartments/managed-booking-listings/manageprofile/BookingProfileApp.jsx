@@ -11,7 +11,6 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import AboutTab from './tabs/about/AboutTab';
 import PhotosVideosTab from './tabs/photos-videos/PhotosVideosTab';
 import TimelineTab from './tabs/timeline/TimelineTab';
-
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
 		backgroundColor: theme.palette.background.paper,
@@ -24,6 +23,8 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	}
 }));
 
+
+
 /**
  * The profile page.
  */
@@ -31,20 +32,19 @@ function BookingProfileApp() {
 	const [selectedTab, setSelectedTab] = useState(0);
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
+	 
+
 	function handleTabChange(event, value) {
 		setSelectedTab(value);
+
+		/***Set selected tab on locked-On with local storage once tab is selected so as to remain on same tab when reloaded */
 	}
 
+	
 	return (
 		<Root
 			header={
 				<div className="flex flex-col w-full">
-					{/* <img
-						className="h-160 lg:h-320 object-cover w-full"
-						src="assets/images/pages/profile/cover.jpg"
-						alt="Profile Cover"
-					/>
-					 */}
 
 					<div className="mt-20 flex flex-col flex-0 lg:flex-row items-center max-w-5xl w-full mx-auto px-32 lg:h-72">
 						<div className="-mt-96 lg:-mt-88 rounded-full">
@@ -116,7 +116,7 @@ function BookingProfileApp() {
 								<Tab
 									className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
 									disableRipple
-									label="About"
+									label="Manage Rooms"
 								/>
 								<Tab
 									className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
@@ -128,10 +128,21 @@ function BookingProfileApp() {
 					</div>
 				</div>
 			}
+
+
+
+
 			content={
 				<div className="flex flex-auto justify-center w-full max-w-5xl mx-auto p-24 sm:p-32">
 					{selectedTab === 0 && <TimelineTab />}
-					{selectedTab === 1 && <AboutTab />}
+
+					{selectedTab === 1 && <AboutTab 
+					
+
+					/>}
+
+
+
 					{selectedTab === 2 && <PhotosVideosTab />}
 				</div>
 			}

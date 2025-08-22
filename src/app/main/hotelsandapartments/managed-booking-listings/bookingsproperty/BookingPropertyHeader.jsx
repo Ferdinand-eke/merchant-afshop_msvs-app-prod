@@ -20,9 +20,9 @@ import { useAddShopBookingsPropertyMutation, useBookingsPropertyUpdateMutation }
 function BookingPropertyHeader() {
 	const routeParams = useParams();
 	const { productId } = routeParams;
-	const [createProduct] = useCreateECommerceProductMutation();
-	const [saveProduct] = useUpdateECommerceProductMutation();
-	const [removeProduct] = useDeleteECommerceProductMutation();
+	// const [createProduct] = useCreateECommerceProductMutation();
+	// const [saveProduct] = useUpdateECommerceProductMutation();
+	// const [removeProduct] = useDeleteECommerceProductMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
@@ -33,13 +33,13 @@ function BookingPropertyHeader() {
 	const addBookingsProperty = useAddShopBookingsPropertyMutation()
 	const updateBookingsProperty = useBookingsPropertyUpdateMutation()
 
-	function handleSaveProduct() {
-		console.log("BOOKING_PROP_DETAILS", getValues())
-		return
+	function handleSaveApartment() {
+		// console.log("BOOKING_PROP_DETAILS", getValues())
+		// return
 		updateBookingsProperty.mutate(getValues());
 	}
 
-	function handleCreateProduct() {
+	function handleCreateApartment() {
 		console.log("BOOKING_PROP_DETAILS", getValues())
 
 		return
@@ -51,6 +51,7 @@ function BookingPropertyHeader() {
 		console.log("Deleting BookingProperty_List-Values", getValues())
 	
 	}
+
 
 
 	return (
@@ -139,7 +140,7 @@ function BookingPropertyHeader() {
 							|| 
 							updateBookingsProperty.isLoading
 							}
-							onClick={handleSaveProduct}
+							onClick={handleSaveApartment}
 						>
 							Save
 						</Button>
@@ -150,12 +151,13 @@ function BookingPropertyHeader() {
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields) || !isValid  || addBookingsProperty.isLoading }
-						onClick={handleCreateProduct}
+						onClick={handleSaveApartment}
 					>
 						Add Bookings|Property
 					</Button>
 				)}
 			</motion.div>
+
 			
 		</div>
 

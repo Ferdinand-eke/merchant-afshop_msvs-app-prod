@@ -37,19 +37,13 @@ const StyledContent = styled(FuseScrollbars)(() => ({
   backgroundAttachment: "local, scroll",
 }));
 
-// const RETAIL_KEY = import.meta.env.VITE_AFS_RETAIL;
-// const WHOLESALE_KEY = import.meta.env.VITE_AFS_WHOLESALERETAIL;
-// const MANUFACTURER_KEY = import.meta.env.VITE_AFS_MANUFACTURERS;
 
 /**
  * The navbar style 1 content.
  */
 function NavbarStyle1Content(props) {
-  //  const [searchParams, setSearchParams] = useSearchParams();
-  // setSearchParams( {"queryAllData":true});
   const { data: myshopData, isLoading } = useGetMyShopAndPlan();
 
-  console.log("MerchantPROFILE", myshopData?.data?.merchant?.merchantShopplan?.plankey)
   const { className = "" } = props;
 
   useEffect(() => {}, [myshopData?.data?.merchant?.merchantShopplan?.plankey]);
