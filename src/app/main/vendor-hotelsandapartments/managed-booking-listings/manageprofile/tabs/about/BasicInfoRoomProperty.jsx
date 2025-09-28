@@ -56,19 +56,15 @@ function BasicInfoRoomTabProperty(props) {
   const updateRoomOnBookingsProperty = useRoomOnPropertyUpdateMutation();
 
   const {
-      data: room,
-      isLoading,
-      isError
-    } = useGetSingleRoomOfProperty(roomId, {
-      skip: !roomId 
-      // || roomId === 'new'
-    });
-
-
-  
+    data: room,
+    isLoading,
+    isError,
+  } = useGetSingleRoomOfProperty(roomId, {
+    skip: !roomId,
+    // || roomId === 'new'
+  });
 
   function handleCreateRoomOnApartmentCall() {
-
     parseInt(getValues().roomNumber);
     parseInt(getValues().price);
     const formattedData = {
@@ -88,8 +84,6 @@ function BasicInfoRoomTabProperty(props) {
     updateRoomOnBookingsProperty.mutate(formattedData);
   }
 
-
-
   function handleRemoveRoomOnApartment() {
     console.log("Deleting BookingProperty_List-Values", getValues());
   }
@@ -100,15 +94,13 @@ function BasicInfoRoomTabProperty(props) {
       methods.clearErrors();
       // methods.dirtyFields.
     }
-  }, [
-    addRoomProperty.isSuccess]);
+  }, [addRoomProperty.isSuccess]);
 
-    useEffect(() => {
-        if (room?.data?.room) {
-          reset({ ...room?.data?.room });
-        }
-      }, [room, reset]);
-   
+  useEffect(() => {
+    if (room?.data?.room) {
+      reset({ ...room?.data?.room });
+    }
+  }, [room, reset]);
 
   return (
     <div>

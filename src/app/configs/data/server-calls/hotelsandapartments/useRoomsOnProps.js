@@ -24,7 +24,7 @@ export function useGetRoomsFromBookingProperty(slug) {
 		queryFn: () => getBookingsPropertyRoomsById(slug),
 		enabled: Boolean(slug) // only run if slug is truthy
 	});
-}
+} //(Mcsvs => Done)
 
 export function useGetSingleRoomOfProperty(roomId) {
 	console.log('Fetching single room :', roomId);
@@ -79,7 +79,7 @@ export function useAddRoomPropertyMutation() {
 			}
 		}
 	);
-}
+} //Mcsvs
 
 /** ***3) update existing room on bookings-property */
 export function useRoomOnPropertyUpdateMutation() {

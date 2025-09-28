@@ -38,11 +38,12 @@ const StyledContent = styled(FuseScrollbars)(() => ({
 }));
 
 
+
 /**
  * The navbar style 1 content.
  */
 function NavbarStyle1Content(props) {
-  const { data: myshopData, isLoading } = useGetMyShopAndPlan();
+  const { data: myshopData, isLoading } = useGetMyShopAndPlan({queryAllData:false});
 
   const { className = "" } = props;
 

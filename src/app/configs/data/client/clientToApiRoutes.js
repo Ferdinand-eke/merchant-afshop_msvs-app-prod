@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import qs from "qs"; // or use new URLSearchParams()
 // import { message } from 'antd'
 import { resetSessionForShopUsers } from 'app/configs/utils/authUtils';
 import { getAdminAccessToken } from '../utils/opsUtils';
@@ -245,10 +246,16 @@ export const getJustMyShopDetails = () => AuthApi().get('/api/myshop/get-just-de
 
 export const getMinimizedJustMyShopDetails = () => AuthApi().get('/api/myshop/get-minimized-just-details');
 
-export const getJustMyShopDetailsAndPlan = (queryParam) => {
-	// ?queryAllData=${queryParam}
-	// console.log("PARAM", queryParam)
-	return AuthApi().get(`/auth-merchant/myshop/get-just-details/plan`); //* (Msvs => Done)
+export const getJustMyShopDetailsAndPlan = (params) => {
+	// ?queryAllData=${queryParam} queryAllData
+	// console.log("PARAM__IN__ROUTE", queryAllData)
+	const queryString = qs.stringify(params, { arrayFormat: "repeat" });
+	return AuthApi().get(`/auth-merchant/myshop/get-just-details/plan?${queryString}`); //* (Msvs => Done)
+}; //* (Msvs => Done)
+
+export const getJustMyShopDetailsAndPlanForUpdate = () => {
+	
+	return AuthApi().get(`/auth-merchant/myshop/get-just-details/for-update`); //* (Msvs => Done)
 }; //* (Msvs => Done)
 
 export const getMyShopDetails = () => AuthApi().get('/auth-merchant/myshop/get-just-details/plan'); //* (Msvs => Done)
@@ -260,7 +267,7 @@ export const createMyShopBranch = (shopFormData) => AuthApi().post(`/api/myshop/
 export const updateMyShopBranch = (shopFormData) =>
 	AuthApi().put(`/api/myshop/update-branch/${shopFormData?._id}`, shopFormData); // newDashboard Not-done
 
-export const updateMyShopDetails = (shopFormData) => AuthApi().put(`/api/myshop/update-details`, shopFormData); // newDashboard done /${shopFormData?._id}
+export const updateMyShopDetails = (shopFormData) => AuthApi().put(`auth-merchant/myshop/get-just-details/update`, shopFormData); //(Msvs => Done)
 
 export const deleteMyShopCompletely = (id, shopFormData) =>
 	AuthApi().post(`/api/myshop/delete-myshop-completely/${id}`, shopFormData);

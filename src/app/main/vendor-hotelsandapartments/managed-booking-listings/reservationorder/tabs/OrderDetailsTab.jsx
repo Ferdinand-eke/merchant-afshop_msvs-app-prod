@@ -64,7 +64,7 @@ function Marker(props) {
 
 function OrderDetailsTab({ reservation, isError }) {
 
-  console.log("FIX-DATE-DISPLAY", reservation)
+  // console.log("FIX-DATE-DISPLAY", reservation)
 
   
   const routeParams = useParams();

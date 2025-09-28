@@ -67,6 +67,8 @@ function BookingPropertyListing() {
 
 	const { data: shopData, isLoading: shopDataLoading } = useGetMyShopDetails();
 
+	console.log("MERCHANT__DATA", shopData)
+
 	const {
 		data: propertyList,
 		isLoading,
@@ -103,8 +105,6 @@ function BookingPropertyListing() {
 		}
 	}, [propertyList, reset]);
 
-
-	
 
 	/**
 	 * Tab Change

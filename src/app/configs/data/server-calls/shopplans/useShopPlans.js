@@ -3,7 +3,7 @@ import { getShopPlanById, getShopPlans } from '../../client/clientToApiRoutes';
 
 export default function useShopplans() {
 	return useQuery(['shopplans'], getShopPlans);
-}
+}  //(Mcsvs => Done)
 
 // get single shop plan
 export function useSingleShopplans(shopplanId) {

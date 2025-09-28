@@ -28,6 +28,7 @@ function SettingsApp() {
 		}
 	}, [location, isMobile]);
 	
+	
 	return (
 		<Root
 			content={

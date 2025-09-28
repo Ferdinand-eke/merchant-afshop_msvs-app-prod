@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
+import { formatCurrency } from "src/app/main/vendors-shop/pos/PosUtils";
 
 /**
  * The pricing tab.
@@ -96,27 +97,25 @@ function PricingTabProperty({ shopData }) {
             Your listed property price is currently set at {""}{" "}
             <span className="text-primary font-medium">
               NGN
-              {getValues()?.price ? getValues()?.price : 0}{" "}
+              {formatCurrency(getValues()?.price ? getValues()?.price : 0)}{" "}
             </span>
-            . At {shopData?.data?.data?.shopplan?.percetageCommissionCharge}%
+            . At {shopData?.data?.merchant?.merchantShopplan?.percetageCommissionCharge}%
             commission you earn{" "}
             <span className="text-primary font-medium">
               N
-              {calculateShopEarnings(
+              {formatCurrency(calculateShopEarnings(
                 getValues()?.price,
-                shopData?.data?.data?.shopplan
-                  ?.percetageCommissionChargeConversion
-              )}
+                shopData?.data?.merchant?.merchantShopplan?.percetageCommissionChargeConversion
+              ))}
             </span>{" "}
-            while we earn{" "}
+            {/* while we earn{" "}
             <span className="text-primary font-medium">
               N
               {calculateCompanyEarnings(
                 getValues()?.price,
-                shopData?.data?.data?.shopplan
-                  ?.percetageCommissionChargeConversion
+                shopData?.data?.merchant?.merchantShopplan?.percetageCommissionChargeConversion
               )}
-            </span>
+            </span> */}
           </span>
           {/* <a
                         href="https://themeforest.net/item/midone-jquery-tailwindcss-html-admin-template/26366820"

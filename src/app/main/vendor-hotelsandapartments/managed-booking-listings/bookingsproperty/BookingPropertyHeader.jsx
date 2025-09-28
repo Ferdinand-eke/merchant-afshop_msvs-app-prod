@@ -13,6 +13,7 @@ import {
 } from '../ECommerceApi';
 // import { useAddShopEstatePropertyMutation, useEstatePropertyUpdateMutation } from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
 import { useAddShopBookingsPropertyMutation, useBookingsPropertyUpdateMutation } from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
+import { useGetMyShopAndPlan } from 'app/configs/data/server-calls/shopdetails/useShopDetails';
 
 /**
  * The product header.
@@ -26,6 +27,7 @@ function BookingPropertyHeader() {
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
+	const { data: myshopData, isLoading } = useGetMyShopAndPlan(false);
 	
 	const theme = useTheme();
 	const navigate = useNavigate();
@@ -36,7 +38,7 @@ function BookingPropertyHeader() {
 
 	function handleSaveApartment() {
 
-		console.log("BOOKING_PROP_DETAILS", getValues());
+		console.log("BOOKING_PROP_DETAILS bathroomCount", getValues());
 		const formData = {
 			...getValues(),
 			price : parseInt(getValues()?.price),
@@ -45,6 +47,10 @@ function BookingPropertyHeader() {
 			sittingroomCount : parseInt(getValues()?.sittingroomCount),
 			bathroomCount : parseInt(getValues()?.bathroomCount),
 			roomCount : parseInt(getValues()?.roomCount),
+			height : parseInt(getValues()?.height),
+			length : parseInt(getValues()?.length),
+			width : parseInt(getValues()?.width),
+			isRentIndividualRoom : Boolean(getValues()?.isRentIndividualRoom),
 			
 		};
 		updateBookingsProperty.mutate(formData);
@@ -52,10 +58,26 @@ function BookingPropertyHeader() {
 	}
 
 	function handleCreateApartment() {
-		console.log("BOOKING_PROP_DETAILS", getValues())
+		// console.log("BOOKING_PROP_DETAILS", getValues())
 
-		return
-		addBookingsProperty.mutate(getValues())
+		// return
+		console.log("BOOKING_PROP_CREATE___DETAILS", getValues());
+		const formData = {
+			...getValues(),
+			price : parseInt(getValues()?.price),
+			listprice : parseInt(getValues()?.listprice),
+			guestCount : parseInt(getValues()?.guestCount),
+			sittingroomCount : parseInt(getValues()?.sittingroomCount),
+			bathroomCount : parseInt(getValues()?.bathroomCount),
+			roomCount : parseInt(getValues()?.roomCount),
+			height : parseInt(getValues()?.height),
+			length : parseInt(getValues()?.length),
+			width : parseInt(getValues()?.width),
+			isRentIndividualRoom : Boolean(getValues()?.isRentIndividualRoom),
+			propertyShopplan : myshopData?.data?.merchant?.merchantShopplan?.id
+			
+		};
+		addBookingsProperty.mutate(formData)
 	}
 
 
@@ -163,8 +185,10 @@ function BookingPropertyHeader() {
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid  || addBookingsProperty.isLoading }
-						onClick={handleSaveApartment}
+						disabled={_.isEmpty(dirtyFields) || !isValid 
+							//  || addBookingsProperty.isLoading
+							 }
+						onClick={handleCreateApartment}
 					>
 						Add Bookings|Property
 					</Button>

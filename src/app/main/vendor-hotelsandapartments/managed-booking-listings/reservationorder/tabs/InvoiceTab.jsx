@@ -14,7 +14,7 @@ import {
 } from "app/configs/Calculus";
 import { Button } from "@mui/material";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 import { useThemeMediaQuery } from "@fuse/hooks";
 import { toast } from "react-toastify";
 import { formatCurrency } from "src/app/main/vendors-shop/pos/PosUtils";
@@ -54,7 +54,7 @@ const Root = styled("div")(({ theme }) => ({
  */
 
 function InvoiceTab(props) {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const { order, myshopData } = props;
 
   const {
@@ -63,7 +63,6 @@ function InvoiceTab(props) {
     error: cashingOutError,
   } = useCashoutMerchantReservationEarnings();
 
-
   if (cashingOutError) {
     toast.success(cashingOutError);
   }
@@ -71,7 +70,7 @@ function InvoiceTab(props) {
   const handleEarningsCashOut = async () => {
     if (window.confirm("Cash out ernings?")) {
       try {
-        cashingOutOrderItemSales(order?._id)
+        cashingOutOrderItemSales(order?._id);
       } catch (error) {
         toast.error(error);
       }
@@ -79,7 +78,7 @@ function InvoiceTab(props) {
   };
 
   /***Calculations for earnings starts */
-  
+
   const shopEarning = calculateShopEarnings(
     order?.totalPrice,
     myshopData?.merchantShopplan?.percetageCommissionChargeConversion
@@ -90,13 +89,11 @@ function InvoiceTab(props) {
   );
   /***Calculations for earnings ends */
 
-
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "NGN",
     minimumFractionDigits: 2,
   });
-
 
   return (
     <Root className="grow shrink-0 p-0">
@@ -148,7 +145,6 @@ function InvoiceTab(props) {
                     {order?.paymentdatas?.bookingPhone}
                   </Typography>
                 )}
-
               </div>
 
               <div className="seller flex items-center p-16">
@@ -176,87 +172,93 @@ function InvoiceTab(props) {
             </div>
 
             <div className="mt-64">
-              
+              <div className="table-responsive">
+                <table className="simple">
+                  <thead>
+                    <tr>
+                      <th>
+                        <Typography className="font-semibold">
+                          TransactionID
+                        </Typography>
+                      </th>
+                      <th>
+                        <Typography className="font-semibold">
+                          Payment Method
+                        </Typography>
+                      </th>
 
-<div className="table-responsive">
-          <table className="simple">
-            <thead>
-              <tr>
-                <th>
-                  <Typography className="font-semibold">
-                    TransactionID
-                  </Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">
-                    Payment Method
-                  </Typography>
-                </th>
-               
-                <th>
-                  <Typography className="font-semibold">
-                    Total Amount
-                  </Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">Payed On</Typography>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <span className="truncate">
-                    {order?.paymentResult?.reference}
-                  </span>
-                </td>
-                <td>
-                  <span className="truncate">
-                    {order?.paymentdatas?.paymentMethod}
-                  </span>
-                </td>
-                <td>
-                  <span className="truncate">
-                  ₦ {formatCurrency(order?.totalPrice)}
-                  </span>
-                </td>
-                <td>
-                  <span className="truncate">
-                    {new Date(order?.PaidAt)?.toDateString()}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                      <th>
+                        <Typography className="font-semibold">
+                          Total Amount
+                        </Typography>
+                      </th>
+                      <th>
+                        <Typography className="font-semibold">
+                          Payed On
+                        </Typography>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <span className="truncate">
+                          {order?.paymentResult?.reference}
+                        </span>
+                      </td>
+                      <td>
+                        <span className="truncate">
+                          {order?.paymentdatas?.paymentMethod}
+                        </span>
+                      </td>
+                      <td>
+                        <span className="truncate">
+                          ₦ {formatCurrency(order?.totalPrice)}
+                        </span>
+                      </td>
+                      <td>
+                        <span className="truncate">
+                          {new Date(order?.PaidAt)?.toDateString()}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
               <div className="flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5 mb-5">
                 <div className="font-medium text-base truncate">
-                  Payment Details For Reservation:   
+                  Payment Details For Reservation:
                 </div>
-                  At {myshopData?.merchantShopplan?.percetageCommissionCharge}% commission
-                you earn
+                At {myshopData?.merchantShopplan?.percetageCommissionCharge}%
+                commission you earn
                 <span
                   className="text-primary font-medium"
                   style={{ marginLeft: "5px", marginRight: "5px" }}
                 >
                   {" "}
                   ₦
-                  {formatCurrency(calculateShopEarnings(
-                    order?.totalPrice ,
-                    myshopData?.merchantShopplan?.percetageCommissionChargeConversion
-                  ))}
+                  {formatCurrency(
+                    calculateShopEarnings(
+                      order?.totalPrice,
+                      myshopData?.merchantShopplan
+                        ?.percetageCommissionChargeConversion
+                    )
+                  )}
                 </span>{" "}
-                while we earn{" "}
+                while @commission{" "}
                 <span
                   className="text-primary font-medium"
                   style={{ marginLeft: "5px", marginRight: "5px" }}
                 >
                   ₦
-                  {formatCurrency(calculateCompanyEarnings(
-                    order?.totalPrice ,
-                    myshopData?.merchantShopplan?.percetageCommissionChargeConversion
-                  ))}
+                  {formatCurrency(
+                    calculateCompanyEarnings(
+                      order?.totalPrice,
+                      myshopData?.merchantShopplan
+                        ?.percetageCommissionChargeConversion
+                    )
+                  )}
                 </span>
               </div>
 
@@ -270,7 +272,7 @@ function InvoiceTab(props) {
                         color="text.secondary"
                       >
                         {/* SUBTOTAL */}
-                        Total Item Price
+                        Total Reservation Cost
                       </Typography>
                     </TableCell>
                     <TableCell align="right">
@@ -279,7 +281,6 @@ function InvoiceTab(props) {
                         variant="subtitle1"
                         color="text.secondary"
                       >
-                        {/* {formatter.format(+order?.price * order?.quantity)} */}
                         ₦ {formatCurrency(order?.totalPrice)}
                       </Typography>
                     </TableCell>
@@ -291,7 +292,7 @@ function InvoiceTab(props) {
                         variant="subtitle1"
                         color="text.secondary"
                       >
-                        {/* TAX */}
+                        {/* MERCHANT EARNING */}
                         You earn
                       </Typography>
                     </TableCell>
@@ -301,8 +302,6 @@ function InvoiceTab(props) {
                         variant="subtitle1"
                         color="text.secondary"
                       >
-                        {/* {formatter.format(+order?.tax)} */}
-
                         {formatter.format(+shopEarning)}
                       </Typography>
                     </TableCell>
@@ -314,8 +313,8 @@ function InvoiceTab(props) {
                         variant="subtitle1"
                         color="text.secondary"
                       >
-                        {/* DISCOUNT */}
-                        While Africanshops earns:
+                        {/* COMMISSIONS */}
+                        While Commissions cost:
                       </Typography>
                     </TableCell>
                     <TableCell align="right">
@@ -328,6 +327,29 @@ function InvoiceTab(props) {
                       </Typography>
                     </TableCell>
                   </TableRow>
+
+                  <TableRow>
+                    <TableCell>
+                      <Typography
+                        className="font-normal"
+                        variant="subtitle1"
+                        color="text.secondary"
+                      >
+                        {/* VAT/TAX */}
+                       V.A.T:
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Typography
+                        className="font-normal"
+                        variant="subtitle1"
+                        color="text.secondary"
+                      >
+                        -
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+
                   <TableRow>
                     <TableCell>
                       <Typography
@@ -350,62 +372,69 @@ function InvoiceTab(props) {
                   </TableRow>
                 </TableBody>
               </Table>
-
-              
             </div>
 
-{ order?.isPaid && order?.isCheckOut && <div className="mt-96">
-              <Typography className="mb-24 print:mb-12" variant="body1">
-                 Thank you for your business.
-              </Typography>
-
-              <div className="flex">
-                <div className="shrink-0">
-                  <img
-                    className="w-80"
-                    // src="assets/images/afslogo/afLogo.svg"
-                    src="assets/images/afslogo/afslogo.png"
-                    alt="logo"
-                  />
-                </div>
-
-                <Typography
-                  className="font-normal mb-64 px-24"
-                  variant="caption"
-                  color="text.secondary"
-                >
-                  In honor of {order?.bookingPropertyId?.title}, We at Africanshops consider this Transaction
-                  as haven fulfilled the purpose for which it was intended and haven satisfied our consumers, duly
-                  consent the repatriation of funds to this merchant. Warmest Regards!.
+            {order?.isPaid && order?.isCheckOut && (
+              <div className="mt-96">
+                <Typography className="mb-24 print:mb-12" variant="body1">
+                  Thank you for your business.
                 </Typography>
-              </div>
-            </div>}
-            
 
-			{order?.isPaid && order?.isCheckOut && (
-				<>
-				<div className="flex flex-1 items-center justify-end space-x-8">
-				<motion.div
-					className="flex flex-grow-0"
-					initial={{ opacity: 0, x: 20 }}
-					animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-				>
-					<Button
-						className=""
-						onClick={() =>handleEarningsCashOut()}
-						disabled={cashingOutLoading}
-						variant="contained"
-						color="secondary"
-						fullWidth
-						size={isMobile ? 'small' : 'medium'}
-					>
-						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-						<span className="mx-4 sm:mx-8"> {cashingOutLoading ? "Processing..." : "Cash Out Reservation Earnings"}</span>
-					</Button>
-				</motion.div>
-			</div>
-				</>
-              )}
+                <div className="flex">
+                  <div className="shrink-0">
+                    <img
+                      className="w-80"
+                      src="assets/images/afslogo/afslogo.png"
+                      alt="logo"
+                    />
+                  </div>
+
+                  <Typography
+                    className="font-normal mb-64 px-24"
+                    variant="caption"
+                    color="text.secondary"
+                  >
+                    In honor of {order?.bookingPropertyId?.title}, We at
+                    Africanshops consider this Transaction as haven fulfilled
+                    the purpose for which it was intended and haven satisfied
+                    our consumers, duly consent the repatriation of funds to
+                    this merchant. Warmest Regards!.
+                  </Typography>
+                </div>
+              </div>
+            )}
+
+            {order?.isPaid && order?.isCheckOut && (
+              <>
+                <div className="flex flex-1 items-center justify-end space-x-8">
+                  <motion.div
+                    className="flex flex-grow-0"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+                  >
+                    <Button
+                      className=""
+                      onClick={() => handleEarningsCashOut()}
+                      disabled={cashingOutLoading}
+                      variant="contained"
+                      color="secondary"
+                      fullWidth
+                      size={isMobile ? "small" : "medium"}
+                    >
+                      <FuseSvgIcon size={20}>
+                        heroicons-outline:plus
+                      </FuseSvgIcon>
+                      <span className="mx-4 sm:mx-8">
+                        {" "}
+                        {cashingOutLoading
+                          ? `Processing ${formatter.format(+shopEarning)} Cash Out...`
+                          : `Cash Out ${formatter.format(+shopEarning)} Reservation Earnings`}
+                      </span>
+                    </Button>
+                  </motion.div>
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
       )}

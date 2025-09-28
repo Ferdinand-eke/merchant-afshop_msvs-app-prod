@@ -92,6 +92,7 @@ export const unitset = [
  * The notification panel.
  */
 function FoodMartMenuPanel(props) {
+
   const { toggleNewEntryDrawer } = props;
   const generateSingleOptions = () => {
     return categoryset.map((option, index) => {
@@ -120,8 +121,6 @@ function FoodMartMenuPanel(props) {
   const state = useAppSelector(selectFoodMartMenuPanelState);
   const addMyFoodMartMenu = useAddShopFoodMartMenuMutation();
 
-  // const { data: notifications, isLoading } = useGetAllNotificationsQuery();
-  // const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   useEffect(() => {
     if (state) {
       dispatch(closeFoodMartMenuPanel());
@@ -166,9 +165,9 @@ function FoodMartMenuPanel(props) {
     addMyFoodMartMenu.mutate(getValues());
   }
 
-  if (isLoading) {
-    return <FuseLoading />;
-  }
+  // if (isLoading) {
+  //   return <FuseLoading />;
+  // }
 
   return (
     <FusePageSimple

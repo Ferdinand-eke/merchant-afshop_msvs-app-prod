@@ -52,13 +52,23 @@ export function useAddShopBookingsPropertyMutation() {
 		},
 		{
 			onError: (error, rollback) => {
-				console.log('creatBokibg_Property_ERROR', error);
-				console.log('MutationError 2', error.response.data);
-				console.log('MutationError 3', error.data);
-				toast.error(
-					error.response && error.response.data.message ? error.response.data.message : error.message
-				);
-				rollback();
+			const {
+				response: { data }
+			} = error ?? {};
+			Array.isArray(data?.message)
+				? data?.message?.map((m) => {
+						console.log('Update Booking Property Error:', m);
+						return toast.error(m);
+					})
+				: toast.error(data?.message);
+			rollback();
+				// console.log('creatBokibg_Property_ERROR', error);
+				// console.log('MutationError 2', error.response.data);
+				// console.log('MutationError 3', error.data);
+				// toast.error(
+				// 	error.response && error.response.data.message ? error.response.data.message : error.message
+				// );
+				// rollback();
 			}
 		}
 	);

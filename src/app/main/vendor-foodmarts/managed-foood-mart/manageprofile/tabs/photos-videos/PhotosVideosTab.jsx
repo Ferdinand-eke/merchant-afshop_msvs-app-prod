@@ -44,6 +44,7 @@ function PhotosVideosTab(props) {
     </Box>
   );
 
+  
   if (martMenuLoading) {
     return <FuseLoading />;
   }
@@ -156,25 +157,17 @@ function PhotosVideosTab(props) {
                         onClick={() => {}}
                         title={menu.title}
                         actionIcon={
-                          <IconButton size="large"
-						  onClick={() => {}}
-						  >
+                          <IconButton size="large" onClick={() => {}}>
                             <Typography className="text-white">
                               {formatCurrency(menu.price)}
                             </Typography>
                           </IconButton>
                         }
-
-					
-                         
-                       
                       />
-
-					  
                     </ImageListItem>
-					<Button className="w-full">
-						<Typography>Update</Typography>
-					  </Button>
+                    <Button className="w-full">
+                      <Typography>Update</Typography>
+                    </Button>
                   </div>
                 ))}
               </div>

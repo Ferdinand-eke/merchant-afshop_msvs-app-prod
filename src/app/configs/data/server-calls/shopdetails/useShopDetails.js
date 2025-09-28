@@ -5,6 +5,7 @@ import {
 	createMyShopBranch,
 	getJustMyShopDetails,
 	getJustMyShopDetailsAndPlan,
+	getJustMyShopDetailsAndPlanForUpdate,
 	getMinimizedJustMyShopDetails,
 	getMyOtherShopsList,
 	getMyShopAccountApiDetails,
@@ -16,7 +17,7 @@ import {
 
 export default function useGetMyShopDetails() {
 	return useQuery(['__myshop_details'], getMyShopDetails);
-}
+} //* (Msvs => Done)
 
 /** ***Get just my shop details */
 export function useGetMinimizedJustMyShopDetailsQuery() {
@@ -33,11 +34,24 @@ export function useGetMyOtherShopLists() {
 }
 
 // Shop details and shop plan
-export function useGetMyShopAndPlan() {
-	// '?queryAllData=${queryParam}');
+export function useGetMyShopAndPlan(boolValue) {
+	// '?queryAllData=${queryParam}');boolValue
 	//
-	return useQuery(['__myshop_and_accountplan'], getJustMyShopDetailsAndPlan);
+	// console.log("BoolValue", boolValue)
+	// return useQuery(['__myshop_and_accountplan'], getJustMyShopDetailsAndPlan(boolValue)); boolValue
+	return useQuery(
+  ['__myshop_and_accountplan', boolValue], // include boolValue to refetch when it changes boolValue
+  () => getJustMyShopDetailsAndPlan(boolValue)
+);
 } // (Mcsvs => Done)
+
+/***Shop details and shop plan For Update */
+export function useGetMyShopAndPlanForUpdate() {
+	return useQuery(['__myshop_and_accountplan_for_Update'], getJustMyShopDetailsAndPlanForUpdate);
+	
+} // (Mcsvs => Done)
+
+
 
 /** **
  *
@@ -54,13 +68,9 @@ export function useShopUpdateMutation() {
 
 	return useMutation(updateMyShopDetails, {
 		onSuccess: (data) => {
-			// console.log('Updated shop clientController', data);
 
 			if (data?.data?.success) {
-				toast.success('shop updated successfully!!');
-
-				/** Set/update users client data to have newly updated user details */
-
+				toast.success(`${data?.data?.message ? data?.data?.message : "shop updated successfully!"}`);
 				queryClient.invalidateQueries('__myshop_details');
 			}
 		},
@@ -68,7 +78,7 @@ export function useShopUpdateMutation() {
 			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
 		}
 	});
-}
+}  //(Msvs => Done)
 
 /** Create a new Shop Vendor */
 export function useCreateVendorShopBranch() {

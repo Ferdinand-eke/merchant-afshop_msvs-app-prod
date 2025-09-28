@@ -18,6 +18,7 @@ import useSellerCountries from "app/configs/data/server-calls/countries/useCount
 import {
   useGetJustMyShopDetails,
   useGetMyShopAndPlan,
+  useGetMyShopAndPlanForUpdate,
   useShopUpdateMutation,
 } from "app/configs/data/server-calls/shopdetails/useShopDetails";
 import useShopplans from "app/configs/data/server-calls/shopplans/useShopPlans";
@@ -84,9 +85,7 @@ const schema = z.object({
 });
 
 function AccountTab() {
-  const { data: accountSettings, isError } = useGetAccountSettingsQuery();
 
-  const [updateAccountSettings] = useUpdateAccountSettingsMutation();
   const {
     control,
     watch,
@@ -105,25 +104,26 @@ function AccountTab() {
   const { isValid, dirtyFields, errors } = formState;
   const { avatar } = watch();
 
-
   const [loading, setLoading] = useState(false);
   // const { data: justMyshop } = useGetJustMyShopDetails(); 
-  const { data: justMyshop } = useGetMyShopAndPlan()
+  const { data: justMyshop } = useGetMyShopAndPlanForUpdate()
+
   const { data: hubData } = useHubs();
   const { data: countryData } = useSellerCountries();
 
   const { data: shopPlanData, isLoading: planIsLoading } = useShopplans();
   const updateShopDetails = useShopUpdateMutation();
 
-  // console.log("JUST-MYSHOP", justMyshop?.data)
+  // console.log("JUST-MYSHOP___", justMyshop?.data?.merchant)
 
   const [blgas, setBlgas] = useState([]);
   const [markets, setBMarkets] = useState([]);
   const [stateData, setStateData] = useState([]);
 
   useEffect(() => {
-    reset(justMyshop?.data);
-  }, [justMyshop?.data, reset]);
+    reset(justMyshop?.data?.merchant);
+  }, [justMyshop?.data?.merchant, reset]);
+
 
 
   useEffect(() => {
@@ -139,12 +139,11 @@ function AccountTab() {
       getMarketsFromLgaId(getValues()?.businezLga);
     }
   }, [
-    // transferData,
     getValues()?.businessCountry,
     getValues()?.businezState,
-    // getValues()?.businezLga,
   ]);
 
+  /**Get Statess from state_ID data */
   async function findStatesByCountry() {
     setLoading(true);
     const stateResponseData = await getStateByCountryId(
@@ -166,11 +165,9 @@ function AccountTab() {
   //**Get L.G.As from state_ID data */
   async function getLgasFromState(sid) {
     setLoading(true);
-    // const responseData = await ProductRepository.getProductsById(pid);
     const responseData = await getLgaByStateId(sid);
 
     if (responseData) {
-      // console.log('LGAs From State:', responseData);
       setBlgas(responseData?.data?.lgas);
       setTimeout(
         function () {
@@ -181,8 +178,7 @@ function AccountTab() {
     }
   }
 
-  //**Get Marketss from lga_ID data */ getShopById
-
+  /**Get Marketss from lga_ID data */ 
   async function getMarketsFromLgaId(lid) {
     if (lid) {
       setLoading(true);
@@ -256,6 +252,8 @@ function AccountTab() {
     }
   }
 
+  // console.log("TradeHUB__DATA", hubData?.data)
+
   return (
     <div className="w-full max-w-3xl">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -316,11 +314,11 @@ function AccountTab() {
                   fullWidth
                   error={!!errors.tradehub}
                   helperText={errors?.tradehub?.message}
-                  disabled
+                  // disabled
                 >
-                  {hubData?.data?.data?.map((buzcountry, index) => (
-                    <MenuItem key={index} value={buzcountry?._id}>
-                      {buzcountry?.hubname}
+                  {hubData?.data?.tradehubs?.map((hub, index) => (
+                    <MenuItem key={index} value={hub?.id}>
+                      {hub?.hubname}
                     </MenuItem>
                   ))}
                 </Select>
@@ -348,8 +346,8 @@ function AccountTab() {
                   helperText={errors?.shopplan?.message}
                   disabled
                 >
-                  {shopPlanData?.data?.data?.map((plan, index) => (
-                    <MenuItem key={index} value={plan?._id}>
+                  {shopPlanData?.data?.merchantPlans?.map((plan, index) => (
+                    <MenuItem key={index} value={plan?.id}>
                       {plan?.plansname}
                     </MenuItem>
                   ))}
@@ -624,7 +622,7 @@ function AccountTab() {
                   helperText={errors?.businessCountry?.message}
                 >
                   {countryData?.data?.countries?.map((buzcountry, index) => (
-                    <MenuItem key={index} value={buzcountry?._id}>
+                    <MenuItem key={index} value={buzcountry?.id}>
                       {buzcountry?.name}
                     </MenuItem>
                   ))}
@@ -655,7 +653,7 @@ function AccountTab() {
                   helperText={errors?.businezState?.message}
                 >
                   {stateData?.map((buzstate, index) => (
-                    <MenuItem key={index} value={buzstate?._id}>
+                    <MenuItem key={index} value={buzstate?.id}>
                       {buzstate?.name}
                     </MenuItem>
                   ))}
@@ -686,7 +684,7 @@ function AccountTab() {
                   helperText={errors?.businezLga?.message}
                 >
                   {blgas?.map((lga, index) => (
-                    <MenuItem key={index} value={lga?._id}>
+                    <MenuItem key={index} value={lga?.id}>
                       {lga?.name}
                     </MenuItem>
                   ))}
@@ -715,7 +713,7 @@ function AccountTab() {
                   helperText={errors?.market?.message}
                 >
                   {markets?.map((market, index) => (
-                    <MenuItem key={index} value={market?._id}>
+                    <MenuItem key={index} value={market?.id}>
                       {market?.name}
                     </MenuItem>
                   ))}
