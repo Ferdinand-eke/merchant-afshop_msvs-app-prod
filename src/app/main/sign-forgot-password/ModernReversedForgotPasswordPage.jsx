@@ -36,6 +36,7 @@ function ModernReversedForgotPasswordPage() {
 	const { isValid, dirtyFields, errors } = formState;
 
 	function onSubmit() {
+		
 		shopForgotPass(getValues())
 	}
 

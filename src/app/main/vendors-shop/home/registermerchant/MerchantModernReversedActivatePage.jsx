@@ -2,12 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
 import _ from "@lodash";
-import Paper from "@mui/material/Paper";
-import AvatarGroup from "@mui/material/AvatarGroup";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useStoreShopPreSignUpFromOtp } from "app/configs/data/server-calls/useShops/useShopsQuery";
@@ -32,6 +27,7 @@ const defaultValues = {
  * The modern forgot password page.
  */
 function MerchantModernReversedActivatePage({ resendOTP }) {
+
   const remoteResponseToken = getMerchantSignUpToken();
   const avtivateMerchant = useStoreShopPreSignUpFromOtp();
   const { control, formState, handleSubmit, reset, getValues, setValue } =

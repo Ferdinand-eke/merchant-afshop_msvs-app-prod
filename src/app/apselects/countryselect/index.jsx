@@ -31,7 +31,7 @@ const CountrySelect = ({ value, onChange }) => {
             <Select
                 placeholder="Where on the globe are you?"
                 isClearable
-                options={countries?.data?.data}
+                options={countries?.data?.countries}
                 value={value}
                 onChange={(value) => onChange(value )}
                 formatOptionLabel={(option) => (

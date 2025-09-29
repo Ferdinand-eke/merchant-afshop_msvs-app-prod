@@ -36,7 +36,7 @@ const SettingsAppNavigation = {
 			type: 'item',
 			url: '/africanshops/settings/notifications',
 			subtitle: "Manage when you'll be notified on which channels"
-		},
+		}
 		// {
 		// 	id: 'apps.settings.team',
 		// 	icon: 'heroicons-outline:user-group',

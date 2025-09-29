@@ -2,8 +2,6 @@ import i18next from 'i18next';
 import ar from './navigation-i18n/ar';
 import en from './navigation-i18n/en';
 import tr from './navigation-i18n/tr';
-import { authRoles } from '../auth';
-import DocumentationNavigation from '../main/documentation/DocumentationNavigation';
 
 i18next.addResourceBundle('en', 'navigation', en);
 i18next.addResourceBundle('tr', 'navigation', tr);
@@ -12,11 +10,8 @@ i18next.addResourceBundle('ar', 'navigation', ar);
  * The navigationConfig object is an array of navigation items for the Fuse application.
  */
 
-
-
 const navigationConfig = [
-
-	/***Dashboard pane */
+	/** *Dashboard pane */
 	{
 		id: 'dashboards',
 		title: 'Dashboards',
@@ -31,12 +26,11 @@ const navigationConfig = [
 				type: 'item',
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/shop-dashboard'
-			},
-			
+			}
 		]
 	},
 
-	/***Products management pane */
+	/** *Products management pane */
 	{
 		id: 'shopproducts',
 		title: 'Products',
@@ -46,7 +40,7 @@ const navigationConfig = [
 		translate: 'PRODUCTS',
 		children: [
 			{
-				//NAVIGATION:SHOP PRODUCTS
+				// NAVIGATION:SHOP PRODUCTS
 				id: 'shopproducts.list',
 				title: 'Products',
 				type: 'item',
@@ -59,12 +53,11 @@ const navigationConfig = [
 				type: 'item',
 				icon: 'heroicons-outline:shopping-cart',
 				url: '/shopproducts-list/inventory'
-			},
-			
+			}
 		]
 	},
 
-/***orders management pane */
+	/** *orders management pane */
 	{
 		id: 'shoporders',
 		title: 'Orders-&-Pos',
@@ -94,12 +87,11 @@ const navigationConfig = [
 				type: 'item',
 				icon: 'heroicons-outline:shopping-cart',
 				url: '/africanshops/shops/pos'
-			},
-		
+			}
 		]
 	},
 
-	/***Finance management pane */
+	/** *Finance management pane */
 	{
 		id: 'FInance',
 		title: 'Manage Finance',
@@ -108,7 +100,6 @@ const navigationConfig = [
 		icon: 'heroicons-outline:home',
 		translate: 'FINANCE',
 		children: [
-			
 			{
 				id: 'property.earnings',
 				title: 'Wallet',
@@ -123,13 +114,11 @@ const navigationConfig = [
 				type: 'item',
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/africanshops/withdrawals'
-			},
-		
-			
+			}
 		]
 	},
 
-	/***Support management pane */
+	/** *Support management pane */
 	{
 		id: 'Support.Helpcenter',
 		title: 'Get Support',
@@ -138,22 +127,17 @@ const navigationConfig = [
 		icon: 'heroicons-outline:home',
 		translate: 'SUPPORT',
 		children: [
-			
 			{
 				id: 'support.earnings',
 				title: 'Suppport',
 				type: 'item',
 				icon: 'heroicons-outline:support',
 				url: '/support'
-			},
-
-			
-		
-			
+			}
 		]
 	},
 
-	/***Messanger pane */
+	/** *Messanger pane */
 	{
 		id: 'Africanshops.Messanger',
 		title: 'Messanger',
@@ -162,7 +146,6 @@ const navigationConfig = [
 		icon: 'heroicons-outline:chat-alt',
 		translate: 'MESSANGER',
 		children: [
-			
 			{
 				id: 'apps.messenger',
 				title: 'Messenger',
@@ -170,13 +153,9 @@ const navigationConfig = [
 				icon: 'heroicons-outline:chat-alt',
 				url: '/africanshops/messenger',
 				translate: 'MESSENGER'
-			},
-
-			
-		
-			
+			}
 		]
-	},
+	}
 
 	// {
 	// 	id: 'users',
@@ -207,11 +186,8 @@ const navigationConfig = [
 	// 			icon: 'heroicons-outline:user-group',
 	// 			url: '/users/shopstaff'
 	// 		},
-			
+
 	// 	]
 	// },
-
-	
-
 ];
 export default navigationConfig;

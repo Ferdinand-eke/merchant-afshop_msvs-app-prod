@@ -51,36 +51,23 @@ const ManagedBookingsListingsAppConfig = {
         {
           path: "managed-listings",
           element: <BookingProperties />,
-        },
+        }, //(Msvs => Done)
         {
           path: "managed-listings/:productId/*",
           element: <BookingPropertyListing />,
-        },
+        }, //(Msvs => Done)
 
 		/***Handling PROPERTY OWNED Reservations STARTS HERE */
         {
           path: "managed-listings/:productId/manage",
           element: <BookingProfileApp />,
-        //   children: [
-        //     {
-        //       path: ":reservationId/handle-arrival",
-        //       element: <ManageReservationPage />,
-
-        //       // children: [
-        //       // 	{
-        //       // 		path: ':reservationId/handle-arrival',
-        //       // 		element: <ManageReservationPage />
-        //       // 	}
-        //       // ]
-        //     },
-        //   ],
         },
 
 
 		 {
               path: ":reservationId/handle-arrival",
               element: <ManageReservationPage />,
-		 },
+		 }, //(Msvs => Done)
 
 		 /***Handling Reservations ENDS HERE */
 

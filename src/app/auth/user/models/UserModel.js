@@ -11,9 +11,9 @@ function UserModel(data) {
 		data: {
 			displayName: 'Guest User',
 			photoURL: '',
-			shopemail:'',
+			shopemail: '',
 			email: '',
-			
+
 			shortcuts: [],
 			settings: {}
 		}

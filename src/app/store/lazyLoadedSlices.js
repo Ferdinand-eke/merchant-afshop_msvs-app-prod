@@ -20,4 +20,3 @@ export const rootReducer = combineSlices(
 		[apiService.reducerPath]: apiService.reducer
 	}
 ).withLazyLoadedSlices();
-

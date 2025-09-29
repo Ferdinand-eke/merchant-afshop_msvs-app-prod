@@ -17,6 +17,7 @@ import useHubs from "app/configs/data/server-calls/tradehubs/useTradeHubs";
 import useSellerCountries from "app/configs/data/server-calls/countries/useCountries";
 import {
   useGetJustMyShopDetails,
+  useGetMyShopAndPlan,
   useShopUpdateMutation,
 } from "app/configs/data/server-calls/shopdetails/useShopDetails";
 import useShopplans from "app/configs/data/server-calls/shopplans/useShopPlans";
@@ -106,12 +107,15 @@ function AccountTab() {
 
 
   const [loading, setLoading] = useState(false);
-  const { data: justMyshop } = useGetJustMyShopDetails();
+  // const { data: justMyshop } = useGetJustMyShopDetails(); 
+  const { data: justMyshop } = useGetMyShopAndPlan()
   const { data: hubData } = useHubs();
   const { data: countryData } = useSellerCountries();
 
   const { data: shopPlanData, isLoading: planIsLoading } = useShopplans();
   const updateShopDetails = useShopUpdateMutation();
+
+  // console.log("JUST-MYSHOP", justMyshop?.data)
 
   const [blgas, setBlgas] = useState([]);
   const [markets, setBMarkets] = useState([]);
@@ -148,7 +152,7 @@ function AccountTab() {
     );
 
     if (stateResponseData) {
-      setStateData(stateResponseData?.data);
+      setStateData(stateResponseData?.data?.states);
 
       setTimeout(
         function () {
@@ -167,7 +171,7 @@ function AccountTab() {
 
     if (responseData) {
       // console.log('LGAs From State:', responseData);
-      setBlgas(responseData?.data);
+      setBlgas(responseData?.data?.lgas);
       setTimeout(
         function () {
           setLoading(false);
@@ -184,7 +188,7 @@ function AccountTab() {
       setLoading(true);
       const responseData = await getMarketsByLgaId(lid);
       if (responseData) {
-        setBMarkets(responseData?.data);
+        setBMarkets(responseData?.data?.markets);
         setTimeout(
           function () {
             setLoading(false);
@@ -619,7 +623,7 @@ function AccountTab() {
                   error={!!errors.businessCountry}
                   helperText={errors?.businessCountry?.message}
                 >
-                  {countryData?.data?.data?.map((buzcountry, index) => (
+                  {countryData?.data?.countries?.map((buzcountry, index) => (
                     <MenuItem key={index} value={buzcountry?._id}>
                       {buzcountry?.name}
                     </MenuItem>

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Controller, useForm } from "react-hook-form";
 import { lighten, styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
@@ -8,9 +9,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Link, useParams } from "react-router-dom";
 import _ from "@lodash";
-import Paper from "@mui/material/Paper";
-import AvatarGroup from "@mui/material/AvatarGroup";
-import Avatar from "@mui/material/Avatar";
+// import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import FormHelperText from "@mui/material/FormHelperText";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +17,7 @@ import { z } from "zod";
 import { useSingleShopplans } from "app/configs/data/server-calls/shopplans/useShopPlans";
 import { useEffect, useMemo, useState } from "react";
 import CountrySelect from "src/app/apselects/countryselect";
-import useHubs from "app/configs/data/server-calls/tradehubs/useTradeHubs";
+// import useHubs from "app/configs/data/server-calls/tradehubs/useTradeHubs";
 import {
   getLgaByStateId,
   getMarketsByLgaId,
@@ -28,7 +27,7 @@ import StateSelect from "src/app/apselects/stateselect";
 import LgaSelect from "src/app/apselects/lgaselect";
 import MarketSelect from "src/app/apselects/marketselect";
 import TradehubSelect from "src/app/apselects/tradehubselect";
-import { IconButton, InputAdornment } from "@mui/material";
+import { IconButton, InputAdornment, Paper } from "@mui/material";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import FuseUtils from "@fuse/utils/FuseUtils";
 
@@ -37,8 +36,8 @@ import clsx from "clsx";
 import {
   getStorage,
   ref,
-  deleteObject,
-  uploadBytesResumable,
+  // deleteObject,
+  // uploadBytesResumable,
   uploadString,
   getDownloadURL,
 } from "firebase/storage";
@@ -52,14 +51,16 @@ import {
   setResendMerchantSignUpOtp,
 } from "app/configs/utils/authUtils";
 import MerchantModernReversedActivatePage from "./MerchantModernReversedActivatePage";
-import { Diversity2, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import MerchantShopClientErrorPage from "src/app/main/MerchantClientErrorPage";
+import FuseLoading from "@fuse/core/FuseLoading";
 /**
  * Form Validation Schema
  */
 const schema = z
   .object({
-    shopname: z.string().nonempty("You must enter your business/shop name"),
+    name: z.string().nonempty("You must enter your business/shop name"),
     shopemail: z
       .string()
       .email("You must enter a valid email")
@@ -81,8 +82,9 @@ const schema = z
     path: ["passwordConfirm"],
   });
 const defaultValues = {
-  shopname: "",
+  name: "",
   shopemail: "",
+  referalCode: "",
   password: "",
   passwordConfirm: "",
   acceptTermsConditions: false,
@@ -102,8 +104,8 @@ const STEPS = {
   CATEGORY: 0,
   LOCATION: 1,
   MOREINFO: 2,
-  IMAGES: 3,
-  DESCRIPTION: 4,
+  // IMAGES: 3,
+  DESCRIPTION: 3,
   //   PRICE: 5,
 };
 
@@ -151,7 +153,11 @@ function MerchantModernReversedSignUpPage() {
   const remoteResponseToken = getMerchantSignUpToken();
   const routeParams = useParams();
   const { accountId } = routeParams;
-  const { data: plan, isLoading } = useSingleShopplans(accountId);
+  const {
+    data: plan,
+    isLoading: isLoadingPlan,
+    isError: isErrorPlan,
+  } = useSingleShopplans(accountId);
   const sigupMerchant = useShopSignUpWithOtp();
   const {
     control,
@@ -169,7 +175,7 @@ function MerchantModernReversedSignUpPage() {
   const { isValid, dirtyFields, errors } = formState;
 
   const location = watch("location");
-  
+
   const businezState = watch("businezState");
   const businezLga = watch("businezLga");
   const market = watch("market");
@@ -178,22 +184,26 @@ function MerchantModernReversedSignUpPage() {
 
   const shopregistry = {
     ...getValues(),
-    businessCountry: getValues()?.location?._id,
-    businezState: getValues()?.businezState?._id,
-    businezLga: getValues()?.businezLga?._id,
-    tradehub: getValues()?.tradehub?._id,
-    market: getValues()?.market?._id,
+    businessCountry: getValues()?.location?.id,
+    businezState: getValues()?.businezState?.id,
+    businezLga: getValues()?.businezLga?.id,
+    tradehub: getValues()?.tradehub?.id,
+    market: getValues()?.market?.id,
     shopplan: accountId,
   };
 
+  // merchantPlan
+
+  // console.log("SINGLE-PLAN", plan)
+
   function onSubmit() {
-    if(plan?.data?.isInOperation ){
+    if (plan?.data?.merchantPlan?.isInOperation) {
       if (images?.length > 0) {
         const fileName = new Date().getTime() + images[0]?.id;
         const storage = getStorage(firebaseApp);
         const storageRef = ref(storage, `/shopbanners/${fileName}`);
         const uploadTask = uploadString(storageRef, images[0]?.url, "data_url");
-  
+
         uploadTask.then((snapshot) => {
           console.log("uploadSnaps11", snapshot);
           getDownloadURL(snapshot.ref).then((downloadURL) => {
@@ -204,10 +214,9 @@ function MerchantModernReversedSignUpPage() {
       } else {
         sigupMerchant.mutate(shopregistry);
       }
-    }else{
-      toast.info("This selected account plan is not currently opertaional!")
+    } else {
+      toast.info("This selected account plan is not currently opertaional!");
     }
-   
   }
 
   /****Resend OTP on expiration of OTP */
@@ -265,21 +274,21 @@ function MerchantModernReversedSignUpPage() {
   const [stateData, setStateData] = useState([]);
 
   useEffect(() => {
-    if (location?._id?.length > 0) {
-      findStatesByCountry(location?._id);
+    if (location?.id?.length > 0) {
+      findStatesByCountry(location?.id);
     }
 
-    if (getValues()?.businezState?._id?.length > 0) {
-      getLgasFromState(getValues()?.businezState?._id);
+    if (getValues()?.businezState?.id?.length > 0) {
+      getLgasFromState(getValues()?.businezState?.id);
     }
 
-    if (getValues()?.businezLga?._id?.length > 0) {
-      getMarketsFromLgaId(getValues()?.businezLga?._id);
+    if (getValues()?.businezLga?.id?.length > 0) {
+      getMarketsFromLgaId(getValues()?.businezLga?.id);
     }
   }, [
-    location?._id,
-    businezState?._id,
-    businezLga?._id,
+    location?.id,
+    businezState?.id,
+    businezLga?.id,
     sigupMerchant?.isSuccess,
   ]);
 
@@ -292,14 +301,18 @@ function MerchantModernReversedSignUpPage() {
         setResendMerchantSignUpOtp(clientSignUpData);
       }
     }
-  }, [plan?.data?.plankey, sigupMerchant?.isSuccess, remoteResponseToken]);
+  }, [
+    plan?.data?.merchantPlan?.plankey,
+    sigupMerchant?.isSuccess,
+    remoteResponseToken,
+  ]);
 
   async function findStatesByCountry(countryId) {
     setLoading(true);
     const stateResponseData = await getStateByCountryId(countryId);
 
     if (stateResponseData) {
-      setStateData(stateResponseData?.data);
+      setStateData(stateResponseData?.data?.states);
 
       setTimeout(
         function () {
@@ -316,7 +329,7 @@ function MerchantModernReversedSignUpPage() {
     const responseData = await getLgaByStateId(sid);
 
     if (responseData) {
-      setBlgas(responseData?.data);
+      setBlgas(responseData?.data?.lgas);
       setTimeout(
         function () {
           setLoading(false);
@@ -326,13 +339,15 @@ function MerchantModernReversedSignUpPage() {
     }
   }
 
-  //**Get Marketss from lga_ID data  getShopById*/ 
+  //**Get Marketss from lga_ID data  getShopById*/
   async function getMarketsFromLgaId(lid) {
     if (lid) {
       setLoading(true);
       const responseData = await getMarketsByLgaId(lid);
+
+      console.log("Get-Market-Responses", responseData?.data);
       if (responseData) {
-        setBMarkets(responseData?.data);
+        setBMarkets(responseData?.data?.markets);
         setTimeout(
           function () {
             setLoading(false);
@@ -343,16 +358,14 @@ function MerchantModernReversedSignUpPage() {
     }
   }
 
-  const [showPassword, setShowPassword] = useState(false) 
-  const toggleShowPassword = () =>{
-		setShowPassword(!showPassword)
-	}
+  const [showPassword, setShowPassword] = useState(false);
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   let bodyContent = (
     <div className="flex flex-col gap-8">
-      <Typography
-        className="px-[10px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10"
-      >
+      <Typography className="px-[10px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10">
         Email Details :{" "}
         <span className="mt-2 flex items-baseline font-medium">
           What e-mail are you looking to use as you business email
@@ -361,13 +374,14 @@ function MerchantModernReversedSignUpPage() {
       <>
         <>
           <Controller
-            name="shopname"
+            name="name"
             control={control}
             render={({ field }) => (
               <TextField
                 {...field}
                 className="mb-24"
                 label="Shop/Business Name"
+                id="name"
                 autoFocus
                 type="name"
                 error={!!errors.shopname}
@@ -412,14 +426,13 @@ function MerchantModernReversedSignUpPage() {
                 required
                 fullWidth
                 InputProps={{
-                  endAdornment: <InputAdornment position="end">
-                    <IconButton
-                    onClick={() => toggleShowPassword()}
-                    >
-    
-                      {showPassword ? <VisibilityOff/> : <Visibility/>}
-                    </IconButton>
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => toggleShowPassword()}>
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
                     </InputAdornment>
+                  ),
                 }}
               />
             )}
@@ -454,9 +467,7 @@ function MerchantModernReversedSignUpPage() {
   if (step == STEPS.LOCATION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
-        <Typography
-          className="px-[40px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10"
-        >
+        <Typography className="px-[40px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10">
           Business Location : Where is this merchant operations located
         </Typography>
         <>
@@ -466,7 +477,7 @@ function MerchantModernReversedSignUpPage() {
             onChange={(value) => setCustomValue("location", value)}
           />
 
-          {location?._id && (
+          {location?.id && (
             <StateSelect
               states={stateData}
               value={businezState}
@@ -474,7 +485,7 @@ function MerchantModernReversedSignUpPage() {
             />
           )}
 
-          {businezState?._id && (
+          {businezState?.id && (
             <LgaSelect
               blgas={blgas}
               value={businezLga}
@@ -482,14 +493,13 @@ function MerchantModernReversedSignUpPage() {
             />
           )}
 
-          {businezState?._id && businezLga?._id && (
+          {businezState?.id && businezLga?.id && (
             <MarketSelect
               markets={markets}
               value={market}
               onChange={(value) => setCustomValue("market", value)}
             />
           )}
-
         </>
       </div>
     );
@@ -498,9 +508,7 @@ function MerchantModernReversedSignUpPage() {
   if (step == STEPS.MOREINFO) {
     bodyContent = (
       <div className="flex flex-col gap-8">
-        <Typography
-          className="px-[40px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10"
-        >
+        <Typography className="px-[40px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10">
           More Info : Provide us some more info to set your business up nicely
         </Typography>
         <>
@@ -509,7 +517,7 @@ function MerchantModernReversedSignUpPage() {
             onChange={(value) => setCustomValue("tradehub", value)}
           />
 
-          <Controller
+          {/* <Controller
             name="shopphone"
             control={control}
             render={({ field }) => (
@@ -529,7 +537,7 @@ function MerchantModernReversedSignUpPage() {
                 helperText={errors?.shopphone?.message}
               />
             )}
-          />
+          /> */}
 
           <Controller
             name="address"
@@ -557,117 +565,114 @@ function MerchantModernReversedSignUpPage() {
     );
   }
 
-  if (step == STEPS.IMAGES) {
-    bodyContent = (
-      <div className="flex flex-col gap-8">
-        <Typography
-          className="px-[40px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10"
-        >
-          Shop Cover Image : Provide an image to be used as your profile cover
-          image
-        </Typography>
-        <>
-          <Controller
-            name="images"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Box
-                sx={{
-                  backgroundColor: (theme) =>
-                    theme.palette.mode === "light"
-                      ? lighten(theme.palette.background.default, 0.4)
-                      : lighten(theme.palette.background.default, 0.02),
-                }}
-                component="label"
-                htmlFor="button-file"
-                className="productImageUpload flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg"
-              >
-                <input
-                  accept="image/*"
-                  className="hidden"
-                  id="button-file"
-                  type="file"
-                  onChange={async (e) => {
-                    function readFileAsync() {
-                      return new Promise((resolve, reject) => {
-                        const file = e?.target?.files?.[0];
+  // if (step == STEPS.IMAGES) {
+  //   bodyContent = (
+  //     <div className="flex flex-col gap-8">
+  //       <Typography
+  //         className="px-[40px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10"
+  //       >
+  //         Shop Cover Image : Provide an image to be used as your profile cover
+  //         image
+  //       </Typography>
+  //       <>
+  //         <Controller
+  //           name="images"
+  //           control={control}
+  //           render={({ field: { onChange, value } }) => (
+  //             <Box
+  //               sx={{
+  //                 backgroundColor: (theme) =>
+  //                   theme.palette.mode === "light"
+  //                     ? lighten(theme.palette.background.default, 0.4)
+  //                     : lighten(theme.palette.background.default, 0.02),
+  //               }}
+  //               component="label"
+  //               htmlFor="button-file"
+  //               className="productImageUpload flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg"
+  //             >
+  //               <input
+  //                 accept="image/*"
+  //                 className="hidden"
+  //                 id="button-file"
+  //                 type="file"
+  //                 onChange={async (e) => {
+  //                   function readFileAsync() {
+  //                     return new Promise((resolve, reject) => {
+  //                       const file = e?.target?.files?.[0];
 
-                        if (!file) {
-                          return;
-                        }
+  //                       if (!file) {
+  //                         return;
+  //                       }
 
-                        const reader = new FileReader();
-                        reader.onload = () => {
-                          resolve({
-                            id: FuseUtils.generateGUID(),
-                            url: `data:${file.type};base64,${btoa(reader.result)}`,
-                            type: "image",
-                          });
-                        };
-                        reader.onerror = reject;
-                        reader.readAsBinaryString(file);
-                      });
-                    }
+  //                       const reader = new FileReader();
+  //                       reader.onload = () => {
+  //                         resolve({
+  //                           id: FuseUtils.generateGUID(),
+  //                           url: `data:${file.type};base64,${btoa(reader.result)}`,
+  //                           type: "image",
+  //                         });
+  //                       };
+  //                       reader.onerror = reject;
+  //                       reader.readAsBinaryString(file);
+  //                     });
+  //                   }
 
-                    const newImage = await readFileAsync();
-                    onChange([newImage]);
-                  }}
-                />
-                <FuseSvgIcon size={32} color="action">
-                  heroicons-outline:upload
-                </FuseSvgIcon>
-              </Box>
-            )}
-          />
+  //                   const newImage = await readFileAsync();
+  //                   onChange([newImage]);
+  //                 }}
+  //               />
+  //               <FuseSvgIcon size={32} color="action">
+  //                 heroicons-outline:upload
+  //               </FuseSvgIcon>
+  //             </Box>
+  //           )}
+  //         />
 
-          <Controller
-            name="featuredImageId"
-            control={control}
-            defaultValue=""
-            render={({ field: { onChange, value } }) => {
-              return (
-                <>
-                  {images?.map((media) => (
-                    <div
-                      onClick={() => onChange(media.id)}
-                      onKeyDown={() => onChange(media.id)}
-                      role="button"
-                      tabIndex={0}
-                      className={clsx(
-                        "productImageItem flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer outline-none shadow hover:shadow-lg",
-                        media.id === value && "featured"
-                      )}
-                      key={media.id}
-                    >
-                      <FuseSvgIcon className="productImageFeaturedStar">
-                        heroicons-solid:star
-                      </FuseSvgIcon>
-                      <img
-                        className="max-w-none w-auto h-full"
-                        src={media.url}
-                        alt="product"
-                      />
-                    </div>
-                  ))}
-                </>
-              );
-            }}
-          />
-        </>
-      </div>
-    );
-  }
+  //         <Controller
+  //           name="featuredImageId"
+  //           control={control}
+  //           defaultValue=""
+  //           render={({ field: { onChange, value } }) => {
+  //             return (
+  //               <>
+  //                 {images?.map((media) => (
+  //                   <div
+  //                     onClick={() => onChange(media.id)}
+  //                     onKeyDown={() => onChange(media.id)}
+  //                     role="button"
+  //                     tabIndex={0}
+  //                     className={clsx(
+  //                       "productImageItem flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer outline-none shadow hover:shadow-lg",
+  //                       media.id === value && "featured"
+  //                     )}
+  //                     key={media.id}
+  //                   >
+  //                     <FuseSvgIcon className="productImageFeaturedStar">
+  //                       heroicons-solid:star
+  //                     </FuseSvgIcon>
+  //                     <img
+  //                       className="max-w-none w-auto h-full"
+  //                       src={media.url}
+  //                       alt="product"
+  //                     />
+  //                   </div>
+  //                 ))}
+  //               </>
+  //             );
+  //           }}
+  //         />
+  //       </>
+  //     </div>
+  //   );
+  // }
 
   if (step == STEPS.DESCRIPTION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
-        <Typography
-          className="px-[40px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10"
-        >
+        <Typography className="px-[40px] xs:px-[30px] pt-[26px] pb-[25px] text-dark dark:text-white/[.87] text-[18px] font-semibold border-b border-regular dark:border-white/10">
           Business Bio : Provide a brief bio about your business
         </Typography>
         <>
-
           <Controller
             name="acceptTermsConditions"
             control={control}
@@ -686,10 +691,59 @@ function MerchantModernReversedSignUpPage() {
               </FormControl>
             )}
           />
+
+          {/* <Controller
+            name="referalCode"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                className="mb-24"
+                label="Refering this merchant?"
+                id="referalCode"
+                autoFocus
+                type="name"
+                error={!!errors.referalCode}
+                helperText={errors?.referalCode?.message}
+                variant="outlined"
+                required
+                fullWidth
+              />
+            )}
+          /> */}
         </>
       </div>
     );
   }
+
+  if (isLoadingPlan) {
+    return <FuseLoading />;
+  }
+
+  // if (isErrorPlan) {
+  //   return (
+  //     <motion.div
+  //       initial={{ opacity: 0 }}
+  //       animate={{ opacity: 1, transition: { delay: 0.1 } }}
+  //       className="flex flex-col flex-1 items-center justify-center h-full"
+  //     >
+  //       <MerchantShopClientErrorPage
+  //         message={" Error occurred while retriving merchant plans"}
+  //       />
+  //     </motion.div>
+  //   );
+  // }
+
+  // if (!reservations?.data?.reservations) {
+  //   return (
+  //     <div className="flex flex-1 items-center justify-center h-full">
+  //       <Typography color="text.secondary" variant="h5">
+  //         There are no listings!
+  //       </Typography>
+  //     </div>
+  //   );
+  // }
+
   return (
     <div className="flex min-w-0 flex-auto flex-col items-center sm:justify-center md:p-32">
       <Paper className="flex min-h-full w-full overflow-hidden rounded-0 sm:min-h-auto sm:w-auto sm:rounded-2xl sm:shadow md:w-full md:max-w-6xl">
@@ -751,15 +805,15 @@ function MerchantModernReversedSignUpPage() {
               <div>our community</div>
             </div>
             <Typography className="text-sm font-bold leading-none text-gray-100">
-              You have chosen our {plan?.data?.plansname} plan
+              You have chosen our {plan?.data?.merchantPlan?.plansname} plan
             </Typography>
             <div className="mt-24 text-lg leading-6 tracking-tight text-gray-400">
-              {plan?.data?.planinfo}
+              {plan?.data?.merchantPlan?.planinfo}
             </div>
           </div>
         </Box>
 
-       <>
+        <>
           {!remoteResponseToken.length > 0 ? (
             <div className="w-full px-16 py-32 ltr:border-l-1 rtl:border-r-1 sm:w-auto sm:p-48 md:p-64">
               <div className="mx-auto w-full max-w-320 sm:mx-0 sm:w-320">
@@ -779,7 +833,7 @@ function MerchantModernReversedSignUpPage() {
                   </Link>
                 </div>
 
-                {plan?.data?.isInOperation && (
+                {plan?.data?.merchantPlan?.isInOperation && (
                   <form
                     name="registerForm"
                     noValidate
@@ -796,7 +850,7 @@ function MerchantModernReversedSignUpPage() {
                     >
                       Back
                     </Button>
-                    {step < 4 ? (
+                    {step < 3 ? (
                       <Button
                         className="bg-regularBG dark:bg-regularBGdark h-[50px] ltr:mr-[20px] rtl:ml-[20px] px-[22px] text-[15px] text-body dark:text-white/60 hover:text-light font-normal border-regular dark:border-white/10"
                         size="large"
@@ -827,7 +881,7 @@ function MerchantModernReversedSignUpPage() {
                   </form>
                 )}
 
-                {!plan?.data?.isInOperation && (
+                {!plan?.data?.merchantPlan?.isInOperation && (
                   <div className="mt-32 flex w-full flex-col justify-center overflow-scroll">
                     <div className="mt-2 flex items-baseline font-medium">
                       <Typography>
@@ -842,7 +896,6 @@ function MerchantModernReversedSignUpPage() {
             <MerchantModernReversedActivatePage resendOTP={resendOTP} />
           )}
         </>
-
       </Paper>
     </div>
   );

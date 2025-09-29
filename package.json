@@ -161,7 +161,8 @@
     "analyze": "react-app-rewired build && source-map-explorer 'build/static/js/*.js' --html analyze-result.html",
     "postinstall": "node src/node-scripts/fuse-react-message.js",
     "poststart": "node src/node-scripts/fuse-react-message.js",
-    "audit": "npm audit --production"
+    "audit": "npm audit --production",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx,js}\" --fix"
   },
   "engines": {
     "node": ">=18.0.0",

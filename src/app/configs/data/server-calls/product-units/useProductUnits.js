@@ -1,41 +1,36 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import {
-  getProdShippingWeightUnit,
-  // createProdUnit,
-  getProdUnitById,
-  getProdUnitByShopPlan,
-  getProdUnits,
-  // updateProdUnitById,
+	getProdShippingWeightUnit,
+	// createProdUnit,
+	getProdUnitById,
+	getProdUnitByShopPlan,
+	getProdUnits
+	// updateProdUnitById,
 } from '../../client/clientToApiRoutes';
 
 export default function useProductUnits() {
-  return useQuery(['__productunits'], getProdUnits);
+	return useQuery(['__productunits'], getProdUnits);
 }
 
-//Product Units By Shop_plan
+// Product Units By Shop_plan
 export function useProductUnitsByShopPlan(prodUnitId) {
-  return useQuery(
-    ['__productUnitById', prodUnitId],
+	return useQuery(
+		['__productUnitById', prodUnitId],
 
-    () => getProdUnitByShopPlan(prodUnitId),
-    {
-      enabled: Boolean(prodUnitId),
-      staleTime: 5000,
-    }
-  );
+		() => getProdUnitByShopPlan(prodUnitId),
+		{
+			enabled: Boolean(prodUnitId),
+			staleTime: 5000
+		}
+	);
 }
 
-
-//get single product units
+// get single product units
 export function useSingleProductUnit(prodUnitId) {
-  return useQuery(
-    ['__productUnitById', prodUnitId],
-    () => getProdUnitById(prodUnitId),
-    {
-      enabled: Boolean(prodUnitId),
-      // staleTime: 5000,
-    }
-  );
+	return useQuery(['__productUnitById', prodUnitId], () => getProdUnitById(prodUnitId), {
+		enabled: Boolean(prodUnitId)
+		// staleTime: 5000,
+	});
 }
 
 // //create new product unit
@@ -97,6 +92,5 @@ export function useSingleProductUnit(prodUnitId) {
 //   });
 // }
 export function useProductShippingWeightUnit() {
-  return useQuery(['__shippingweigjt'], getProdShippingWeightUnit);
-} //(Msvs => Done)
-
+	return useQuery(['__shippingweigjt'], getProdShippingWeightUnit);
+} // (Msvs => Done)

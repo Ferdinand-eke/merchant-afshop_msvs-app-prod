@@ -20,7 +20,7 @@ const SettingsAppNavigation = {
 			type: 'item',
 			url: '/africanshops/settings/security',
 			subtitle: 'Manage your password and 2-step verification preferences'
-		},
+		}
 		// {
 		// 	id: 'apps.settings.planBilling',
 		// 	icon: 'heroicons-outline:credit-card',

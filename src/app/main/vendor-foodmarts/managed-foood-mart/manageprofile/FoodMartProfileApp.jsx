@@ -161,6 +161,7 @@ function FoodMartProfileApp() {
         <div className="flex flex-auto justify-center w-full max-w-5xl mx-auto p-24 sm:p-32">
           {selectedTab === 0 && <PhotosVideosTab 
           merchantData={shopData?.data?.merchant}
+          foodMart={foodMartList?.data?.foodMart}
           />}
 
           {selectedTab === 1 && <AboutTab />}

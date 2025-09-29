@@ -2,8 +2,6 @@ import i18next from 'i18next';
 import ar from './navigation-i18n/ar';
 import en from './navigation-i18n/en';
 import tr from './navigation-i18n/tr';
-import { authRoles } from '../auth';
-import DocumentationNavigation from '../main/documentation/DocumentationNavigation';
 
 i18next.addResourceBundle('en', 'navigation', en);
 i18next.addResourceBundle('tr', 'navigation', tr);
@@ -11,7 +9,6 @@ i18next.addResourceBundle('ar', 'navigation', ar);
 /**
  * The navigationConfigBackup object is an array of navigation items for the Fuse application.
  */
-
 
 const navigationConfigBackup = [
 	{
@@ -28,7 +25,7 @@ const navigationConfigBackup = [
 				type: 'item',
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/dashboards/project'
-			},
+			}
 			// {
 			// 	id: 'dashboards.analytics',
 			// 	title: 'Analytics',
@@ -81,8 +78,7 @@ const navigationConfigBackup = [
 				type: 'item',
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/users/vendors'
-			},
-			
+			}
 		]
 	},
 
@@ -108,7 +104,7 @@ const navigationConfigBackup = [
 				type: 'item',
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/property/managed-listings'
-			},
+			}
 			// {
 			// 	id: 'users.user',
 			// 	title: 'Uers',
@@ -123,7 +119,6 @@ const navigationConfigBackup = [
 			// 	icon: 'heroicons-outline:clipboard-check',
 			// 	url: '/users/vendors'
 			// },
-			
 		]
 	},
 
@@ -148,7 +143,7 @@ const navigationConfigBackup = [
 				type: 'item',
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/types/propertytypes'
-			},
+			}
 			// {
 			// 	id: 'users.user',
 			// 	title: 'Uers',
@@ -163,16 +158,8 @@ const navigationConfigBackup = [
 			// 	icon: 'heroicons-outline:clipboard-check',
 			// 	url: '/users/vendors'
 			// },
-			
 		]
 	},
-
-
-
-
-
-
-
 
 	{
 		id: 'FInance',
@@ -182,7 +169,6 @@ const navigationConfigBackup = [
 		icon: 'heroicons-outline:home',
 		translate: 'FINANCE',
 		children: [
-			
 			{
 				id: 'property.earnings',
 				title: 'Property Earnings',
@@ -197,7 +183,7 @@ const navigationConfigBackup = [
 				type: 'item',
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/finance/withdrawals'
-			},
+			}
 			// {
 			// 	id: 'users.user',
 			// 	title: 'Uers',
@@ -212,7 +198,6 @@ const navigationConfigBackup = [
 			// 	icon: 'heroicons-outline:clipboard-check',
 			// 	url: '/users/vendors'
 			// },
-			
 		]
 	},
 	// Pages Below not applacable
@@ -394,10 +379,9 @@ const navigationConfigBackup = [
 				url: '/apps/notifications'
 			}
 		]
-	},
+	}
 
-	//Comment from here downnwards
-
+	// Comment from here downnwards
 
 	// {
 	// 	id: 'pages',
@@ -1156,7 +1140,7 @@ const navigationConfigBackup = [
 	// 	id: 'divider-1',
 	// 	type: 'divider'
 	// },
-	
+
 	// DocumentationNavigation,
 	// {
 	// 	id: 'auth',

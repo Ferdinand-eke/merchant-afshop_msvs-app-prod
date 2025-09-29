@@ -1,8 +1,8 @@
 // import useCountries from '@/hooks/useCountries'
 import React from 'react'
 import Select from 'react-select'
-import useCountries from '../../hooks/useCountries'
-import useSellerCountries from 'app/configs/data/server-calls/countries/useCountries'
+// import useCountries from '../../hooks/useCountries'
+// import useSellerCountries from 'app/configs/data/server-calls/countries/useCountries'
 
 // export type StateSelectValue = {
 //     flag: string;
@@ -17,11 +17,11 @@ import useSellerCountries from 'app/configs/data/server-calls/countries/useCount
 //     onChange: (value: CountrySelectValue) => void
 // }
 const StateSelect = ({ value, onChange, states }) => {
-    const { getAll } = useCountries()
-    const {data:countries} = useSellerCountries()
-    // console.log("AllCountries", getAll())
+    // const { getAll } = useCountries()
+    // const {data:countries} = useSellerCountries()
+    // // console.log("AllCountries", getAll())
 
-    // console.log("SellerStates-By-Country", states)
+    // // console.log("SellerStates-By-Country", states)
 
     return (
         <div>

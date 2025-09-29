@@ -59,10 +59,10 @@ function SignInPage() {
 						Sign in
 					</Typography>
 					<div className="mt-2 flex items-baseline font-medium">
-						<Typography>Don't have an account?</Typography>
+						<Typography>Don't have an account? </Typography>
 						<Link
 							className="ml-4"
-							to="/sign-up"
+							to="/home"
 						>
 							Sign up
 						</Link>

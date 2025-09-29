@@ -17,6 +17,7 @@ import ModernPricingPage from '../modern/ModernPricingPage';
  * The help center home.
  */
 function LandingCenterHome() {
+	
 	const mainThemeDark = useAppSelector(selectMainThemeDark);
 	const { data: faqsMost } = useGetHelpCenterMostlyFaqsQuery();
 

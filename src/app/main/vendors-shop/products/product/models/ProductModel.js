@@ -12,7 +12,7 @@ const ProductModel = (data) =>
 		tags: [],
 		featuredImageId: '',
 		images: [],
-		imageLinks:[],
+		imageLinks: [],
 		// price: 0,
 		priceTaxExcl: 0,
 		priceTaxIncl: 0,

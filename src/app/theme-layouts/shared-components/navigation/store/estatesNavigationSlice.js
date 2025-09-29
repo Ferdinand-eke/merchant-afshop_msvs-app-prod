@@ -15,9 +15,6 @@ const initialState = navigationAdapter.upsertMany(
 	emptyInitialState,
 
 	FuseNavigationHelper.flattenNavigation(estatesNavigationConfig)
-
-	
-
 );
 // console.log('navDATA', estatesNavigationConfig)
 
@@ -30,7 +27,7 @@ const initialState = navigationAdapter.upsertMany(
  */
 export const appendNavigationItem = (item, parentId) => async (dispatch, getState) => {
 	const AppState = getState();
-	
+
 	const navigation = FuseNavigationHelper.unflattenNavigation(selectNavigationAll(AppState));
 	dispatch(setNavigation(FuseNavigationHelper.appendNavItem(navigation, FuseNavItemModel(item), parentId)));
 	return Promise.resolve();

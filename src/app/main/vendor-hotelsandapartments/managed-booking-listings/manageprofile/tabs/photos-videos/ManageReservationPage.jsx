@@ -17,7 +17,7 @@ import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
 import { useFindShopItemsInOrders } from "app/configs/data/server-calls/orders/useShopOrders";
 import { getJustMyShopDetailsAndPlan } from "app/configs/data/client/clientToApiRoutes";
 import { useFindMerchantSingleReservation } from "app/configs/data/server-calls/hotelsandapartments/useShopBookingsReservations";
-import MerchantErrorPage from "src/app/main/hotelsandapartments/MerchantErrorPage";
+import MerchantErrorPage from "src/app/main/vendor-hotelsandapartments/MerchantErrorPage";
 import OrderDetailsTab from "../../../reservationorder/tabs/OrderDetailsTab";
 import InvoiceTab from "../../../reservationorder/tabs/InvoiceTab";
 import FuseLoading from "@fuse/core/FuseLoading";

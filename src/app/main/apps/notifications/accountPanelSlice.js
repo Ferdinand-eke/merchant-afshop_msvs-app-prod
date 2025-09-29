@@ -13,7 +13,6 @@ export const accountPanelSlice = createSlice({
 		// openNotificationPanel: () => true,
 		// closeNotificationPanel: () => false,
 
-
 		toggleAccountsPanel: (state) => !state,
 		openAccountsPanel: () => true,
 		closeAccountsPanel: () => false
@@ -28,9 +27,6 @@ export const accountPanelSlice = createSlice({
 
 rootReducer.inject(accountPanelSlice);
 const injectedSlice = accountPanelSlice.injectInto(rootReducer);
-export const { 
-	toggleAccountsPanel, openAccountsPanel, closeAccountsPanel
-} =
-	accountPanelSlice.actions;
+export const { toggleAccountsPanel, openAccountsPanel, closeAccountsPanel } = accountPanelSlice.actions;
 export const { selectAccountPanelState } = injectedSlice.selectors;
 export default accountPanelSlice.reducer;

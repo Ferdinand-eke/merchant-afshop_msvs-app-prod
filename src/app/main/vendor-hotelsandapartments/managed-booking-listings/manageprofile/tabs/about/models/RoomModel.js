@@ -7,7 +7,7 @@ const ProductModel = (data) =>
 		// id: _.uniqueId('product-'),
 		title: '',
 		// description: '',
-		images: [],
+		images: []
 		// width: '',
 		// length: '',
 		// price: '',

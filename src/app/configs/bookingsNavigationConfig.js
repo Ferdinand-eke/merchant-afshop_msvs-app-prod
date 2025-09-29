@@ -2,7 +2,6 @@ import i18next from 'i18next';
 import ar from './navigation-i18n/ar';
 import en from './navigation-i18n/en';
 import tr from './navigation-i18n/tr';
-import { authRoles } from '../auth';
 
 i18next.addResourceBundle('en', 'navigation', en);
 i18next.addResourceBundle('tr', 'navigation', tr);
@@ -11,10 +10,8 @@ i18next.addResourceBundle('ar', 'navigation', ar);
  * The bookingsNavigationConfig object is an array of navigation items for the Fuse application.
  */
 
-
 const bookingsNavigationConfig = [
-
-	/***Dashboard pane */
+	/** *Dashboard pane */
 	{
 		id: 'dashboards',
 		title: 'Dashboards',
@@ -29,8 +26,7 @@ const bookingsNavigationConfig = [
 				type: 'item',
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/shop-dashboard'
-			},
-			
+			}
 		]
 	},
 
@@ -42,8 +38,6 @@ const bookingsNavigationConfig = [
 		icon: 'heroicons-outline:home',
 		translate: 'BOOKINGSPROPERTIES',
 		children: [
-		
-
 			{
 				id: 'properties.managedbooklist',
 				title: 'Managed Booking Listings',
@@ -58,12 +52,11 @@ const bookingsNavigationConfig = [
 				type: 'item',
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/bookings/list-reservations'
-			},
-			
+			}
 		]
 	},
 
-	/***Finance management pane */
+	/** *Finance management pane */
 	{
 		id: 'FInance',
 		title: 'Manage Finance',
@@ -72,19 +65,17 @@ const bookingsNavigationConfig = [
 		icon: 'heroicons-outline:home',
 		translate: 'FINANCE',
 		children: [
-			
 			{
 				id: 'estates.earnings',
 				title: 'Wallet',
 				type: 'item',
 				icon: 'heroicons-outline:clipboard-check',
 				url: '/africanshops/finance'
-			},
-			
+			}
 		]
 	},
 
-	/***Support management pane */
+	/** *Support management pane */
 	{
 		id: 'Support.Helpcenter',
 		title: 'Get Support',
@@ -93,18 +84,17 @@ const bookingsNavigationConfig = [
 		icon: 'heroicons-outline:home',
 		translate: 'SUPPORT',
 		children: [
-			
 			{
 				id: 'support.users',
 				title: 'Suppport',
 				type: 'item',
 				icon: 'heroicons-outline:support',
 				url: '/support'
-			},	
+			}
 		]
 	},
 
-	/***Messanger pane */
+	/** *Messanger pane */
 	{
 		id: 'Africanshops.Messanger',
 		title: 'Messanger',
@@ -113,7 +103,6 @@ const bookingsNavigationConfig = [
 		icon: 'heroicons-outline:chat-alt',
 		translate: 'MESSANGER',
 		children: [
-			
 			{
 				id: 'apps.messenger',
 				title: 'Messenger',
@@ -121,15 +110,8 @@ const bookingsNavigationConfig = [
 				icon: 'heroicons-outline:chat-alt',
 				url: '/africanshops/messenger',
 				translate: 'MESSENGER'
-			},
-
-			
-		
-			
+			}
 		]
-	},
-
-	
-
+	}
 ];
 export default bookingsNavigationConfig;

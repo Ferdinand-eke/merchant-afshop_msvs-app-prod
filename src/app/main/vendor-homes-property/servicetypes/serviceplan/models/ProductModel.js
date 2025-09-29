@@ -6,10 +6,10 @@ const ProductModel = (data) =>
 	_.defaults(data || {}, {
 		id: _.uniqueId('product-'),
 		title: '',
-		description: '',
+		description: ''
 
 		// handle: '',
-		
+
 		// categories: [],
 		// tags: [],
 		// featuredImageId: '',

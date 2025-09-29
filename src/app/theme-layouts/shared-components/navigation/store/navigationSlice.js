@@ -7,21 +7,16 @@ import FuseUtils from '@fuse/utils';
 import navigationConfig from 'app/configs/navigationConfig';
 import { selectCurrentLanguageId } from 'app/store/i18nSlice';
 import { rootReducer } from 'app/store/lazyLoadedSlices';
-import estatesNavigationConfig from 'app/configs/estatesNavigationConfig';
-import { useGetMyShopAndPlan } from 'app/configs/data/server-calls/shopdetails/useShopDetails';
 
 const navigationAdapter = createEntityAdapter();
 const emptyInitialState = navigationAdapter.getInitialState([]);
-
 
 const initialState = navigationAdapter.upsertMany(
 	emptyInitialState,
 	FuseNavigationHelper.flattenNavigation(navigationConfig)
 
 	// FuseNavigationHelper.flattenNavigation(estatesNavigationConfig)
-
 );
-
 
 // console.log("merchantDataInNAVSLice", merchantData?.data)
 

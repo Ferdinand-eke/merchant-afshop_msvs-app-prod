@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { getAfMarkets } from '../../client/clientToApiRoutes';
 // import {
 //   createMarket,
@@ -9,7 +9,7 @@ import { getAfMarkets } from '../../client/clientToApiRoutes';
 // import { getAfMarkets } from '../utils';
 
 export default function useMarkets() {
-  return useQuery(['__markets'], getAfMarkets);
+	return useQuery(['__markets'], getAfMarkets);
 }
 
 // //get single market

@@ -12,16 +12,12 @@ import { rootReducer } from 'app/store/lazyLoadedSlices';
 const navigationAdapter = createEntityAdapter();
 const emptyInitialState = navigationAdapter.getInitialState([]);
 
-
 const initialState = navigationAdapter.upsertMany(
 	emptyInitialState,
 	FuseNavigationHelper.flattenNavigation(manufacturersNavigationConfig)
 
 	// FuseNavigationHelper.flattenNavigation(estatesmanufacturersNavigationConfig)
-
 );
-
-
 
 /**
  * Redux Thunk actions related to the navigation store state

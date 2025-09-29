@@ -1,221 +1,192 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 // import { toast } from 'react-toastify';
 // import { storeShopProduct } from '../../store-redux/api/apiRoutes';
-import {
-  deleteShopProduct,
-  deleteShopProductImage,
-  getMyShopProductById,
-  getShopProducts,
-  pullMyShopProductByIdFromExport,
-  pushMyShopProductByIdToExport,
-  storeShopProduct,
-  updateMyShopProductById,
-} from '../../client/clientToApiRoutes';
 // import { message } from 'antd';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
+import {
+	deleteShopProduct,
+	deleteShopProductImage,
+	getMyShopProductById,
+	getShopProducts,
+	pullMyShopProductByIdFromExport,
+	pushMyShopProductByIdToExport,
+	storeShopProduct,
+	updateMyShopProductById
+} from '../../client/clientToApiRoutes';
 
-//get all Specific user shop-products
+// get all Specific user shop-products
 export default function useMyShopProducts() {
-  return useQuery(['__myshop_products'], getShopProducts);
-} //(Msvs : 'Done)
-
-
-//get single prooduct details
-export function useSingleShopProduct(productId) {
-  return useQuery(
-    ['singleproduct', productId],
-    () => getMyShopProductById(productId),
-    {
-      enabled: Boolean(productId),
-    }
-  );
+	return useQuery(['__myshop_products'], getShopProducts);
 } // (Msvs : 'Done)
 
-//create new product
+// get single prooduct details
+export function useSingleShopProduct(productId) {
+	return useQuery(['singleproduct', productId], () => getMyShopProductById(productId), {
+		enabled: Boolean(productId)
+	});
+} // (Msvs : 'Done)
+
+// create new product
 export function useAddShopProductMutation() {
-  const navigate = useNavigate()
-  const queryClient = useQueryClient();
-  return useMutation(
-    (newProduct) => {
-      console.log('Run Product : ', newProduct);
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
+	return useMutation(
+		(newProduct) => {
+			console.log('Run Product : ', newProduct);
 
-      // return;
-      return storeShopProduct(newProduct);
-    },
+			// return;
+			return storeShopProduct(newProduct);
+		},
 
-    {
-      onSuccess: (data) => {
-        if (data?.data?.success) {
-          console.log('New product  Data', data);
+		{
+			onSuccess: (data) => {
+				if (data?.data?.success) {
+					console.log('New product  Data', data);
 
-          // return;
-          toast.success('product  added successfully!');
-          queryClient.invalidateQueries(['__myshop_products']);
-          queryClient.refetchQueries('__myshop_products', { force: true });
-          navigate(`/shopproducts-list/products`);
-        }
-      },
-    },
-    {
-      onError: (error, rollback) => {
-        // return;
-         const {
-          response: { data },
-        } = error ?? {};
-        Array.isArray(data?.message)
-          ? data?.message?.map((m) => toast.error(m))
-          : toast.error(data?.message);
-        rollback();
-        // rollback();
-      },
-    }
-  );
+					// return;
+					toast.success('product  added successfully!');
+					queryClient.invalidateQueries(['__myshop_products']);
+					queryClient.refetchQueries('__myshop_products', { force: true });
+					navigate(`/shopproducts-list/products`);
+				}
+			}
+		},
+		{
+			onError: (error, rollback) => {
+				// return;
+				const {
+					response: { data }
+				} = error ?? {};
+				Array.isArray(data?.message) ? data?.message?.map((m) => toast.error(m)) : toast.error(data?.message);
+				rollback();
+				// rollback();
+			}
+		}
+	);
 }
 
-//update existing product
+// update existing product
 export function useProductUpdateMutation() {
-  const navigate = useNavigate()
-  const queryClient = useQueryClient();
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
-  return useMutation(updateMyShopProductById, {
-    onSuccess: (data) => {
-     
-      console.log('Updated Product Data', data);
+	return useMutation(updateMyShopProductById, {
+		onSuccess: (data) => {
+			console.log('Updated Product Data', data);
 
-      if (data?.data?.success) {
-        console.log('Updated Producr clientController', data);
+			if (data?.data?.success) {
+				console.log('Updated Producr clientController', data);
 
-        // return;
-        toast.success(`${data?.data?.message ? data?.data?.message : 'product updated successfully!!'} `);
+				// return;
+				toast.success(`${data?.data?.message ? data?.data?.message : 'product updated successfully!!'} `);
 
-        queryClient.invalidateQueries('__myshop_products');
-        // queryClient.refetchQueries('__myshop_products', { force: true });
-        //  navigate('/shopproducts-list/products');
-      }
-
-     
-    },
-    onError: (error) => {
-      const {
-          response: { data },
-        } = error ?? {};
-        Array.isArray(data?.message)
-          ? data?.message?.map((m) => toast.error(m))
-          : toast.error(data?.message);
-        rollback();
-      // queryClient.invalidateQueries('__myshop_orders');
-    },
-  });
+				queryClient.invalidateQueries('__myshop_products');
+				// queryClient.refetchQueries('__myshop_products', { force: true });
+				//  navigate('/shopproducts-list/products');
+			}
+		},
+		onError: (error) => {
+			const {
+				response: { data }
+			} = error ?? {};
+			Array.isArray(data?.message) ? data?.message?.map((m) => toast.error(m)) : toast.error(data?.message);
+			rollback();
+			// queryClient.invalidateQueries('__myshop_orders');
+		}
+	});
 }
 
-//update existing product: Pushing it for export
+// update existing product: Pushing it for export
 export function usePushProductForExportMutation() {
-  const queryClient = useQueryClient();
+	const queryClient = useQueryClient();
 
-  return useMutation(pushMyShopProductByIdToExport, {
-    onSuccess: (data) => {
-      console.log('push Product clientController', data);
+	return useMutation(pushMyShopProductByIdToExport, {
+		onSuccess: (data) => {
+			console.log('push Product clientController', data);
 
-      if (data) {
-        message.success('product pushed to export successfully!!');
+			if (data) {
+				message.success('product pushed to export successfully!!');
 
-        queryClient.invalidateQueries('__myshop_products');
-        queryClient.invalidateQueries([
-          '__myshop_products',
-          '__myshop_details',
-        ]);
-      }
-    },
-    onError: (error) => {
-      console.log('PushingExportError', error);
-      toast.error('Error occured while pushing product!!');
-      // toast.error(
-      //   error.response && error.response.data.message
-      //     ? error.response.data.message
-      //     : error.message
-      // );
-    },
-  });
+				queryClient.invalidateQueries('__myshop_products');
+				queryClient.invalidateQueries(['__myshop_products', '__myshop_details']);
+			}
+		},
+		onError: (error) => {
+			console.log('PushingExportError', error);
+			toast.error('Error occured while pushing product!!');
+			// toast.error(
+			//   error.response && error.response.data.message
+			//     ? error.response.data.message
+			//     : error.message
+			// );
+		}
+	});
 }
 
-//update existing product: Pulling it from export
+// update existing product: Pulling it from export
 export function usePullProductFromExportMutation() {
-  const queryClient = useQueryClient();
+	const queryClient = useQueryClient();
 
-  return useMutation(pullMyShopProductByIdFromExport, {
-    onSuccess: (data) => {
-      console.log('Pull Product clientController', data);
+	return useMutation(pullMyShopProductByIdFromExport, {
+		onSuccess: (data) => {
+			console.log('Pull Product clientController', data);
 
-      if (data) {
-        message.success('product pulled successfully!!');
+			if (data) {
+				message.success('product pulled successfully!!');
 
-        // queryClient.invalidateQueries('__myshop_products');
-        queryClient.invalidateQueries([
-          '__myshop_products',
-          '__myshop_details',
-        ]);
-      }
-    },
-    onError: (error) => {
-      const {
-          response: { data },
-        } = error ?? {};
-        Array.isArray(data?.message)
-          ? data?.message?.map((m) => toast.error(m))
-          : toast.error(data?.message);
-        rollback();
-    },
-  });
+				// queryClient.invalidateQueries('__myshop_products');
+				queryClient.invalidateQueries(['__myshop_products', '__myshop_details']);
+			}
+		},
+		onError: (error) => {
+			const {
+				response: { data }
+			} = error ?? {};
+			Array.isArray(data?.message) ? data?.message?.map((m) => toast.error(m)) : toast.error(data?.message);
+			rollback();
+		}
+	});
 }
 
-
-/***Delete a product single image */
+/** *Delete a product single image */
 export function useDeleteProductSingleImage() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
-  return useMutation(deleteShopProductImage, {
-    onSuccess: (data) => {
-      // console.log("productImageDeleted", data)
-      //?.success
-    if(data?.data){
-  
-      toast.success("product image deleted successfully!!");
-      queryClient.invalidateQueries("__myshop_products");
-      // navigate('/shopproducts-list/products');
-    }
-    },
-    onError: (error) => {
-      toast.success(
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message
-      );
-    },
-  });
+	return useMutation(deleteShopProductImage, {
+		onSuccess: (data) => {
+			// console.log("productImageDeleted", data)
+			// ?.success
+			if (data?.data) {
+				toast.success('product image deleted successfully!!');
+				queryClient.invalidateQueries('__myshop_products');
+				// navigate('/shopproducts-list/products');
+			}
+		},
+		onError: (error) => {
+			toast.success(error.response && error.response.data.message ? error.response.data.message : error.message);
+		}
+	});
 }
 
-/***Delete a product */
+/** *Delete a product */
 export function useDeleteSingleProduct() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
-  return useMutation(deleteShopProduct, {
-    onSuccess: (data) => {
-      console.log("productDeleted", data)
-    if(data?.data?.success){
-      toast.success("product deleted successfully!!");
-      queryClient.invalidateQueries("__myshop_products");
-      navigate('/shopproducts-list/products');
-    }
-    },
-    onError: (error) => {
-      toast.success(
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message
-      );
-    },
-  });
+	return useMutation(deleteShopProduct, {
+		onSuccess: (data) => {
+			console.log('productDeleted', data);
+
+			if (data?.data?.success) {
+				toast.success('product deleted successfully!!');
+				queryClient.invalidateQueries('__myshop_products');
+				navigate('/shopproducts-list/products');
+			}
+		},
+		onError: (error) => {
+			toast.success(error.response && error.response.data.message ? error.response.data.message : error.message);
+		}
+	});
 }

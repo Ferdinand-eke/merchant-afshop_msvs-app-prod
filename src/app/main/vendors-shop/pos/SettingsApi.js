@@ -107,4 +107,3 @@ export const {
 	useDeleteTeamMemberSettingsMutation,
 	useUpdateTeamMemberSettingsMutation
 } = injectedRtkApi;
-

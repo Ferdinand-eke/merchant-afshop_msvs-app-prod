@@ -12,8 +12,7 @@ export const foodmartMenuPanelSlice = createSlice({
 	reducers: {
 		toggleFoodMartMenuPanel: (state) => !state,
 		openFoodMartMenuPanel: () => true,
-		closeFoodMartMenuPanel: () => false,
-
+		closeFoodMartMenuPanel: () => false
 
 		// toggleAccountsPanel: (state) => !state,
 		// openAccountsPanel: () => true,
@@ -29,9 +28,11 @@ export const foodmartMenuPanelSlice = createSlice({
 
 rootReducer.inject(foodmartMenuPanelSlice);
 const injectedSlice = foodmartMenuPanelSlice.injectInto(rootReducer);
-export const { toggleFoodMartMenuPanel, openFoodMartMenuPanel, closeFoodMartMenuPanel,
+export const {
+	toggleFoodMartMenuPanel,
+	openFoodMartMenuPanel,
+	closeFoodMartMenuPanel
 	// toggleAccountsPanel, openAccountsPanel, closeAccountsPanel
-} =
-	foodmartMenuPanelSlice.actions;
+} = foodmartMenuPanelSlice.actions;
 export const { selectFoodMartMenuPanelState } = injectedSlice.selectors;
 export default foodmartMenuPanelSlice.reducer;

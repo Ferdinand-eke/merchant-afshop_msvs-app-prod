@@ -1,13 +1,12 @@
-import qs from 'qs';
 import { getBlogPosts, getBlogPostsById } from '../../client/clientToApiRoutes';
 // import axios from 'axios';
 // import { getCompanyNews } from '../apiRoutes';
 // import reqApi, { fristGuestSeqApi, guestSeqApi } from '../utils';
 
 export const getNewsPosts = async () => {
-  const res = await getBlogPosts();
-  const postsData = res.data.data;
-  return postsData;
+	const res = await getBlogPosts();
+	const postsData = res.data.data;
+	return postsData;
 };
 
 // export const createDepartment = async (values) => {
@@ -20,11 +19,11 @@ export const getNewsPosts = async () => {
 // };
 
 export const getNewsPost = async (slug) => {
-  const res = await getBlogPostsById(slug);
+	const res = await getBlogPostsById(slug);
 
-  const postsData = res.data;
-  // console.log('Single_POST Data', postsData);
-  return postsData;
+	const postsData = res.data;
+	// console.log('Single_POST Data', postsData);
+	return postsData;
 };
 
 // export const updateDepartment = async (values) => {

@@ -33,7 +33,7 @@ const ContactModel = (data) =>
 		// company: '',
 		birthday: '',
 		address: '',
-		notes: '',
+		notes: ''
 		// tags: []
 	});
 export default ContactModel;

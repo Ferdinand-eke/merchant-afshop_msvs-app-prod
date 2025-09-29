@@ -12,7 +12,7 @@ import { Chip, Paper } from "@mui/material";
 import DataTable from "app/shared-components/data-table/DataTable";
 import { useMemo } from "react";
 import clsx from "clsx";
-import MerchantErrorPage from "src/app/main/hotelsandapartments/MerchantErrorPage";
+import MerchantErrorPage from "src/app/main/vendor-hotelsandapartments/MerchantErrorPage";
 import NavLinkAdapter from "@fuse/core/NavLinkAdapter";
 
 /**

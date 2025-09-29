@@ -62,7 +62,6 @@ function JwtAuthProvider(props) {
 	========================================================= */
   // Set IsAuthenticated
   const setAuthStatusStorage = useCallback((accessToken) => {
-   
     if (isTokenValid(accessToken)) {
       localStorage.setItem(config.authStatus, "authenticated");
     } else {
@@ -88,19 +87,17 @@ function JwtAuthProvider(props) {
    */
   const setUserCredentialsStorage = useCallback((userCredentials) => {
     console.log("UserCredentials TO-SET", userCredentials);
-	// const stringifiedUser = JSON.stringify({ userCredentials })
+    // const stringifiedUser = JSON.stringify({ userCredentials })
 
     Cookie.set(config.adminCredentials, JSON.stringify({ userCredentials }));
-	
 
-	// localStorage.setItem(config.adminCredentials, JSON.stringify({ userCredentials }));
-	// localStorage.setItem(config.adminCredentials, stringifiedUser);
+    // localStorage.setItem(config.adminCredentials, JSON.stringify({ userCredentials }));
+    // localStorage.setItem(config.adminCredentials, stringifiedUser);
   }, []);
 
   /**Get User credentials */
   const getUserCredentialsStorage = useCallback(() => {
-
-	//Get Item in Cookie-based-SETTERS
+    //Get Item in Cookie-based-SETTERS
     const { userCredentials } = Cookie.get("jwt_auth_credentials")
       ? JSON.parse(Cookie.get("jwt_auth_credentials"))
       : "";
@@ -108,23 +105,20 @@ function JwtAuthProvider(props) {
       return userCredentials;
     }
 
-
-	/**Get Item in localstorage-based-SETTERS */
-	//  const { userCredentials } = localStorage.getItem("jwt_auth_credentials")
-  //     ? JSON.parse(localStorage.getItem("jwt_auth_credentials"))
-  //     : "";
-  //   // if (userCredentials) {
-  //   //   return userCredentials;
-  //   // }
-	// return userCredentials;
-
-
+    /**Get Item in localstorage-based-SETTERS */
+    //  const { userCredentials } = localStorage.getItem("jwt_auth_credentials")
+    //     ? JSON.parse(localStorage.getItem("jwt_auth_credentials"))
+    //     : "";
+    //   // if (userCredentials) {
+    //   //   return userCredentials;
+    //   // }
+    // return userCredentials;
   }, []);
 
   /***Remove user credentials */
   const removeUserCredentialsStorage = useCallback(() => {
     localStorage.removeItem(config.userCredentials);
-	localStorage.removeItem('jwt_auth_credentials')
+    localStorage.removeItem("jwt_auth_credentials");
     Cookie.remove(config.userCredentials);
     Cookie.remove("jwt_auth_credentials");
   }, []);
@@ -138,11 +132,10 @@ function JwtAuthProvider(props) {
   const [authStatus, setAuthStatus] = useState(getIsAuthStatusStorage()); //'configuring'
   const { children } = props;
 
-
   /**
    * Handle sign-in success
    */
-//   const navigate = useNavigate()
+  //   const navigate = useNavigate()
   const handleSignInSuccess = useCallback((userData, accessToken) => {
     setSession(accessToken);
     // setIsAuthenticated(true);
@@ -151,7 +144,7 @@ function JwtAuthProvider(props) {
     // setUser(userData);
     setUserCredentialsStorage(userData);
     window.location.reload();
-	// navigate('/shop-dashboard')
+    // navigate('/shop-dashboard')
   }, []); //here is where token is stored
   /**
    * Handle sign-up success
@@ -231,7 +224,7 @@ function JwtAuthProvider(props) {
       if (isTokenValid(accessToken)) {
         try {
           setIsLoading(true);
-          
+
           const response = await axios.get(
             config.getAuthAdminInBravortAdminUrl,
             {
@@ -291,9 +284,7 @@ function JwtAuthProvider(props) {
     isAuthenticated,
   ]);
 
-
-
-  const adminLogIn = useShopAdminLogin()
+  const adminLogIn = useShopAdminLogin();
   const handleRequest = async (
     url,
     data,
@@ -303,13 +294,10 @@ function JwtAuthProvider(props) {
     handleSignInFailure
   ) => {
     try {
-      setIsLoading(true)
-      
-			adminLogIn.mutate(data)
-			setIsLoading(false)
-      
+      setIsLoading(true);
 
-
+      adminLogIn.mutate(data);
+      setIsLoading(false);
     } catch (error) {
       const axiosError = error;
       console.log("Request-Error", error);
@@ -318,7 +306,7 @@ function JwtAuthProvider(props) {
           ? error?.response?.data?.message
           : error?.message
       );
-     
+
       handleSignInFailure(axiosError);
       setIsLoading(false);
       return axiosError;

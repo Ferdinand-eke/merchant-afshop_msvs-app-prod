@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { getCountries } from '../../client/clientToApiRoutes';
 // import { getCountries } from '../../utils';
 // import {
@@ -9,10 +9,10 @@ import { getCountries } from '../../client/clientToApiRoutes';
 // } from '../../store-redux/api/apiRoutes';
 
 export default function useSellerCountries() {
-  return useQuery(['__countries'], getCountries);
+	return useQuery(['__countries'], getCountries);
 }
 
-//get single country
+// get single country
 // export function useSingleCountry(countryId) {
 //   return useQuery(['__countries', countryId], () => getCountryById(countryId), {
 //     enabled: Boolean(countryId),
@@ -54,7 +54,7 @@ export default function useSellerCountries() {
 //   );
 // }
 
-//update new country
+// update new country
 // export function useCountryUpdateMutation() {
 //   const queryClient = useQueryClient();
 

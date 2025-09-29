@@ -6,7 +6,7 @@ import FuseLoading from "@fuse/core/FuseLoading";
 import { Chip, ListItemIcon, MenuItem, Paper } from "@mui/material";
 import _ from "@lodash";
 import Typography from "@mui/material/Typography";
-import MerchantErrorPage from "src/app/main/hotelsandapartments/MerchantErrorPage";
+import MerchantErrorPage from "src/app/main/vendor-hotelsandapartments/MerchantErrorPage";
 import { formatCurrency } from "src/app/main/vendors-shop/pos/PosUtils";
 
 function RoomsTable(props) {

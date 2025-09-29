@@ -1,19 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 // import { toast } from 'react-toastify';
-import {
-  getMyShopTransactionsLogs,
-} from '../../client/clientToApiRoutes';
-import { toast } from 'react-toastify';
+import { getMyShopTransactionsLogs } from '../../client/clientToApiRoutes';
 
 export default function useGetMyShopTransferLogs() {
-  return useQuery(['__myshop_transferlogs'], getMyShopTransactionsLogs);
+	return useQuery(['__myshop_transferlogs'], getMyShopTransactionsLogs);
 }
 
 // export function useGetMyShopWalletDetails() {
 //   return useQuery(['__myshop_walletdetails'], getMyShopAccountApiDetails);
 // }
 
-//update existing shop details
+// update existing shop details
 // export function useShopAccountUpdateMutation() {
 //   const queryClient = useQueryClient();
 
@@ -36,7 +33,7 @@ export default function useGetMyShopTransferLogs() {
 //   });
 // }
 
-//update shop account pin
+// update shop account pin
 // export function useAccountPinUpdateMutation() {
 //   const queryClient = useQueryClient();
 
@@ -60,10 +57,10 @@ export default function useGetMyShopTransferLogs() {
 // }
 
 //
-/***############################################################
+/** *############################################################
  * NEW AFRICANSHOPS AND BANK ACCOUNT DETAILS OPERATIONS
- *#################################################################*/
-//update existing shop details
+ *################################################################# */
+// update existing shop details
 // export function useUpdateMyShopAccountMutation() {
 //   const queryClient = useQueryClient();
 
@@ -85,7 +82,7 @@ export default function useGetMyShopTransferLogs() {
 //   });
 // }
 
-//trandfer funds from shop to shop_Wallet
+// trandfer funds from shop to shop_Wallet
 // export function useTransferToShopWalletMutation() {
 //   const queryClient = useQueryClient();
 
@@ -113,7 +110,7 @@ export default function useGetMyShopTransferLogs() {
 //   });
 // }
 
-//place shop account withdrawal
+// place shop account withdrawal
 // export function usePlaceWithdrawalMutation() {
 //   const queryClient = useQueryClient();
 

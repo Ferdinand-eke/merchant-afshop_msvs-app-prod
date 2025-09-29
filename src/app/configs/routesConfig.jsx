@@ -16,10 +16,10 @@ import authRoleExamplesConfigs from "../main/auth/authRoleExamplesConfigs";
 // import StaffAppConfig from "../main/users/admin/StaffAppConfig";
 // import PropertiesAppConfig from "../main/properties/listings/PropertiesAppConfig";
 // import ServiceTypesAppConfig from "../main/homes/servicetypes/ServiceTypesAppConfig";
-import ManagedListingsAppConfig from "../main/homes/managedproperties/ManagedListingsAppConfig";
-import PropertyTypesAppConfig from "../main/homes/propertytypes/PropertyTypesAppConfig";
+import ManagedListingsAppConfig from "../main/vendor-homes-property/managedproperties/ManagedListingsAppConfig";
+import PropertyTypesAppConfig from "../main/vendor-homes-property/propertytypes/PropertyTypesAppConfig";
 import SignAcceptInviteConfig from "../main/sign-accept-invite/SignAcceptInviteConfig";
-import ManagedUserListingsAppConfig from "../main/homes/managedusersandproperties/ManagedUserListingsAppConfig";
+import ManagedUserListingsAppConfig from "../main/vendor-homes-property/managedusersandproperties/ManagedUserListingsAppConfig";
 import ShopDashboardAppConfig from "../main/vendors-shop/dasboard/ShopDashboardAppConfig";
 import ShopProductsAppConfig from "../main/vendors-shop/products/ShopProductsAppConfig";
 import ShopOrdersAppConfig from "../main/vendors-shop/orders/ShopOrdersAppConfig";
@@ -29,14 +29,14 @@ import AfricanshopsMessengerAppConfig from "../main/africanshops-messenger/Afric
 import forgotPasswordConfig from "../main/sign-forgot-password/forgotPasswordPagesConfig";
 import resetPasswordConfig from "../main/sign-reset-password/resetPasswordPagesConfig";
 import merchantProfileAppConfig from "../main/vendors-shop/profile/merchantProfileAppConfig";
-import SettingsAppConfig from "../main/vendors-shop/settings/SettingsAppConfig";
+import SettingsAppConfig from "../main/vendor-settings/settings/SettingsAppConfig";
 import ShopsPosAppConfig from "../main/vendors-shop/pos/ShopsPosAppConfig";
 import blogAppConfig from "../main/newsblog/blogAppConfig";
 import HomeAppConfig from "../main/vendors-shop/home/HomeAppConfig";
 import HelpCenterHome from "../main/apps/help-center/home/HelpCenterHome";
 import LandingCenterHome from "../main/vendors-shop/home/home/LandingCenterHome";
 import MerchantMailboxAppConfig from "../main/vendors-shop/mailbox/MerchantMailboxAppConfig";
-import ManagedBookingsListingsAppConfig from "../main/hotelsandapartments/managed-booking-listings/ManagedBookingsListingsAppConfig";
+import ManagedBookingsListingsAppConfig from "../main/vendor-hotelsandapartments/managed-booking-listings/ManagedBookingsListingsAppConfig";
 import ManagedFoodMartsAppConfig from "../main/vendor-foodmarts/managed-foood-mart/ManagedFoodMartsAppConfig";
 // import AfricanshopsMessengerAppConfig from '../main/africanshops-messenger/AfricanshopsMessengerAppConfig';
 
@@ -58,14 +58,14 @@ const routeConfigs = [
   ManagedListingsAppConfig,
 
   /******Hotels, apartment and suites management */
-  
+
   ManagedBookingsListingsAppConfig,
 
   // PropertyTypesAppConfig,
   // ManagedUserListingsAppConfig,
   /*****Food Mart (Restaurants, Bakeries etc) */
   ManagedFoodMartsAppConfig,
-  
+
   /***User management and properties starts */
 
   /****Africanshops Dashboard Configs Starts Here */
@@ -87,8 +87,8 @@ const routeConfigs = [
    *
    * Start of Un-Authenticated pages are listed below here
    */
-//   HomeAppConfig,
-HomeAppConfig,
+  //   HomeAppConfig,
+  HomeAppConfig,
   blogAppConfig,
 
   /****
@@ -132,27 +132,27 @@ const routes = [
 
   {
     path: "/home",
-	settings: {
-		layout: {
-			config: {
-				navbar: {
-					display: false
-				},
-				toolbar: {
-					display: true
-				},
-				footer: {
-					display: false
-				},
-				leftSidePanel: {
-					display: false
-				},
-				rightSidePanel: {
-					display: false
-				}
-			}
-		}
-	},
+    settings: {
+      layout: {
+        config: {
+          navbar: {
+            display: false,
+          },
+          toolbar: {
+            display: true,
+          },
+          footer: {
+            display: false,
+          },
+          leftSidePanel: {
+            display: false,
+          },
+          rightSidePanel: {
+            display: false,
+          },
+        },
+      },
+    },
     element: <LandingCenterHome />,
   },
 ];
