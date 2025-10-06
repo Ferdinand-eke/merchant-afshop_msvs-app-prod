@@ -45,7 +45,7 @@ const settingsConfig = {
 	/**
 	 * The loginRedirectUrl property defines the default redirect URL for the logged-in user.
 	 */
-	loginRedirectUrl: '/'
+	loginRedirectUrl: '/shop-dashboard'
 };
 
 export default settingsConfig;

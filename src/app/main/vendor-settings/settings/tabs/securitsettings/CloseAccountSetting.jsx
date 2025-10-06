@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import _ from "@lodash";
 import { useEffect } from "react";
-import { useGetMinimizedJustMyShopDetailsQuery } from "app/configs/data/server-calls/shopdetails/useShopDetails";
+// import  { useGetMinimizedJustMyShopDetailsQuery } from "app/configs/data/server-calls/shopdetails/useShopDetails";
 import { toast } from "react-toastify";
 import { useShopSettingsCloseShopAccount } from "app/configs/data/server-calls/auth/useAuth";
 // import { useGetSecuritySettingsQuery, useUpdateSecuritySettingsMutation } from '../SettingsApi';
@@ -40,11 +40,13 @@ const schema = z.object({
   // askPasswordChange: z.boolean(),
 });
 
-function CloseAccountSetting() {
+function CloseAccountSetting(props) {
+  const {basemerchant} = props
   // const { data: securitySettings } = useGetSecuritySettingsQuery();
   // const [updateSecuritySettings, { error: updateError, isSuccess }] = useUpdateSecuritySettingsMutation();
 
-  const { data: shopData } = useGetMinimizedJustMyShopDetailsQuery();
+  // const { data: shopData } = useGetMinimizedJustMyShopDetailsQuery();
+
   const closeThisAccount = useShopSettingsCloseShopAccount()
   const {
     control,
@@ -63,26 +65,11 @@ function CloseAccountSetting() {
   const { closeAccount } = watch();
 
   useEffect(() => {
-    reset(shopData?.data);
-  }, [shopData?.data, reset]);
-  // useEffect(() => {
-  // 	reset({ ...securitySettings, currentPassword: '', newPassword: '' });
-  // }, [isSuccess]);
+    reset(basemerchant);
+  }, [basemerchant, reset]);
 
-  // useEffect(() => {
-  // 	reset(securitySettings);
-  // }, [securitySettings, reset]);
-  // useEffect(() => {
-  // 	reset({ ...securitySettings, currentPassword: '', newPassword: '' });
-  // }, [isSuccess]);
-  // useEffect(() => {
-  // 	if (updateError) {
-  // 		updateError?.response?.data?.map((err) => {
-  // 			setError(err.name, { type: 'manual', message: err.message });
-  // 			return undefined;
-  // 		});
-  // 	}
-  // }, [updateError, setError]);
+  console.log("MERCHANT_CLOSE_DATA", basemerchant)
+  
 
   /**
    * Form Submit

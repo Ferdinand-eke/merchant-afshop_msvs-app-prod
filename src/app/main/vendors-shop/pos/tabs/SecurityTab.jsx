@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import _ from '@lodash';
 import { useEffect } from 'react';
-import { useGetSecuritySettingsQuery, useUpdateSecuritySettingsMutation } from '../SettingsApi';
+// import { useGetSecuritySettingsQuery, useUpdateSecuritySettingsMutation } from '../SettingsApi';
 import SecuritySetting from './securitsettings/SecuritySetting';
 import ChangeEmailSetting from './securitsettings/ChangeEmailSetting';
 
@@ -41,8 +41,8 @@ const schema = z.object({
 
 
 function SecurityTab() {
-	const { data: securitySettings } = useGetSecuritySettingsQuery();
-	const [updateSecuritySettings, { error: updateError, isSuccess }] = useUpdateSecuritySettingsMutation();
+	// const { data: securitySettings } = useGetSecuritySettingsQuery();
+	// const [updateSecuritySettings, { error: updateError, isSuccess }] = useUpdateSecuritySettingsMutation();
 	const { control, setError, reset, handleSubmit, formState, getValues } = useForm({
 		defaultValues,
 		mode: 'all',
@@ -71,8 +71,6 @@ function SecurityTab() {
 
 
 		console.log("Form Data", formData)
-		return
-		updateSecuritySettings(formData);
 	}
 
 	return (
@@ -137,20 +135,20 @@ function SecurityTab() {
 
 				<Divider className="mb-40 mt-44 border-t" />
 				<div className="flex items-center justify-end space-x-16">
-					<Button
+					{/* <Button
 						variant="outlined"
 						disabled={_.isEmpty(dirtyFields)}
 						onClick={() => reset(securitySettings)}
 					>
 						Cancel
-					</Button>
+					</Button> */}
 					<Button
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields) || !isValid}
 						type="submit"
 					>
-						Save changed password
+						Save changed password...
 					</Button>
 				</div>
 

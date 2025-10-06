@@ -38,6 +38,7 @@ import LandingCenterHome from "../main/vendors-shop/home/home/LandingCenterHome"
 import MerchantMailboxAppConfig from "../main/vendors-shop/mailbox/MerchantMailboxAppConfig";
 import ManagedBookingsListingsAppConfig from "../main/vendor-hotelsandapartments/managed-booking-listings/ManagedBookingsListingsAppConfig";
 import ManagedFoodMartsAppConfig from "../main/vendor-foodmarts/managed-foood-mart/ManagedFoodMartsAppConfig";
+import { authRoles } from 'src/app/auth';
 // import AfricanshopsMessengerAppConfig from '../main/africanshops-messenger/AfricanshopsMessengerAppConfig';
 
 const routeConfigs = [
@@ -113,7 +114,6 @@ const routes = [
   ),
   {
     path: "/",
-    // element: <Navigate to="/dashboards/project" />,
     element: <Navigate to="/shop-dashboard" />,
     auth: settingsConfig.defaultAuth,
   },
@@ -130,30 +130,31 @@ const routes = [
     element: <Navigate to="404" />,
   },
 
-  {
-    path: "/home",
-    settings: {
-      layout: {
-        config: {
-          navbar: {
-            display: false,
-          },
-          toolbar: {
-            display: true,
-          },
-          footer: {
-            display: false,
-          },
-          leftSidePanel: {
-            display: false,
-          },
-          rightSidePanel: {
-            display: false,
-          },
-        },
-      },
-    },
-    element: <LandingCenterHome />,
-  },
+  // {
+  //   path: "/",
+  //   settings: {
+  //     layout: {
+  //       config: {
+  //         navbar: {
+  //           display: false,
+  //         },
+  //         toolbar: {
+  //           display: true,
+  //         },
+  //         footer: {
+  //           display: false,
+  //         },
+  //         leftSidePanel: {
+  //           display: false,
+  //         },
+  //         rightSidePanel: {
+  //           display: false,
+  //         },
+  //       },
+  //     },
+  //   },
+  //   element: <LandingCenterHome />,
+    
+  // },
 ];
 export default routes;

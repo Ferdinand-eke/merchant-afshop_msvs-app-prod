@@ -105,14 +105,7 @@ function JwtAuthProvider(props) {
       return userCredentials;
     }
 
-    /**Get Item in localstorage-based-SETTERS */
-    //  const { userCredentials } = localStorage.getItem("jwt_auth_credentials")
-    //     ? JSON.parse(localStorage.getItem("jwt_auth_credentials"))
-    //     : "";
-    //   // if (userCredentials) {
-    //   //   return userCredentials;
-    //   // }
-    // return userCredentials;
+   
   }, []);
 
   /***Remove user credentials */

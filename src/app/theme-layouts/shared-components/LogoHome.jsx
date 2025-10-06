@@ -23,7 +23,7 @@ function LogoHome() {
 	return (
 		<Root className="flex items-center">
 			{/* h-40 w-40 */}
-			<Link to={`/home`}>
+			<Link to={`/`}>
 			<img
 				className="mt-14 logo-icon cursor-pointer"
 				// src="assets/images/logo/logo.svg" 

@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import _ from '@lodash';
 import { useEffect } from 'react';
-import { useShopSettingsChangeEmail } from 'app/configs/data/server-calls/auth/useAuth';
+import { useInitiateBaseMerchantSettingsChangeEmail, useShopSettingsChangeEmail } from 'app/configs/data/server-calls/auth/useAuth';
 
 const defaultValues = {
 	currentEmail: '',
@@ -29,13 +29,15 @@ const schema = z.object({
 });
 
 
-function ChangeEmailSetting() {
+function ChangeEmailSetting(props) {
+	 const {basemerchant} = props
 	const { control, setError, reset, handleSubmit, formState, getValues } = useForm({
 		defaultValues,
 		mode: 'all',
 		resolver: zodResolver(schema)
 	});
 	const { isValid, dirtyFields, errors } = formState;
+	const initateChangeMail = useInitiateBaseMerchantSettingsChangeEmail()
 	const changeMail = useShopSettingsChangeEmail()
 
 	// useEffect(() => {
@@ -45,9 +47,11 @@ function ChangeEmailSetting() {
 	// 	reset({ ...securitySettings, currentPassword: '', newPassword: '' });
 	// }, [isSuccess]);
 
-	useEffect(()=>{
-
-	},[])
+	useEffect(() => {
+		reset({
+			currentEmail: basemerchant?.shopemail
+		});
+	  }, [basemerchant, reset]);
 	
 
 	/**
@@ -57,7 +61,7 @@ function ChangeEmailSetting() {
 
 
 		console.log("Form Data", formData)
-		changeMail.mutate(formData)
+		initateChangeMail.mutate(formData)
 		// return
 	}
 
@@ -91,6 +95,7 @@ function ChangeEmailSetting() {
 											</InputAdornment>
 										)
 									}}
+									disabled
 								/>
 							)}
 						/>

@@ -14,16 +14,17 @@ import _ from "@lodash";
 import { useEffect } from "react";
 import SecuritySetting from "./securitsettings/SecuritySetting";
 import ChangeEmailSetting from "./securitsettings/ChangeEmailSetting";
-import { useShopSettingsResetPass } from "app/configs/data/server-calls/auth/useAuth";
+import { useShopSettingsChangePass } from "app/configs/data/server-calls/auth/useAuth";
 import CloseAccountSetting from "./securitsettings/CloseAccountSetting";
+import { useGetMinimizedJustMyShopDetailsQuery } from "app/configs/data/server-calls/shopdetails/useShopDetails";
 
 const defaultValues = {
   currentPassword: "",
   newPassword: "",
   twoStepVerification: false,
   askPasswordChange: false,
-  oldPassword: "",
-  password: "",
+  // currentPassword: "",
+  // newPassword: "",
   confirmPassword: "",
 };
 /**
@@ -31,14 +32,14 @@ const defaultValues = {
  */
 const schema = z
   .object({
-    oldPassword: z.string().nonempty("Please enter your current password."),
-    password: z
+    currentPassword: z.string().nonempty("Please enter your current password."),
+    newPassword: z
       .string()
       .nonempty("Please enter your password.")
       .min(8, "Password is too short - should be 8 chars minimum."),
     confirmPassword: z.string().nonempty("Password confirmation is required"),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords must match",
     path: ["confirmPassword"],
   });
@@ -46,7 +47,8 @@ const schema = z
 
 
 function SecurityTab() {
-  const resetShopPass = useShopSettingsResetPass();
+  const changeShopPass = useShopSettingsChangePass();
+   const { data: shopData } = useGetMinimizedJustMyShopDetailsQuery();
   // const { data: securitySettings } = useGetSecuritySettingsQuery();
   const { control, setError, reset, handleSubmit, formState, getValues } =
     useForm({
@@ -56,16 +58,16 @@ function SecurityTab() {
     });
   const { isValid, dirtyFields, errors } = formState;
   useEffect(() => {
-    if (resetShopPass?.isSuccess) {
+    if (changeShopPass?.isSuccess) {
       reset();
     }
-  }, [resetShopPass?.isSuccess, reset]);
+  }, [changeShopPass?.isSuccess, reset]);
 
   /**
    * Form Submit
    */
   function onSubmit() {
-    resetShopPass.mutate(getValues());
+    changeShopPass.mutate(getValues());
   }
 
   
@@ -81,15 +83,15 @@ function SecurityTab() {
         <div className="mt-32 grid w-full gap-6 sm:grid-cols-4 space-y-32">
           <div className="sm:col-span-4">
             <Controller
-              name="oldPassword"
+              name="currentPassword"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   label="Current password (default:changeme)"
                   type="password"
-                  error={!!errors.oldPassword}
-                  helperText={errors?.oldPassword?.message}
+                  error={!!errors.currentPassword}
+                  helperText={errors?.currentPassword?.message}
                   variant="outlined"
                   fullWidth
                   InputProps={{
@@ -105,14 +107,14 @@ function SecurityTab() {
           </div>
           <div className="sm:col-span-4">
             <Controller
-              name="password"
+              name="newPassword"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   label="New password"
                   type="password"
-                  error={!!errors.password}
+                  error={!!errors.newPassword}
                   variant="outlined"
                   fullWidth
                   InputProps={{
@@ -122,7 +124,7 @@ function SecurityTab() {
                       </InputAdornment>
                     ),
                   }}
-                  helperText={errors?.password?.message}
+                  helperText={errors?.newPassword?.message}
                 />
               )}
             />
@@ -155,18 +157,18 @@ function SecurityTab() {
 
         <Divider className="mb-40 mt-44 border-t" />
         <div className="flex items-center justify-end space-x-16">
-          <Button
+          {/* <Button
             variant="outlined"
             disabled={_.isEmpty(dirtyFields)}
             onClick={() => reset()}
           >
             Cancel
-          </Button>
+          </Button> */}
           <Button
             variant="contained"
             color="secondary"
             disabled={
-              _.isEmpty(dirtyFields) || !isValid || resetShopPass?.isLoading
+              _.isEmpty(dirtyFields) || !isValid || changeShopPass?.isLoading
             }
             type="submit"
           >
@@ -177,11 +179,11 @@ function SecurityTab() {
         <div className="my-40 border-t" />
       </form>
 
-      <ChangeEmailSetting />
+      <ChangeEmailSetting basemerchant={shopData?.data?.basemerchant}/>
 
       {/* <SecuritySetting /> */}
 
-      <CloseAccountSetting />
+      <CloseAccountSetting basemerchant={shopData?.data?.basemerchant}/>
     </div>
   );
 }

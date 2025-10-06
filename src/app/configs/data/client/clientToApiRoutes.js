@@ -127,14 +127,16 @@ export const logOutAdmin = () => {
 	return ok;
 };
 
+
 /** ==============================================================|
  *   Shop authenticated settings start routes    
 ================================================================ */
-export const authShopResetPasword = (formData) => AuthApi().put(`/api/shop/settings/reset-password`, formData);
+export const authShopChangePasword = (formData) => AuthApi().put(`/auth-merchant/settings/change-password`, formData); // (Mcsvs => Done)
+export const initiateMerchantChangeEmail = (formData) => AuthApi().put(`/auth-merchant/settings/change-email/initiate`, formData);
 
-export const authShopChangeEmail = (formData) => AuthApi().put(`/api/shop/settings/change-email`, formData);
+export const authShopChangeEmail = (formData) => AuthApi().put(`/auth-merchant/settings/change-email/update`, formData);
 
-export const authShopCloseAccountCall = () => AuthApi().post(`/api/shop/close-shop-account`);
+export const authShopCloseAccountCall = () => AuthApi().post(`/auth-merchant/settings/close-merchant-account`);
 
 /** ==============================================================|
  *   Shop authenticated settings start routes   
@@ -244,7 +246,7 @@ export const deleteShopProduct = (id) => {
 // {===============================shop detals handling starts   =======================================}
 export const getJustMyShopDetails = () => AuthApi().get('/api/myshop/get-just-details');
 
-export const getMinimizedJustMyShopDetails = () => AuthApi().get('/api/myshop/get-minimized-just-details');
+export const getMinimizedJustMyShopDetails = () => AuthApi().get('/auth-merchant/get-base-merchant');
 
 export const getJustMyShopDetailsAndPlan = (params) => {
 	// ?queryAllData=${queryParam} queryAllData

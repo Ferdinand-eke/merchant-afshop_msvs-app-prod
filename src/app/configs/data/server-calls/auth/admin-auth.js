@@ -39,7 +39,8 @@ export function useShopAdminLogin() {
 
 				if (transFormedUser) {
 					setUserCredentialsStorage(transFormedUser);
-					window.location.reload();
+					// window.location.reload();
+					window.location.replace("/shop-dashboard");
 				}
 
 				// return;

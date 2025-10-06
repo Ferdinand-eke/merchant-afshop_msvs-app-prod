@@ -1,17 +1,40 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { setShopResetMailPAYLOAD } from 'app/configs/utils/authUtils';
-import { authShopChangeEmail, authShopCloseAccountCall, authShopResetPasword } from '../../client/clientToApiRoutes';
+import { authShopChangeEmail, authShopCloseAccountCall, authShopChangePasword, initiateMerchantChangeEmail } from '../../client/clientToApiRoutes';
 
 /** *
  *  1) update user password by logged in merchant
  */
-export function useShopSettingsResetPass() {
+export function useShopSettingsChangePass() {
 	const queryClient = useQueryClient();
-	return useMutation(authShopResetPasword, {
+	return useMutation(authShopChangePasword, {
 		onSuccess: (data) => {
-			if (data?.data && data?.data?.success) {
+			console.log("Transaction Data", data)
+			if ( data?.data?.success) {
 				toast.success(data?.data?.message);
+			}
+		},
+
+		onError: (error) => {
+			toast.error(
+				error?.response && error?.response?.data?.message ? error?.response?.data?.message : error?.message
+			);
+		}
+	});
+}  //(Mcsvs => Done)
+
+
+/** ** 2) Initiate Base-Merchant email while logged in */
+export function useInitiateBaseMerchantSettingsChangeEmail() {
+	const queryClient = useQueryClient();
+
+	return useMutation(initiateMerchantChangeEmail, {
+		onSuccess: (data) => {
+			if (data?.data && data?.data?.success && data?.data?.changemail_activation_token) {
+				toast.success(data?.data?.message);
+
+				setShopResetMailPAYLOAD(data?.data?.changemail_activation_token);
 			}
 		},
 
@@ -60,3 +83,4 @@ export function useShopSettingsCloseShopAccount() {
 		}
 	});
 }
+

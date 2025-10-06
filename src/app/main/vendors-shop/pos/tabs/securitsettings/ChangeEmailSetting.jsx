@@ -4,15 +4,14 @@ import { z } from 'zod';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import FormHelperText from '@mui/material/FormHelperText';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import Switch from '@mui/material/Switch';
+// import FormHelperText from '@mui/material/FormHelperText';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import _ from '@lodash';
 import { useEffect } from 'react';
-// import { useGetSecuritySettingsQuery, useUpdateSecuritySettingsMutation } from '../SettingsApi';
 
 const defaultValues = {
 	currentEmail: '',
@@ -37,28 +36,12 @@ const schema = z.object({
 
 
 function ChangeEmailSetting() {
-	// const { data: securitySettings } = useGetSecuritySettingsQuery();
-	// const [updateSecuritySettings, { error: updateError, isSuccess }] = useUpdateSecuritySettingsMutation();
 	const { control, setError, reset, handleSubmit, formState, getValues } = useForm({
 		defaultValues,
 		mode: 'all',
 		resolver: zodResolver(schema)
 	});
 	const { isValid, dirtyFields, errors } = formState;
-	// useEffect(() => {
-	// 	reset(securitySettings);
-	// }, [securitySettings, reset]);
-	// useEffect(() => {
-	// 	reset({ ...securitySettings, currentPassword: '', newPassword: '' });
-	// }, [isSuccess]);
-	// useEffect(() => {
-	// 	if (updateError) {
-	// 		updateError?.response?.data?.map((err) => {
-	// 			setError(err.name, { type: 'manual', message: err.message });
-	// 			return undefined;
-	// 		});
-	// 	}
-	// }, [updateError, setError]);
 
 	/**
 	 * Form Submit
@@ -67,8 +50,6 @@ function ChangeEmailSetting() {
 
 
 		console.log("Form Data", formData)
-		return
-		// updateSecuritySettings(formData);
 	}
 
 	return (
@@ -136,7 +117,7 @@ function ChangeEmailSetting() {
 					<Button
 						variant="outlined"
 						disabled={_.isEmpty(dirtyFields)}
-						onClick={() => reset(securitySettings)}
+						// onClick={() => reset(securitySettings)}
 					>
 						Cancel
 					</Button>
@@ -158,7 +139,6 @@ function ChangeEmailSetting() {
 				
 			</form>
 
-			{/* <SecuritySetting /> */}
 		</div>
 	);
 }
