@@ -11,7 +11,14 @@ import { formatCurrency } from "src/app/main/vendors-shop/pos/PosUtils";
 
 function RoomsTable(props) {
   
-  const { rooms, roomsIsLoading, roomsIsError, setRoomId } = props;
+  const { rooms, roomsIsLoading, roomsIsError,toggleNewEntryDrawer, setRoomId } = props;
+
+  const initiateUpdate = (roomId) => {
+    // console.log("Room__ID", roomId)
+     toggleNewEntryDrawer()
+    setRoomId(roomId)
+   
+  }
 
 
 
@@ -33,29 +40,46 @@ function RoomsTable(props) {
           </>
         ),
       },
-
       {
         accessorKey: "roomNumber",
         header: "Room Number",
         Cell: ({ row }) => (
-          <div className="flex flex-wrap space-x-2">
-            <Chip
-              // component={Link}
-              // to={`/bookings/list-reservation/${row.original.id}/manage`}
-              onClick={() => setRoomId(row.original.id)}
-              className="text-11 cursor-pointer  bg-orange-300"
-              size="small"
-              color="default"
-              label="Manage room"
-            />
-          </div>
+          <>
+            <div className="flex flex-wrap space-x-2">
+              <Chip
+                className="text-11"
+                size="small"
+                color="default"
+                label={row?.original?.roomNumber}
+              />
+            </div>
+          </>
         ),
       },
+
+      
       {
 				accessorKey: 'priceTaxIncl',
 				header: 'Price',
 				accessorFn: (row) => `NGN ${formatCurrency(row?.price)}`
 			},
+
+      {
+        accessorKey: "id",
+        header: "Update Room",
+        Cell: ({ row }) => (
+          <div className="flex flex-wrap space-x-2">
+            <Chip
+              onClick={() => initiateUpdate(row.original.id)}
+              // onClick={initiateUpdate(row.original.id)}
+              className="text-11 cursor-pointer  bg-orange-300"
+              size="small"
+              color="default"
+              label="Update room"
+            />
+          </div>
+        ),
+      },
      
     ],
     []
@@ -95,6 +119,7 @@ function RoomsTable(props) {
     >
       <DataTable data={rooms} columns={columns} />
      </Paper>
+
   );
 }
 

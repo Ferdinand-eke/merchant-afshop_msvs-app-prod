@@ -17,17 +17,7 @@ import ManageReservationPage from "./tabs/photos-videos/ManageReservationPage";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-// const Root = styled(FusePageSimple)(({ theme }) => ({
-//   "& .FusePageSimple-header": {
-//     backgroundColor: theme.palette.background.paper,
-//     borderBottomWidth: 1,
-//     borderStyle: "solid",
-//     borderColor: theme.palette.divider,
-//     "& > .container": {
-//       maxWidth: "100%",
-//     },
-//   },
-// }));
+
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   "& .FusePageSimple-header": {
@@ -35,21 +25,28 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
   },
 }));
 
+const TABS = {
+  timeline: 0,
+  rooms: 1,
+  reservations: 2,
+};
+
 /**
  * The profile page.
  */
 function BookingProfileApp() {
   const theme = useTheme();
   const routeParams = useParams();
-  const {productId, reservationId} = routeParams;
-  const [selectedTab, setSelectedTab] = useState(0);
+  const { productId, reservationId } = routeParams;
+  const [selectedTab, setSelectedTab] = useState(TABS.timeline);
+
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const {
     data: propertyList,
     isLoading,
     isError,
   } = useSingleShopBookingsProperty(productId, {
-    skip: !productId 
+    skip: !productId,
   });
   //|| productId === "new",
 
@@ -63,34 +60,46 @@ function BookingProfileApp() {
   const navigate = useNavigate();
   const pageLayout = useRef(null);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(false);
-  useEffect(() => {
-    setRightSidebarOpen(Boolean(reservationId));
-  }, [reservationId]);
+  // useEffect(() => {
+  //   setRightSidebarOpen(Boolean(reservationId));
+  // }, [reservationId]);
 
   const handleRightSidebarToggle = () => {
-	setRightSidebarOpen(false)
-	navigate(`/bookings/managed-listings/${productId}/manage`);
-  }
+    setRightSidebarOpen(false);
+    navigate(`/bookings/managed-listings/${productId}/manage`);
+  };
 
-  //   console.log("RIGHT_SIDEBAR_OPEN", rightSidebarOpen, routeParams?.reservationId);
+  useEffect(() => {
+    const savedTab = localStorage.getItem("selectedTab");
+    if (savedTab !== null) {
+      setSelectedTab(Number(savedTab));
+    }
+  }, []);
+
+  // 🟢 Each time activeTab changes: save it to localStorage
+  useEffect(() => {
+    setRightSidebarOpen(Boolean(reservationId));
+
+    localStorage.setItem("selectedTab", selectedTab.toString());
+  }, [reservationId, selectedTab]);
+
+  console.log("propertyList", propertyList?.data?.bookingList?.imageSrcs[0]?.url)
 
   return (
     <Root
       header={
         <div className="flex flex-col w-full">
           <div className="mt-20 flex flex-col flex-0 lg:flex-row items-center max-w-5xl w-full mx-auto px-32 lg:h-72">
-             
-			<div className="-mt-96 lg:-mt-88 rounded-full">
-             
+            <div className="-mt-96 lg:-mt-88 rounded-full">
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1, transition: { delay: 0.1 } }}
               >
-				
                 <Avatar
                   sx={{ borderColor: "background.paper" }}
                   className="w-128 h-128 border-4 mt-40"
-                  src="assets/images/avatars/male-04.jpg"
+                  // src="assets/images/avatars/male-04.jpg"
+                  src={`${propertyList?.data?.bookingList?.imageSrcs[0]?.url}`}
                   alt="User avatar"
                 />
               </motion.div>
@@ -101,7 +110,7 @@ function BookingProfileApp() {
                 {propertyList?.data?.bookingList?.title}
               </Typography>
               {/* <Typography color="text.secondary">London, UK</Typography> */}
-			  <Typography
+              <Typography
                 className="flex items-center sm:mb-12"
                 component={Link}
                 role="button"
@@ -162,17 +171,17 @@ function BookingProfileApp() {
                 }}
               >
                 <Tab
-                  className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
+                  className={`text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 ${selectedTab === TABS.timeline ? "bg-blue-600 text-white" : "bg-gray-200"}`}
                   disableRipple
                   label="Timeline"
                 />
                 <Tab
-                  className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
+                  className={`text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 ${selectedTab === TABS.rooms ? "bg-blue-600 text-white" : "bg-gray-200"}`}
                   disableRipple
                   label="Manage Rooms"
                 />
                 <Tab
-                  className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
+                  className={`text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 ${selectedTab === TABS.reservations ? "bg-blue-600 text-white" : "bg-gray-200"}`}
                   disableRipple
                   label="Reservations"
                 />
@@ -182,27 +191,24 @@ function BookingProfileApp() {
         </div>
       }
 
-
-      
       content={
         <div className="flex flex-auto justify-center w-full max-w-5xl mx-auto p-24 sm:p-32">
-          {selectedTab === 0 && <TimelineTab />}
+          {selectedTab === TABS.timeline && <TimelineTab />}
 
-          {selectedTab === 1 && (
+          {selectedTab === TABS.rooms && (
             <AboutManageRoomsTab Listing={propertyList?.data?.bookingList} />
           )}
 
-          {selectedTab === 2 && (
+          {selectedTab === TABS.reservations && (
             <PhotosVideosTab Listing={propertyList?.data?.bookingList} />
           )}
         </div>
       }
-	
       ref={pageLayout}
       rightSidebarContent={<ManageReservationPage />}
       rightSidebarOpen={rightSidebarOpen}
       rightSidebarOnClose={() => setRightSidebarOpen(false)}
-	// rightSidebarOnClose={() => handleRightSidebarToggle()}
+      // rightSidebarOnClose={() => handleRightSidebarToggle()}
       rightSidebarWidth={640}
       rightSidebarVariant="temporary"
       //   scroll={isMobile ? "normal" : "page"}

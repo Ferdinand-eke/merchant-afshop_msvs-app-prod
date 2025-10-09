@@ -1,7 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import qs from "qs"; // or use new URLSearchParams()
-// import { message } from 'antd'
 import { resetSessionForShopUsers } from 'app/configs/utils/authUtils';
 import { getAdminAccessToken } from '../utils/opsUtils';
 
@@ -44,40 +43,8 @@ export function AuthApi() {
 		baseURL: baseUrl,
 		// headers: customHeaders,
 		/** ***************Previous for Here starts  ends */
-
-		// headers: { accesstoken: `${token}` },
-		// headers: { shoparccreed: `Bearer ${token}` },
-
 		headers: { shoparccreed: `${token}` }
 	});
-
-	// Api.interceptors.response.use(
-	//   (response) => response,
-	//   (error) => {
-	//     if (error?.response?.status === 403) {
-	//       let errors = Object.values(error?.response?.data?.errors || {});
-	//       // merchantLogOutCall();
-
-	//       return Promise.reject({
-	//         status: 403,
-	//         errorsRaw: errors,
-	//         errors: errors.reduce((error) => error),
-	//       });
-	//     }
-
-	//     toast.error(
-	//       error?.response && error?.response?.data?.message
-	//         ? error?.response?.data?.message
-	//         : error?.message
-	//     );
-
-	//     return Promise.reject({
-	//         status: error.response?.status ? error.response?.status : 500,
-	//         errors: ['Oops!'],
-	//     });
-	//   }
-	// );
-
 	Api.interceptors.response.use(
 		(response) => response,
 		(error) => {

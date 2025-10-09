@@ -65,9 +65,10 @@ function BookingPropertyListing() {
 	const routeParams = useParams();
 	const { productId } = routeParams;
 
-	const { data: shopData, isLoading: shopDataLoading } = useGetMyShopDetails();
+	const { data: shopData, 
+		// isLoading: shopDataLoading
+	 } = useGetMyShopDetails();
 
-	console.log("MERCHANT__DATA", shopData)
 
 	const {
 		data: propertyList,
@@ -220,6 +221,7 @@ function BookingPropertyListing() {
 				scroll={isMobile ? 'normal' : 'content'}
 			/>
 		</FormProvider>
+
 		
 	);
 }

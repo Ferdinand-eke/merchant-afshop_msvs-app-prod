@@ -21,12 +21,13 @@ import BasicInfoRoomTabProperty from "./BasicInfoRoomProperty";
 import { useGetRoomsFromBookingProperty } from "app/configs/data/server-calls/hotelsandapartments/useRoomsOnProps";
 import { useState } from "react";
 import RoomMenuPanel from "./formpanels/RoomMenuPanel";
+// import UpdateRoomMenuPanel from "./formpanels/UpdateRoomMenuPanel";
 
 /**
  * The about tab.
  */
 function AboutManageRoomsTab(props) {
-  const {Listing} = props
+  const { Listing } = props;
   const routeParams = useParams();
   const { productId } = routeParams;
   const [roomId, setRoomId] = useState("");
@@ -58,23 +59,58 @@ function AboutManageRoomsTab(props) {
   const addRoomMenu = (
     <Box sx={{ width: 350 }} sm={{ width: 250 }} role="presentation">
       <RoomMenuPanel
-        toggleNewEntryDrawer={toggleNewEntryDrawer}
+        toggleNewEntryDrawer={toggleNewEntryDrawer(false)}
         roomId={roomId}
         apartmentId={Listing?.id}
+        setRoomId={setRoomId}
       />
     </Box>
   );
+
+  // const updateRoomMenu = (
+  //   <Box sx={{ width: 350 }} sm={{ width: 250 }} role="presentation">
+  //     <UpdateRoomMenuPanel
+  //       toggleNewEntryDrawer={toggleNewEntryDrawer}
+  //       roomId={roomId}
+  //       apartmentId={Listing?.id}
+  //     />
+  //   </Box>
+  // );
 
   // console.log("ROOMS-ON-PROPERTY", rooms?.data?.rooms)
 
   return (
     <>
+
+        
+ 
+
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
         className="w-full"
       >
+
+        <div className="flex flex-1 items-center justify-end space-x-8">
+          <motion.div
+            className="flex flex-grow-0"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+          >
+            <Button
+              className="whitespace-nowrap mx-4"
+              variant="contained"
+              color="primary"
+              onClick={toggleNewEntryDrawer(true)}
+            >
+              <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
+              <span className="mx-4 sm:mx-8"> Add Room </span>
+            </Button>
+          </motion.div>
+        </div>
+        
+
         <div className="md:flex">
           <div className="mr-16">
             <RoomsTable
@@ -82,35 +118,8 @@ function AboutManageRoomsTab(props) {
               roomsIsLoading={roomsIsLoading}
               roomsIsError={roomsIsError}
               setRoomId={setRoomId}
+              toggleNewEntryDrawer={toggleNewEntryDrawer(true)}
             />
-          </div>
-
-          <div className="flex flex-col md:w-320 ">
-            <Card
-              component={motion.div}
-              variants={item}
-              className="w-full mb-32 px-8"
-            >
-              <Button
-                className="whitespace-nowrap mx-4"
-                variant="contained"
-                color="primary"
-                onClick={toggleNewEntryDrawer(true)}
-              >
-                Add Room Drawer
-              </Button>
-              <div className="flex items-center px-32 pt-24">
-                <Typography className="flex flex-1 text-2xl font-semibold leading-tight">
-                  Room Details
-                </Typography>
-
-                {/* <Button className="-mx-8" size="small">
-                Add images
-              </Button> */}
-              </div>
-
-              {/* <BasicInfoRoomTabProperty roomId={roomId} apartmentId={productId} /> */}
-            </Card>
           </div>
         </div>
       </motion.div>

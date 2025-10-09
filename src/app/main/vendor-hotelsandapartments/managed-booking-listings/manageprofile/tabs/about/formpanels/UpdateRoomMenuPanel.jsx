@@ -31,14 +31,10 @@ import Box from "@mui/material/Box";
 import { lighten } from "@mui/material/styles";
 import FuseUtils from "@fuse/utils";
 import clsx from "clsx";
-import { useAddShopFoodMartMenuMutation } from "app/configs/data/server-calls/foodmartmenuitems/useShopFoodMartMenu";
 import FusePageSimple from "@fuse/core/FusePageSimple";
-import {
-  useAddRoomPropertyMutation,
-  useGetSingleRoomOfProperty,
-  useRoomOnPropertyUpdateMutation,
-} from "app/configs/data/server-calls/hotelsandapartments/useRoomsOnProps";
+import {  useGetSingleRoomOfProperty, useRoomOnPropertyUpdateMutation } from "app/configs/data/server-calls/hotelsandapartments/useRoomsOnProps";
 import { motion } from "framer-motion";
+
 
 const StyledSwipeableDrawer = styled(SwipeableDrawer)(({ theme }) => ({
   "& .MuiDrawer-paper": {
@@ -59,56 +55,21 @@ const schema = z.object({
   // z.number().safe(),
 });
 
-export const categoryset = [
-  {
-    label: "african dish",
-  },
-  {
-    label: "continental",
-  },
-  {
-    label: "drink",
-  },
-  {
-    label: "pasta",
-  },
-  {
-    label: "pastry",
-  },
-];
-
-export const unitset = [
-  {
-    label: "units",
-  },
-  {
-    label: "plates",
-  },
-  {
-    label: "litres",
-  },
-  {
-    label: "pieces",
-  },
-  // {
-  // 	label: "pastry",
-  //   },
-];
 
 export const statuses = ["AVAILABLE", "BOOKED", "MAINTENANCE"];
 
 /**
  * The notification panel.
  */
-function RoomMenuPanel(props) {
-  const { roomId,setRoomId, apartmentId, toggleNewEntryDrawer } = props;
+function UpdateRoomMenuPanel(props) {
+
+  const {roomId, apartmentId, toggleNewEntryDrawer } = props;
+  
 
   const routeParams = useParams();
-  const { foodMartId } = routeParams;
   const location = useLocation();
   const dispatch = useAppDispatch();
   const state = useAppSelector(selectRoomMenuPanelState);
-  const addMyFoodMartMenu = useAddShopFoodMartMenuMutation();
 
   useEffect(() => {
     if (state) {
@@ -118,53 +79,42 @@ function RoomMenuPanel(props) {
 
   function handleClose() {
     toggleNewEntryDrawer(false);
-    setRoomId(null)
   }
 
   const methods = useForm({
-    mode: "onChange",
-    defaultValues: {
-      roomNumber: "",
-      roomStatus: "",
-      price: "",
-      title: "",
-      description: "",
-      bookingPropertyId: apartmentId,
-      images: [],
-    },
-    // resolver: zodResolver(schema)
-  });
-  const { reset, watch } = methods;
-  const form = watch();
+      mode: "onChange",
+      defaultValues: {
+        roomNumber: "",
+        roomStatus: "",
+        price: "",
+        title: "",
+        description: "",
+        bookingPropertyId: apartmentId,
+        images: [],
+      },
+      // resolver: zodResolver(schema)
+    });
+    const { reset, watch } = methods;
+    const form = watch();
+  
+    // const methods = useFormContext();
+    const { control, formState, getValues } = methods;
+    const { isValid, dirtyFields, errors } = formState;
+  
+    const updateRoomOnBookingsProperty = useRoomOnPropertyUpdateMutation();
+  
+    const {
+        data: room,
+        isLoading,
+        isError
+      } = useGetSingleRoomOfProperty(roomId, {
+        skip: !roomId 
+        // || roomId === 'new'
+      });
 
-  // const methods = useFormContext();
-  const { control, formState, getValues } = methods;
-  const { isValid, dirtyFields, errors } = formState;
-
-  const addRoomProperty = useAddRoomPropertyMutation();
-  const updateRoomOnBookingsProperty = useRoomOnPropertyUpdateMutation();
-
-  const {
-    data: room,
-    isLoading,
-    isError,
-  } = useGetSingleRoomOfProperty(roomId, {
-    skip: !roomId,
-    // || roomId === 'new'
-  });
 
   const images = watch("images");
   const imageSrcs = watch("imageSrcs");
-
-  function handleCreateRoomOnApartmentCall() {
-    parseInt(getValues().roomNumber);
-    parseInt(getValues().price);
-    const formattedData = {
-      ...getValues(),
-      price: parseInt(getValues().price),
-    };
-    addRoomProperty.mutate(formattedData);
-  }
 
   function handleSaveRoomOnApartment() {
     parseInt(getValues().roomNumber);
@@ -176,25 +126,28 @@ function RoomMenuPanel(props) {
     updateRoomOnBookingsProperty.mutate(formattedData);
   }
 
+
+
   function handleRemoveRoomOnApartment() {
     console.log("Deleting BookingProperty_List-Values", getValues());
   }
 
   useEffect(() => {
-    if (addRoomProperty.isSuccess) {
-      reset({});
-      methods.clearErrors();
-      // methods.dirtyFields.
-    }
-  }, [addRoomProperty.isSuccess]);
-
-  useEffect(() => {
-    if (room?.data?.room) {
-      reset({ ...room?.data?.room });
-    }
-  }, [room, reset]);
+      if (addRoomProperty.isSuccess) {
+        reset({});
+        methods.clearErrors();
+        // methods.dirtyFields.
+      }
+    }, [addRoomProperty.isSuccess]);
+  
+    useEffect(() => {
+      if (room?.data?.room) {
+        reset({ ...room?.data?.room });
+      }
+    }, [room, reset]);
   // console.log("Menu-IMAGES", images);
 
+ 
   // if (isLoading) {
   //   return <FuseLoading />;
   // }
@@ -212,8 +165,7 @@ function RoomMenuPanel(props) {
 
             <IconButton
               className="absolute right-0 top-0 z-999 m-4"
-              // onClick={toggleNewEntryDrawer(false)}
-              onClick={(e) => handleClose(e)}
+              onClick={toggleNewEntryDrawer(false)}
               size="large"
             >
               <FuseSvgIcon color="action">heroicons-outline:x</FuseSvgIcon>
@@ -221,120 +173,120 @@ function RoomMenuPanel(props) {
 
             <FuseScrollbars className="flex flex-col p-16 h-full">
               <div className="flex flex-auto flex-col">
-                <Controller
-                  name="title"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      className="mt-8 mb-16"
-                      required
-                      label="Name"
-                      autoFocus
-                      id="title"
-                      variant="outlined"
-                      fullWidth
-                      error={!!errors.title}
-                      helperText={errors?.title?.message}
-                    />
-                  )}
-                />
 
                 <Controller
-                  name={`roomNumber`}
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      className="mt-8 mb-16 mx-4"
-                      label="Room Number"
-                      id="roomNumber"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            Room Number
-                          </InputAdornment>
-                        ),
-                      }}
-                      type="number"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  )}
-                />
-
-                <Controller
-                  name={`price`}
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      className="mt-8 mb-16 mx-4"
-                      label="Number of Sitting rooms"
-                      id="price"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            price
-                          </InputAdornment>
-                        ),
-                      }}
-                      type="number"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  )}
-                />
-
-                <>
-                  <Typography style={{ fontSize: "12px", fontWeight: "800" }}>
-                    Room Status
-                  </Typography>
-                  <Controller
-                    name={`roomStatus`}
-                    control={control}
-                    defaultValue={[]}
-                    render={({ field: { onChange, value } }) => (
-                      <Select
-                        className="mt-8 mb-16"
-                        id="roomStatus"
-                        label="business country"
-                        fullWidth
-                        defaultValue=""
-                        onChange={onChange}
-                        value={value === undefined || null ? "" : value}
-                        error={!!errors.roomStatus}
-                        helpertext={errors?.roomStatus?.message}
-                      >
-                        <MenuItem value="">Select a status</MenuItem>
-                        {statuses &&
-                          statuses?.map((index) => (
-                            <MenuItem key={index} value={index}>
-                              {index}
-                            </MenuItem>
-                          ))}
-                      </Select>
-                    )}
-                  />
-                </>
-
-                <Controller
-                  name="description"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      className="mt-8 mb-16"
-                      id="description"
-                      label="Description"
-                      type="text"
-                      multiline
-                      rows={5}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  )}
-                />
+                        name="title"
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            className="mt-8 mb-16"
+                            required
+                            label="Name"
+                            autoFocus
+                            id="title"
+                            variant="outlined"
+                            fullWidth
+                            error={!!errors.title}
+                            helperText={errors?.title?.message}
+                          />
+                        )}
+                      />
+                
+                      <Controller
+                        name={`roomNumber`}
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            className="mt-8 mb-16 mx-4"
+                            label="Room Number"
+                            id="roomNumber"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">Room Number</InputAdornment>
+                              ),
+                            }}
+                            type="number"
+                            variant="outlined"
+                            fullWidth
+                          />
+                        )}
+                      />
+                
+                      <Controller
+                        name={`price`}
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            className="mt-8 mb-16 mx-4"
+                            label="Number of Sitting rooms"
+                            id="price"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">price</InputAdornment>
+                              ),
+                            }}
+                            type="number"
+                            variant="outlined"
+                            fullWidth
+                          />
+                        )}
+                      />
+                
+                      <>
+                        <Typography style={{ fontSize: "12px", fontWeight: "800" }}>
+                          Room Status
+                        </Typography>
+                        <Controller
+                          name={`roomStatus`}
+                          control={control}
+                          defaultValue={[]}
+                          render={({ field: { onChange, value } }) => (
+                            <Select
+                              className="mt-8 mb-16"
+                              id="roomStatus"
+                              label="business country"
+                              fullWidth
+                              defaultValue=""
+                              onChange={onChange}
+                              value={value === undefined || null ? "" : value}
+                              error={!!errors.roomStatus}
+                              helpertext={errors?.roomStatus?.message}
+                            >
+                              <MenuItem value="">Select a status</MenuItem>
+                              {statuses &&
+                                statuses?.map((index) => (
+                                  <MenuItem key={index} value={index}>
+                                    {index}
+                                  </MenuItem>
+                                ))}
+                            </Select>
+                          )}
+                        />
+                      </>
+                
+                      <Controller
+                        name="description"
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            className="mt-8 mb-16"
+                            id="description"
+                            label="Description"
+                            type="text"
+                            multiline
+                            rows={5}
+                            variant="outlined"
+                            fullWidth
+                          />
+                        )}
+                      />
+                
+                      
+                
 
                 <div className="flex justify-center sm:justify-start flex-wrap -mx-16">
                   <>
@@ -465,56 +417,42 @@ function RoomMenuPanel(props) {
                   />
                 </div>
               </div>
-              <motion.div
-                className="flex flex-1 w-full pb-8"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
-              >
-                {roomId ? (
-                  <>
-                    <Button
-                      className="whitespace-nowrap mx-4"
-                      variant="contained"
-                      color="secondary"
-                      onClick={handleRemoveRoomOnApartment}
-                      startIcon={
-                        <FuseSvgIcon className="hidden sm:flex">
-                          heroicons-outline:trash
-                        </FuseSvgIcon>
-                      }
-                    >
-                      Remove
-                    </Button>
-                    <Button
-                      className="whitespace-nowrap mx-4"
-                      variant="contained"
-                      color="secondary"
-                      disabled={
-                        _.isEmpty(dirtyFields) ||
-                        !isValid ||
-                        updateRoomOnBookingsProperty.isLoading
-                      }
-                      onClick={handleSaveRoomOnApartment}
-                    >
-                      Save
-                    </Button>
-                  </>
-                ) : (
-                  <Button
-                    className="whitespace-nowrap mx-4"
-                    variant="contained"
-                    color="secondary"
-                    disabled={
-                      _.isEmpty(dirtyFields) ||
-                      !isValid ||
-                      addRoomProperty.isLoading
-                    }
-                    onClick={handleCreateRoomOnApartmentCall}
-                  >
-                    Add Room| On Property
-                  </Button>
-                )}
-              </motion.div>
+          <motion.div
+                        className="flex flex-1 w-full pb-8"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
+                      >
+                        {roomId && (
+                          <>
+                            <Button
+                              className="whitespace-nowrap mx-4"
+                              variant="contained"
+                              color="secondary"
+                              onClick={handleRemoveRoomOnApartment}
+                              startIcon={
+                                <FuseSvgIcon className="hidden sm:flex">
+                                  heroicons-outline:trash
+                                </FuseSvgIcon>
+                              }
+                            >
+                              Remove
+                            </Button>
+                            <Button
+                              className="whitespace-nowrap mx-4"
+                              variant="contained"
+                              color="secondary"
+                              disabled={
+                                _.isEmpty(dirtyFields) ||
+                                !isValid ||
+                                updateRoomOnBookingsProperty.isLoading
+                              }
+                              onClick={handleSaveRoomOnApartment}
+                            >
+                              Save/Update Room
+                            </Button>
+                          </>
+                        ) }
+                      </motion.div>
             </FuseScrollbars>
           </div>
         </>
@@ -524,4 +462,4 @@ function RoomMenuPanel(props) {
   );
 }
 
-export default RoomMenuPanel;
+ export default UpdateRoomMenuPanel;
