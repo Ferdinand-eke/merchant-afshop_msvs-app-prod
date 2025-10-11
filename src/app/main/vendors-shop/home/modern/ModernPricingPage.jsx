@@ -259,12 +259,13 @@ function ModernPricingPage() {
             className="mt-8 text-3xl font-extrabold leading-6 sm:text-5xl sm:leading-10"
             color="text.secondary"
           >
-            Start using Africanshops today.
+            Start using <span className="text-amber-800">Africanshops</span> today.
           </Typography>
           <Button
-            className="mt-32 px-48 text-lg"
+            className="mt-32 px-48 text-lg bg-orange-700 hover:bg-orange-300"
             size="large"
-            color="secondary"
+            // color="secondary"
+
             variant="contained"
           >
             Sign up for free

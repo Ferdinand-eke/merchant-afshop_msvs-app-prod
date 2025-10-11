@@ -57,19 +57,18 @@ const ManagedBookingsListingsAppConfig = {
           element: <BookingPropertyListing />,
         }, //(Msvs => Done)
 
-		/***Handling PROPERTY OWNED Reservations STARTS HERE */
+        /***Handling PROPERTY OWNED Reservations STARTS HERE */
         {
           path: "managed-listings/:productId/manage",
           element: <BookingProfileApp />,
         },
 
+        {
+          path: ":reservationId/handle-arrival",
+          element: <ManageReservationPage />,
+        }, //(Msvs => Done)
 
-		 {
-              path: ":reservationId/handle-arrival",
-              element: <ManageReservationPage />,
-		 }, //(Msvs => Done)
-
-		 /***Handling Reservations ENDS HERE */
+        /***Handling Reservations ENDS HERE */
 
         {
           path: "list-reservations",

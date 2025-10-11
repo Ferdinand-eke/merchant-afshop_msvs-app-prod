@@ -8,17 +8,11 @@ import {
   selectFuseCurrentLayoutConfig,
   selectToolbarTheme,
 } from "@fuse/core/FuseSettings/fuseSettingsSlice";
-import NotificationPanelToggleButton from "src/app/main/apps/notifications/NotificationPanelToggleButton";
 import NavbarToggleButton from "app/theme-layouts/shared-components/navbar/NavbarToggleButton";
 import { selectFuseNavbar } from "app/theme-layouts/shared-components/navbar/navbarSlice";
 import { useAppSelector } from "app/store/hooks";
-import AdjustFontSize from "../../shared-components/AdjustFontSize";
-import FullScreenToggle from "../../shared-components/FullScreenToggle";
 import LanguageSwitcher from "../../shared-components/LanguageSwitcher";
-import NavigationShortcuts from "../../shared-components/navigation/NavigationShortcuts";
-import NavigationSearch from "../../shared-components/navigation/NavigationSearch";
 import UserMenu from "../../shared-components/UserMenu";
-import QuickPanelToggleButton from "../../shared-components/quickPanel/QuickPanelToggleButton";
 import LinkPanelButton from "./shared/LinkPanelButton";
 import Logo from "app/theme-layouts/shared-components/Logo";
 import LogoHome from "app/theme-layouts/shared-components/LogoHome";
@@ -71,8 +65,6 @@ function ToolbarLayout1(props) {
             )}
 
             <Hidden lgDown>
-              {/* <NavigationShortcuts /> */}
-			  {/* {!user.name &&  <LogoHome />} */}
 			  {(!user?.role || (Array.isArray(user?.role) && user?.role?.length === 0)) && <LogoHome />}
 			  {/* <Logo /> */}
             </Hidden>
@@ -81,7 +73,7 @@ function ToolbarLayout1(props) {
           <div className="flex h-full items-center overflow-x-auto px-8">
             {/* <LinkPanelButton /> */}
             {/* <LinkPanelButton /> */}
-            <LinkPanelButton />
+            {/* <LinkPanelButton /> */}
             <LanguageSwitcher />
             {/* <AdjustFontSize /> */}
             {/* <FullScreenToggle /> */}
@@ -89,7 +81,7 @@ function ToolbarLayout1(props) {
             {/* <QuickPanelToggleButton /> */}
 
 
-            <NotificationPanelToggleButton />
+            {/* <NotificationPanelToggleButton /> */}
 
             <UserMenu />
           </div>

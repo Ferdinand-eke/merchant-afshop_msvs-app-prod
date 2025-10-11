@@ -11,7 +11,7 @@ function ModernPricingFeatureItem(props) {
 		<div>
 			<Box
 				className="flex h-48 w-48 items-center justify-center rounded"
-				sx={{ backgroundColor: 'secondary.main', color: 'secondary.contrastText' }}
+				sx={{ backgroundColor: 'orange', color: 'secondary.contrastText' }}
 			>
 				<FuseSvgIcon>{icon}</FuseSvgIcon>
 			</Box>

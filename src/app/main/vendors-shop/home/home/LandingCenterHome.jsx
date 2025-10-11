@@ -168,17 +168,17 @@ function LandingCenterHome() {
 							}}
 						>
 							<Typography
-								color="secondary"
+								color="orange"
 								className="mx-8"
 							>
 								Multiple Kinds of accounts
 							</Typography>
-							{/* <FuseSvgIcon
+							<FuseSvgIcon
 								size={20}
-								color="secondary"
+								color="orange"
 							>
 								heroicons-solid:arrow-narrow-right
-							</FuseSvgIcon> */}
+							</FuseSvgIcon>
 						</Box>
 					</Card>
 
@@ -208,17 +208,17 @@ function LandingCenterHome() {
 							}}
 						>
 							<Typography
-								color="secondary"
+								color="orange"
 								className="mx-8"
 							>
 								Over 1000 verified merchants
 							</Typography>
-							{/* <FuseSvgIcon
+							<FuseSvgIcon
 								size={20}
-								color="secondary"
+								color="orange"
 							>
 								heroicons-solid:arrow-narrow-right
-							</FuseSvgIcon> */}
+							</FuseSvgIcon>
 						</Box>
 					</Card>
 
@@ -248,17 +248,17 @@ function LandingCenterHome() {
 							}}
 						>
 							<Typography
-								color="secondary"
+								color="orange"
 								className="mx-8"
 							>
 								Over 10,000 products
 							</Typography>
-							{/* <FuseSvgIcon
+							<FuseSvgIcon
 								size={20}
-								color="secondary"
+								color="orange"
 							>
 								heroicons-solid:arrow-narrow-right
-							</FuseSvgIcon> */}
+							</FuseSvgIcon>
 						</Box>
 					</Card>
 				</div>
