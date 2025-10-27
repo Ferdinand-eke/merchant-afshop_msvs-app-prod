@@ -4,13 +4,14 @@ import IconButton from "@mui/material/IconButton";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Typography from "@mui/material/Typography";
 import { useSnackbar } from "notistack";
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "app/store/hooks";
 import { useLocation, useParams } from "react-router-dom";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import Button from "@mui/material/Button";
 import FuseLoading from "@fuse/core/FuseLoading";
 import _ from "@lodash";
+import { toast } from "react-toastify";
 import {
   closeRoomMenuPanel,
   selectRoomMenuPanelState,
@@ -31,7 +32,6 @@ import Box from "@mui/material/Box";
 import { lighten } from "@mui/material/styles";
 import FuseUtils from "@fuse/utils";
 import clsx from "clsx";
-import { useAddShopFoodMartMenuMutation } from "app/configs/data/server-calls/foodmartmenuitems/useShopFoodMartMenu";
 import FusePageSimple from "@fuse/core/FusePageSimple";
 import {
   useAddRoomPropertyMutation,
@@ -104,11 +104,16 @@ function RoomMenuPanel(props) {
   const { roomId,setRoomId, apartmentId, toggleNewEntryDrawer } = props;
 
   const routeParams = useParams();
-  const { foodMartId } = routeParams;
+  // const { foodMartId } = routeParams;
   const location = useLocation();
   const dispatch = useAppDispatch();
   const state = useAppSelector(selectRoomMenuPanelState);
-  const addMyFoodMartMenu = useAddShopFoodMartMenuMutation();
+
+  // Track images to be deleted
+  const [imagesToDelete, setImagesToDelete] = useState([]);
+
+  // Track if we've already loaded initial room data (to prevent repeated resets)
+  const hasLoadedInitialData = useRef(false);
 
   useEffect(() => {
     if (state) {
@@ -118,7 +123,9 @@ function RoomMenuPanel(props) {
 
   function handleClose() {
     toggleNewEntryDrawer(false);
-    setRoomId(null)
+    setRoomId(null);
+    setImagesToDelete([]);
+    hasLoadedInitialData.current = false; // Reset for next time
   }
 
   const methods = useForm({
@@ -152,9 +159,41 @@ function RoomMenuPanel(props) {
     skip: !roomId,
     // || roomId === 'new'
   });
+  console.log("ROOM_DATA_FOR_EDITING", room?.data?.room);
 
   const images = watch("images");
   const imageSrcs = watch("imageSrcs");
+
+  /**
+   * Remove an existing image (from imageSrcs)
+   * Marks it for deletion but doesn't delete immediately
+   */
+  const handleRemoveExistingImage = (imageId) => {
+    const currentImageSrcs = getValues("imageSrcs") || [];
+    const imageToRemove = currentImageSrcs.find(img => img.id === imageId);
+
+    if (imageToRemove) {
+      // Add to deletion list
+      setImagesToDelete(prev => [...prev, imageToRemove]);
+
+      // Remove from form imageSrcs
+      const updatedImageSrcs = currentImageSrcs.filter(img => img.id !== imageId);
+      methods.setValue("imageSrcs", updatedImageSrcs, { shouldDirty: true });
+
+      toast.info("Image marked for deletion. Click Save to confirm.");
+    }
+  };
+
+  /**
+   * Remove a newly uploaded image (from images array)
+   * This removes it immediately as it hasn't been saved yet
+   */
+  const handleRemoveNewImage = (imageId) => {
+    const currentImages = getValues("images") || [];
+    const updatedImages = currentImages.filter(img => img.id !== imageId);
+    methods.setValue("images", updatedImages, { shouldDirty: true });
+    toast.success("New image removed");
+  };
 
   function handleCreateRoomOnApartmentCall() {
     parseInt(getValues().roomNumber);
@@ -162,6 +201,8 @@ function RoomMenuPanel(props) {
     const formattedData = {
       ...getValues(),
       price: parseInt(getValues().price),
+      // Only send new images for creation
+      images: getValues().images || [],
     };
     addRoomProperty.mutate(formattedData);
   }
@@ -169,10 +210,18 @@ function RoomMenuPanel(props) {
   function handleSaveRoomOnApartment() {
     parseInt(getValues().roomNumber);
     parseInt(getValues().price);
+
     const formattedData = {
       ...getValues(),
       price: parseInt(getValues().price),
+      // Send new images to be added
+      images: getValues().images || [],
+      // Send IDs of images to delete
+      imagesToDelete: imagesToDelete.map(img => img.id),
+      // Keep existing images that weren't deleted
+      imageSrcs: getValues("imageSrcs") || [],
     };
+
     updateRoomOnBookingsProperty.mutate(formattedData);
   }
 
@@ -184,16 +233,48 @@ function RoomMenuPanel(props) {
     if (addRoomProperty.isSuccess) {
       reset({});
       methods.clearErrors();
-      // methods.dirtyFields.
+      setImagesToDelete([]);
+      hasLoadedInitialData.current = false; // Reset for next room
     }
   }, [addRoomProperty.isSuccess]);
 
   useEffect(() => {
-    if (room?.data?.room) {
-      reset({ ...room?.data?.room });
+    if (updateRoomOnBookingsProperty.isSuccess) {
+      // Clear deletion queue after successful update
+      setImagesToDelete([]);
+      toast.success("Room updated successfully with image changes!");
     }
-  }, [room, reset]);
-  // console.log("Menu-IMAGES", images);
+  }, [updateRoomOnBookingsProperty.isSuccess]);
+
+  // Reset the flag and form whenever roomId changes (switching rooms)
+  useEffect(() => {
+    hasLoadedInitialData.current = false;
+    setImagesToDelete([]);
+
+    // Reset form to empty state when switching rooms or opening new room form
+    if (!roomId) {
+      reset({
+        roomNumber: "",
+        roomStatus: "",
+        price: "",
+        title: "",
+        description: "",
+        bookingPropertyId: apartmentId,
+        images: [],
+        imageSrcs: []
+      });
+    }
+  }, [roomId, reset, apartmentId]);
+
+  // Load room data only once when it becomes available
+  useEffect(() => {
+    if (roomId && room?.data?.room && !hasLoadedInitialData.current) {
+      reset({ ...room?.data?.room });
+      setImagesToDelete([]);
+      hasLoadedInitialData.current = true;
+    }
+  }, [room, reset, roomId]);
+  // console.log("ROOM_DATA__&&__IMAGES", room?.data?.room);
 
   // if (isLoading) {
   //   return <FuseLoading />;
@@ -337,132 +418,131 @@ function RoomMenuPanel(props) {
                 />
 
                 <div className="flex justify-center sm:justify-start flex-wrap -mx-16">
-                  <>
-                    <Controller
-                      name="images"
-                      control={control}
-                      render={({ field: { onChange, value } }) => (
-                        <Box
-                          sx={{
-                            backgroundColor: (theme) =>
-                              theme.palette.mode === "light"
-                                ? lighten(theme.palette.background.default, 0.4)
-                                : lighten(
-                                    theme.palette.background.default,
-                                    0.02
-                                  ),
-                          }}
-                          component="label"
-                          htmlFor="button-file"
-                          className="productImageUpload flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg"
-                        >
-                          <input
-                            accept="image/*"
-                            className="hidden"
-                            id="button-file"
-                            type="file"
-                            onChange={async (e) => {
-                              function readFileAsync() {
-                                return new Promise((resolve, reject) => {
-                                  const file = e?.target?.files?.[0];
-
-                                  if (!file) {
-                                    return;
-                                  }
-
-                                  const reader = new FileReader();
-                                  reader.onload = () => {
-                                    resolve({
-                                      id: FuseUtils.generateGUID(),
-                                      url: `data:${file.type};base64,${btoa(reader.result)}`,
-                                      type: "image",
-                                    });
-                                  };
-                                  reader.onerror = reject;
-                                  reader.readAsBinaryString(file);
-                                });
-                              }
-
-                              const newImage = await readFileAsync();
-                              onChange([newImage, ...value]);
-                            }}
-                          />
-                          <FuseSvgIcon size={32} color="action">
-                            heroicons-outline:upload
-                          </FuseSvgIcon>
-                        </Box>
-                      )}
-                    />
-                    <Controller
-                      name="featuredImageId"
-                      control={control}
-                      defaultValue=""
-                      render={({ field: { onChange, value } }) => {
-                        return (
-                          <>
-                            {images?.map((media) => (
-                              <div
-                                onClick={() => onChange(media.id)}
-                                onKeyDown={() => onChange(media.id)}
-                                role="button"
-                                tabIndex={0}
-                                className={clsx(
-                                  "productImageItem flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer outline-none shadow hover:shadow-lg",
-                                  media.id === value && "featured"
-                                )}
-                                key={media.id}
-                              >
-                                <FuseSvgIcon className="productImageFeaturedStar">
-                                  heroicons-solid:star
-                                </FuseSvgIcon>
-                                <img
-                                  className="max-w-none w-auto h-full"
-                                  src={media.url}
-                                  alt="product"
-                                />
-                              </div>
-                            ))}
-                          </>
-                        );
-                      }}
-                    />
-                  </>
-
-                  <Divider />
-
+                  {/* Upload Button */}
                   <Controller
-                    name="featuredImageId"
+                    name="images"
                     control={control}
-                    defaultValue=""
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <>
-                          {imageSrcs?.map((media) => (
-                            <div
-                              onClick={() => onChange(media.public_id)}
-                              onKeyDown={() => onChange(media.public_id)}
-                              role="button"
-                              tabIndex={0}
-                              className={clsx(
-                                "productImageItem flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer outline-none shadow hover:shadow-lg",
-                                media.id === value && "featured"
-                              )}
-                              key={media.public_id}
-                            >
-                              <FuseSvgIcon className="productImageFeaturedStar">
-                                heroicons-solid:star
-                              </FuseSvgIcon>
-                              <img
-                                className="max-w-none w-auto h-full"
-                                src={media.url}
-                                alt="product"
-                              />
-                            </div>
-                          ))}
-                        </>
-                      );
-                    }}
+                    render={({ field: { onChange, value } }) => (
+                      <Box
+                        sx={{
+                          backgroundColor: (theme) =>
+                            theme.palette.mode === "light"
+                              ? lighten(theme.palette.background.default, 0.4)
+                              : lighten(theme.palette.background.default, 0.02),
+                        }}
+                        component="label"
+                        htmlFor="button-file"
+                        className="productImageUpload flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg"
+                      >
+                        <input
+                          accept="image/*"
+                          className="hidden"
+                          id="button-file"
+                          type="file"
+                          onChange={async (e) => {
+                            function readFileAsync() {
+                              return new Promise((resolve, reject) => {
+                                const file = e?.target?.files?.[0];
+                                if (!file) {
+                                  return;
+                                }
+                                const reader = new FileReader();
+                                reader.onload = () => {
+                                  resolve({
+                                    id: FuseUtils.generateGUID(),
+                                    url: `data:${file.type};base64,${btoa(reader.result)}`,
+                                    type: "image",
+                                  });
+                                };
+                                reader.onerror = reject;
+                                reader.readAsBinaryString(file);
+                              });
+                            }
+                            const newImage = await readFileAsync();
+                            onChange([...(value || []), newImage]);
+                          }}
+                        />
+                        <FuseSvgIcon size={32} color="action">
+                          heroicons-outline:upload
+                        </FuseSvgIcon>
+                      </Box>
+                    )}
                   />
+
+                  {/* Existing Images from Server (imageSrcs) */}
+                  {imageSrcs && imageSrcs.length > 0 && (
+                    <>
+                      <Typography className="w-full text-sm font-semibold px-12 mb-8">
+                        Existing Images ({imageSrcs.length})
+                      </Typography>
+                      {imageSrcs.map((media) => (
+                        <div
+                          className="productImageItem flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden shadow hover:shadow-lg"
+                          key={media.id || media.public_id}
+                        >
+                          <IconButton
+                            className="absolute top-0 right-0 z-10"
+                            onClick={() => handleRemoveExistingImage(media.id)}
+                            size="small"
+                            sx={{
+                              backgroundColor: "rgba(0, 0, 0, 0.5)",
+                              "&:hover": { backgroundColor: "rgba(255, 0, 0, 0.7)" },
+                            }}
+                          >
+                            <FuseSvgIcon size={16} className="text-white">
+                              heroicons-outline:trash
+                            </FuseSvgIcon>
+                          </IconButton>
+                          <img
+                            className="max-w-none w-auto h-full"
+                            src={media.url}
+                            alt="room"
+                          />
+                        </div>
+                      ))}
+                    </>
+                  )}
+
+                  {/* New Uploaded Images (images) */}
+                  {images && images.length > 0 && (
+                    <>
+                      <Typography className="w-full text-sm font-semibold px-12 mb-8 text-green-600">
+                        New Images to Upload ({images.length})
+                      </Typography>
+                      {images.map((media) => (
+                        <div
+                          className="productImageItem flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden shadow hover:shadow-lg border-2 border-green-500"
+                          key={media.id}
+                        >
+                          <IconButton
+                            className="absolute top-0 right-0 z-10"
+                            onClick={() => handleRemoveNewImage(media.id)}
+                            size="small"
+                            sx={{
+                              backgroundColor: "rgba(0, 0, 0, 0.5)",
+                              "&:hover": { backgroundColor: "rgba(255, 0, 0, 0.7)" },
+                            }}
+                          >
+                            <FuseSvgIcon size={16} className="text-white">
+                              heroicons-outline:x
+                            </FuseSvgIcon>
+                          </IconButton>
+                          <img
+                            className="max-w-none w-auto h-full"
+                            src={media.url}
+                            alt="new upload"
+                          />
+                        </div>
+                      ))}
+                    </>
+                  )}
+
+                  {/* Show message if no images */}
+                  {(!imageSrcs || imageSrcs.length === 0) && (!images || images.length === 0) && (
+                    <Typography className="w-full text-center text-gray-500 py-20">
+                      No images uploaded. Click the upload button to add images.
+                    </Typography>
+                  )}
                 </div>
               </div>
               <motion.div

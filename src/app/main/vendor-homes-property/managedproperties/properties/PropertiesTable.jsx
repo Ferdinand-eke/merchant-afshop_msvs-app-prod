@@ -16,14 +16,8 @@ import { formatCurrency } from 'src/app/main/vendors-shop/pos/PosUtils';
 
 function PropertiesTable() {
 	
-	// const { data: products, isLoading } = useGetECommerceProductsQuery();
-	// const [removeProducts] = useDeleteECommerceProductsMutation();
 
 	const {data:listingData, isLoading:listingIsLoading} = useMyShopEstateProperties()
-
-	// console.log("The listing data is here: ", listingData?.data);
-
-	
 
 
 	const columns = useMemo(

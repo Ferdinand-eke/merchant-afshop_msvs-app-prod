@@ -18,9 +18,9 @@ import { useShopAdminLogin } from "app/configs/data/server-calls/auth/admin-auth
 const defaultAuthContext = {
   isAuthenticated: false,
   isLoading: false,
+  isLoginLoading: false,
   user: null,
   updateUser: null,
-  isLoginLoading: false,
   signIn: null,
   signUp: null,
   signOut: null,
@@ -118,7 +118,6 @@ function JwtAuthProvider(props) {
 
   const [user, setUser] = useState(getUserCredentialsStorage());
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoginLoading, setLoginIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(
     getIsAuthenticatedStatus()
   );
@@ -287,10 +286,7 @@ function JwtAuthProvider(props) {
     handleSignInFailure
   ) => {
     try {
-      setIsLoading(true);
-
       adminLogIn.mutate(data);
-      setIsLoading(false);
     } catch (error) {
       const axiosError = error;
       console.log("Request-Error", error);
@@ -301,7 +297,6 @@ function JwtAuthProvider(props) {
       );
 
       handleSignInFailure(axiosError);
-      setIsLoading(false);
       return axiosError;
     }
   };
@@ -425,7 +420,8 @@ function JwtAuthProvider(props) {
       user,
       isAuthenticated,
       authStatus,
-      isLoading,
+      isLoading: isLoading || adminLogIn.isLoading,
+      isLoginLoading: adminLogIn.isLoading,
       signIn,
       signUp,
       signOut,
@@ -437,6 +433,7 @@ function JwtAuthProvider(props) {
       user,
       isAuthenticated,
       isLoading,
+      adminLogIn.isLoading,
       signIn,
       signUp,
       signOut,

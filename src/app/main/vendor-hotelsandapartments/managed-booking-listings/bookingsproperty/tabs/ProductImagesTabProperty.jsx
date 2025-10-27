@@ -56,9 +56,9 @@ function ProductImagesTabProperty() {
 
   const images = watch("images");
   const imageSrcs = watch("imageSrcs");
-//   const [formImages, setFormImages] = useState([]);
+  //   const [formImages, setFormImages] = useState([]);
 
-// console.log("FORM_IMAGES", images)
+  // console.log("FORM_IMAGES", images)
   const fileUploadAndResize = (e) => {
     let files = e.target.files; // 3
     let allUploadedFiles = [];
@@ -69,7 +69,7 @@ function ProductImagesTabProperty() {
           files[i],
           720,
           720,
-          'JPEG PNG',
+          "JPEG PNG",
           100,
           0,
           (uri) => {
@@ -79,26 +79,24 @@ function ProductImagesTabProperty() {
               //     ...formik?.values,
               //     images: allUploadedFiles,
               //   });
-			  images.push(uri)
-            //   setFormImages(allUploadedFiles);
-			//   setValue(images, allUploadedFiles)
-			
+              images.push(uri);
+              //   setFormImages(allUploadedFiles);
+              //   setValue(images, allUploadedFiles)
             } else {
               return allUploadedFiles;
             }
           },
-          'base64'
+          "base64"
         );
       }
     }
   };
 
   const deleteAnArrayImage = (item) => {
-
     var filtered = images.filter(function (el) {
       return el != item;
     });
-    setValue('images', filtered);
+    setValue("images", filtered);
   };
 
   return (
@@ -108,13 +106,12 @@ function ProductImagesTabProperty() {
           <>
             {/* for new listings only */}
 
-
             <div className="px-4 pb-4 mt-5 flex items-center justify-center cursor-pointer relative">
               {/* <FuseSvgIcon className="w-4 h-4 mr-2">
 				heroicons-solid:upload
 			</FuseSvgIcon> */}
 
-			{/* <Controller
+              {/* <Controller
           name="images"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -148,40 +145,37 @@ function ProductImagesTabProperty() {
           )}
         /> */}
 
-<Box
-              sx={{
-                backgroundColor: (theme) =>
-                  theme.palette.mode === "light"
-                    ? lighten(theme.palette.background.default, 0.4)
-                    : lighten(theme.palette.background.default, 0.02),
-              }}
-              component="label"
-              htmlFor="button-file"
-              className="productImageUpload flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg"
-            >
-               <input
-                id="horizontal-form-1"
-                type="file"
-                className="w-full h-full top-0 left-0 absolute opacity-0"
-                multiple
-                accept="images/*"
-
-				//   onChange={async (e) =>  {
-				// 	 fileUploadAndResize
-				// 	setValue(images, formImages)
-				//   }}
-				onChange={fileUploadAndResize}
-              />
-              <FuseSvgIcon size={32} color="action">
-                heroicons-outline:upload
-              </FuseSvgIcon>
-            </Box>
-            
+              <Box
+                sx={{
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === "light"
+                      ? lighten(theme.palette.background.default, 0.4)
+                      : lighten(theme.palette.background.default, 0.02),
+                }}
+                component="label"
+                htmlFor="button-file"
+                className="productImageUpload flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg"
+              >
+                <input
+                  id="horizontal-form-1"
+                  type="file"
+                  className="w-full h-full top-0 left-0 absolute opacity-0"
+                  multiple
+                  accept="images/*"
+                  //   onChange={async (e) =>  {
+                  // 	 fileUploadAndResize
+                  // 	setValue(images, formImages)
+                  //   }}
+                  onChange={fileUploadAndResize}
+                />
+                <FuseSvgIcon size={32} color="action">
+                  heroicons-outline:upload
+                </FuseSvgIcon>
+              </Box>
 
               {/* <span className="text-primary mr-1 cursor-pointer">
                 Upload images
               </span> */}
-            
             </div>
 
             <Controller
@@ -197,13 +191,14 @@ function ProductImagesTabProperty() {
                         tabIndex={0}
                         className={clsx(
                           "productImageItem flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer outline-none shadow hover:shadow-lg",
-                          media=== value && "featured"
+                          media === value && "featured"
                         )}
                         key={index}
                       >
-                        <FuseSvgIcon className="productImageFeaturedStar"
-						onClick={() => deleteAnArrayImage(media)}
-						>
+                        <FuseSvgIcon
+                          className="productImageFeaturedStar"
+                          onClick={() => deleteAnArrayImage(media)}
+                        >
                           heroicons-solid:trash
                         </FuseSvgIcon>
                         <img
@@ -217,7 +212,6 @@ function ProductImagesTabProperty() {
                 );
               }}
             />
-
           </>
         )}
 
@@ -230,7 +224,7 @@ function ProductImagesTabProperty() {
           render={({ field: { onChange, value } }) => {
             return (
               <>
-                {imageSrcs?.map((media,) => (
+                {imageSrcs?.map((media) => (
                   <div
                     onClick={() => onChange(media.public_id)}
                     onKeyDown={() => onChange(media.public_id)}
@@ -242,9 +236,10 @@ function ProductImagesTabProperty() {
                     )}
                     key={media.public_id}
                   >
-                    <FuseSvgIcon className="productImageFeaturedStar"
-					onClick={() => {}}
-					>
+                    <FuseSvgIcon
+                      className="productImageFeaturedStar"
+                      onClick={() => {}}
+                    >
                       heroicons-solid:star
                     </FuseSvgIcon>
                     <img

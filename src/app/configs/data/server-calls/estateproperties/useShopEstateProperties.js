@@ -24,14 +24,14 @@ export default function useMyShopEstateProperties() {
 
 // get single estate property details
 export function useSingleShopEstateProperty(slug) {
-	if (!slug || slug === 'new') {
-		return {};
-	}
-
-	return useQuery(['singleestateproperty', slug], () => getMyShopEstatePropertyBySlug(slug), {
-		enabled: Boolean(slug)
-		// staleTime: 5000,
-	});
+	return useQuery(
+		['singleestateproperty', slug],
+		() => getMyShopEstatePropertyBySlug(slug),
+		{
+			enabled: Boolean(slug) && slug !== 'new'
+			// staleTime: 5000,
+		}
+	);
 }
 
 // create new property

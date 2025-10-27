@@ -11,27 +11,41 @@ import {
 } from "../../client/clientToApiRoutes";
 
 /** *get all Specific user shop-estate property */
-export default function useMyPropertiesReservations() {
-  return useQuery(["__merchant_reservations"], getShopBookingsReservationsApi); // ("Msvs: => : Done")
+export default function useMyPropertiesReservations(params = {}) {
+  return useQuery(
+    ["__merchant_reservations", params],
+    () => getShopBookingsReservationsApi(params),
+    {
+      keepPreviousData: true, // Keep previous data while fetching new data for smoother UX
+    }
+  ); // ("Msvs: => : Done")
 }
 
 /** **Get  Reservations on a particular property */
 export function useFetchReservationsOnProperty(propertyId) {
-  if (!propertyId) return { data: null, isLoading: false, isError: true };
-
-  return useQuery(["__merchant_reservations_on_property", propertyId], () => {
-    return getReservationsOnPropertyApi(propertyId);
-  });
+  return useQuery(
+    ["__merchant_reservations_on_property", propertyId],
+    () => {
+      return getReservationsOnPropertyApi(propertyId);
+    },
+    {
+      enabled: Boolean(propertyId),
+    }
+  );
 } // ("Msvs: => : Done")
 
 //
 /** **Get single Guest Bookded Reservation */
 export function useFindMerchantSingleReservation(itemId) {
-  if (!itemId) return { data: null, isLoading: false, isError: true };
-
-  return useQuery(["__merchant_reservations", itemId], () => {
-    return getSingleMerchantReservationApi(itemId);
-  });
+  return useQuery(
+    ["__merchant_reservations", itemId],
+    () => {
+      return getSingleMerchantReservationApi(itemId);
+    },
+    {
+      enabled: Boolean(itemId),
+    }
+  );
 } // (Msvs => Done)
 
 /** *Check In Guest Users Reservations */

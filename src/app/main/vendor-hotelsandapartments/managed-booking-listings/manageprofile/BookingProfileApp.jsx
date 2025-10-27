@@ -45,10 +45,7 @@ function BookingProfileApp() {
     data: propertyList,
     isLoading,
     isError,
-  } = useSingleShopBookingsProperty(productId, {
-    skip: !productId,
-  });
-  //|| productId === "new",
+  } = useSingleShopBookingsProperty(productId);
 
   function handleTabChange(event, value) {
     setSelectedTab(value);

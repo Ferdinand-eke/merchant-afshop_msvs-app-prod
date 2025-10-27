@@ -14,14 +14,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import ProductHeader from './BookingPropertyHeader';
 import BasicInfoTabProperty from './tabs/BasicInfoTabProperty';
-import InventoryTabProperty from './tabs/InventoryTabProperty';
 import PricingTabProperty from './tabs/PricingTabProperty';
 import ProductImagesTabProperty from './tabs/ProductImagesTabProperty';
 import ShippingTabProperty from './tabs/ShippingTabProperty';
-import { useGetECommerceProductQuery } from '../ECommerceApi';
 import ProductModel from './models/ProductModel';
 import useGetMyShopDetails from 'app/configs/data/server-calls/shopdetails/useShopDetails';
-import { useSingleShopEstateProperty } from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
 import { useSingleShopBookingsProperty } from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
 /**
  * Form Validation Schema
@@ -34,24 +31,6 @@ const schema = z.object({
 	// images : z.array().nullable()
 	latitude: z.string(),
 	longitude: z.string(),
-	
-	// z.number().safe(),
-
-	// roomCount: z.string(),
-	// guestCount: z.string(),
-	// bathroomCount: z.string(),
-	// sittingroomCount: z.string().optional(),
-	
-
-	
-	// images: z.string().array(),
-
-	// price: z.string(),
-	// listprice: z.number(),
-	// bookingPeriod: z.string(),
-	// isRentIndividualRoom: z.boolean()
-
-
 	
 
 });
@@ -66,7 +45,6 @@ function BookingPropertyListing() {
 	const { productId } = routeParams;
 
 	const { data: shopData, 
-		// isLoading: shopDataLoading
 	 } = useGetMyShopDetails();
 
 
@@ -74,9 +52,7 @@ function BookingPropertyListing() {
 		data: propertyList,
 		isLoading,
 		isError
-	} = useSingleShopBookingsProperty(productId, {
-		skip: !productId || productId === 'new'
-	});
+	} = useSingleShopBookingsProperty(productId);
 
 
 	const [tabValue, setTabValue] = useState(0);
@@ -185,10 +161,6 @@ function BookingPropertyListing() {
 								className="h-64"
 								label="Pricing"
 							/>
-							{/* <Tab
-								className="h-64"
-								label="Inventory"
-							/> */}
 							<Tab
 								className="h-64"
 								label="Property measurement"
@@ -208,9 +180,6 @@ function BookingPropertyListing() {
 								<PricingTabProperty shopData={shopData}/>
 							</div>
 
-							{/* <div className={tabValue !== 3 ? 'hidden' : ''}>
-								<InventoryTabProperty />
-							</div> */}
 
 							<div className={tabValue !== 3 ? 'hidden' : ''}>
 								<ShippingTabProperty />

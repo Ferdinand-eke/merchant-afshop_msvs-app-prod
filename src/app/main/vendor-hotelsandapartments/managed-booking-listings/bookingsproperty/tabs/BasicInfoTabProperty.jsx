@@ -3,7 +3,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { Controller, useFormContext } from "react-hook-form";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { InputAdornment, Typography } from "@mui/material";
+import { InputAdornment, FormControl, InputLabel, FormHelperText } from "@mui/material";
 // import useCountries from "src/app/hooks/useCountries";
 import { useEffect, useState } from "react";
 import useSellerCountries from "app/configs/data/server-calls/countries/useCountries";
@@ -75,7 +75,7 @@ export const categoryset = [
     description: "This property is on an island",
   },
 ];
-
+ 
 
 
 function BasicInfoTabProperty() {
@@ -184,32 +184,35 @@ function BasicInfoTabProperty() {
         )}
       />
 
-      <>
-        <Typography>Property category</Typography>
-
-        <Controller
-          name="category"
-          control={control}
-          defaultValue={[]}
-          render={({ field: { onChange, value } }) => (
+      <Controller
+        name="category"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value } }) => (
+          <FormControl
+            fullWidth
+            className="mt-8 mb-16"
+            error={!!errors.category}
+          >
+            <InputLabel id="category-label">Property Category</InputLabel>
             <Select
-              className="mt-8 mb-16"
+              labelId="category-label"
               id="category"
-              label="Category"
-              variant="outlined"
-              placeholder="Select a category"
-              fullWidth
-              defaultValue=""
+              label="Property Category"
               onChange={onChange}
-              value={value === undefined || null ? "" : value}
-              error={!!errors.category}
-              helpertext={errors?.category?.message}
+              value={value || ""}
             >
+              <MenuItem value="">
+                <em>Select a category</em>
+              </MenuItem>
               {generateSingleOptions()}
             </Select>
-          )}
-        />
-      </>
+            {errors?.category && (
+              <FormHelperText>{errors.category.message}</FormHelperText>
+            )}
+          </FormControl>
+        )}
+      />
 
       <Controller
         name={`roomCount`}
@@ -299,92 +302,97 @@ function BasicInfoTabProperty() {
         )}
       />
 
-      <>
-        <Typography style={{ fontSize: "12px", fontWeight: "800" }}>
-          Country of location?
-        </Typography>
-        <Controller
-          name={`propertyCountry`}
-          control={control}
-          defaultValue={[]}
-          render={({ field: { onChange, value } }) => (
+      <Controller
+        name="propertyCountry"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value } }) => (
+          <FormControl
+            fullWidth
+            className="mt-8 mb-16"
+            error={!!errors.propertyCountry}
+          >
+            <InputLabel id="propertyCountry-label">Country of Location</InputLabel>
             <Select
-              className="mt-8 mb-16"
+              labelId="propertyCountry-label"
               id="propertyCountry"
-              label="business country"
-              fullWidth
-              defaultValue=""
+              label="Country of Location"
               onChange={onChange}
-              value={value === undefined || null ? "" : value}
-              error={!!errors.propertyCountry}
-              helpertext={errors?.propertyCountry?.message}
+              value={value || ""}
             >
-              <MenuItem value="">Select a country</MenuItem>
+              <MenuItem value="">
+                <em>Select a country</em>
+              </MenuItem>
               {countries?.data?.countries &&
-                countries?.data?.countries?.map((option, id) => (
+                countries?.data?.countries?.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
                 ))}
             </Select>
-          )}
-        />
-      </>
+            {errors?.propertyCountry && (
+              <FormHelperText>{errors.propertyCountry.message}</FormHelperText>
+            )}
+          </FormControl>
+        )}
+      />
 
-      <>
-        <Typography style={{ fontSize: "12px", fontWeight: "800" }}>
-          State location? (Dependent on country selected)
-        </Typography>
-        <Controller
-          name={`propertyState`}
-          control={control}
-          defaultValue={[]}
-          render={({ field: { onChange, value } }) => (
+      <Controller
+        name="propertyState"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value } }) => (
+          <FormControl
+            fullWidth
+            className="mt-8 mb-16"
+            error={!!errors.propertyState}
+          >
+            <InputLabel id="propertyState-label">State/Province Location</InputLabel>
             <Select
-              // disabled
-              className="mt-8 mb-16"
+              labelId="propertyState-label"
               id="propertyState"
-              label="business state"
-              fullWidth
-              defaultValue=""
+              label="State/Province Location"
               onChange={onChange}
-              value={value === undefined || null ? "" : value}
-              error={!!errors.propertyState}
-              helpertext={errors?.propertyState?.message}
+              value={value || ""}
             >
-              <MenuItem value="">Select a state</MenuItem>
+              <MenuItem value="">
+                <em>Select a state</em>
+              </MenuItem>
               {bstates &&
-                bstates?.map((option, id) => (
+                bstates?.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
                 ))}
             </Select>
-          )}
-        />
-      </>
+            {errors?.propertyState && (
+              <FormHelperText>{errors.propertyState.message}</FormHelperText>
+            )}
+          </FormControl>
+        )}
+      />
 
-      <div className="sm:col-span-2">
-        <Typography style={{ fontSize: "12px", fontWeight: "800" }}>
-          L.G.A/County location
-        </Typography>
-        <Controller
-          name={`propertyLga`}
-          control={control}
-          defaultValue={[]}
-          render={({ field: { onChange, value } }) => (
+      <Controller
+        name="propertyLga"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value } }) => (
+          <FormControl
+            fullWidth
+            className="mt-8 mb-16"
+            error={!!errors.propertyLga}
+          >
+            <InputLabel id="propertyLga-label">L.G.A/County Location</InputLabel>
             <Select
-              className="mt-8 mb-16"
+              labelId="propertyLga-label"
               id="propertyLga"
-              label="L.G.A/County of Location"
-              placeholder="L.G.A/County of location"
-              fullWidth
-              defaultValue=""
+              label="L.G.A/County Location"
               onChange={onChange}
-              value={value === undefined || null ? "" : value}
-              error={!!errors.propertyLga}
-              helperText={errors?.propertyLga?.message}
+              value={value || ""}
             >
+              <MenuItem value="">
+                <em>Select L.G.A/County</em>
+              </MenuItem>
               {blgas.length > 0 ? (
                 blgas?.map((lga, index) => (
                   <MenuItem key={index} value={lga?.id}>
@@ -392,12 +400,17 @@ function BasicInfoTabProperty() {
                   </MenuItem>
                 ))
               ) : (
-                <span>No L.G.As found</span>
+                <MenuItem value="" disabled>
+                  No L.G.As found
+                </MenuItem>
               )}
             </Select>
-          )}
-        />
-      </div>
+            {errors?.propertyLga && (
+              <FormHelperText>{errors.propertyLga.message}</FormHelperText>
+            )}
+          </FormControl>
+        )}
+      />
 
       {/* Add districts */}
       {/* <div className="sm:col-span-2">

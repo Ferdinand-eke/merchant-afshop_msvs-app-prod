@@ -350,7 +350,10 @@ export const deleteShopEstateProperty = (id) => AuthApi().delete(`/myshop/delete
  * ############################################################################################
  */
 // {===============================shop estate property handling starts=======================================}
-export const getShopBookingsProperties = () => AuthApi().get('/bookings/get-merchant-bookings'); // (Msvs => Done)
+export const getShopBookingsProperties = (params) => {
+	const queryString = params ? qs.stringify(params, { arrayFormat: "repeat" }) : '';
+	return AuthApi().get(`/bookings/get-merchant-bookings${queryString ? `?${queryString}` : ''}`);
+}; // (Msvs => Done)
 
 export const storeShopBookingsProperty = (formData) => AuthApi().post('/bookings/create-listing', formData); // (Msvs => done)
 
@@ -381,7 +384,10 @@ export const updateRoomOnProperty = (productFormData) => {
 }; // (Msvs => Done)
 
 /** **Reservations */ // reservations/get-merchant-reservations on-property/:propertyId/get-reservations
-export const getShopBookingsReservationsApi = () => AuthApi().get('/reservations/get-merchant-reservations'); // newDashboard (Msvs => Done)
+export const getShopBookingsReservationsApi = (params) => {
+	const queryString = params ? qs.stringify(params, { arrayFormat: "repeat" }) : '';
+	return AuthApi().get(`/reservations/get-merchant-reservations${queryString ? `?${queryString}` : ''}`);
+}; // newDashboard (Msvs => Done)
 export const getShopSealedBookingsReservationsApi = () =>
 	AuthApi().get('/reservations/get-merchant-sealed-reservations'); // newDashboard //(Msvs : => :done)
 export const getSingleMerchantReservationApi = (reservationId) =>
@@ -394,10 +400,10 @@ export const merchantCheckInGuestReservations = (id) =>
 export const merchantCheckOutGuestReservations = (id) =>
 	AuthApi().put(`/reservations/merchant-handle-reservation/${id}/check-out-guest`);
 export const merchantCashOutReservationEarning = (id) => {
-	return AuthApi().post(`/reservations/merchant-handle-reservation/${id}/cashout-reservation-earning`);
+	return AuthApi().put(`/reservations/merchant-handle-reservation/${id}/cashout-reservation-earning`);
 };
 // {===============================shop b=homes handling ends   =======================================}
-/** *
+/** *merchant-handle-reservation/:reservationId/cashout-reservation-earning
  * #############################################################################################
  * HANDLE SHOP HOMES, HOTELS and APARTMENT BOOKINGS ENDS HERE
  * ############################################################################################

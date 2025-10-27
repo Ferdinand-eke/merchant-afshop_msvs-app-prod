@@ -37,43 +37,6 @@ const forgotPasswordConfig = {
 			element: <ModernReversedForgotPasswordPage />
 		},
 
-		// {
-		// 	path: 'forgot-password',
-		// 	children: [
-		// 		{
-		// 			path: '',
-		// 			element: <Navigate to="classic" />
-		// 		},
-		// 		{
-		// 			path: 'classic',
-		// 			element: <ClassicForgotPasswordPage />
-		// 		},
-		// 		{
-		// 			path: 'modern',
-		// 			element: <ModernForgotPasswordPage />
-		// 		},
-		// 		{
-		// 			path: 'modern-reversed',
-		// 			element: <ModernReversedForgotPasswordPage />
-		// 		},
-		// 		{
-		// 			path: 'split-screen',
-		// 			element: <SplitScreenForgotPasswordPage />
-		// 		},
-		// 		{
-		// 			path: 'split-screen-reversed',
-		// 			element: <SplitScreenReversedForgotPasswordPage />
-		// 		},
-		// 		{
-		// 			path: 'full-screen',
-		// 			element: <FullScreenForgotPasswordPage />
-		// 		},
-		// 		{
-		// 			path: 'full-screen-reversed',
-		// 			element: <FullScreenReversedForgotPasswordPage />
-		// 		}
-		// 	]
-		// }
 	]
 };
 export default forgotPasswordConfig;

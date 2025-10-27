@@ -5,6 +5,7 @@ import { Controller, useFormContext } from "react-hook-form";
 /**
  * The shipping tab.
  */
+
 function ShippingTabProperty() {
   const methods = useFormContext();
   const { control } = methods;

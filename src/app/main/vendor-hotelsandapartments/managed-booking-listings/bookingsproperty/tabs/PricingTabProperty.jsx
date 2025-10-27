@@ -1,4 +1,4 @@
-import { Button, MenuItem, Select, Typography } from "@mui/material";
+import { Button, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import {
@@ -22,6 +22,7 @@ function PricingTabProperty({ shopData }) {
   // const methods = useFormContext();
 	// const { formState, watch, getValues } = methods;
 	
+  
 	const theme = useTheme();
 
   const methods = useFormContext();
@@ -128,62 +129,60 @@ function PricingTabProperty({ shopData }) {
       </div>
 
 
-      <div className="sm:col-span-2 mt-10">
-        <Typography style={{ fontSize: "12px", fontWeight: "800" }}>
-          Booking Period
-        </Typography>
-        <Controller
-          name={`bookingPeriod`}
-          control={control}
-          defaultValue={[]}
-          render={({ field: { onChange, value } }) => (
+      <Controller
+        name="bookingPeriod"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value } }) => (
+          <FormControl
+            fullWidth
+            className="mt-16 mb-16"
+          >
+            <InputLabel id="bookingPeriod-label">Booking Period</InputLabel>
             <Select
-              className="mt-8 mb-16"
+              labelId="bookingPeriod-label"
               id="bookingPeriod"
-              label="Booking period"
-              placeholder="Period of stay"
-              fullWidth
-              defaultValue=""
+              label="Booking Period"
               onChange={onChange}
-              value={value === undefined || null ? "" : value}
+              value={value || ""}
             >
-              <MenuItem value={`NIGHT`}> NIGHT </MenuItem>
-              <MenuItem value={`WEEK`}> WEEK </MenuItem>
-              <MenuItem value={`MONTH`}> MONTH </MenuItem>
+              <MenuItem value="">
+                <em>Select booking period</em>
+              </MenuItem>
+              <MenuItem value="NIGHT">Per Night</MenuItem>
+              <MenuItem value="WEEK">Per Week</MenuItem>
+              <MenuItem value="MONTH">Per Month</MenuItem>
             </Select>
-          )}
-        />
-      </div>
+          </FormControl>
+        )}
+      />
 
-      <div className="sm:col-span-2 mt-10">
-        <Typography style={{ fontSize: "12px", fontWeight: "800" }}>
-        Would you love to rent each room individually?
-        </Typography>
-        <Controller
-          // control={control}
-          // name="propertyLga"
-          name={`isRentIndividualRoom`}
-          control={control}
-          defaultValue={[]}
-          render={({ field: { onChange, value } }) => (
+      <Controller
+        name="isRentIndividualRoom"
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value } }) => (
+          <FormControl
+            fullWidth
+            className="mt-16 mb-16"
+          >
+            <InputLabel id="isRentIndividualRoom-label">Rent Rooms Individually?</InputLabel>
             <Select
-              className="mt-8 mb-16"
+              labelId="isRentIndividualRoom-label"
               id="isRentIndividualRoom"
-              // label="Booking period"
-              // placeholder="Period of stay"
-              fullWidth
-              defaultValue=""
+              label="Rent Rooms Individually?"
               onChange={onChange}
-              value={value === undefined || null ? "" : value}
+              value={value === "" || value === null || value === undefined ? "" : value}
             >
-              <MenuItem > Select an option </MenuItem>
-              <MenuItem value={true}> Yes </MenuItem>
-              <MenuItem value={false}> No </MenuItem>
-              
+              <MenuItem value="">
+                <em>Select an option</em>
+              </MenuItem>
+              <MenuItem value={true}>Yes, rent rooms individually</MenuItem>
+              <MenuItem value={false}>No, rent entire property</MenuItem>
             </Select>
-          )}
-        />
-      </div>
+          </FormControl>
+        )}
+      />
 
      
      

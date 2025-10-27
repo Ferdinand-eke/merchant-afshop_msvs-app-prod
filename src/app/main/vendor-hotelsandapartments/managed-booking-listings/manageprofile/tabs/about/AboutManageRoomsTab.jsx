@@ -35,9 +35,7 @@ function AboutManageRoomsTab(props) {
     data: rooms,
     isLoading: roomsIsLoading,
     isError: roomsIsError,
-  } = useGetRoomsFromBookingProperty(productId, {
-    skip: !productId,
-  });
+  } = useGetRoomsFromBookingProperty(productId);
 
   const container = {
     show: {
@@ -55,6 +53,7 @@ function AboutManageRoomsTab(props) {
   const toggleNewEntryDrawer = (newOpen) => () => {
     setOpenNewEntry(newOpen);
   };
+  
 
   const addRoomMenu = (
     <Box sx={{ width: 350 }} sm={{ width: 250 }} role="presentation">

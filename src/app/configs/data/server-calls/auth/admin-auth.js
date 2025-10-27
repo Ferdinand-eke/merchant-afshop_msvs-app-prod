@@ -16,7 +16,7 @@ export function useShopAdminLogin() {
 				/** Transform user and store locally */
 
 				const transFormedUser = {
-					id: data?.data?.user?._id,
+					id: data?.data?.user?.id || data?.data?.user?._id,
 					name: data?.data?.user?.shopname,
 					email: data?.data?.user?.shopemail,
 					role: 'merchant',

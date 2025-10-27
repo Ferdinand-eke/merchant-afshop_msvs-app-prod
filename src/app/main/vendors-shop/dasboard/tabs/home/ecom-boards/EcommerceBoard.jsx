@@ -17,27 +17,36 @@ const EcommerceBoard = (props) => {
 
   const { merchantData, isLoading } = props;
 
+  console.log("EcommerceBoard merchantData", merchantData);
+
   if (isLoading) {
 		return <FuseLoading />;
 	}
   return (
     <>
       <motion.div variants={item}>
-        <SummaryWidget shopData={merchantData?.data} isLoading={isLoading} />
+        <SummaryWidget shopData={merchantData} isLoading={isLoading} />
+
       </motion.div>
-      <motion.div variants={item}>
+      <motion.div 
+      variants={item}
+      >
         <OverdueWidget
           merchantProducts={merchantData?.products}
           isLoading={isLoading}
         />
       </motion.div>
-      <motion.div variants={item}>
+      <motion.div 
+      variants={item}
+      >
         <IssuesWidget
           orderItems={merchantData?.orderItems}
           isLoading={isLoading}
         />
       </motion.div>
-      <motion.div variants={item}>
+      <motion.div 
+      variants={item}
+      >
         <FeaturesWidget
           sealedOrderItems={merchantData?.sealedOrderItems}
           isLoading={isLoading}

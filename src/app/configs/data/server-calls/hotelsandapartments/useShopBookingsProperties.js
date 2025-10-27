@@ -12,19 +12,25 @@ import {
 } from '../../client/clientToApiRoutes';
 
 /** *1) get all Specific user shop-Bookings property   */
-export default function useMyShopBookingsProperties() {
-	return useQuery(['__myshop_bookingsproperties'], getShopBookingsProperties);
+export default function useMyShopBookingsProperties(params = {}) {
+	return useQuery(
+		['__myshop_bookingsproperties', params],
+		() => getShopBookingsProperties(params),
+		{
+			keepPreviousData: true // Keeps previous data while fetching new data for smoother transitions
+		}
+	);
 }
 
 /** **2) get single booking property details */
 export function useSingleShopBookingsProperty(slug) {
-	if (!slug || slug === 'new') {
-		return {};
-	}
-
-	return useQuery(['singlebookingproperty', slug], () => getMyShopBookingsPropertyBySlug(slug), {
-		enabled: Boolean(slug)
-	});
+	return useQuery(
+		['singlebookingproperty', slug],
+		() => getMyShopBookingsPropertyBySlug(slug),
+		{
+			enabled: Boolean(slug) && slug !== 'new'
+		}
+	);
 }
 
 /** **3) create new Booking property */

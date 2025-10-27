@@ -58,5 +58,6 @@ export default defineConfig({
                 ".js": "jsx",
             },
         },
+        "force": true
     }
 });

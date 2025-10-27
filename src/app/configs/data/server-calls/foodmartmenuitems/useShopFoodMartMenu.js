@@ -29,13 +29,13 @@ export function useAuthMerchantMenus() {
 
 /** *2) get single food-menu details */
 export function useSingleShopFoodMartMenu(slug) {
-	if (!slug || slug === 'new') {
-		return {};
-	}
-
-	return useQuery(['singlefoodmartmenu', slug], () => getMyShopFoodMartMenuBySlug(slug), {
-		enabled: Boolean(slug)
-	});
+	return useQuery(
+		['singlefoodmartmenu', slug],
+		() => getMyShopFoodMartMenuBySlug(slug),
+		{
+			enabled: Boolean(slug) && slug !== 'new'
+		}
+	);
 }
 
 /** **3) create new food mart menu || store Shop FoodMart Menu */

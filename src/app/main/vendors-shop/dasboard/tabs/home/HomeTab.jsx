@@ -14,6 +14,7 @@ import FoodmartBoard from "./foodmart-boards/FoodmartBoard";
 /**
  * The HomeTab component.
  */
+
 function HomeTab() {
   const container = {
     show: {
@@ -30,7 +31,7 @@ function HomeTab() {
   // const { data: shopData, isLoading, isError } = useGetMyShopDetails();
     const { data: shopData, isLoading } = useGetMyShopAndPlan();
   
-    console.log("MerchantPROFILE", shopData?.data?.merchant?.merchantShopplan?.plankey)
+    console.log("MerchantPROFILE", shopData?.data)
   
 
 //   const fistFiveOrders = shopData?.data?.orderItems?.slice(0, 4);
@@ -55,6 +56,7 @@ function HomeTab() {
 
       {shopData?.data?.merchant?.merchantShopplan?.plankey === "WHOLESALEANDRETAILERS" && (
         <>
+        {/* <p> WHOLE SALE</p> */}
           {/* Change this to wholesale specific dashboard later on */}
           <EcommerceBoard
             merchantData={shopData?.data?.merchant}

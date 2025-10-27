@@ -70,7 +70,7 @@ function InvoiceTab(props) {
   const handleEarningsCashOut = async () => {
     if (window.confirm("Cash out ernings?")) {
       try {
-        cashingOutOrderItemSales(order?._id);
+        cashingOutOrderItemSales(order?.id);
       } catch (error) {
         toast.error(error);
       }
@@ -162,7 +162,7 @@ function InvoiceTab(props) {
                   <Typography color="inherit">
                     The Paradise Court, Idu, Abuja, 900288
                   </Typography>
-                  <Typography color="inherit">+234 803 586 8983</Typography>
+                  <Typography color="inherit">+234 708 720 0297</Typography>
                   <Typography color="inherit">
                     africanshops.africanshops.org
                   </Typography>
@@ -388,6 +388,7 @@ function InvoiceTab(props) {
                       alt="logo"
                     />
                   </div>
+
 
                   <Typography
                     className="font-normal mb-64 px-24"

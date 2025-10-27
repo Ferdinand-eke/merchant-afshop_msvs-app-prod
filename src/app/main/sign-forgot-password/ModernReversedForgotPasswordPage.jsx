@@ -40,6 +40,7 @@ function ModernReversedForgotPasswordPage() {
 		shopForgotPass(getValues())
 	}
 
+
 	return (
 		<div className="flex min-w-0 flex-auto flex-col items-center sm:justify-center md:p-32">
 			<Paper className="flex min-h-full w-full overflow-hidden rounded-0 sm:min-h-auto sm:w-auto sm:rounded-2xl sm:shadow md:w-full md:max-w-6xl">
@@ -143,7 +144,6 @@ function ModernReversedForgotPasswordPage() {
 					<div className="mx-auto w-full max-w-320 sm:mx-0 sm:w-320">
 						<img
 							className="w-40"
-							// src="assets/images/logo/logo.svg"
 							src="assets/images/afslogo/afslogo.png"
 							alt="logo"
 						/>

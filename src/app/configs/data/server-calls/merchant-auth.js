@@ -38,12 +38,12 @@ export function useAdminLogin() {
 
 /** *2) Forgot password for merchants account */
 export function useShopForgotPass() {
+
 	const navigate = useNavigate();
 	return useMutation(shopForgotPasswordInit, {
 		onSuccess: (data) => {
-			console.log('Resturn respose DATA', data);
+			
 
-			// return
 			if (data?.data?.success && data?.data?.token) {
 				setShopForgotPasswordPAYLOAD(data?.data?.token);
 				toast.success(data?.data?.message);
@@ -55,15 +55,6 @@ export function useShopForgotPass() {
 			if (data?.data?.success) {
 				toast.success(data?.data?.message);
 			}
-
-			// else if (data?.data?.infomessage) {
-
-			//  toast.error(data?.data?.infomessage);
-			//   return;
-			// } else {
-			//   toast.info('something unexpected happened');
-			//   return;
-			// }
 		},
 		onError: (error) => {
 			const {
