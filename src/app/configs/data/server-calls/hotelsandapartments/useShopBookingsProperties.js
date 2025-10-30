@@ -13,24 +13,16 @@ import {
 
 /** *1) get all Specific user shop-Bookings property   */
 export default function useMyShopBookingsProperties(params = {}) {
-	return useQuery(
-		['__myshop_bookingsproperties', params],
-		() => getShopBookingsProperties(params),
-		{
-			keepPreviousData: true // Keeps previous data while fetching new data for smoother transitions
-		}
-	);
+	return useQuery(['__myshop_bookingsproperties', params], () => getShopBookingsProperties(params), {
+		keepPreviousData: true // Keeps previous data while fetching new data for smoother transitions
+	});
 }
 
 /** **2) get single booking property details */
 export function useSingleShopBookingsProperty(slug) {
-	return useQuery(
-		['singlebookingproperty', slug],
-		() => getMyShopBookingsPropertyBySlug(slug),
-		{
-			enabled: Boolean(slug) && slug !== 'new'
-		}
-	);
+	return useQuery(['singlebookingproperty', slug], () => getMyShopBookingsPropertyBySlug(slug), {
+		enabled: Boolean(slug) && slug !== 'new'
+	});
 }
 
 /** **3) create new Booking property */
@@ -58,16 +50,16 @@ export function useAddShopBookingsPropertyMutation() {
 		},
 		{
 			onError: (error, rollback) => {
-			const {
-				response: { data }
-			} = error ?? {};
-			Array.isArray(data?.message)
-				? data?.message?.map((m) => {
-						console.log('Update Booking Property Error:', m);
-						return toast.error(m);
-					})
-				: toast.error(data?.message);
-			rollback();
+				const {
+					response: { data }
+				} = error ?? {};
+				Array.isArray(data?.message)
+					? data?.message?.map((m) => {
+							console.log('Update Booking Property Error:', m);
+							return toast.error(m);
+						})
+					: toast.error(data?.message);
+				rollback();
 				// console.log('creatBokibg_Property_ERROR', error);
 				// console.log('MutationError 2', error.response.data);
 				// console.log('MutationError 3', error.data);

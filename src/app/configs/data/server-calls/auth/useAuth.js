@@ -1,7 +1,12 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { setShopResetMailPAYLOAD } from 'app/configs/utils/authUtils';
-import { authShopChangeEmail, authShopCloseAccountCall, authShopChangePasword, initiateMerchantChangeEmail } from '../../client/clientToApiRoutes';
+import {
+	authShopChangeEmail,
+	authShopCloseAccountCall,
+	authShopChangePasword,
+	initiateMerchantChangeEmail
+} from '../../client/clientToApiRoutes';
 
 /** *
  *  1) update user password by logged in merchant
@@ -10,8 +15,9 @@ export function useShopSettingsChangePass() {
 	const queryClient = useQueryClient();
 	return useMutation(authShopChangePasword, {
 		onSuccess: (data) => {
-			console.log("Transaction Data", data)
-			if ( data?.data?.success) {
+			console.log('Transaction Data', data);
+
+			if (data?.data?.success) {
 				toast.success(data?.data?.message);
 			}
 		},
@@ -22,8 +28,7 @@ export function useShopSettingsChangePass() {
 			);
 		}
 	});
-}  //(Mcsvs => Done)
-
+} // (Mcsvs => Done)
 
 /** ** 2) Initiate Base-Merchant email while logged in */
 export function useInitiateBaseMerchantSettingsChangeEmail() {
@@ -83,4 +88,3 @@ export function useShopSettingsCloseShopAccount() {
 		}
 	});
 }
-

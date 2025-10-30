@@ -38,12 +38,9 @@ export function useAdminLogin() {
 
 /** *2) Forgot password for merchants account */
 export function useShopForgotPass() {
-
 	const navigate = useNavigate();
 	return useMutation(shopForgotPasswordInit, {
 		onSuccess: (data) => {
-			
-
 			if (data?.data?.success && data?.data?.token) {
 				setShopForgotPasswordPAYLOAD(data?.data?.token);
 				toast.success(data?.data?.message);

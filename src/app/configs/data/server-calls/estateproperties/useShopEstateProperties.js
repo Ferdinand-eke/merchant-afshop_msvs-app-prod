@@ -24,14 +24,10 @@ export default function useMyShopEstateProperties() {
 
 // get single estate property details
 export function useSingleShopEstateProperty(slug) {
-	return useQuery(
-		['singleestateproperty', slug],
-		() => getMyShopEstatePropertyBySlug(slug),
-		{
-			enabled: Boolean(slug) && slug !== 'new'
-			// staleTime: 5000,
-		}
-	);
+	return useQuery(['singleestateproperty', slug], () => getMyShopEstatePropertyBySlug(slug), {
+		enabled: Boolean(slug) && slug !== 'new'
+		// staleTime: 5000,
+	});
 }
 
 // create new property
@@ -95,6 +91,7 @@ export function useEstatePropertyUpdateMutation() {
 		}
 	});
 }
+
 
 // update existing product: Pushing it for export
 // export function usePushProductForExportMutation() {

@@ -40,18 +40,15 @@ export function useGetMyShopAndPlan(boolValue) {
 	// console.log("BoolValue", boolValue)
 	// return useQuery(['__myshop_and_accountplan'], getJustMyShopDetailsAndPlan(boolValue)); boolValue
 	return useQuery(
-  ['__myshop_and_accountplan', boolValue], // include boolValue to refetch when it changes boolValue
-  () => getJustMyShopDetailsAndPlan(boolValue)
-);
+		['__myshop_and_accountplan', boolValue], // include boolValue to refetch when it changes boolValue
+		() => getJustMyShopDetailsAndPlan(boolValue)
+	);
 } // (Mcsvs => Done)
 
-/***Shop details and shop plan For Update */
+/** *Shop details and shop plan For Update */
 export function useGetMyShopAndPlanForUpdate() {
 	return useQuery(['__myshop_and_accountplan_for_Update'], getJustMyShopDetailsAndPlanForUpdate);
-	
 } // (Mcsvs => Done)
-
-
 
 /** **
  *
@@ -68,9 +65,8 @@ export function useShopUpdateMutation() {
 
 	return useMutation(updateMyShopDetails, {
 		onSuccess: (data) => {
-
 			if (data?.data?.success) {
-				toast.success(`${data?.data?.message ? data?.data?.message : "shop updated successfully!"}`);
+				toast.success(`${data?.data?.message ? data?.data?.message : 'shop updated successfully!'}`);
 				queryClient.invalidateQueries('__myshop_details');
 			}
 		},
@@ -78,7 +74,7 @@ export function useShopUpdateMutation() {
 			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
 		}
 	});
-}  //(Msvs => Done)
+} // (Msvs => Done)
 
 /** Create a new Shop Vendor */
 export function useCreateVendorShopBranch() {

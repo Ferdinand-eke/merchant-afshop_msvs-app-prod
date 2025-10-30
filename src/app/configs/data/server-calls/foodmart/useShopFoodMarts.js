@@ -15,13 +15,9 @@ export default function useMyShopFoodMarts() {
 
 /** 2) get single food mart details */
 export function useSingleShopFoodMart(slug) {
-	return useQuery(
-		['singlefoodmart', slug],
-		() => getMyShopFoodMartBySlug(slug),
-		{
-			enabled: Boolean(slug) && slug !== 'new'
-		}
-	);
+	return useQuery(['singlefoodmart', slug], () => getMyShopFoodMartBySlug(slug), {
+		enabled: Boolean(slug) && slug !== 'new'
+	});
 } // (Mcsvsn => Done)
 
 /** **3) create new food mart storeShopFoodMart */

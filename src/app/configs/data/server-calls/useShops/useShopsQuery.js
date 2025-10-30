@@ -72,7 +72,7 @@ export function useShopSignUpWithOtp() {
 			//   );
 		}
 	});
-} //(Mcsvs => Done)
+} // (Mcsvs => Done)
 
 // Store New Shop User from token
 export function useStoreShopPreSignUp() {
@@ -175,4 +175,4 @@ export function useStoreShopPreSignUpFromOtp() {
 			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
 		}
 	});
-} //(Mcsvs => Done)
+} // (Mcsvs => Done)

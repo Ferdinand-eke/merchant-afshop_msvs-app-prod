@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import qs from "qs"; // or use new URLSearchParams()
+import qs from 'qs'; // or use new URLSearchParams()
 import { resetSessionForShopUsers } from 'app/configs/utils/authUtils';
 import { getAdminAccessToken } from '../utils/opsUtils';
 
@@ -94,12 +94,12 @@ export const logOutAdmin = () => {
 	return ok;
 };
 
-
 /** ==============================================================|
  *   Shop authenticated settings start routes    
 ================================================================ */
 export const authShopChangePasword = (formData) => AuthApi().put(`/auth-merchant/settings/change-password`, formData); // (Mcsvs => Done)
-export const initiateMerchantChangeEmail = (formData) => AuthApi().put(`/auth-merchant/settings/change-email/initiate`, formData);
+export const initiateMerchantChangeEmail = (formData) =>
+	AuthApi().put(`/auth-merchant/settings/change-email/initiate`, formData);
 
 export const authShopChangeEmail = (formData) => AuthApi().put(`/auth-merchant/settings/change-email/update`, formData);
 
@@ -218,12 +218,11 @@ export const getMinimizedJustMyShopDetails = () => AuthApi().get('/auth-merchant
 export const getJustMyShopDetailsAndPlan = (params) => {
 	// ?queryAllData=${queryParam} queryAllData
 	// console.log("PARAM__IN__ROUTE", queryAllData)
-	const queryString = qs.stringify(params, { arrayFormat: "repeat" });
+	const queryString = qs.stringify(params, { arrayFormat: 'repeat' });
 	return AuthApi().get(`/auth-merchant/myshop/get-just-details/plan?${queryString}`); //* (Msvs => Done)
 }; //* (Msvs => Done)
 
 export const getJustMyShopDetailsAndPlanForUpdate = () => {
-	
 	return AuthApi().get(`/auth-merchant/myshop/get-just-details/for-update`); //* (Msvs => Done)
 }; //* (Msvs => Done)
 
@@ -236,7 +235,8 @@ export const createMyShopBranch = (shopFormData) => AuthApi().post(`/api/myshop/
 export const updateMyShopBranch = (shopFormData) =>
 	AuthApi().put(`/api/myshop/update-branch/${shopFormData?._id}`, shopFormData); // newDashboard Not-done
 
-export const updateMyShopDetails = (shopFormData) => AuthApi().put(`auth-merchant/myshop/get-just-details/update`, shopFormData); //(Msvs => Done)
+export const updateMyShopDetails = (shopFormData) =>
+	AuthApi().put(`auth-merchant/myshop/get-just-details/update`, shopFormData); // (Msvs => Done)
 
 export const deleteMyShopCompletely = (id, shopFormData) =>
 	AuthApi().post(`/api/myshop/delete-myshop-completely/${id}`, shopFormData);
@@ -351,7 +351,7 @@ export const deleteShopEstateProperty = (id) => AuthApi().delete(`/myshop/delete
  */
 // {===============================shop estate property handling starts=======================================}
 export const getShopBookingsProperties = (params) => {
-	const queryString = params ? qs.stringify(params, { arrayFormat: "repeat" }) : '';
+	const queryString = params ? qs.stringify(params, { arrayFormat: 'repeat' }) : '';
 	return AuthApi().get(`/bookings/get-merchant-bookings${queryString ? `?${queryString}` : ''}`);
 }; // (Msvs => Done)
 
@@ -385,7 +385,7 @@ export const updateRoomOnProperty = (productFormData) => {
 
 /** **Reservations */ // reservations/get-merchant-reservations on-property/:propertyId/get-reservations
 export const getShopBookingsReservationsApi = (params) => {
-	const queryString = params ? qs.stringify(params, { arrayFormat: "repeat" }) : '';
+	const queryString = params ? qs.stringify(params, { arrayFormat: 'repeat' }) : '';
 	return AuthApi().get(`/reservations/get-merchant-reservations${queryString ? `?${queryString}` : ''}`);
 }; // newDashboard (Msvs => Done)
 export const getShopSealedBookingsReservationsApi = () =>

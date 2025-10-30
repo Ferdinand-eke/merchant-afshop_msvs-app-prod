@@ -15,6 +15,8 @@ const ManagedListingsAppConfig = {
 	settings: {
 		layout: {}
 	},
+
+	
 	
 	routes: [
 		{

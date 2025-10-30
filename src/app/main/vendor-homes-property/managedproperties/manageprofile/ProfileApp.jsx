@@ -5,12 +5,12 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import AboutTab from './tabs/about/AboutTab';
-import PhotosVideosTab from './tabs/photos-videos/PhotosVideosTab';
-import TimelineTab from './tabs/timeline/TimelineTab';
+import InspectionSchedulesTab from './tabs/inspection-schedules/InspectionSchedulesTab';
+import OffersTab from './tabs/offers/OffersTab';
+import AcquisitionsTab from './tabs/acquisitions/AcquisitionsTab';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
@@ -24,12 +24,29 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	}
 }));
 
+const TAB_STORAGE_KEY = 'propertyProfileSelectedTab';
+
 /**
- * The profile page.
+ * The property profile page with inspection schedules, offers, and acquisitions.
  */
 function ProfileApp() {
-	const [selectedTab, setSelectedTab] = useState(0);
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+
+	// Load selected tab from localStorage on mount
+	const [selectedTab, setSelectedTab] = useState(() => {
+		if (typeof window !== 'undefined') {
+			const savedTab = window.localStorage.getItem(TAB_STORAGE_KEY);
+			return savedTab ? parseInt(savedTab, 10) : 0;
+		}
+		return 0;
+	});
+
+	// Persist selected tab to localStorage
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			window.localStorage.setItem(TAB_STORAGE_KEY, selectedTab.toString());
+		}
+	}, [selectedTab]);
 
 	function handleTabChange(event, value) {
 		setSelectedTab(value);
@@ -39,13 +56,6 @@ function ProfileApp() {
 		<Root
 			header={
 				<div className="flex flex-col w-full">
-					{/* <img
-						className="h-160 lg:h-320 object-cover w-full"
-						src="assets/images/pages/profile/cover.jpg"
-						alt="Profile Cover"
-					/>
-					 */}
-
 					<div className="mt-20 flex flex-col flex-0 lg:flex-row items-center max-w-5xl w-full mx-auto px-32 lg:h-72">
 						<div className="-mt-96 lg:-mt-88 rounded-full">
 							<motion.div
@@ -111,17 +121,17 @@ function ProfileApp() {
 								<Tab
 									className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
 									disableRipple
-									label="Timeline"
+									label="Inspection Schedules"
 								/>
 								<Tab
 									className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
 									disableRipple
-									label="About"
+									label="Offers"
 								/>
 								<Tab
 									className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
 									disableRipple
-									label="Reservations"
+									label="Acquisitions"
 								/>
 							</Tabs>
 						</div>
@@ -129,10 +139,10 @@ function ProfileApp() {
 				</div>
 			}
 			content={
-				<div className="flex flex-auto justify-center w-full max-w-5xl mx-auto p-24 sm:p-32">
-					{selectedTab === 0 && <TimelineTab />}
-					{selectedTab === 1 && <AboutTab />}
-					{selectedTab === 2 && <PhotosVideosTab />}
+				<div className="flex flex-auto justify-center w-full max-w-7xl mx-auto p-24 sm:p-32">
+					{selectedTab === 0 && <InspectionSchedulesTab />}
+					{selectedTab === 1 && <OffersTab />}
+					{selectedTab === 2 && <AcquisitionsTab />}
 				</div>
 			}
 			scroll={isMobile ? 'normal' : 'page'}
