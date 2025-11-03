@@ -31,6 +31,7 @@ const HomeAppConfig = {
       },
     },
   },
+  
   auth: authRoles.onlyGuest,
   routes: [
     {

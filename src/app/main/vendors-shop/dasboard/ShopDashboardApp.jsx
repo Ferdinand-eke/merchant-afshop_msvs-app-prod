@@ -1,14 +1,11 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
-import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import FuseLoading from '@fuse/core/FuseLoading';
+import ContentLoadingPlaceholder from 'app/shared-components/ContentLoadingPlaceholder';
 import ShopDashboardAppHeader from './ShopDashboardAppHeader';
 import HomeTab from './tabs/home/HomeTab';
-// import TeamTab from './tabs/team/TeamTab';
-// import BudgetTab from './tabs/budget/BudgetTab';
 import { useGetProjectDashboardWidgetsQuery } from './ProjectDashboardApi';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
@@ -18,6 +15,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	}
 }));
 
+
 /**
  * The ProjectDashboardApp page.
  */
@@ -26,12 +24,18 @@ function ShopDashboardApp() {
 	const [tabValue, setTabValue] = useState(0);
 
 
-	function handleChangeTab(event, value) {
+	function handleChangeTab(_event, value) {
 		setTabValue(value);
 	}
 
 	if(isLoading){
-		return <FuseLoading />
+		return (
+			<ContentLoadingPlaceholder
+				title="Loading Your Dashboard..."
+				subtitle="Preparing your merchant insights and analytics"
+				cardCount={4}
+			/>
+		);
 	}
 
 	return (

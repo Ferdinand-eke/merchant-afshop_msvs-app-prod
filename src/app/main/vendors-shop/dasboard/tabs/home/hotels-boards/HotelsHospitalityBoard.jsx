@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Box, Paper, Skeleton } from "@mui/material";
 import SummaryWidget from "./hotels-widgets/SummaryWidget";
 import OverdueWidget from "./hotels-widgets/OverdueWidget";
 import IssuesWidget from "./hotels-widgets/IssuesWidget";
@@ -11,22 +12,40 @@ const HotelsHospitalityBoard = (props) => {
   const { data: reservations, isLoading: reserveLoading } =
     useMyPropertiesReservations();
 
-  // console.log("RESRVATIONS", reservations?.data)
-
   const item = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
   };
 
   const { merchantData, isLoading } = props;
+
+  // Render loading skeleton for widgets
+  const renderWidgetSkeleton = () => (
+    <Paper className="flex flex-col flex-auto h-full shadow rounded-2xl overflow-hidden p-16">
+      <Box className="flex items-center justify-between mb-16">
+        <Skeleton variant="circular" width={40} height={40} />
+        <Skeleton variant="circular" width={24} height={24} />
+      </Box>
+      <Skeleton variant="text" width="60%" height={32} className="mx-auto" />
+      <Skeleton variant="text" width="80%" height={48} className="mx-auto mt-8" />
+      <Box className="mt-16">
+        <Skeleton variant="rectangular" width="100%" height={36} className="rounded-lg" />
+      </Box>
+    </Paper>
+  );
+
   return (
     <>
       <motion.div variants={item}>
-        <SummaryWidget hosMerchantData={merchantData} isLoading={isLoading} />
+        {isLoading ? renderWidgetSkeleton() : (
+          <SummaryWidget hosMerchantData={merchantData} isLoading={isLoading} />
+        )}
       </motion.div>
 
       <motion.div variants={item}>
-        <IssuesWidget reservationsCount={reservations?.data?.count} />
+        {reserveLoading ? renderWidgetSkeleton() : (
+          <IssuesWidget reservationsCount={reservations?.data?.count} />
+        )}
       </motion.div>
 
       <motion.div variants={item}>

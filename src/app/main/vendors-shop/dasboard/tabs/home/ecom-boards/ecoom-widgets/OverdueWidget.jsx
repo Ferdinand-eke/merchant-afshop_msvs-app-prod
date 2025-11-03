@@ -9,19 +9,16 @@ import { Box, LinearProgress } from '@mui/material';
 /**
  * The OverdueWidget widget - Displays products inventory
  */
-function OverdueWidget({merchantProducts, isLoading}) {
+function OverdueWidget({productsCount, isLoading}) {
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
-
-	// if (!merchantProducts) {
-	// 	return null;
+	// if (isLoading) {
+	// 	return <FuseLoading />;
 	// }
 
-	const count = merchantProducts?.length || 0;
-	const activeProducts = count;
-	const lowStockItems = Math.floor(count * 0.15); // Simulate 15% low stock
+
+	// const count = merchantProducts?.length || 0;
+	const activeProducts = productsCount;
+	const lowStockItems = Math.floor(productsCount * 0.15); // Simulate 15% low stock
 
 	return (
 		<Paper className="flex flex-col flex-auto h-full shadow rounded-2xl overflow-hidden bg-gradient-to-br from-orange-50 to-white dark:from-orange-900/10 dark:to-gray-800">
@@ -46,7 +43,7 @@ function OverdueWidget({merchantProducts, isLoading}) {
 
 			<div className="text-center mt-16 px-16">
 				<Typography className="text-5xl font-bold tracking-tight text-orange-600 dark:text-orange-400">
-					{count}
+					{productsCount}
 				</Typography>
 				<Typography className="text-xs mt-4" color="text.secondary">
 					Total products

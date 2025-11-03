@@ -6,11 +6,6 @@ import { useFormContext } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import _ from "@lodash";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
-import {
-  useCreateECommerceProductMutation,
-  useDeleteECommerceProductMutation,
-  useUpdateECommerceProductMutation,
-} from "../ECommerceApi";
 import { useAppSelector } from "app/store/hooks";
 import { selectUser } from "src/app/auth/user/store/userSlice";
 import {
@@ -26,9 +21,6 @@ function ShopProductHeader() {
   const user = useAppSelector(selectUser);
   const routeParams = useParams();
   const { productId } = routeParams;
-  // const [createProduct] = useCreateECommerceProductMutation();
-  // const [saveProduct] = useUpdateECommerceProductMutation();
-  // const [removeProduct] = useDeleteECommerceProductMutation();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
   const { isValid, dirtyFields } = formState;

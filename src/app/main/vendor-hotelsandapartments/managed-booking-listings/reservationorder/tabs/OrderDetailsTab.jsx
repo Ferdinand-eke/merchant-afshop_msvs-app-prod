@@ -1,27 +1,10 @@
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import clsx from "clsx";
-import GoogleMap from "google-map-react";
-import { useState } from "react";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
-import { useParams } from "react-router-dom";
-import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import { useGetECommerceOrderQuery } from "../../ECommerceApi";
-import OrdersStatus from "../OrdersStatus";
-// import OrdersPackedStatus from "../OrdersPackedStatus";
+import { Box, Paper, Chip, Button, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import ReservationCreatedAndPaymentStatus from "../ReservationCreatedAndPaymentStatus";
-import OrdersShipmentStatus from "../OrdersShipmentStatus";
-// import OrdersArrivalStatus from "../OrdersArrivalStatus";
-// import OrdersDeliveryStatus from "../OrdersDeliveryStatus";
 import ReservationCheckInStatus from "../ReservationCheckInStatus";
 import { toast } from "react-toastify";
 import {
@@ -31,68 +14,34 @@ import {
 import { formatCurrency } from "src/app/main/vendors-shop/pos/PosUtils";
 import ReservationCheckOustStatus from "../ReservationCheckOustStatus";
 
-const mapKey = import.meta.env.VITE_MAP_KEY;
-
-/**
- * The marker.
- */
-function Marker(props) {
-  const { text, lat, lng } = props;
-  return (
-    <Tooltip
-      title={
-        <div>
-          {text}
-          <br />
-          {lat}, {lng}
-        </div>
-      }
-      placement="top"
-    >
-      <FuseSvgIcon className="text-red">
-        heroicons-outline:location-marker
-      </FuseSvgIcon>
-    </Tooltip>
-  );
-}
-
 
 
 /**
  * The order details tab.
  */
 
-function OrderDetailsTab({ reservation, isError }) {
-
-  // console.log("FIX-DATE-DISPLAY", reservation)
-
-  
-  const routeParams = useParams();
-  const { orderId } = routeParams;
-
-  const [map, setMap] = useState("shipping");
+function OrderDetailsTab({ reservation }) {
   const checkInGuest = useCheckInGuest();
   const checkOutGuestReservation = useCheckOutGuest();
 
-  // console.log("ENV_DATA", mapKey)
+  const [checkInDialogOpen, setCheckInDialogOpen] = useState(false);
+  const [checkOutDialogOpen, setCheckOutDialogOpen] = useState(false);
 
   const handleCheckIn = async () => {
-    if (window.confirm("Check in reservation?")) {
-      try {
-        checkInGuest.mutate(reservation?.id);
-      } catch (error) {
-        toast.error(error);
-      }
+    setCheckInDialogOpen(false);
+    try {
+      checkInGuest.mutate(reservation?.id);
+    } catch (error) {
+      toast.error(error);
     }
   };
 
   const handleCheckOutGuest = async () => {
-    if (window.confirm("Check out this reservation?")) {
-      try {
-        checkOutGuestReservation.mutate(reservation?.id);
-      } catch (error) {
-        toast.error(error);
-      }
+    setCheckOutDialogOpen(false);
+    try {
+      checkOutGuestReservation.mutate(reservation?.id);
+    } catch (error) {
+      toast.error(error);
     }
   };
 
@@ -102,309 +51,594 @@ function OrderDetailsTab({ reservation, isError }) {
   // }
 
   return (
-    <div>
-      <div className="pb-48">
-        <div className="pb-16 flex items-center">
-          <FuseSvgIcon color="action">
-            heroicons-outline:user-circle
-          </FuseSvgIcon>
-          <Typography className="h2 mx-12 font-medium" color="text.secondary">
-            Guest
-          </Typography>
-        </div>
-
-        <div className="mb-24">
-          <div className="table-responsive mb-48">
-            <table className="simple">
-              <thead>
-                <tr>
-                  <th>
-                    <Typography className="font-semibold">Name</Typography>
-                  </th>
-                  <th>
-                    <Typography className="font-semibold">Email</Typography>
-                  </th>
-                  <th>
-                    <Typography className="font-semibold">Phone</Typography>
-                  </th>
-                  {/* <th>
-										<Typography className="font-semibold">Company</Typography>
-									</th> */}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div className="flex items-center">
-                      <Avatar
-                        src={reservation?.paymentdatas?.bookingName.charAt(0)}
-                      />
-                      <Typography className="truncate mx-8">
-                        {`${reservation?.paymentdatas?.bookingName} `}
-                      </Typography>
-                    </div>
-                  </td>
-                  <td>
-                    <Typography className="truncate">
-                      {reservation?.paymentdatas?.bookingAddress}
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography className="truncate">
-                      {reservation?.paymentdatas?.bookingPhone}
-                    </Typography>
-                  </td>
-                  {/* <td>
-										<span className="truncate">{reservation?.customer?.company}</span>
-									</td> */}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div className="space-y-12">
-            <Accordion
-              className="border-0 shadow-0 overflow-hidden"
-              expanded={map === "invoice"}
-              onChange={() => setMap(map !== "invoice" ? "invoice" : "")}
+    <Box className="space-y-24">
+      {/* Guest Information Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        <Paper
+          elevation={0}
+          sx={{
+            p: 3,
+            background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
+            border: '1px solid rgba(234, 88, 12, 0.1)',
+            borderRadius: 2,
+          }}
+        >
+          <Box className="flex items-center gap-12 mb-24">
+            <Box
               sx={{
-                backgroundColor: "background.default",
-                borderRadius: "12px!important",
+                width: 40,
+                height: 40,
+                borderRadius: '10px',
+                background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography className="font-semibold">Guest Address</Typography>
-              </AccordionSummary>
-              <AccordionDetails className="flex flex-col md:flex-row -mx-8">
-                <Typography className="w-full md:max-w-256 mb-16 md:mb-0 mx-8 text-16">
-                  {/* {reservation?.customer?.invoiceAddress.address} */}
-                  {reservation?.paymentdatas?.bookingAddress}
+              <FuseSvgIcon className="text-white" size={20}>
+                heroicons-outline:user-circle
+              </FuseSvgIcon>
+            </Box>
+            <Typography variant="h6" className="font-bold" sx={{ color: '#292524' }}>
+              Guest Information
+            </Typography>
+          </Box>
+
+          <Box className="grid grid-cols-1 md:grid-cols-3 gap-16">
+            <Box>
+              <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                Name
+              </Typography>
+              <Box className="flex items-center gap-8">
+                <Avatar
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                  }}
+                >
+                  {reservation?.paymentdatas?.bookingName?.charAt(0) || 'G'}
+                </Avatar>
+                <Typography variant="body2" className="font-semibold" sx={{ color: '#292524' }}>
+                  {reservation?.paymentdatas?.bookingName || 'N/A'}
                 </Typography>
-                <div className="w-full h-320 rounded-16 overflow-hidden mx-8">
-                  {/* <GoogleMap
-										bootstrapURLKeys={{
-											key: mapKey
-										}}
-										defaultZoom={15}
-										defaultCenter={{
-											lng: reservation?.customer?.invoiceAddress.lng,
-											lat: reservation?.customer?.invoiceAddress.lat
-										}}
-									>
-										<Marker
-											text={reservation?.customer?.invoiceAddress.address}
-											lat={reservation?.customer?.invoiceAddress.lat}
-											lng={reservation?.customer?.invoiceAddress.lng}
-										/>
-									</GoogleMap> */}
-                </div>
-              </AccordionDetails>
-            </Accordion>
-          </div>
-        </div>
-      </div>
-      {/* https://admin.labtraca.com/ */}
-      <div className="pb-48">
-        <div className="pb-16 flex items-center">
-          <FuseSvgIcon color="action">heroicons-outline:clock</FuseSvgIcon>
-          <Typography className="h2 mx-12 font-medium" color="text.secondary">
-            Guest Stay Status
-          </Typography>
-        </div>
+              </Box>
+            </Box>
 
-        <div className="table-responsive">
-          <Table className="simple">
-            <TableHead>
-              <TableRow>
-                <TableCell>
-                  <Typography className="font-semibold">Status</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography className="font-semibold">CheckIn-CheckOut Date</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography className="font-semibold">Processed On</Typography>
-                </TableCell>
-              </TableRow>
-            </TableHead>
+            <Box>
+              <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                Email
+              </Typography>
+              <Typography variant="body2" className="font-semibold truncate" sx={{ color: '#292524' }}>
+                {reservation?.paymentdatas?.bookingAddress || 'N/A'}
+              </Typography>
+            </Box>
 
-            <TableBody>
-              <TableRow>
-                <TableCell>
+            <Box>
+              <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                Phone
+              </Typography>
+              <Typography variant="body2" className="font-semibold" sx={{ color: '#292524' }}>
+                {reservation?.paymentdatas?.bookingPhone || 'N/A'}
+              </Typography>
+            </Box>
+          </Box>
+
+          {reservation?.paymentdatas?.bookingAddress && (
+            <Box className="mt-16 pt-16" sx={{ borderTop: '1px solid rgba(234, 88, 12, 0.1)' }}>
+              <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 1 }}>
+                Address
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#292524' }}>
+                {reservation?.paymentdatas?.bookingAddress}
+              </Typography>
+            </Box>
+          )}
+        </Paper>
+      </motion.div>
+      {/* Guest Stay Status Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <Paper
+          elevation={0}
+          sx={{
+            p: 3,
+            background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
+            border: '1px solid rgba(234, 88, 12, 0.1)',
+            borderRadius: 2,
+          }}
+        >
+          <Box className="flex items-center gap-12 mb-24">
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: '10px',
+                background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <FuseSvgIcon className="text-white" size={20}>
+                heroicons-outline:clock
+              </FuseSvgIcon>
+            </Box>
+            <Typography variant="h6" className="font-bold" sx={{ color: '#292524' }}>
+              Guest Stay Status
+            </Typography>
+          </Box>
+
+          <Box className="space-y-16">
+            {/* Reservation Created & Payment */}
+            <Box
+              sx={{
+                p: 2,
+                background: 'white',
+                borderRadius: 1.5,
+                border: '1px solid rgba(234, 88, 12, 0.08)',
+              }}
+            >
+              <Box className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-12">
+                <Box className="flex-1">
+                  <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                    Status
+                  </Typography>
                   <ReservationCreatedAndPaymentStatus
                     createdAt={reservation?.createdAt}
                     isPaid={reservation?.isPaid}
                   />
-                </TableCell>
-                <TableCell>{reservation?.orderId?.createdAt}</TableCell>
-              </TableRow>
+                </Box>
+                <Box>
+                  <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                    Created On
+                  </Typography>
+                  <Typography variant="body2" className="font-semibold" sx={{ color: '#292524' }}>
+                    {reservation?.orderId?.createdAt || 'N/A'}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
 
-              {reservation?.isPaid && (
-                <>
-                  <TableRow>
-                    <TableCell>
-                      <ReservationCheckInStatus
-                        isCheckIn={reservation?.isCheckIn}
+            {/* Check-In Status */}
+            {reservation?.isPaid && (
+              <Box
+                sx={{
+                  p: 2,
+                  background: 'white',
+                  borderRadius: 1.5,
+                  border: '1px solid rgba(234, 88, 12, 0.08)',
+                }}
+              >
+                <Box className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-12">
+                  <Box className="flex-1">
+                    <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                      Check-In Status
+                    </Typography>
+                    <ReservationCheckInStatus isCheckIn={reservation?.isCheckIn} />
+                  </Box>
+                  <Box>
+                    <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                      Scheduled Date
+                    </Typography>
+                    <Chip
+                      label={new Date(reservation?.startDate)?.toDateString()}
+                      size="small"
+                      sx={{
+                        background: 'rgba(120, 113, 108, 0.1)',
+                        color: '#78716c',
+                        fontWeight: 600,
+                      }}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                      Action
+                    </Typography>
+                    {reservation?.isCheckIn ? (
+                      <Chip
+                        icon={<FuseSvgIcon size={14}>heroicons-solid:check-circle</FuseSvgIcon>}
+                        label={new Date(reservation?.checkedInAt)?.toDateString()}
+                        size="small"
+                        sx={{
+                          background: 'rgba(34, 197, 94, 0.1)',
+                          color: '#16a34a',
+                          fontWeight: 600,
+                        }}
                       />
-                    </TableCell>
-                    <TableCell>
-                      <div
-                        className={clsx(
-                          "inline text-12 font-semibold py-4 px-12 rounded-full truncate",
-                          "bg-gray-500 text-white"
-                        )}
+                    ) : (
+                      <Button
+                        onClick={() => setCheckInDialogOpen(true)}
+                        disabled={checkInGuest.isLoading}
+                        size="small"
+                        variant="contained"
+                        sx={{
+                          background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+                          color: 'white',
+                          fontWeight: 600,
+                          textTransform: 'none',
+                          '&:hover': {
+                            background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
+                          },
+                        }}
                       >
-                        {new Date(reservation?.startDate)?.toDateString()}
-                      </div>
-                    </TableCell>
+                        {checkInGuest.isLoading ? 'Checking In...' : 'Check In Guest'}
+                      </Button>
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+            )}
 
-                    <TableCell>
-                      {reservation?.isCheckIn ? (
-                        <div
-                          className={clsx(
-                            "inline text-12 font-semibold py-4 px-12 rounded-full truncate",
-                            "bg-green text-white"
-                          )}
-                        >
-                          {new Date(reservation?.checkedInAt)?.toDateString()}
-                        </div>
-                      ) : (
-                        <div
-                          onClick={() => handleCheckIn()}
-                          className={clsx(
-                            "cursor-pointer inline text-12 font-semibold py-4 px-12 rounded-full truncate",
-                            "bg-orange-300 hover:bg-orange-500 text-black"
-                          )}
-                        >
-                          {checkInGuest.isLoading
-                            ? "Checking In Guest "
-                            : "Check In Guest "}
-                        </div>
-                      )}
-                    </TableCell>
-                  </TableRow>
-
-                  {reservation?.isCheckIn && (
-                    <TableRow>
-                      <TableCell>
-                        <ReservationCheckOustStatus
-                          isCheckOut={reservation?.isCheckOut}
-                        />
-                      </TableCell>
-
-                      <TableCell>
-                      <div
-                        className={clsx(
-                          "inline text-12 font-semibold py-4 px-12 rounded-full truncate",
-                          "bg-gray-500 text-white"
-                        )}
+            {/* Check-Out Status */}
+            {reservation?.isCheckIn && (
+              <Box
+                sx={{
+                  p: 2,
+                  background: 'white',
+                  borderRadius: 1.5,
+                  border: '1px solid rgba(234, 88, 12, 0.08)',
+                }}
+              >
+                <Box className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-12">
+                  <Box className="flex-1">
+                    <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                      Check-Out Status
+                    </Typography>
+                    <ReservationCheckOustStatus isCheckOut={reservation?.isCheckOut} />
+                  </Box>
+                  <Box>
+                    <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                      Scheduled Date
+                    </Typography>
+                    <Chip
+                      label={new Date(reservation?.endDate)?.toDateString()}
+                      size="small"
+                      sx={{
+                        background: 'rgba(120, 113, 108, 0.1)',
+                        color: '#78716c',
+                        fontWeight: 600,
+                      }}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                      Action
+                    </Typography>
+                    {reservation?.isCheckOut ? (
+                      <Chip
+                        icon={<FuseSvgIcon size={14}>heroicons-solid:check-circle</FuseSvgIcon>}
+                        label={new Date(reservation?.checkedOutAt)?.toDateString()}
+                        size="small"
+                        sx={{
+                          background: 'rgba(34, 197, 94, 0.1)',
+                          color: '#16a34a',
+                          fontWeight: 600,
+                        }}
+                      />
+                    ) : (
+                      <Button
+                        onClick={() => setCheckOutDialogOpen(true)}
+                        disabled={checkOutGuestReservation.isLoading}
+                        size="small"
+                        variant="contained"
+                        sx={{
+                          background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+                          color: 'white',
+                          fontWeight: 600,
+                          textTransform: 'none',
+                          '&:hover': {
+                            background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
+                          },
+                        }}
                       >
-                        {new Date(reservation?.endDate)?.toDateString()}
-                      </div>
-                    </TableCell>
+                        {checkOutGuestReservation.isLoading ? 'Checking Out...' : 'Check Out Guest'}
+                      </Button>
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+            )}
+          </Box>
+        </Paper>
+      </motion.div>
 
-                      <TableCell>
-                        {reservation?.isCheckOut ? (
-                          <div
-                            className={clsx(
-                              "inline text-12 font-semibold py-4 px-12 rounded-full truncate",
-                              "bg-green text-white"
-                            )}
-                          >
-                            {new Date(
-                              reservation?.checkedOutAt
-                            )?.toDateString()}
-                          </div>
-                        ) : (
-                          <div
-                            onClick={() => handleCheckOutGuest()}
-                            className={clsx(
-                              "cursor-pointer inline text-12 font-semibold py-4 px-12 rounded-full truncate",
-                              "bg-orange-300 hover:bg-orange-500 text-black"
-                            )}
-                          >
-                            {checkOutGuestReservation.isLoading
-                              ? " Checking Out Guest "
-                              : " Check Out Guest "}
-                          </div>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  )}
+      {/* Payment Information Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <Paper
+          elevation={0}
+          sx={{
+            p: 3,
+            background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
+            border: '1px solid rgba(234, 88, 12, 0.1)',
+            borderRadius: 2,
+          }}
+        >
+          <Box className="flex items-center gap-12 mb-24">
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: '10px',
+                background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <FuseSvgIcon className="text-white" size={20}>
+                heroicons-outline:currency-dollar
+              </FuseSvgIcon>
+            </Box>
+            <Typography variant="h6" className="font-bold" sx={{ color: '#292524' }}>
+              Payment Details
+            </Typography>
+          </Box>
 
-                </>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
+          <Box className="grid grid-cols-1 sm:grid-cols-2 gap-16">
+            <Box>
+              <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                Transaction ID
+              </Typography>
+              <Typography variant="body2" className="font-semibold truncate" sx={{ color: '#292524' }}>
+                {reservation?.paymentResult?.reference || 'N/A'}
+              </Typography>
+            </Box>
 
-      <div className="pb-48">
-        <div className="pb-16 flex items-center">
-          <FuseSvgIcon color="action">
-            heroicons-outline:currency-dollar
-          </FuseSvgIcon>
-          <Typography className="h2 mx-12 font-medium" color="text.secondary">
-            Payment
-          </Typography>
-        </div>
+            <Box>
+              <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                Payment Method
+              </Typography>
+              <Chip
+                label={reservation?.paymentdatas?.paymentMethod || 'N/A'}
+                size="small"
+                sx={{
+                  background: 'rgba(249, 115, 22, 0.1)',
+                  color: '#ea580c',
+                  fontWeight: 600,
+                  border: '1px solid rgba(234, 88, 12, 0.2)',
+                }}
+              />
+            </Box>
 
-        <div className="table-responsive">
-          <table className="simple">
-            <thead>
-              <tr>
-                <th>
-                  <Typography className="font-semibold">
-                    TransactionID
-                  </Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">
-                    Payment Method
-                  </Typography>
-                </th>
-             
-                <th>
-                  <Typography className="font-semibold">
-                    Total Amount
-                  </Typography>
-                </th>
-                <th>
-                  <Typography className="font-semibold">Payed On</Typography>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <span className="truncate">
-                    {reservation?.paymentResult?.reference}
-                  </span>
-                </td>
-                <td>
-                  <span className="truncate">
-                    {reservation?.paymentdatas?.paymentMethod}
-                  </span>
-                </td>
-             
-                <td>
-                  <span className="truncate">
-                  ₦ {formatCurrency(reservation?.totalPrice)}
-                  </span>
-                </td>
-              
-                <td>
-                  <span className="truncate">
-                    {new Date(reservation?.PaidAt)?.toDateString()}
-           
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+            <Box>
+              <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                Total Amount
+              </Typography>
+              <Typography variant="h6" className="font-bold" sx={{ color: '#ea580c' }}>
+                ₦{formatCurrency(reservation?.totalPrice)}
+              </Typography>
+            </Box>
+
+            <Box>
+              <Typography variant="caption" sx={{ color: '#78716c', display: 'block', mb: 0.5 }}>
+                Paid On
+              </Typography>
+              <Typography variant="body2" className="font-semibold" sx={{ color: '#292524' }}>
+                {reservation?.PaidAt ? new Date(reservation?.PaidAt)?.toDateString() : 'N/A'}
+              </Typography>
+            </Box>
+          </Box>
+        </Paper>
+      </motion.div>
+
+      {/* Check-In Confirmation Dialog */}
+      <Dialog
+        open={checkInDialogOpen}
+        onClose={() => setCheckInDialogOpen(false)}
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            minWidth: { xs: '90%', sm: 400 },
+          },
+        }}
+      >
+        <DialogTitle>
+          <Box className="flex items-center gap-12">
+            <Box
+              sx={{
+                width: 48,
+                height: 48,
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <FuseSvgIcon className="text-white" size={24}>
+                heroicons-outline:login
+              </FuseSvgIcon>
+            </Box>
+            <Typography variant="h6" className="font-bold" sx={{ color: '#292524' }}>
+              Confirm Guest Check-In
+            </Typography>
+          </Box>
+        </DialogTitle>
+        <DialogContent>
+          <Box className="space-y-12 pt-8">
+            <Typography variant="body1" sx={{ color: '#57534e', mb: 2 }}>
+              Are you sure you want to check in this guest?
+            </Typography>
+            <Paper
+              elevation={0}
+              sx={{
+                p: 2,
+                background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(234, 88, 12, 0.05) 100%)',
+                border: '1px solid rgba(234, 88, 12, 0.1)',
+                borderRadius: 1.5,
+              }}
+            >
+              <Box className="flex items-center gap-8 mb-8">
+                <FuseSvgIcon size={16} sx={{ color: '#ea580c' }}>
+                  heroicons-solid:user
+                </FuseSvgIcon>
+                <Typography variant="body2" className="font-semibold" sx={{ color: '#292524' }}>
+                  {reservation?.paymentdatas?.bookingName || 'Guest'}
+                </Typography>
+              </Box>
+              <Box className="flex items-center gap-8">
+                <FuseSvgIcon size={16} sx={{ color: '#ea580c' }}>
+                  heroicons-solid:calendar
+                </FuseSvgIcon>
+                <Typography variant="caption" sx={{ color: '#78716c' }}>
+                  Check-in Date: {new Date(reservation?.startDate)?.toDateString()}
+                </Typography>
+              </Box>
+            </Paper>
+            <Typography variant="caption" sx={{ color: '#78716c', display: 'block', fontStyle: 'italic' }}>
+              This action will mark the guest as checked in and update the reservation status.
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, pt: 0 }}>
+          <Button
+            onClick={() => setCheckInDialogOpen(false)}
+            sx={{
+              color: '#78716c',
+              fontWeight: 600,
+              textTransform: 'none',
+              '&:hover': {
+                background: 'rgba(120, 113, 108, 0.08)',
+              },
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleCheckIn}
+            variant="contained"
+            sx={{
+              background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+              color: 'white',
+              fontWeight: 600,
+              textTransform: 'none',
+              px: 3,
+              '&:hover': {
+                background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
+              },
+            }}
+          >
+            Confirm Check-In
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Check-Out Confirmation Dialog */}
+      <Dialog
+        open={checkOutDialogOpen}
+        onClose={() => setCheckOutDialogOpen(false)}
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            minWidth: { xs: '90%', sm: 400 },
+          },
+        }}
+      >
+        <DialogTitle>
+          <Box className="flex items-center gap-12">
+            <Box
+              sx={{
+                width: 48,
+                height: 48,
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <FuseSvgIcon className="text-white" size={24}>
+                heroicons-outline:logout
+              </FuseSvgIcon>
+            </Box>
+            <Typography variant="h6" className="font-bold" sx={{ color: '#292524' }}>
+              Confirm Guest Check-Out
+            </Typography>
+          </Box>
+        </DialogTitle>
+        <DialogContent>
+          <Box className="space-y-12 pt-8">
+            <Typography variant="body1" sx={{ color: '#57534e', mb: 2 }}>
+              Are you sure you want to check out this guest?
+            </Typography>
+            <Paper
+              elevation={0}
+              sx={{
+                p: 2,
+                background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(234, 88, 12, 0.05) 100%)',
+                border: '1px solid rgba(234, 88, 12, 0.1)',
+                borderRadius: 1.5,
+              }}
+            >
+              <Box className="flex items-center gap-8 mb-8">
+                <FuseSvgIcon size={16} sx={{ color: '#ea580c' }}>
+                  heroicons-solid:user
+                </FuseSvgIcon>
+                <Typography variant="body2" className="font-semibold" sx={{ color: '#292524' }}>
+                  {reservation?.paymentdatas?.bookingName || 'Guest'}
+                </Typography>
+              </Box>
+              <Box className="flex items-center gap-8">
+                <FuseSvgIcon size={16} sx={{ color: '#ea580c' }}>
+                  heroicons-solid:calendar
+                </FuseSvgIcon>
+                <Typography variant="caption" sx={{ color: '#78716c' }}>
+                  Check-out Date: {new Date(reservation?.endDate)?.toDateString()}
+                </Typography>
+              </Box>
+            </Paper>
+            <Typography variant="caption" sx={{ color: '#78716c', display: 'block', fontStyle: 'italic' }}>
+              This action will mark the guest as checked out and complete the reservation.
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, pt: 0 }}>
+          <Button
+            onClick={() => setCheckOutDialogOpen(false)}
+            sx={{
+              color: '#78716c',
+              fontWeight: 600,
+              textTransform: 'none',
+              '&:hover': {
+                background: 'rgba(120, 113, 108, 0.08)',
+              },
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleCheckOutGuest}
+            variant="contained"
+            sx={{
+              background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+              color: 'white',
+              fontWeight: 600,
+              textTransform: 'none',
+              px: 3,
+              '&:hover': {
+                background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
+              },
+            }}
+          >
+            Confirm Check-Out
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 }
 

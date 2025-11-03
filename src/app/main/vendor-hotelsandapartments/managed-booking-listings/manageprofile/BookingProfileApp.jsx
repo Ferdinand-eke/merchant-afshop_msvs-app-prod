@@ -1,217 +1,328 @@
-import FusePageSimple from "@fuse/core/FusePageSimple";
-import { styled } from "@mui/material/styles";
-import Avatar from "@mui/material/Avatar";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
-import Typography from "@mui/material/Typography";
-import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import Box from "@mui/material/Box";
-import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
-import AboutManageRoomsTab from "./tabs/about/AboutManageRoomsTab";
-import PhotosVideosTab from "./tabs/photos-videos/PhotosVideosTab";
-import TimelineTab from "./tabs/timeline/TimelineTab";
-import { useSingleShopBookingsProperty } from "app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties";
-import { useNavigate, useParams } from "react-router";
-import ManageReservationPage from "./tabs/photos-videos/ManageReservationPage";
-import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
-import { useTheme } from "@mui/material/styles";
-import { Link } from "react-router-dom";
-
+import FusePageSimple from '@fuse/core/FusePageSimple';
+import { styled } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import Box from '@mui/material/Box';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import AboutManageRoomsTab from './tabs/about/AboutManageRoomsTab';
+import PhotosVideosTab from './tabs/photos-videos/PhotosVideosTab';
+import TimelineTab from './tabs/timeline/TimelineTab';
+import { useSingleShopBookingsProperty } from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
+import { useNavigate, useParams } from 'react-router';
+import ManageReservationPage from './tabs/photos-videos/ManageReservationPage';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import { useTheme } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
+import { Button, Chip, Paper, IconButton } from '@mui/material';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
-  "& .FusePageSimple-header": {
-    backgroundColor: theme.palette.background.paper,
-  },
+	'& .FusePageSimple-header': {
+		backgroundColor: 'transparent',
+	},
 }));
 
 const TABS = {
-  timeline: 0,
-  rooms: 1,
-  reservations: 2,
+	timeline: 0,
+	rooms: 1,
+	reservations: 2,
 };
 
 /**
  * The profile page.
  */
 function BookingProfileApp() {
-  const theme = useTheme();
-  const routeParams = useParams();
-  const { productId, reservationId } = routeParams;
-  const [selectedTab, setSelectedTab] = useState(TABS.timeline);
+	const theme = useTheme();
+	const routeParams = useParams();
+	const { productId, reservationId } = routeParams;
 
-  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
-  const {
-    data: propertyList,
-    isLoading,
-    isError,
-  } = useSingleShopBookingsProperty(productId);
+	// Load tab from localStorage with property-specific key
+	const getStoredTab = () => {
+		const stored = localStorage.getItem(`propertyProfileTab_${productId}`);
+		return stored ? parseInt(stored, 10) : TABS.timeline;
+	};
 
-  function handleTabChange(event, value) {
-    setSelectedTab(value);
+	const [selectedTab, setSelectedTab] = useState(getStoredTab);
 
-    /***Set selected tab on locked-On with local storage once tab is selected so as to remain on same tab when reloaded */
-  }
+	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+	const {
+		data: propertyList,
+		isLoading,
+		isError,
+	} = useSingleShopBookingsProperty(productId);
 
-  //   console.log("PROPERTY_LIST", propertyList);
-  const navigate = useNavigate();
-  const pageLayout = useRef(null);
-  const [rightSidebarOpen, setRightSidebarOpen] = useState(false);
-  // useEffect(() => {
-  //   setRightSidebarOpen(Boolean(reservationId));
-  // }, [reservationId]);
+	function handleTabChange(event, value) {
+		setSelectedTab(value);
+		// Save to localStorage with property-specific key
+		localStorage.setItem(`propertyProfileTab_${productId}`, value.toString());
+	}
 
-  const handleRightSidebarToggle = () => {
-    setRightSidebarOpen(false);
-    navigate(`/bookings/managed-listings/${productId}/manage`);
-  };
+	const navigate = useNavigate();
+	const pageLayout = useRef(null);
+	const [rightSidebarOpen, setRightSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    const savedTab = localStorage.getItem("selectedTab");
-    if (savedTab !== null) {
-      setSelectedTab(Number(savedTab));
-    }
-  }, []);
+	const handleRightSidebarToggle = () => {
+		setRightSidebarOpen(false);
+		navigate(`/bookings/managed-listings/${productId}/manage`);
+	};
 
-  // 🟢 Each time activeTab changes: save it to localStorage
-  useEffect(() => {
-    setRightSidebarOpen(Boolean(reservationId));
+	useEffect(() => {
+		setRightSidebarOpen(Boolean(reservationId));
+	}, [reservationId]);
 
-    localStorage.setItem("selectedTab", selectedTab.toString());
-  }, [reservationId, selectedTab]);
+	// Restore tab on productId change
+	useEffect(() => {
+		setSelectedTab(getStoredTab());
+	}, [productId]);
 
-  console.log("propertyList", propertyList?.data?.bookingList?.imageSrcs[0]?.url)
+	const property = propertyList?.data?.bookingList;
+	const featuredImage = property?.imageSrcs?.[0]?.url || 'assets/images/apps/ecommerce/product-image-placeholder.png';
 
-  return (
-    <Root
-      header={
-        <div className="flex flex-col w-full">
-          <div className="mt-20 flex flex-col flex-0 lg:flex-row items-center max-w-5xl w-full mx-auto px-32 lg:h-72">
-            <div className="-mt-96 lg:-mt-88 rounded-full">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1, transition: { delay: 0.1 } }}
-              >
-                <Avatar
-                  sx={{ borderColor: "background.paper" }}
-                  className="w-128 h-128 border-4 mt-40"
-                  // src="assets/images/avatars/male-04.jpg"
-                  src={`${propertyList?.data?.bookingList?.imageSrcs[0]?.url}`}
-                  alt="User avatar"
-                />
-              </motion.div>
-            </div>
+	return (
+		<Root
+			header={
+				<Box
+					sx={{
+						background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
+						borderBottom: '1px solid rgba(234, 88, 12, 0.1)',
+					}}
+				>
+					{/* Compact Profile Section */}
+					<Box className="px-24 md:px-32 py-12">
+						<Box className="max-w-6xl mx-auto">
+							{/* Header Row: Back Button + Profile + Actions + Stats */}
+							<Box className="flex items-center gap-16 mb-12">
+								{/* Back Button */}
+								<Button
+									component={Link}
+									to="/bookings/managed-listings"
+									startIcon={
+										<FuseSvgIcon size={16}>
+											{theme.direction === 'ltr'
+												? 'heroicons-outline:arrow-left'
+												: 'heroicons-outline:arrow-right'}
+										</FuseSvgIcon>
+									}
+									sx={{
+										color: '#292524',
+										fontWeight: 600,
+										minWidth: 'auto',
+										px: 2,
+										py: 1,
+										fontSize: '14px',
+										'&:hover': {
+											background: 'rgba(249, 115, 22, 0.08)',
+										},
+									}}
+								>
+									Back
+								</Button>
 
-            <div className="flex flex-col items-center lg:items-start mt-16 lg:mt-0 lg:ml-32">
-              <Typography className="text-lg font-bold leading-none">
-                {propertyList?.data?.bookingList?.title}
-              </Typography>
-              {/* <Typography color="text.secondary">London, UK</Typography> */}
-              <Typography
-                className="flex items-center sm:mb-12"
-                component={Link}
-                role="button"
-                to="/bookings/managed-listings"
-                color="inherit"
-              >
-                <FuseSvgIcon size={20}>
-                  {theme.direction === "ltr"
-                    ? "heroicons-outline:arrow-sm-left"
-                    : "heroicons-outline:arrow-sm-right"}
-                </FuseSvgIcon>
-                <span className="flex mx-4 font-medium">Property Listings</span>
-              </Typography>
-            </div>
+								{/* Avatar + Title */}
+								<Box className="flex items-center gap-12 flex-1">
+									<motion.div
+										initial={{ scale: 0 }}
+										animate={{ scale: 1, transition: { delay: 0.1 } }}
+									>
+										<Avatar
+											sx={{
+												width: 56,
+												height: 56,
+												border: '2px solid white',
+												boxShadow: '0 2px 8px rgba(234, 88, 12, 0.15)',
+											}}
+											src={featuredImage}
+											alt="Property"
+										/>
+									</motion.div>
 
-            <div className="hidden lg:flex h-32 mx-32 border-l-2" />
+									<Box className="flex-1 min-w-0">
+										<Typography variant="h6" className="font-bold mb-4 truncate" sx={{ color: '#292524' }}>
+											{property?.title || 'Property'}
+										</Typography>
+										<Box className="flex flex-wrap items-center gap-6">
+											<Chip
+												icon={<FuseSvgIcon size={12}>heroicons-outline:location-marker</FuseSvgIcon>}
+												label="Abuja, FCT"
+												size="small"
+												sx={{
+													background: 'rgba(249, 115, 22, 0.1)',
+													color: '#ea580c',
+													fontWeight: 600,
+													height: 20,
+													fontSize: '11px',
+													'& .MuiChip-icon': { marginLeft: '4px' },
+												}}
+											/>
+											<Chip
+												icon={<FuseSvgIcon size={12}>heroicons-outline:star</FuseSvgIcon>}
+												label="Top Rated"
+												size="small"
+												sx={{
+													background: 'rgba(251, 191, 36, 0.15)',
+													color: '#d97706',
+													fontWeight: 600,
+													height: 20,
+													fontSize: '11px',
+													'& .MuiChip-icon': { marginLeft: '4px' },
+												}}
+											/>
+											<Chip
+												icon={<FuseSvgIcon size={12}>heroicons-outline:check-circle</FuseSvgIcon>}
+												label="Verified"
+												size="small"
+												sx={{
+													background: 'rgba(34, 197, 94, 0.1)',
+													color: '#16a34a',
+													fontWeight: 600,
+													height: 20,
+													fontSize: '11px',
+													'& .MuiChip-icon': { marginLeft: '4px' },
+												}}
+											/>
+										</Box>
+									</Box>
+								</Box>
 
-            <div className="flex items-center mt-24 lg:mt-0 space-x-24">
-              <div className="flex flex-col items-center">
-                <Typography className="font-bold">200k</Typography>
-                <Typography
-                  className="text-sm font-medium"
-                  color="text.secondary"
-                >
-                  FOLLOWERS
-                </Typography>
-              </div>
-              <div className="flex flex-col items-center">
-                <Typography className="font-bold">1.2k</Typography>
-                <Typography
-                  className="text-sm font-medium"
-                  color="text.secondary"
-                >
-                  FOLLOWING
-                </Typography>
-              </div>
-            </div>
+								{/* Stats - Compact */}
+								<Box className="hidden md:flex items-center gap-20">
+									<Box className="text-center">
+										<Typography className="text-16 font-bold" sx={{ color: '#ea580c', lineHeight: 1.2 }}>
+											200K
+										</Typography>
+										<Typography className="text-9 font-medium" color="text.secondary">
+											VIEWS
+										</Typography>
+									</Box>
+									<Box className="text-center">
+										<Typography className="text-16 font-bold" sx={{ color: '#ea580c', lineHeight: 1.2 }}>
+											1.2K
+										</Typography>
+										<Typography className="text-9 font-medium" color="text.secondary">
+											BOOKINGS
+										</Typography>
+									</Box>
+									<Box className="text-center">
+										<Typography className="text-16 font-bold" sx={{ color: '#ea580c', lineHeight: 1.2 }}>
+											4.9
+										</Typography>
+										<Typography className="text-9 font-medium" color="text.secondary">
+											RATING
+										</Typography>
+									</Box>
+								</Box>
 
-            <div className="flex flex-1 justify-end my-16 lg:my-0">
-              <Tabs
-                value={selectedTab}
-                onChange={handleTabChange}
-                indicatorColor="primary"
-                textColor="inherit"
-                variant="scrollable"
-                scrollButtons={false}
-                className="-mx-4 min-h-40"
-                classes={{
-                  indicator: "flex justify-center bg-transparent w-full h-full",
-                }}
-                TabIndicatorProps={{
-                  children: (
-                    <Box
-                      sx={{ bgcolor: "text.disabled" }}
-                      className="w-full h-full rounded-full opacity-20"
-                    />
-                  ),
-                }}
-              >
-                <Tab
-                  className={`text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 ${selectedTab === TABS.timeline ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-                  disableRipple
-                  label="Timeline"
-                />
-                <Tab
-                  className={`text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 ${selectedTab === TABS.rooms ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-                  disableRipple
-                  label="Manage Rooms"
-                />
-                <Tab
-                  className={`text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 ${selectedTab === TABS.reservations ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-                  disableRipple
-                  label="Reservations"
-                />
-              </Tabs>
-            </div>
-          </div>
-        </div>
-      }
+								{/* Action Buttons */}
+								<Box className="flex items-center gap-8">
+									<IconButton
+										sx={{
+											width: 32,
+											height: 32,
+											border: '1px solid rgba(234, 88, 12, 0.2)',
+											'&:hover': {
+												background: 'rgba(249, 115, 22, 0.08)',
+												borderColor: '#ea580c',
+											},
+										}}
+									>
+										<FuseSvgIcon size={16} sx={{ color: '#ea580c' }}>
+											heroicons-outline:share
+										</FuseSvgIcon>
+									</IconButton>
+									<IconButton
+										sx={{
+											width: 32,
+											height: 32,
+											border: '1px solid rgba(234, 88, 12, 0.2)',
+											'&:hover': {
+												background: 'rgba(249, 115, 22, 0.08)',
+												borderColor: '#ea580c',
+											},
+										}}
+									>
+										<FuseSvgIcon size={16} sx={{ color: '#ea580c' }}>
+											heroicons-outline:dots-vertical
+										</FuseSvgIcon>
+									</IconButton>
+								</Box>
+							</Box>
 
-      content={
-        <div className="flex flex-auto justify-center w-full max-w-5xl mx-auto p-24 sm:p-32">
-          {selectedTab === TABS.timeline && <TimelineTab />}
+							{/* Tabs */}
+							<Tabs
+								value={selectedTab}
+								onChange={handleTabChange}
+								textColor="inherit"
+								variant="scrollable"
+								scrollButtons="auto"
+								sx={{
+									minHeight: 'auto',
+									'& .MuiTab-root': {
+										minHeight: 40,
+										textTransform: 'none',
+										fontSize: '14px',
+										fontWeight: 600,
+										px: 2,
+										py: 1,
+										color: '#78716c',
+										'&.Mui-selected': {
+											color: '#ea580c',
+										},
+									},
+									'& .MuiTabs-indicator': {
+										backgroundColor: '#ea580c',
+										height: 2,
+										borderRadius: '2px 2px 0 0',
+									},
+								}}
+							>
+								<Tab
+									icon={<FuseSvgIcon size={16}>heroicons-outline:clock</FuseSvgIcon>}
+									iconPosition="start"
+									label="Timeline"
+								/>
+								<Tab
+									icon={<FuseSvgIcon size={16}>heroicons-outline:home</FuseSvgIcon>}
+									iconPosition="start"
+									label="Manage Rooms"
+								/>
+								<Tab
+									icon={<FuseSvgIcon size={16}>heroicons-outline:calendar</FuseSvgIcon>}
+									iconPosition="start"
+									label="Reservations"
+								/>
+							</Tabs>
+						</Box>
+					</Box>
+				</Box>
+			}
+			content={
+				<Box
+					sx={{
+						background: 'linear-gradient(180deg, #fafaf9 0%, #f5f5f4 50%, #fef3e2 100%)',
+						minHeight: 'calc(100vh - 400px)',
+					}}
+				>
+					<div className="flex flex-auto justify-center w-full max-w-6xl mx-auto p-24 sm:p-32">
+						{selectedTab === TABS.timeline && <TimelineTab />}
 
-          {selectedTab === TABS.rooms && (
-            <AboutManageRoomsTab Listing={propertyList?.data?.bookingList} />
-          )}
+						{selectedTab === TABS.rooms && <AboutManageRoomsTab Listing={property} />}
 
-          {selectedTab === TABS.reservations && (
-            <PhotosVideosTab Listing={propertyList?.data?.bookingList} />
-          )}
-        </div>
-      }
-      ref={pageLayout}
-      rightSidebarContent={<ManageReservationPage />}
-      rightSidebarOpen={rightSidebarOpen}
-      rightSidebarOnClose={() => setRightSidebarOpen(false)}
-      // rightSidebarOnClose={() => handleRightSidebarToggle()}
-      rightSidebarWidth={640}
-      rightSidebarVariant="temporary"
-      //   scroll={isMobile ? "normal" : "page"}
-      scroll={isMobile ? "normal" : "content"}
-    />
-  );
+						{selectedTab === TABS.reservations && <PhotosVideosTab Listing={property} />}
+					</div>
+				</Box>
+			}
+			ref={pageLayout}
+			rightSidebarContent={<ManageReservationPage />}
+			rightSidebarOpen={rightSidebarOpen}
+			rightSidebarOnClose={() => setRightSidebarOpen(false)}
+			rightSidebarWidth={640}
+			rightSidebarVariant="temporary"
+			scroll={isMobile ? 'normal' : 'content'}
+		/>
+	);
 }
 
 export default BookingProfileApp;

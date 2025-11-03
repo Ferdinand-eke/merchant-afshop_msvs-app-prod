@@ -9,17 +9,17 @@ import { Box, Chip } from '@mui/material';
 /**
  * The FeaturesWidget widget - Displays completed/sealed orders
  */
-function FeaturesWidget({sealedOrderItems, isLoading}) {
+function FeaturesWidget({sealedOrdersCount, isLoading}) {
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+	// if (isLoading) {
+	// 	return <FuseLoading />;
+	// }
 
 	// if (!sealedOrderItems) {
 	// 	return null;
 	// }
 
-	const count = sealedOrderItems?.length || 0;
+	const count = sealedOrdersCount;
 
 	return (
 		<Paper className="flex flex-col flex-auto h-full shadow rounded-2xl overflow-hidden bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/10 dark:to-gray-800">
@@ -44,7 +44,7 @@ function FeaturesWidget({sealedOrderItems, isLoading}) {
 
 			<div className="text-center mt-16 px-16">
 				<Typography className="text-5xl font-bold tracking-tight text-purple-600 dark:text-purple-400">
-					{count}
+					{sealedOrdersCount}
 				</Typography>
 				<Typography className="text-xs mt-4" color="text.secondary">
 					Sealed orders
@@ -69,7 +69,7 @@ function FeaturesWidget({sealedOrderItems, isLoading}) {
 						Success Rate
 					</Typography>
 					<Typography className="text-xs font-bold text-purple-600">
-						{count > 0 ? '96%' : 'N/A'}
+						{sealedOrdersCount > 0 ? '96%' : 'N/A'}
 					</Typography>
 				</Box>
 			</Box>

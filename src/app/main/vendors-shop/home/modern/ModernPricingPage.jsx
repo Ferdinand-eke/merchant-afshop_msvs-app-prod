@@ -1,6 +1,472 @@
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { alpha } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
+import clsx from "clsx";
+import { motion } from "framer-motion";
+import ModernPricingCard from "./ModernPricingCard";
+import ModernPricingFeatureItem from "./ModernPricingFeatureItem";
+import useShopplans from "app/configs/data/server-calls/shopplans/useShopPlans";
+import Chip from "@mui/material/Chip";
+import { Link } from "react-router-dom";
+
+/**
+ * AfricanShops Modern Pricing Page - Redesigned for Production
+ * Compelling, conversion-focused pricing with gradient design
+ */
+function ModernPricingPage() {
+  const { data: merchantPlans } = useShopplans();
+  const [period, setPeriod] = useState("month");
+
+  const container = {
+    show: {
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 40 },
+    show: { opacity: 1, y: 0 },
+  };
+
+  return (
+    <div className="relative flex min-w-0 flex-auto flex-col overflow-hidden">
+      {/* Header Section with Gradient Background */}
+      <Box
+        className="relative overflow-hidden px-24 pb-64 pt-48 sm:px-64 sm:pb-80 sm:pt-64"
+        sx={{
+          background: 'linear-gradient(180deg, transparent 0%, rgba(255, 107, 53, 0.03) 100%)'
+        }}
+      >
+        <div className="flex flex-col items-center">
+          {/* Section Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <Chip
+              label="FLEXIBLE PRICING"
+              size="medium"
+              sx={{
+                backgroundColor: alpha('#FF6B35', 0.1),
+                color: '#FF6B35',
+                fontWeight: 700,
+                fontSize: '0.75rem',
+                letterSpacing: '0.5px',
+                mb: 3
+              }}
+            />
+          </motion.div>
+
+          {/* Main Heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            <Typography className="mt-16 text-center text-40 font-black leading-tight tracking-tight sm:text-56">
+              Choose Your Perfect Plan
+            </Typography>
+          </motion.div>
+
+          {/* Subheading */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15 }}
+          >
+            <Typography
+              className="mt-16 max-w-2xl text-center text-18 tracking-normal sm:text-20"
+              color="text.secondary"
+            >
+              Start selling for free. Scale with confidence. Only pay when you earn.
+              <br />
+              No hidden fees, no surprises.
+            </Typography>
+          </motion.div>
+
+          {/* Billing Toggle */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="mt-48"
+          >
+            <Box
+              className="flex items-center overflow-hidden rounded-full p-6"
+              sx={{
+                background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 127, 0, 0.1) 100%)',
+                border: '2px solid',
+                borderColor: alpha('#FF6B35', 0.2),
+                backdropFilter: 'blur(10px)'
+              }}
+            >
+              <Box
+                component="button"
+                className={clsx(
+                  "h-48 cursor-pointer items-center rounded-full px-24 font-bold text-15 transition-all duration-300",
+                  period === "year" && "shadow-lg"
+                )}
+                onClick={() => setPeriod("year")}
+                sx={{
+                  background: period === "year"
+                    ? 'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)'
+                    : 'transparent',
+                  color: period === "year" ? 'white' : 'text.primary',
+                  '&:hover': {
+                    background: period === "year"
+                      ? 'linear-gradient(135deg, #F77F00 0%, #FF6B35 100%)'
+                      : alpha('#FF6B35', 0.1)
+                  }
+                }}
+                type="button"
+              >
+                Percentage (%) Commission
+              </Box>
+
+              <Box
+                component="button"
+                className={clsx(
+                  "h-48 cursor-pointer items-center rounded-full px-24 font-bold text-15 transition-all duration-300",
+                  period === "month" && "shadow-lg"
+                )}
+                onClick={() => setPeriod("month")}
+                sx={{
+                  background: period === "month"
+                    ? 'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)'
+                    : 'transparent',
+                  color: period === "month" ? 'white' : 'text.primary',
+                  '&:hover': {
+                    background: period === "month"
+                      ? 'linear-gradient(135deg, #F77F00 0%, #FF6B35 100%)'
+                      : alpha('#FF6B35', 0.1)
+                  }
+                }}
+                type="button"
+              >
+                Negotiated Commission
+              </Box>
+            </Box>
+          </motion.div>
+        </div>
+      </Box>
+
+      {/* Pricing Cards Section */}
+      <div className="relative px-24 pb-64 sm:px-64">
+        <div className="mx-auto w-full max-w-7xl">
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 gap-32 md:grid-cols-2 lg:grid-cols-3"
+          >
+            {merchantPlans?.data?.merchantPlans?.length > 0 ? (
+              merchantPlans?.data?.merchantPlans?.map((plan, index) => (
+                <motion.div variants={item} key={plan?._id}>
+                  <ModernPricingCard
+                    period={period}
+                    isPopular={plan?.isMostPreferred}
+                    accountId={plan?.id}
+                    title={plan?.plansname}
+                    subtitle={plan?.planinfo}
+                    yearlyPrice={plan?.percetageCommissionCharge}
+                    monthlyPrice={plan?.percetageCommissionCharge}
+                    buttonTitle="Get Started"
+                    index={index}
+                    details={
+                      <div className="mt-40 flex flex-col">
+                        <Typography className="font-bold text-16 mb-16">
+                          Everything you need to succeed:
+                        </Typography>
+                        <div className="space-y-12">
+                          <div className="flex items-start gap-12">
+                            <Box
+                              sx={{
+                                width: 20,
+                                height: 20,
+                                borderRadius: '6px',
+                                background: 'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                                marginTop: '2px'
+                              }}
+                            >
+                              <FuseSvgIcon size={12} sx={{ color: 'white' }}>
+                                heroicons-solid:check
+                              </FuseSvgIcon>
+                            </Box>
+                            <Typography className="text-15 leading-relaxed">
+                              <b>{plan?.numberofproducts}</b> products to start
+                            </Typography>
+                          </div>
+
+                          <div className="flex items-start gap-12">
+                            <Box
+                              sx={{
+                                width: 20,
+                                height: 20,
+                                borderRadius: '6px',
+                                background: 'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                                marginTop: '2px'
+                              }}
+                            >
+                              <FuseSvgIcon size={12} sx={{ color: 'white' }}>
+                                heroicons-solid:check
+                              </FuseSvgIcon>
+                            </Box>
+                            <Typography className="text-15 leading-relaxed">
+                              Advanced Analytics Dashboard
+                            </Typography>
+                          </div>
+
+                          <div className="flex items-start gap-12">
+                            <Box
+                              sx={{
+                                width: 20,
+                                height: 20,
+                                borderRadius: '6px',
+                                background: 'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                                marginTop: '2px'
+                              }}
+                            >
+                              <FuseSvgIcon size={12} sx={{ color: 'white' }}>
+                                heroicons-solid:check
+                              </FuseSvgIcon>
+                            </Box>
+                            <Typography className="text-15 leading-relaxed">
+                              24/7 Priority Support
+                            </Typography>
+                          </div>
+
+                          <div className="flex items-start gap-12">
+                            <Box
+                              sx={{
+                                width: 20,
+                                height: 20,
+                                borderRadius: '6px',
+                                background: 'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                                marginTop: '2px'
+                              }}
+                            >
+                              <FuseSvgIcon size={12} sx={{ color: 'white' }}>
+                                heroicons-solid:check
+                              </FuseSvgIcon>
+                            </Box>
+                            <Typography className="text-15 leading-relaxed">
+                              Secure Payment Processing
+                            </Typography>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  />
+                </motion.div>
+              ))
+            ) : (
+              <Box className="col-span-full text-center py-64">
+                <FuseSvgIcon size={64} color="disabled">
+                  heroicons-outline:inbox
+                </FuseSvgIcon>
+                <Typography className="mt-16 text-20 font-semibold" color="text.secondary">
+                  No merchant plans available yet
+                </Typography>
+              </Box>
+            )}
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <Box
+        className="px-24 py-64 sm:px-64 sm:py-80"
+        sx={{
+          background: 'linear-gradient(180deg, rgba(255, 107, 53, 0.02) 0%, transparent 100%)'
+        }}
+      >
+        <div className="mx-auto w-full max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-64"
+          >
+            <Chip
+              label="POWERFUL FEATURES"
+              size="medium"
+              sx={{
+                backgroundColor: alpha('#FF6B35', 0.1),
+                color: '#FF6B35',
+                fontWeight: 700,
+                fontSize: '0.75rem',
+                letterSpacing: '0.5px',
+                mb: 3
+              }}
+            />
+            <Typography className="mt-16 text-36 sm:text-48 font-black leading-tight tracking-tight">
+              Everything You Need to Succeed
+            </Typography>
+            <Typography
+              className="mt-16 mx-auto max-w-3xl text-18 sm:text-20"
+              color="text.secondary"
+            >
+              Our comprehensive suite of tools helps you manage, grow, and scale your business effortlessly
+            </Typography>
+          </motion.div>
+
+          <div className="grid w-full grid-cols-1 gap-32 sm:grid-cols-2 lg:grid-cols-3">
+            <ModernPricingFeatureItem
+              icon="heroicons-outline:shopping-bag"
+              title="Product Management"
+              subtitle="Create and manage unlimited products with drag-and-drop image uploads, smart categorization, and inventory tracking."
+            />
+            <ModernPricingFeatureItem
+              icon="heroicons-outline:chart-bar"
+              title="Real-Time Analytics"
+              subtitle="Track sales, monitor performance, and make data-driven decisions with our powerful analytics dashboard."
+            />
+            <ModernPricingFeatureItem
+              icon="heroicons-outline:truck"
+              title="Order Fulfillment"
+              subtitle="Streamlined order processing with automated notifications, tracking, and seamless delivery management."
+            />
+            <ModernPricingFeatureItem
+              icon="heroicons-outline:credit-card"
+              title="Secure Payments"
+              subtitle="Accept payments confidently with our secure processing system. Withdraw earnings directly to your bank."
+            />
+            <ModernPricingFeatureItem
+              icon="heroicons-outline:support"
+              title="24/7 Expert Support"
+              subtitle="Get help whenever you need it. Our dedicated support team is available around the clock."
+            />
+            <ModernPricingFeatureItem
+              icon="heroicons-outline:sparkles"
+              title="Marketing Tools"
+              subtitle="Boost visibility with built-in marketing features, promotions, and customer engagement tools."
+            />
+          </div>
+        </div>
+      </Box>
+
+      {/* Final CTA Section */}
+      <Box
+        className="px-24 py-64 sm:px-64 sm:py-80"
+        sx={{
+          background: 'linear-gradient(135deg, #FF6B35 0%, #F77F00 50%, #FCBF49 100%)',
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
+        {/* Decorative Background */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            opacity: 0.1,
+            background: 'radial-gradient(circle at 30% 50%, white 0%, transparent 50%)'
+          }}
+        />
+
+        <div className="relative mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+          >
+            <Typography className="text-40 font-black leading-tight sm:text-56" sx={{ color: 'white' }}>
+              Ready to Grow Your Business?
+            </Typography>
+            <Typography
+              className="mt-24 text-20 font-medium sm:text-24"
+              sx={{ color: 'rgba(255, 255, 255, 0.95)' }}
+            >
+              Join thousands of successful merchants on{' '}
+              <span className="font-black">AfricanShops</span> today.
+            </Typography>
+            <Typography
+              className="mt-16 text-16 sm:text-18"
+              sx={{ color: 'rgba(255, 255, 255, 0.8)' }}
+            >
+              Start for free. No credit card required.
+            </Typography>
+
+            <Button
+              component={Link}
+              to="/sign-up"
+              size="large"
+              variant="contained"
+              className="mt-48"
+              sx={{
+                backgroundColor: 'white',
+                color: '#FF6B35',
+                px: 6,
+                py: 2,
+                fontSize: '1.125rem',
+                fontWeight: 700,
+                borderRadius: '12px',
+                textTransform: 'none',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 12px 40px rgba(0,0,0,0.25)'
+                },
+                transition: 'all 0.3s ease'
+              }}
+              endIcon={<FuseSvgIcon size={24}>heroicons-outline:arrow-right</FuseSvgIcon>}
+            >
+              Start Selling for Free
+            </Button>
+
+            <Typography
+              className="mt-24 text-14 font-medium"
+              sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
+            >
+              Trusted by 1000+ merchants • 10,000+ products sold • 50,000+ happy customers
+            </Typography>
+          </motion.div>
+        </div>
+      </Box>
+    </div>
+  );
+}
+
+export default ModernPricingPage;
+
+/* ========================================
+   PREVIOUS VERSION - COMMENTED OUT
+   ======================================== */
+
+/*
+import { useState } from "react";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import { darken } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -11,9 +477,6 @@ import ModernPricingCard from "./ModernPricingCard";
 import ModernPricingFeatureItem from "./ModernPricingFeatureItem";
 import useShopplans from "app/configs/data/server-calls/shopplans/useShopPlans";
 
-/**
- * The modern pricing page.
- */
 function ModernPricingPage() {
   const { data: merchantPlans } = useShopplans();
 
@@ -30,7 +493,6 @@ function ModernPricingPage() {
     show: { opacity: 1, y: 0 },
   };
 
-  // console.log("merchantsPLANS", merchantPlans?.data?.data)
   return (
     <div className="relative flex min-w-0 flex-auto flex-col overflow-hidden">
       <div className="relative overflow-hidden px-24 pb-48 pt-32 sm:px-64 sm:pb-96 sm:pt-80">
@@ -55,13 +517,6 @@ function ModernPricingPage() {
           </Box>
         </svg>
         <div className="flex flex-col items-center">
-          {/* <motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1, transition: { delay: 0.05 } }}
-					>
-						<h2 className="text-xl font-semibold">PRICING</h2>
-					</motion.div> */}
-
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0, transition: { delay: 0.1 } }}
@@ -264,8 +719,6 @@ function ModernPricingPage() {
           <Button
             className="mt-32 px-48 text-lg bg-orange-700 hover:bg-orange-300"
             size="large"
-            // color="secondary"
-
             variant="contained"
           >
             Sign up for free
@@ -277,3 +730,4 @@ function ModernPricingPage() {
 }
 
 export default ModernPricingPage;
+*/

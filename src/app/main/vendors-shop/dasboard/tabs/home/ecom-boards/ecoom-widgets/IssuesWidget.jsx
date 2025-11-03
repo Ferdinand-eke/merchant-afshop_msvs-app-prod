@@ -9,18 +9,18 @@ import { Box, LinearProgress } from '@mui/material';
 /**
  * The IssuesWidget widget - Displays active orders
  */
-function IssuesWidget({orderItems, isLoading}) {
+function IssuesWidget({ordersCount, isLoading}) {
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+	// if (isLoading) {
+	// 	return <FuseLoading />;
+	// }
 
 	// if (!orderItems) {
 	// 	return null;
 	// }
 
-	const count = orderItems?.length || 0;
-	const completionRate = count > 0 ? 85 : 0;
+	// const count = orderItems?.length || 0;
+	const completionRate = ordersCount > 0 ? 85 : 0;
 
 	return (
 		<Paper className="flex flex-col flex-auto h-full shadow rounded-2xl overflow-hidden bg-gradient-to-br from-blue-50 to-white dark:from-blue-900/10 dark:to-gray-800">
@@ -45,7 +45,7 @@ function IssuesWidget({orderItems, isLoading}) {
 
 			<div className="text-center mt-16 px-16">
 				<Typography className="text-5xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
-					{count}
+					{ordersCount}
 				</Typography>
 				<Typography className="text-xs mt-4" color="text.secondary">
 					Pending orders

@@ -6,6 +6,7 @@ import {
 	GetShopItemsInOrders,
 	GetShopOrderItems,
 	GetShopPointOfSalesItems,
+	GetShopSealedOrderItems,
 	// getShopProducts,
 	MyShopCashOutOrderByOrderIdShopId,
 	MyShopCashOutOrderItemsByOrderItemsIdShopId,
@@ -38,8 +39,20 @@ export function useCashoutShopEarnings() {
 	});
 }
 
-export function useShopItemsInOrders() {
-	return useQuery(['__myshop_items_orders'], GetShopItemsInOrders);
+export function useShopItemsInOrders(page = 1, limit = 10, orderId) {
+	const params = {
+		page: page.toString(),
+		limit: limit.toString(),
+		...(orderId && { orderId })
+	};
+
+	return useQuery(
+		['__myshop_items_orders', page, limit, orderId],
+		() => GetShopItemsInOrders(params),
+		{
+			keepPreviousData: true
+		}
+	);
 }
 
 export function useFindShopItemsInOrders(itemId) {
@@ -64,6 +77,24 @@ export function useCashoutShopOrderItemsEarnings() {
 			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
 		}
 	});
+}
+
+/** ****
+ * MANAGE SEALED ORDER ITEMS
+ */
+export function useShopSealedOrderItems(page = 1, limit = 10) {
+	const params = {
+		page: page.toString(),
+		limit: limit.toString()
+	};
+
+	return useQuery(
+		['__myshop_sealed_orders', page, limit],
+		() => GetShopSealedOrderItems(params),
+		{
+			keepPreviousData: true
+		}
+	);
 }
 
 /** ****

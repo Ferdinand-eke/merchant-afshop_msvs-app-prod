@@ -45,7 +45,7 @@ const routeConfigs = [
   // SignOutConfig,
   SignInConfig,
   // SignUpConfig,
-  SignAcceptInviteConfig,
+  // SignAcceptInviteConfig,
   forgotPasswordConfig,
   resetPasswordConfig,
   // DocumentationConfig,

@@ -274,19 +274,27 @@ export const GetShopOrderItems = () => AuthApi().get(`/api/myshop/get-my-orders`
 
 export const myShopOrderByShopId = (id) => AuthApi().get(`/api/myshop/find-one-order/${id}`); // newDashboard
 
-export const GetShopItemsInOrders = () => AuthApi().get(`/merchant-orders/orderitems`); // newDashboard // (Msvs => Done)
+export const GetShopItemsInOrders = (params) => {
+	const queryString = params ? qs.stringify(params, { arrayFormat: 'repeat' }) : '';
+	return AuthApi().get(`/merchant-orders/orderitems${queryString ? `?${queryString}` : ''}`);
+}; // newDashboard // (Msvs => Done)
 
 export const myShopItemsInOrdersByShopId = (id) => {
 	// console.log('ID_TO_FIND1', id)
 
 	return AuthApi().get(`/merchant-orders/order-item/${id}/view`); // newDashboard (Msvs => Done)
 };
-
 export const MyShopCashOutOrderByOrderIdShopId = (id) => AuthApi().post(`/api/myshop/cashout-order/${id}`);
 
 export const MyShopCashOutOrderItemsByOrderItemsIdShopId = (id) => {
 	return AuthApi().post(`/api/myshop/cashout-order-items/${id}`);
 };
+
+/****Sealed-Orders */
+export const GetShopSealedOrderItems = (params) => {
+	const queryString = params ? qs.stringify(params, { arrayFormat: 'repeat' }) : '';
+	return AuthApi().get(`/merchant-orders/sealed-orderitems${queryString ? `?${queryString}` : ''}`);
+}; // (Msvs => Done)
 
 /** ****HAndle SHop Point of Sale Activities below  myshop/create-invoiceorder */
 export const GetShopPointOfSalesItems = () => AuthApi().get(`/api/myshop/get-sealed-invoiceorder`); // newDashboard

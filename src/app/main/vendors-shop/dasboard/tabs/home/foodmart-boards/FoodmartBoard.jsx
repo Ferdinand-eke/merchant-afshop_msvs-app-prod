@@ -14,6 +14,7 @@ const FoodmartBoard = (props) => {
     show: { opacity: 1, y: 0 },
   };
 
+  
   const { merchantData, isLoading } = props;
   return (
     <>
