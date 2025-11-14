@@ -1,17 +1,12 @@
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import FormHelperText from '@mui/material/FormHelperText';
-import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import _ from '@lodash';
-import { useEffect } from 'react';
 // import { useGetSecuritySettingsQuery, useUpdateSecuritySettingsMutation } from '../SettingsApi';
 
 const defaultValues = {
@@ -34,7 +29,6 @@ const schema = z.object({
 	twoStepVerification: z.boolean(),
 	askPasswordChange: z.boolean()
 });
-
 
 function SecuritySetting() {
 	// const { data: securitySettings } = useGetSecuritySettingsQuery();
@@ -64,22 +58,16 @@ function SecuritySetting() {
 	 * Form Submit
 	 */
 	function onSubmit(formData, e) {
-		e.preventDefault()
+		e.preventDefault();
 
+		console.log('Form Data', formData);
 
-		console.log("Form Data", formData)
-		return
 		// updateSecuritySettings(formData);
 	}
 
 	return (
 		<div className="w-full max-w-3xl">
-			<form 
-			onSubmit={handleSubmit(onSubmit)}
-			>
-				
-
-				<>
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className="w-full">
 					<Typography className="text-xl">Security preferences</Typography>
 					<Typography color="text.secondary">
@@ -147,7 +135,6 @@ function SecuritySetting() {
 						/>
 					</div>
 				</div>
-				</>
 
 				<div className="flex items-center justify-end space-x-16">
 					<Button
@@ -165,11 +152,8 @@ function SecuritySetting() {
 						// onClick={(e) => handleSubmit(onSubmit, e)}
 					>
 						Save setting
-						
 					</Button>
 				</div>
-
-				
 			</form>
 		</div>
 	);

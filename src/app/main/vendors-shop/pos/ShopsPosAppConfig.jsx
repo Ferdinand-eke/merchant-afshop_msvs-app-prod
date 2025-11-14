@@ -17,13 +17,12 @@ const ShopsPosAppConfig = {
 			config: {}
 		}
 	},
-	
+
 	routes: [
 		{
 			path: 'africanshops/shops',
 			element: <SettingsApp />,
 			children: [
-				
 				{
 					path: 'pos',
 					element: <PosTable />

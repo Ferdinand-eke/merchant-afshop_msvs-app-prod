@@ -12,29 +12,24 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useSingleShopFoodMart } from 'app/configs/data/server-calls/foodmart/useShopFoodMarts';
 import ProductHeader from './FoodMartHeader';
 import BasicInfoTabFoodMart from './tabs/BasicInfoTabFoodMart';
-import InventoryTabProperty from './tabs/InventoryTabProperty';
-import PricingTabProperty from './tabs/PricingTabProperty';
 import ProductImagesTabProperty from './tabs/ProductImagesTabProperty';
-import ShippingTabProperty from './tabs/ShippingTabProperty';
-import { useGetECommerceProductQuery } from '../ECommerceApi';
 import ProductModel from './models/ProductModel';
-import useGetMyShopDetails from 'app/configs/data/server-calls/shopdetails/useShopDetails';
-import { useSingleShopEstateProperty } from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
-import { useSingleShopBookingsProperty } from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
-import  { useSingleShopFoodMart } from 'app/configs/data/server-calls/foodmart/useShopFoodMarts';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-	title: z.string().nonempty('You must enter a property name').min(5, 'The property title must be at least 5 characters'),
-	foodMartCountry: z.string().nonempty("Country is required"),
-	foodMartState: z.string().nonempty("State is required"),
-	foodMartLga: z.string().nonempty("L.G.A/County is required"),
+	title: z
+		.string()
+		.nonempty('You must enter a property name')
+		.min(5, 'The property title must be at least 5 characters'),
+	foodMartCountry: z.string().nonempty('Country is required'),
+	foodMartState: z.string().nonempty('State is required'),
+	foodMartLga: z.string().nonempty('L.G.A/County is required')
 	// price: z.number(),
 	// z.number().safe(),
-
 });
 
 /**
@@ -44,7 +39,6 @@ function FoodMartListing() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { productId } = routeParams;
-
 
 	const {
 		data: foodMartList,
@@ -59,17 +53,15 @@ function FoodMartListing() {
 		mode: 'onChange',
 		defaultValues: {
 			title: '',
-            description: '',
-
+			description: '',
 
 			foodMartCategory: '',
-            foodMartCountry: '',
+			foodMartCountry: '',
 			foodMartState: '',
 			foodMartLga: '',
 			busniessOpenPeriod: '',
 			busniessClosePeriod: '',
-			address: '',
-           
+			address: ''
 		},
 		resolver: zodResolver(schema)
 	});
@@ -86,7 +78,6 @@ function FoodMartListing() {
 		}
 	}, [foodMartList, reset]);
 
-
 	/**
 	 * Tab Change
 	 */
@@ -101,7 +92,7 @@ function FoodMartListing() {
 	/**
 	 * Show Message if the requested products is not exists
 	 */
-	
+
 	if (isError && productId !== 'new') {
 		return (
 			<motion.div
@@ -131,10 +122,14 @@ function FoodMartListing() {
 	/**
 	 * Wait while foodMartList data is loading and form is setted
 	 */
-	if (_.isEmpty(form) || (foodMartList?.data?.foodMart && routeParams.productId !== foodMartList?.data?.foodMart?.slug && routeParams.productId !== 'new')) {
+	if (
+		_.isEmpty(form) ||
+		(foodMartList?.data?.foodMart &&
+			routeParams.productId !== foodMartList?.data?.foodMart?.slug &&
+			routeParams.productId !== 'new')
+	) {
 		return <FuseLoading />;
 	}
-
 
 	return (
 		<FormProvider {...methods}>
@@ -172,7 +167,7 @@ function FoodMartListing() {
 								label="Property measurement"
 							/> */}
 						</Tabs>
-						
+
 						<div className="p-16 sm:p-24 max-w-3xl">
 							<div className={tabValue !== 0 ? 'hidden' : ''}>
 								<BasicInfoTabFoodMart />
@@ -181,7 +176,6 @@ function FoodMartListing() {
 							<div className={tabValue !== 1 ? 'hidden' : ''}>
 								<ProductImagesTabProperty />
 							</div>
-							
 
 							{/* <div className={tabValue !== 2 ? 'hidden' : ''}>
 								<PricingTabProperty shopData={shopData}/>
@@ -200,7 +194,6 @@ function FoodMartListing() {
 				scroll={isMobile ? 'normal' : 'content'}
 			/>
 		</FormProvider>
-		
 	);
 }
 

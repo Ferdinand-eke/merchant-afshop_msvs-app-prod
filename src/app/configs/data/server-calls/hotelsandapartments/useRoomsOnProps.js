@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router';
 import {
 	createRoomOnProperty,
 	updateRoomOnProperty,
+	updateRoomImageOnProperty,
+	deleteSingleRoomImage,
 	getBookingsPropertyRoomsById,
 	getSingleRoomOfProperty
 } from '../../client/clientToApiRoutes';
@@ -132,4 +134,76 @@ export function useRoomOnPropertyUpdateMutation() {
 			handleApiError(error);
 		}
 	});
+}
+
+/** ***4) update single room image with Cloudinary cleanup */
+export function useUpdateRoomImageMutation() {
+	const queryClient = useQueryClient();
+
+	return useMutation(
+		({ roomId, cloudinaryPublicId, replacesId, type, url }) => {
+			return updateRoomImageOnProperty({
+				roomId,
+				updateData: {
+					cloudinaryPublicId,
+					replacesId,
+					type,
+					url
+				}
+			});
+		},
+		{
+			onSuccess: (data, variables) => {
+				console.log('Update Room Image Data:', data);
+
+				if (data?.data?.success) {
+					toast.success(
+						data?.data?.message || 'Image replaced successfully! Old image removed from Cloudinary.'
+					);
+
+					// Invalidate queries to refresh room data
+					queryClient.invalidateQueries(['_roomsOnBookingProperty', variables.roomId]);
+					queryClient.invalidateQueries('roomsOnBookingProperty');
+				}
+			},
+			onError: (error) => {
+				handleApiError(error);
+				console.error('Image update error:', error);
+			}
+		}
+	);
+}
+
+/** ***5) delete single room image with Cloudinary cleanup */
+export function useDeleteRoomImageMutation() {
+	const queryClient = useQueryClient();
+
+	return useMutation(
+		({ roomImageId, cloudinaryPublicId, roomId }) => {
+			return deleteSingleRoomImage({
+				roomImageId,
+				deleteData: {
+					cloudinaryPublicId,
+					roomId
+				}
+			});
+		},
+		{
+			onSuccess: (data, variables) => {
+				console.log('Delete Room Image Data:', data);
+
+				if (data?.data?.success) {
+					toast.success(data?.data?.message || 'Image deleted successfully! Removed from Cloudinary.');
+
+					// Invalidate queries to refresh room data
+					queryClient.invalidateQueries(['_roomsOnBookingProperty', variables.roomId]);
+					queryClient.invalidateQueries('roomsOnBookingProperty');
+				}
+			},
+			onError: (error) => {
+				handleApiError(error);
+				console.error('Image deletion error:', error);
+			}
+		}
+	);
 }

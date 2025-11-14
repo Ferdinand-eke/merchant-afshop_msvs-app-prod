@@ -37,6 +37,7 @@ function NewsFeed({
 		if (onPostSubmit) {
 			onPostSubmit(postData);
 		}
+
 		setPostModalOpen(false);
 	};
 
@@ -96,7 +97,10 @@ function NewsFeed({
 					{/* Video Button */}
 					<Button
 						startIcon={
-							<FuseSvgIcon size={20} className="text-blue-600">
+							<FuseSvgIcon
+								size={20}
+								className="text-blue-600"
+							>
 								heroicons-solid:video-camera
 							</FuseSvgIcon>
 						}
@@ -120,7 +124,10 @@ function NewsFeed({
 					{/* Photo Button */}
 					<Button
 						startIcon={
-							<FuseSvgIcon size={20} className="text-green-600">
+							<FuseSvgIcon
+								size={20}
+								className="text-green-600"
+							>
 								heroicons-solid:photograph
 							</FuseSvgIcon>
 						}
@@ -144,7 +151,10 @@ function NewsFeed({
 					{/* Write Article Button */}
 					<Button
 						startIcon={
-							<FuseSvgIcon size={20} className="text-red-600">
+							<FuseSvgIcon
+								size={20}
+								className="text-red-600"
+							>
 								heroicons-solid:document-text
 							</FuseSvgIcon>
 						}
@@ -172,15 +182,9 @@ function NewsFeed({
 						<Divider />
 						<Box className="flex items-center justify-end px-16 py-8">
 							<Box className="flex items-center gap-8">
-								<Typography className="text-12 text-grey-600">
-									Sort by:
-								</Typography>
+								<Typography className="text-12 text-grey-600">Sort by:</Typography>
 								<Button
-									endIcon={
-										<FuseSvgIcon size={16}>
-											heroicons-outline:chevron-down
-										</FuseSvgIcon>
-									}
+									endIcon={<FuseSvgIcon size={16}>heroicons-outline:chevron-down</FuseSvgIcon>}
 									sx={{
 										textTransform: 'none',
 										color: 'text.primary',

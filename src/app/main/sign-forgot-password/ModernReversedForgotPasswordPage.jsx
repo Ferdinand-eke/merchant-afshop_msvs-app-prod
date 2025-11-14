@@ -69,7 +69,10 @@ function ModernReversedForgotPasswordPage() {
 							<Typography className="mt-32 text-40 font-black leading-tight tracking-tight">
 								Forgot Password?
 							</Typography>
-							<Typography className="mt-8" color="text.secondary">
+							<Typography
+								className="mt-8"
+								color="text.secondary"
+							>
 								No worries! Enter your email address and we'll send you a reset link.
 							</Typography>
 						</motion.div>
@@ -83,7 +86,8 @@ function ModernReversedForgotPasswordPage() {
 							<Box
 								className="mt-32 p-20 rounded-xl"
 								sx={{
-									background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 127, 0, 0.05) 100%)',
+									background:
+										'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 127, 0, 0.05) 100%)',
 									border: '1px solid',
 									borderColor: alpha('#FF6B35', 0.2)
 								}}
@@ -101,17 +105,26 @@ function ModernReversedForgotPasswordPage() {
 											flexShrink: 0
 										}}
 									>
-										<FuseSvgIcon size={18} sx={{ color: 'white' }}>
+										<FuseSvgIcon
+											size={18}
+											sx={{ color: 'white' }}
+										>
 											heroicons-solid:key
 										</FuseSvgIcon>
 									</Box>
 									<div>
-										<Typography className="text-14 font-bold mb-4" sx={{ color: '#FF6B35' }}>
+										<Typography
+											className="text-14 font-bold mb-4"
+											sx={{ color: '#FF6B35' }}
+										>
 											Secure Password Reset
 										</Typography>
-										<Typography className="text-13 leading-relaxed" color="text.secondary">
-											We'll send a secure link to your registered email address.
-											The link expires in 1 hour for your security.
+										<Typography
+											className="text-13 leading-relaxed"
+											color="text.secondary"
+										>
+											We'll send a secure link to your registered email address. The link expires
+											in 1 hour for your security.
 										</Typography>
 									</div>
 								</Box>
@@ -145,7 +158,10 @@ function ModernReversedForgotPasswordPage() {
 										InputProps={{
 											startAdornment: (
 												<Box sx={{ mr: 1, display: 'flex', alignItems: 'center' }}>
-													<FuseSvgIcon size={20} color="action">
+													<FuseSvgIcon
+														size={20}
+														color="action"
+													>
 														heroicons-outline:mail
 													</FuseSvgIcon>
 												</Box>
@@ -179,12 +195,22 @@ function ModernReversedForgotPasswordPage() {
 							</Button>
 
 							<Box className="mt-32 flex items-center justify-center gap-8">
-								<FuseSvgIcon size={16} sx={{ color: '#FF6B35' }}>
+								<FuseSvgIcon
+									size={16}
+									sx={{ color: '#FF6B35' }}
+								>
 									heroicons-solid:arrow-left
 								</FuseSvgIcon>
-								<Typography className="text-md font-medium" color="text.secondary">
+								<Typography
+									className="text-md font-medium"
+									color="text.secondary"
+								>
 									<span>Remember your password?</span>
-									<Link className="ml-4 font-bold" to="/sign-in" style={{ color: '#FF6B35' }}>
+									<Link
+										className="ml-4 font-bold"
+										to="/sign-in"
+										style={{ color: '#FF6B35' }}
+									>
 										Sign in
 									</Link>
 								</Typography>
@@ -200,26 +226,44 @@ function ModernReversedForgotPasswordPage() {
 						>
 							<Box className="flex items-center justify-center gap-24 flex-wrap">
 								<Box className="flex items-center gap-8">
-									<FuseSvgIcon size={16} sx={{ color: '#10B981' }}>
+									<FuseSvgIcon
+										size={16}
+										sx={{ color: '#10B981' }}
+									>
 										heroicons-solid:lock-closed
 									</FuseSvgIcon>
-									<Typography className="text-12 font-medium" sx={{ color: '#10B981' }}>
+									<Typography
+										className="text-12 font-medium"
+										sx={{ color: '#10B981' }}
+									>
 										Secure Link
 									</Typography>
 								</Box>
 								<Box className="flex items-center gap-8">
-									<FuseSvgIcon size={16} sx={{ color: '#10B981' }}>
+									<FuseSvgIcon
+										size={16}
+										sx={{ color: '#10B981' }}
+									>
 										heroicons-solid:clock
 									</FuseSvgIcon>
-									<Typography className="text-12 font-medium" sx={{ color: '#10B981' }}>
+									<Typography
+										className="text-12 font-medium"
+										sx={{ color: '#10B981' }}
+									>
 										1 Hour Validity
 									</Typography>
 								</Box>
 								<Box className="flex items-center gap-8">
-									<FuseSvgIcon size={16} sx={{ color: '#10B981' }}>
+									<FuseSvgIcon
+										size={16}
+										sx={{ color: '#10B981' }}
+									>
 										heroicons-solid:shield-check
 									</FuseSvgIcon>
-									<Typography className="text-12 font-medium" sx={{ color: '#10B981' }}>
+									<Typography
+										className="text-12 font-medium"
+										sx={{ color: '#10B981' }}
+									>
 										Email Verified
 									</Typography>
 								</Box>
@@ -257,7 +301,10 @@ function ModernReversedForgotPasswordPage() {
 							transition={{ delay: 0.2, duration: 0.5 }}
 						>
 							{/* Main Heading */}
-							<Typography className="text-56 font-black leading-tight mb-16" sx={{ color: 'white' }}>
+							<Typography
+								className="text-56 font-black leading-tight mb-16"
+								sx={{ color: 'white' }}
+							>
 								Account Recovery
 							</Typography>
 
@@ -266,8 +313,8 @@ function ModernReversedForgotPasswordPage() {
 								className="text-18 leading-relaxed mb-40"
 								sx={{ color: 'rgba(255, 255, 255, 0.95)' }}
 							>
-								We've got you covered! Password recovery is quick and secure.
-								Get back to managing your business in no time.
+								We've got you covered! Password recovery is quick and secure. Get back to managing your
+								business in no time.
 							</Typography>
 
 							{/* Steps Grid */}
@@ -314,16 +361,25 @@ function ModernReversedForgotPasswordPage() {
 													flexShrink: 0
 												}}
 											>
-												<Typography className="text-20 font-black" sx={{ color: '#FF6B35' }}>
+												<Typography
+													className="text-20 font-black"
+													sx={{ color: '#FF6B35' }}
+												>
 													{index + 1}
 												</Typography>
 											</Box>
 											<div className="flex-1">
 												<Box className="flex items-center gap-8 mb-8">
-													<FuseSvgIcon size={20} sx={{ color: 'white' }}>
+													<FuseSvgIcon
+														size={20}
+														sx={{ color: 'white' }}
+													>
 														{step.icon}
 													</FuseSvgIcon>
-													<Typography className="text-16 font-bold" sx={{ color: 'white' }}>
+													<Typography
+														className="text-16 font-bold"
+														sx={{ color: 'white' }}
+													>
 														{step.title}
 													</Typography>
 												</Box>
@@ -354,25 +410,37 @@ function ModernReversedForgotPasswordPage() {
 									}}
 								>
 									<Box className="flex items-start gap-12">
-										<FuseSvgIcon size={24} sx={{ color: 'white' }}>
+										<FuseSvgIcon
+											size={24}
+											sx={{ color: 'white' }}
+										>
 											heroicons-outline:information-circle
 										</FuseSvgIcon>
 										<div>
-											<Typography className="text-15 font-bold mb-8" sx={{ color: 'white' }}>
+											<Typography
+												className="text-15 font-bold mb-8"
+												sx={{ color: 'white' }}
+											>
 												Need Additional Help?
 											</Typography>
 											<Typography
 												className="text-14 leading-relaxed mb-12"
 												sx={{ color: 'rgba(255, 255, 255, 0.9)' }}
 											>
-												If you don't receive the reset email within 5 minutes, check your spam folder
-												or contact our support team.
+												If you don't receive the reset email within 5 minutes, check your spam
+												folder or contact our support team.
 											</Typography>
 											<Box className="flex items-center gap-8">
-												<FuseSvgIcon size={16} sx={{ color: 'white' }}>
+												<FuseSvgIcon
+													size={16}
+													sx={{ color: 'white' }}
+												>
 													heroicons-solid:mail
 												</FuseSvgIcon>
-												<Typography className="text-13 font-medium" sx={{ color: 'white' }}>
+												<Typography
+													className="text-13 font-medium"
+													sx={{ color: 'white' }}
+												>
 													support@africanshops.com
 												</Typography>
 											</Box>
@@ -407,10 +475,16 @@ function ModernReversedForgotPasswordPage() {
 								</AvatarGroup>
 
 								<div>
-									<Typography className="text-15 font-bold mb-4" sx={{ color: 'white' }}>
+									<Typography
+										className="text-15 font-bold mb-4"
+										sx={{ color: 'white' }}
+									>
 										Your Account is Safe
 									</Typography>
-									<Typography className="text-13" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+									<Typography
+										className="text-13"
+										sx={{ color: 'rgba(255, 255, 255, 0.8)' }}
+									>
 										Join 1,000+ merchants trusting AfricanShops
 									</Typography>
 								</div>

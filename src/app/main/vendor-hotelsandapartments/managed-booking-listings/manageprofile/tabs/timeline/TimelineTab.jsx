@@ -2,12 +2,12 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import Box from '@mui/material/Box';
 import FuseLoading from '@fuse/core/FuseLoading';
+import { Paper, Chip } from '@mui/material';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import TimelineSideBar from './TimelineSideBar';
 import { useGetProfileTimelineQuery } from '../../ProfileApi';
 import NewsFeed from './NewsFeed';
 import Post from './Post';
-import { Paper, Chip } from '@mui/material';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 
 /**
  * The timeline tab.
@@ -22,13 +22,13 @@ function TimelineTab() {
 	const container = {
 		show: {
 			transition: {
-				staggerChildren: 0.04,
-			},
-		},
+				staggerChildren: 0.04
+			}
+		}
 	};
 	const item = {
 		hidden: { opacity: 0, y: 40 },
-		show: { opacity: 1, y: 0 },
+		show: { opacity: 1, y: 0 }
 	};
 
 	// Sample posts data
@@ -41,12 +41,11 @@ function TimelineTab() {
 				avatar: '',
 				badge: '1st',
 				verified: true,
-				following: false,
+				following: false
 			},
 			content: `As a PharmD student, I have the opportunity to join a Pharmaceutical research led by Dr. Pedinamalini Baskaran, an assistant Professor of Pharmacology at Howard University, Washington DC`,
 			readMore: true,
-			image:
-				'https://a0.muscache.com/im/pictures/hosting/Hosting-1058333690581577707/original/b50c575d-33e4-4988-8fd1-b9f0b3da5f9a.jpeg?im_w=720',
+			image: 'https://a0.muscache.com/im/pictures/hosting/Hosting-1058333690581577707/original/b50c575d-33e4-4988-8fd1-b9f0b3da5f9a.jpeg?im_w=720',
 			timestamp: '1d',
 			likes: 31,
 			reposts: 0,
@@ -55,7 +54,7 @@ function TimelineTab() {
 					id: 1,
 					author: {
 						name: 'Sarah Johnson',
-						avatar: '',
+						avatar: ''
 					},
 					content:
 						'Congratulations! This is an amazing opportunity. Looking forward to hearing about your research findings.',
@@ -66,14 +65,14 @@ function TimelineTab() {
 							id: 1,
 							author: {
 								name: 'Olufemi Faleye',
-								avatar: '',
+								avatar: ''
 							},
-							content: 'Thank you so much! I\'m really excited about this journey.',
-							timestamp: '23h',
-						},
-					],
-				},
-			],
+							content: "Thank you so much! I'm really excited about this journey.",
+							timestamp: '23h'
+						}
+					]
+				}
+			]
 		},
 		{
 			id: 2,
@@ -83,7 +82,7 @@ function TimelineTab() {
 				avatar: '',
 				badge: 'Author',
 				verified: false,
-				following: true,
+				following: true
 			},
 			content: `Authentication Complete - Moving On to the Dashboard! 🎉
 
@@ -91,8 +90,7 @@ After a long grind, I finally wrapped up the authentication system for Resumify 
 
 Now it\'s time to dive into building out the dashboard experience! Looking forward to applying what I learned here to make the user experience seamless.`,
 			readMore: false,
-			image:
-				'https://a0.muscache.com/im/pictures/hosting/Hosting-1058333690581577707/original/d0de362c-7f8b-4838-a174-c43739532596.jpeg?im_w=720',
+			image: 'https://a0.muscache.com/im/pictures/hosting/Hosting-1058333690581577707/original/d0de362c-7f8b-4838-a174-c43739532596.jpeg?im_w=720',
 			timestamp: '2d',
 			likes: 45,
 			reposts: 9,
@@ -101,26 +99,26 @@ Now it\'s time to dive into building out the dashboard experience! Looking forwa
 					id: 1,
 					author: {
 						name: 'IfeOluwa Olajubaje',
-						avatar: '',
+						avatar: ''
 					},
 					content:
-						'This looks great, my friend!! It\'s great that you\'re documenting your daily journey while building Resumify.',
+						"This looks great, my friend!! It's great that you're documenting your daily journey while building Resumify.",
 					timestamp: '2d',
 					likes: 5,
-					replies: [],
+					replies: []
 				},
 				{
 					id: 2,
 					author: {
 						name: 'Michael Chen',
-						avatar: '',
+						avatar: ''
 					},
 					content: 'Better Auth is amazing once you get the hang of it. Great work!',
 					timestamp: '1d',
 					likes: 2,
-					replies: [],
-				},
-			],
+					replies: []
+				}
+			]
 		},
 		{
 			id: 3,
@@ -129,7 +127,7 @@ Now it\'s time to dive into building out the dashboard experience! Looking forwa
 				title: 'Property Manager | Real Estate Professional | Africanshops Hotels',
 				avatar: '',
 				verified: true,
-				following: false,
+				following: false
 			},
 			content: `Exciting News! 🏨
 
@@ -143,7 +141,7 @@ Book your stay today and experience luxury accommodation in the heart of Abuja!`
 			timestamp: '3d',
 			likes: 127,
 			reposts: 15,
-			comments: [],
+			comments: []
 		},
 		{
 			id: 4,
@@ -153,7 +151,7 @@ Book your stay today and experience luxury accommodation in the heart of Abuja!`
 				avatar: '',
 				badge: '2nd',
 				verified: false,
-				following: true,
+				following: true
 			},
 			content: `Just completed a major refactor of our component library! 🎉
 
@@ -168,8 +166,7 @@ Sometimes taking a step back to improve the foundation pays off big time. Excite
 
 #React #TypeScript #WebDev`,
 			readMore: false,
-			image:
-				'https://media.licdn.com/dms/image/sync/v2/D5627AQEU1u_o5FsSrA/articleshare-shrink_800/B56Zm_qiDpIsAI-/0/1759857224735?e=1760814000&v=beta&t=6oIfMsBMfqMOXTm3gzN88urBHzRMAiRkfchmVubWrJ4',
+			image: 'https://media.licdn.com/dms/image/sync/v2/D5627AQEU1u_o5FsSrA/articleshare-shrink_800/B56Zm_qiDpIsAI-/0/1759857224735?e=1760814000&v=beta&t=6oIfMsBMfqMOXTm3gzN88urBHzRMAiRkfchmVubWrJ4',
 			timestamp: '5h',
 			likes: 89,
 			reposts: 23,
@@ -178,7 +175,7 @@ Sometimes taking a step back to improve the foundation pays off big time. Excite
 					id: 1,
 					author: {
 						name: 'Alex Rodriguez',
-						avatar: '',
+						avatar: ''
 					},
 					content:
 						'The bundle size reduction alone is impressive! Would love to hear more about how you achieved that.',
@@ -189,20 +186,25 @@ Sometimes taking a step back to improve the foundation pays off big time. Excite
 							id: 1,
 							author: {
 								name: 'Daniel Onyema',
-								avatar: '',
+								avatar: ''
 							},
 							content:
 								'Thanks! We moved to tree-shakeable imports and lazy-loaded some heavy dependencies. Happy to share more details if interested!',
-							timestamp: '3h',
-						},
-					],
-				},
-			],
-		},
+							timestamp: '3h'
+						}
+					]
+				}
+			]
+		}
 	];
 
 	return (
-		<motion.div variants={container} initial="hidden" animate="show" className="w-full">
+		<motion.div
+			variants={container}
+			initial="hidden"
+			animate="show"
+			className="w-full"
+		>
 			<div className="md:flex gap-24">
 				{/* Sidebar */}
 				<div className="flex flex-col w-full md:w-320">
@@ -210,7 +212,7 @@ Sometimes taking a step back to improve the foundation pays off big time. Excite
 						sx={{
 							position: { xs: 'relative', md: 'sticky' },
 							top: { md: 16 },
-							alignSelf: 'flex-start',
+							alignSelf: 'flex-start'
 						}}
 					>
 						<TimelineSideBar
@@ -220,19 +222,19 @@ Sometimes taking a step back to improve the foundation pays off big time. Excite
 								title: 'Property Listings',
 								subtitle: 'Hotels & Apartments',
 								location: 'Abuja, Federal Capital Territory',
-								company: 'Africanshops',
+								company: 'Africanshops'
 							}}
 							stats={{
 								followers: 200000,
 								following: 1200,
 								connections: 94,
-								views: 156,
+								views: 156
 							}}
 							quickLinks={[
 								{ icon: 'heroicons-outline:bookmark', label: 'Saved items' },
 								{ icon: 'heroicons-outline:user-group', label: 'Groups' },
 								{ icon: 'heroicons-outline:newspaper', label: 'Newsletters' },
-								{ icon: 'heroicons-outline:calendar', label: 'Events' },
+								{ icon: 'heroicons-outline:calendar', label: 'Events' }
 							]}
 							showPremiumCTA={false}
 							onViewAnalytics={() => console.log('View analytics')}
@@ -253,7 +255,7 @@ Sometimes taking a step back to improve the foundation pays off big time. Excite
 							mb: 3,
 							background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
 							border: '1px solid rgba(234, 88, 12, 0.1)',
-							borderRadius: 2,
+							borderRadius: 2
 						}}
 					>
 						<Box className="flex items-center gap-16">
@@ -265,15 +267,21 @@ Sometimes taking a step back to improve the foundation pays off big time. Excite
 									background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
 									display: 'flex',
 									alignItems: 'center',
-									justifyContent: 'center',
+									justifyContent: 'center'
 								}}
 							>
-								<FuseSvgIcon className="text-white" size={24}>
+								<FuseSvgIcon
+									className="text-white"
+									size={24}
+								>
 									heroicons-outline:clock
 								</FuseSvgIcon>
 							</Box>
 							<Box>
-								<Typography variant="h6" sx={{ fontWeight: 700, color: '#292524', mb: 0.5 }}>
+								<Typography
+									variant="h6"
+									sx={{ fontWeight: 700, color: '#292524', mb: 0.5 }}
+								>
 									Activity Timeline
 								</Typography>
 								<Box className="flex items-center gap-8">
@@ -284,10 +292,13 @@ Sometimes taking a step back to improve the foundation pays off big time. Excite
 											background: 'rgba(249, 115, 22, 0.1)',
 											color: '#ea580c',
 											fontWeight: 600,
-											height: 24,
+											height: 24
 										}}
 									/>
-									<Typography variant="caption" color="text.secondary">
+									<Typography
+										variant="caption"
+										color="text.secondary"
+									>
 										Property updates and social activity
 									</Typography>
 								</Box>

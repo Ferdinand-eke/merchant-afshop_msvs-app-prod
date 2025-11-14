@@ -2,7 +2,6 @@ import { lazy } from 'react';
 import ContactView from './contact/ContactView';
 import ContactForm from './contact/ContactForm';
 // import { authRoles } from 'src/app/auth';
-import authRoles from '../../../auth/authRoles';
 
 const ContactsApp = lazy(() => import('./PropertiesApp'));
 /**

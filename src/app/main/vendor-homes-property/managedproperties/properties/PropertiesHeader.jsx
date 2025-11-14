@@ -16,7 +16,7 @@ function PropertiesHeader() {
 	const { data: listingData, isLoading } = useMyShopEstateProperties();
 
 	const totalProperties = listingData?.data?.properties?.length || 0;
-	const activeProperties = listingData?.data?.properties?.filter(p => p.isApproved)?.length || 0;
+	const activeProperties = listingData?.data?.properties?.filter((p) => p.isApproved)?.length || 0;
 	const pendingProperties = totalProperties - activeProperties;
 
 	return (
@@ -24,8 +24,8 @@ function PropertiesHeader() {
 			<Paper
 				className="relative overflow-hidden rounded-2xl shadow-lg"
 				sx={{
-					background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
-					color: "white",
+					background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+					color: 'white'
 				}}
 			>
 				<Box className="relative z-10 p-24 sm:p-32">
@@ -40,19 +40,28 @@ function PropertiesHeader() {
 							<Box
 								className="flex items-center justify-center w-64 h-64 rounded-xl"
 								sx={{
-									backgroundColor: "rgba(255, 255, 255, 0.2)",
-									backdropFilter: "blur(10px)",
+									backgroundColor: 'rgba(255, 255, 255, 0.2)',
+									backdropFilter: 'blur(10px)'
 								}}
 							>
-								<FuseSvgIcon className="text-white" size={32}>
+								<FuseSvgIcon
+									className="text-white"
+									size={32}
+								>
 									heroicons-outline:office-building
 								</FuseSvgIcon>
 							</Box>
 							<Box>
-								<Typography variant="h4" className="font-bold mb-4">
+								<Typography
+									variant="h4"
+									className="font-bold mb-4"
+								>
 									Property Listings
 								</Typography>
-								<Typography variant="body2" className="opacity-90">
+								<Typography
+									variant="body2"
+									className="opacity-90"
+								>
 									Manage and track all your real estate properties
 								</Typography>
 							</Box>
@@ -69,12 +78,12 @@ function PropertiesHeader() {
 								to="/property/managed-listings/new"
 								size={isMobile ? 'small' : 'large'}
 								sx={{
-									backgroundColor: "rgba(255, 255, 255, 0.95)",
-									color: "#ea580c",
+									backgroundColor: 'rgba(255, 255, 255, 0.95)',
+									color: '#ea580c',
 									fontWeight: 700,
-									"&:hover": {
-										backgroundColor: "white",
-									},
+									'&:hover': {
+										backgroundColor: 'white'
+									}
 								}}
 								startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>}
 							>
@@ -94,17 +103,26 @@ function PropertiesHeader() {
 								<Box className="flex items-center gap-12 bg-white/10 backdrop-blur-sm rounded-xl p-16">
 									<Box
 										className="flex items-center justify-center w-48 h-48 rounded-lg"
-										sx={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}
+										sx={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
 									>
-										<FuseSvgIcon className="text-white" size={24}>
+										<FuseSvgIcon
+											className="text-white"
+											size={24}
+										>
 											heroicons-outline:home
 										</FuseSvgIcon>
 									</Box>
 									<Box>
-										<Typography variant="h5" className="font-bold">
+										<Typography
+											variant="h5"
+											className="font-bold"
+										>
 											{totalProperties}
 										</Typography>
-										<Typography variant="caption" className="opacity-90">
+										<Typography
+											variant="caption"
+											className="opacity-90"
+										>
 											Total Properties
 										</Typography>
 									</Box>
@@ -114,17 +132,26 @@ function PropertiesHeader() {
 								<Box className="flex items-center gap-12 bg-white/10 backdrop-blur-sm rounded-xl p-16">
 									<Box
 										className="flex items-center justify-center w-48 h-48 rounded-lg"
-										sx={{ backgroundColor: "rgba(34, 197, 94, 0.3)" }}
+										sx={{ backgroundColor: 'rgba(34, 197, 94, 0.3)' }}
 									>
-										<FuseSvgIcon className="text-white" size={24}>
+										<FuseSvgIcon
+											className="text-white"
+											size={24}
+										>
 											heroicons-outline:check-circle
 										</FuseSvgIcon>
 									</Box>
 									<Box>
-										<Typography variant="h5" className="font-bold">
+										<Typography
+											variant="h5"
+											className="font-bold"
+										>
 											{activeProperties}
 										</Typography>
-										<Typography variant="caption" className="opacity-90">
+										<Typography
+											variant="caption"
+											className="opacity-90"
+										>
 											Active Listings
 										</Typography>
 									</Box>
@@ -134,17 +161,26 @@ function PropertiesHeader() {
 								<Box className="flex items-center gap-12 bg-white/10 backdrop-blur-sm rounded-xl p-16">
 									<Box
 										className="flex items-center justify-center w-48 h-48 rounded-lg"
-										sx={{ backgroundColor: "rgba(251, 191, 36, 0.3)" }}
+										sx={{ backgroundColor: 'rgba(251, 191, 36, 0.3)' }}
 									>
-										<FuseSvgIcon className="text-white" size={24}>
+										<FuseSvgIcon
+											className="text-white"
+											size={24}
+										>
 											heroicons-outline:clock
 										</FuseSvgIcon>
 									</Box>
 									<Box>
-										<Typography variant="h5" className="font-bold">
+										<Typography
+											variant="h5"
+											className="font-bold"
+										>
 											{pendingProperties}
 										</Typography>
-										<Typography variant="caption" className="opacity-90">
+										<Typography
+											variant="caption"
+											className="opacity-90"
+										>
 											Pending Approval
 										</Typography>
 									</Box>
@@ -157,14 +193,13 @@ function PropertiesHeader() {
 				{/* Decorative background pattern */}
 				<Box
 					sx={{
-						position: "absolute",
+						position: 'absolute',
 						top: 0,
 						right: 0,
-						width: "50%",
-						height: "100%",
+						width: '50%',
+						height: '100%',
 						opacity: 0.1,
-						background:
-							"radial-gradient(circle at 100% 0%, white 0%, transparent 50%)",
+						background: 'radial-gradient(circle at 100% 0%, white 0%, transparent 50%)'
 					}}
 				/>
 			</Paper>

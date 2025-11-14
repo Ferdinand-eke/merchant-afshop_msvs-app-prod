@@ -4,24 +4,16 @@ import IconButton from '@mui/material/IconButton';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { lighten } from '@mui/material/styles';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Paper from '@mui/material/Paper';
-import Input from '@mui/material/Input';
 import Card from '@mui/material/Card';
-import { charat } from 'stylis';
 import { Link } from 'react-router-dom';
 
 /**
  * The post item?.
  */
 function PropertyListItem(props) {
-	
 	const { item } = props;
 	return (
 		<Card className="mb-32">
@@ -202,8 +194,8 @@ function PropertyListItem(props) {
 						</Paper> */}
 						<div>
 							<Button
-							component={Link}
-							to={`/userlistings/managed-user-listings/${item?.id}/manage`}
+								component={Link}
+								to={`/userlistings/managed-user-listings/${item?.id}/manage`}
 								variant="contained"
 								color="secondary"
 								size="small"

@@ -6,13 +6,6 @@ import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import { lighten } from '@mui/material/styles';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Paper from '@mui/material/Paper';
-import Input from '@mui/material/Input';
 import Card from '@mui/material/Card';
 import { Link } from 'react-router-dom';
 
@@ -88,7 +81,7 @@ function PostItem(props) {
 						<div className="p-16">
 							<Typography variant="subtitle1">{item?.title}</Typography>
 							<Typography variant="caption">{item?.content?.subtitle}</Typography>
-							<Typography className="mt-16">{item?.content?.slice(0, 300) + '...'}</Typography>
+							<Typography className="mt-16">{`${item?.content?.slice(0, 300)}...`}</Typography>
 						</div>
 					</div>
 				)}
@@ -123,16 +116,16 @@ function PostItem(props) {
 				</Button>
 
 				<div>
-							<Button
-							component={Link}
-							to={`/news-blog/${item?.slug}`}
-							variant="contained"
-							color="secondary"
-							size="small"
-							>
-								Read more
-							</Button>
-						</div>
+					<Button
+						component={Link}
+						to={`/news-blog/${item?.slug}`}
+						variant="contained"
+						color="secondary"
+						size="small"
+					>
+						Read more
+					</Button>
+				</div>
 			</CardActions>
 
 			{/* <Box

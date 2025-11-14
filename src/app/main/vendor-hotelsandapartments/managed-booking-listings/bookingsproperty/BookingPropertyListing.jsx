@@ -15,14 +15,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import ContentLoadingPlaceholder from 'app/shared-components/ContentLoadingPlaceholder';
+import useGetMyShopDetails from 'app/configs/data/server-calls/shopdetails/useShopDetails';
+import { useSingleShopBookingsProperty } from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
 import ProductHeader from './BookingPropertyHeader';
 import BasicInfoTabProperty from './tabs/BasicInfoTabProperty';
 import PricingTabProperty from './tabs/PricingTabProperty';
 import ProductImagesTabProperty from './tabs/ProductImagesTabProperty';
 import ShippingTabProperty from './tabs/ShippingTabProperty';
 import ProductModel from './models/ProductModel';
-import useGetMyShopDetails from 'app/configs/data/server-calls/shopdetails/useShopDetails';
-import { useSingleShopBookingsProperty } from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
 /**
  * Form Validation Schema
  */
@@ -33,11 +33,8 @@ const schema = z.object({
 	propertyLga: z.string(),
 	// images : z.array().nullable()
 	latitude: z.string(),
-	longitude: z.string(),
-	
-
+	longitude: z.string()
 });
-
 
 /**
  * The propertyList page.
@@ -47,17 +44,9 @@ function BookingPropertyListing() {
 	const routeParams = useParams();
 	const { productId } = routeParams;
 
-	const { data: shopData, 
-	 } = useGetMyShopDetails();
+	const { data: shopData } = useGetMyShopDetails();
 
-
-	const {
-		data: propertyList,
-		isLoading,
-		isError
-	} = useSingleShopBookingsProperty(productId);
-
-	
+	const { data: propertyList, isLoading, isError } = useSingleShopBookingsProperty(productId);
 
 	// Load tab from localStorage with property-specific key
 	const getStoredTab = () => {
@@ -69,10 +58,9 @@ function BookingPropertyListing() {
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {
-            roomCount: 0,
-            sittingroomCount: 0,
-            price: 0,
-
+			// roomCount: 0,
+			// sittingroomCount: 0,
+			// price: 0,
 		},
 		resolver: zodResolver(schema)
 	});
@@ -85,7 +73,6 @@ function BookingPropertyListing() {
 		}
 	}, [productId, reset]);
 
-
 	useEffect(() => {
 		if (propertyList?.data?.bookingList) {
 			reset({ ...propertyList?.data?.bookingList });
@@ -96,6 +83,8 @@ function BookingPropertyListing() {
 	useEffect(() => {
 		setTabValue(getStoredTab());
 	}, [productId]);
+
+	// console.log('propertyList__AND___property-listImages', propertyList?.data?.bookingList);
 
 	/**
 	 * Tab Change
@@ -124,30 +113,41 @@ function BookingPropertyListing() {
 			<Box
 				className="flex flex-col items-center justify-center h-full p-48"
 				sx={{
-					background: "linear-gradient(180deg, #fafaf9 0%, #f5f5f4 50%, #fef3e2 100%)",
-					minHeight: "100vh",
+					background: 'linear-gradient(180deg, #fafaf9 0%, #f5f5f4 50%, #fef3e2 100%)',
+					minHeight: '100vh'
 				}}
 			>
 				<Paper
 					className="p-48 rounded-2xl text-center max-w-md"
 					sx={{
-						background: "linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)",
+						background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)'
 					}}
 				>
 					<Box
 						className="flex items-center justify-center w-96 h-96 rounded-full mx-auto mb-24"
 						sx={{
-							background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+							background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
 						}}
 					>
-						<FuseSvgIcon className="text-white" size={48}>
+						<FuseSvgIcon
+							className="text-white"
+							size={48}
+						>
 							heroicons-outline:exclamation
 						</FuseSvgIcon>
 					</Box>
-					<Typography variant="h5" className="font-bold mb-12" sx={{ color: "#ea580c" }}>
+					<Typography
+						variant="h5"
+						className="font-bold mb-12"
+						sx={{ color: '#ea580c' }}
+					>
 						Property Not Found
 					</Typography>
-					<Typography variant="body1" color="text.secondary" className="mb-24">
+					<Typography
+						variant="body1"
+						color="text.secondary"
+						className="mb-24"
+					>
 						The property you're looking for doesn't exist or has been removed
 					</Typography>
 					<Button
@@ -156,11 +156,11 @@ function BookingPropertyListing() {
 						variant="contained"
 						size="large"
 						sx={{
-							background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
-							color: "white",
+							background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+							color: 'white',
 							fontWeight: 700,
-							"&:hover": {
-								background: "linear-gradient(135deg, #ea580c 0%, #c2410c 100%)",
+							'&:hover': {
+								background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)'
 							}
 						}}
 						startIcon={<FuseSvgIcon size={20}>heroicons-outline:arrow-left</FuseSvgIcon>}
@@ -175,7 +175,12 @@ function BookingPropertyListing() {
 	/**
 	 * Wait while propertyList data is loading and form is setted
 	 */
-	if (_.isEmpty(form) || (propertyList?.data?.bookingList && routeParams.productId !== propertyList?.data?.bookingList?.slug && routeParams.productId !== 'new')) {
+	if (
+		_.isEmpty(form) ||
+		(propertyList?.data?.bookingList &&
+			routeParams.productId !== propertyList?.data?.bookingList?.slug &&
+			routeParams.productId !== 'new')
+	) {
 		return (
 			<ContentLoadingPlaceholder
 				title="Preparing Form..."
@@ -185,20 +190,19 @@ function BookingPropertyListing() {
 		);
 	}
 
-
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
 				header={<ProductHeader />}
 				contentContainerSx={{
-					px: 0,
+					px: 0
 				}}
 				content={
 					<>
 						<Paper
 							elevation={0}
 							sx={{
-								borderBottom: '1px solid rgba(234, 88, 12, 0.1)',
+								borderBottom: '1px solid rgba(234, 88, 12, 0.1)'
 							}}
 						>
 							<Tabs
@@ -215,13 +219,13 @@ function BookingPropertyListing() {
 										fontSize: '15px',
 										fontWeight: 600,
 										'&.Mui-selected': {
-											color: '#ea580c',
-										},
+											color: '#ea580c'
+										}
 									},
 									'& .MuiTabs-indicator': {
 										backgroundColor: '#ea580c',
-										height: 3,
-									},
+										height: 3
+									}
 								}}
 							>
 								<Tab

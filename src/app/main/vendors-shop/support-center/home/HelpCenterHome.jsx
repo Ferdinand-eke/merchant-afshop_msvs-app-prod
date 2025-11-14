@@ -20,7 +20,7 @@ function HelpCenterHome() {
 	const mainThemeDark = useAppSelector(selectMainThemeDark);
 	const { data: faqsMost } = useGetHelpCenterMostlyFaqsQuery();
 
-	return <VendorModernReversedComingSoonPage />
+	return <VendorModernReversedComingSoonPage />;
 	return (
 		<div className="flex flex-col flex-auto min-w-0">
 			<ThemeProvider theme={mainThemeDark}>

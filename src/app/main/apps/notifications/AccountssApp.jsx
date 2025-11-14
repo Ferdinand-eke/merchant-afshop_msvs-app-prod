@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography';
 import Masonry from 'react-masonry-css';
 import _ from '@lodash';
 import { useDeleteNotificationMutation, useGetAllNotificationsQuery } from './NotificationApi';
-import NotificationCard from './NotificationCard';
 // import NotificationsAppHeader from './NotificationsAppHeader';
 import AccountsAppHeader from './AccountsAppHeader';
 import AccountsCard from './AccountsCard';

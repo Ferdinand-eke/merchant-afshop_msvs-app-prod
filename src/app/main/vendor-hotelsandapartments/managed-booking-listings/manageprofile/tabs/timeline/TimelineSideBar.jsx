@@ -20,21 +20,9 @@ function TimelineSideBar({
 	onViewAnalytics,
 	onGrowNetwork
 }) {
-	const {
-		name = 'User Name',
-		avatar = '',
-		title = '',
-		subtitle = '',
-		location = '',
-		company = ''
-	} = userDetails;
+	const { name = 'User Name', avatar = '', title = '', subtitle = '', location = '', company = '' } = userDetails;
 
-	const {
-		followers = 0,
-		following = 0,
-		connections = 0,
-		views = 0
-	} = stats;
+	const { followers = 0, following = 0, connections = 0, views = 0 } = stats;
 
 	const defaultQuickLinks = [
 		{ icon: 'heroicons-outline:bookmark', label: 'Saved items', path: '/saved' },
@@ -86,36 +74,23 @@ function TimelineSideBar({
 
 			<CardContent className="text-center px-24 pb-8">
 				{/* User Info */}
-				<Typography className="text-lg font-semibold mb-4">
-					{name}
-				</Typography>
+				<Typography className="text-lg font-semibold mb-4">{name}</Typography>
 
-				{title && (
-					<Typography className="text-13 text-grey-600 mb-4">
-						{title}
-					</Typography>
-				)}
+				{title && <Typography className="text-13 text-grey-600 mb-4">{title}</Typography>}
 
-				{subtitle && (
-					<Typography className="text-12 text-grey-500 mb-4">
-						{subtitle}
-					</Typography>
-				)}
+				{subtitle && <Typography className="text-12 text-grey-500 mb-4">{subtitle}</Typography>}
 
-				{location && (
-					<Typography className="text-12 text-grey-500 mb-8">
-						{location}
-					</Typography>
-				)}
+				{location && <Typography className="text-12 text-grey-500 mb-8">{location}</Typography>}
 
 				{company && (
 					<Box className="flex items-center justify-center gap-8 mb-12">
-						<FuseSvgIcon size={16} className="text-grey-500">
+						<FuseSvgIcon
+							size={16}
+							className="text-grey-500"
+						>
 							heroicons-outline:building-office-2
 						</FuseSvgIcon>
-						<Typography className="text-13 font-medium text-blue-600">
-							{company}
-						</Typography>
+						<Typography className="text-13 font-medium text-blue-600">{company}</Typography>
 					</Box>
 				)}
 			</CardContent>
@@ -130,10 +105,11 @@ function TimelineSideBar({
 						className="flex items-center justify-between mb-12 cursor-pointer hover:bg-gray-100 -mx-12 px-12 py-8 rounded-md transition-colors"
 						onClick={onViewAnalytics}
 					>
-						<Typography className="text-12 text-grey-600">
-							View all analytics
-						</Typography>
-						<FuseSvgIcon size={16} className="text-grey-400">
+						<Typography className="text-12 text-grey-600">View all analytics</Typography>
+						<FuseSvgIcon
+							size={16}
+							className="text-grey-400"
+						>
 							heroicons-outline:arrow-right
 						</FuseSvgIcon>
 					</Box>
@@ -146,16 +122,10 @@ function TimelineSideBar({
 						onClick={onGrowNetwork}
 					>
 						<Box>
-							<Typography className="text-12 font-semibold">
-								Connections
-							</Typography>
-							<Typography className="text-11 text-grey-600">
-								Grow your network
-							</Typography>
+							<Typography className="text-12 font-semibold">Connections</Typography>
+							<Typography className="text-11 text-grey-600">Grow your network</Typography>
 						</Box>
-						<Typography className="text-14 font-semibold">
-							{connections}
-						</Typography>
+						<Typography className="text-14 font-semibold">{connections}</Typography>
 					</Box>
 				)}
 
@@ -168,9 +138,7 @@ function TimelineSideBar({
 									<Typography className="text-13 font-semibold">
 										{followers > 1000 ? `${(followers / 1000).toFixed(1)}k` : followers}
 									</Typography>
-									<Typography className="text-11 text-grey-600">
-										Followers
-									</Typography>
+									<Typography className="text-11 text-grey-600">Followers</Typography>
 								</Box>
 							)}
 							{following > 0 && (
@@ -178,9 +146,7 @@ function TimelineSideBar({
 									<Typography className="text-13 font-semibold">
 										{following > 1000 ? `${(following / 1000).toFixed(1)}k` : following}
 									</Typography>
-									<Typography className="text-11 text-grey-600">
-										Following
-									</Typography>
+									<Typography className="text-11 text-grey-600">Following</Typography>
 								</Box>
 							)}
 						</Box>
@@ -190,12 +156,8 @@ function TimelineSideBar({
 				{/* Profile Views */}
 				{views > 0 && (
 					<Box className="flex items-center justify-between mt-12 pt-12 border-t">
-						<Typography className="text-12 text-grey-600">
-							Profile views
-						</Typography>
-						<Typography className="text-13 font-semibold text-blue-600">
-							{views}
-						</Typography>
+						<Typography className="text-12 text-grey-600">Profile views</Typography>
+						<Typography className="text-13 font-semibold text-blue-600">{views}</Typography>
 					</Box>
 				)}
 			</Box>
@@ -237,19 +199,16 @@ function TimelineSideBar({
 						className="flex items-center gap-12 py-10 cursor-pointer hover:bg-gray-100 -mx-12 px-12 rounded-md transition-colors"
 						onClick={() => link.onClick && link.onClick()}
 					>
-						<FuseSvgIcon size={20} className="text-grey-600">
+						<FuseSvgIcon
+							size={20}
+							className="text-grey-600"
+						>
 							{link.icon}
 						</FuseSvgIcon>
-						<Typography className="text-13 text-grey-700">
-							{link.label}
-						</Typography>
+						<Typography className="text-13 text-grey-700">{link.label}</Typography>
 						{link.badge && (
-							<Box
-								className="ml-auto px-8 py-2 rounded-full bg-blue-100"
-							>
-								<Typography className="text-11 font-semibold text-blue-800">
-									{link.badge}
-								</Typography>
+							<Box className="ml-auto px-8 py-2 rounded-full bg-blue-100">
+								<Typography className="text-11 font-semibold text-blue-800">{link.badge}</Typography>
 							</Box>
 						)}
 					</Box>

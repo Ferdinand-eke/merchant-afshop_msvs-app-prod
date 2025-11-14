@@ -1,4 +1,3 @@
-import _ from '@lodash';
 import clsx from 'clsx';
 /**
  * The order statuses.
@@ -84,28 +83,27 @@ function OrdersPackedStatus(props) {
 	const { isPacked } = props;
 	return (
 		<>
-		{
-			isPacked ?
-			<div
-			className={clsx(
-				'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
-				'bg-green text-white'
+			{isPacked ? (
+				<div
+					className={clsx(
+						'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
+						'bg-green text-white'
+					)}
+				>
+					Packed
+				</div>
+			) : (
+				<div
+					className={clsx(
+						'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
+						'bg-orange text-black'
+					)}
+				>
+					Awaiting Packaging
+				</div>
 			)}
-		>
-			Packed
-		</div> : <div
-			className={clsx(
-				'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
-				'bg-orange text-black'
-			)}
-		>
-			Awaiting Packaging
-		</div>
-		}
 		</>
 	);
 }
-
-
 
 export default OrdersPackedStatus;

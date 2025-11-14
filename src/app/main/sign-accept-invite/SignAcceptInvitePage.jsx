@@ -5,10 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { useState } from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import CardContent from '@mui/material/CardContent';
-import _ from '@lodash';
 import Alert from '@mui/material/Alert';
 import JwtSignAcceptInviteTab from './tabs/JwtSignAcceptInviteTab';
 // import FirebaseSignInTab from './tabs/FirebaseSignInTab';
@@ -74,8 +71,8 @@ function SignInPage() {
 						severity="info"
 						className="mt-24 px-16 text-13 leading-relaxed"
 					>
-						You have been inited to join <b>CharizHomes</b> as an admin. By forging on with this form and clicking on the "Accept Invite" button, you agree
-						to all terms and conditions as stated above.
+						You have been inited to join <b>CharizHomes</b> as an admin. By forging on with this form and
+						clicking on the "Accept Invite" button, you agree to all terms and conditions as stated above.
 					</Alert>
 
 					{/* <Tabs

@@ -41,7 +41,6 @@ function NotificationPanelToggleButton(props) {
 		return undefined;
 	}, [notifications?.length]);
 	return (
-		
 		<IconButton
 			className="h-40 w-40"
 			onClick={() => dispatch(toggleNotificationPanel())}
@@ -53,7 +52,6 @@ function NotificationPanelToggleButton(props) {
 				invisible={notifications?.length === 0}
 			>
 				<motion.div animate={controls}>{children}</motion.div>
-				
 			</Badge>
 		</IconButton>
 	);

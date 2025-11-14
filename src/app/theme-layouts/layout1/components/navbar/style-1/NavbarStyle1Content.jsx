@@ -1,137 +1,113 @@
-import FuseScrollbars from "@fuse/core/FuseScrollbars";
-import { styled } from "@mui/material/styles";
-import clsx from "clsx";
-import { memo, useEffect } from "react";
-import Navigation from "app/theme-layouts/shared-components/navigation/Navigation";
-import NavbarToggleButton from "app/theme-layouts/shared-components/navbar/NavbarToggleButton";
-import Logo from "../../../../shared-components/Logo";
-import UserNavbarHeader from "../../../../shared-components/UserNavbarHeader";
-import { useGetMyShopAndPlan } from "app/configs/data/server-calls/shopdetails/useShopDetails";
-import { Typography } from "@mui/material";
-import RealEstateNavigation from "app/theme-layouts/shared-components/navigation/accountsnavigation/RealEstateNavigation";
-import HotelsApartmentsNavigation from "app/theme-layouts/shared-components/navigation/hotelsnavigation/HotelsApartmentsNavigation";
-import LogisticsNavigation from "app/theme-layouts/shared-components/navigation/logisticsnavigation/LogisticsNavigation";
-import FoodMartNavigation from "app/theme-layouts/shared-components/navigation/foodmartnavigation/FoodMartNavigation";
-import ManufacturersNavigation from "app/theme-layouts/shared-components/navigation/manufacturersnavigation/ManufacturersNavigation";
-import WholesaleRetailNavigation from "app/theme-layouts/shared-components/navigation/wholealeretailnavigation/WholesaleRetailNavigation";
-import { Troubleshoot } from "@mui/icons-material";
-import { useSearchParams } from "react-router-dom/dist";
+import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import { styled } from '@mui/material/styles';
+import clsx from 'clsx';
+import { memo, useEffect } from 'react';
+import Navigation from 'app/theme-layouts/shared-components/navigation/Navigation';
+import NavbarToggleButton from 'app/theme-layouts/shared-components/navbar/NavbarToggleButton';
+import { useGetMyShopAndPlan } from 'app/configs/data/server-calls/shopdetails/useShopDetails';
+import { Typography } from '@mui/material';
+import RealEstateNavigation from 'app/theme-layouts/shared-components/navigation/accountsnavigation/RealEstateNavigation';
+import HotelsApartmentsNavigation from 'app/theme-layouts/shared-components/navigation/hotelsnavigation/HotelsApartmentsNavigation';
+import LogisticsNavigation from 'app/theme-layouts/shared-components/navigation/logisticsnavigation/LogisticsNavigation';
+import FoodMartNavigation from 'app/theme-layouts/shared-components/navigation/foodmartnavigation/FoodMartNavigation';
+import ManufacturersNavigation from 'app/theme-layouts/shared-components/navigation/manufacturersnavigation/ManufacturersNavigation';
+import WholesaleRetailNavigation from 'app/theme-layouts/shared-components/navigation/wholealeretailnavigation/WholesaleRetailNavigation';
+import UserNavbarHeader from '../../../../shared-components/UserNavbarHeader';
+import Logo from '../../../../shared-components/Logo';
 
-const Root = styled("div")(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  color: theme.palette.text.primary,
-  "& ::-webkit-scrollbar-thumb": {
-    boxShadow: `inset 0 0 0 20px ${theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.24)" : "rgba(255, 255, 255, 0.24)"}`,
-  },
-  "& ::-webkit-scrollbar-thumb:active": {
-    boxShadow: `inset 0 0 0 20px ${theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.37)" : "rgba(255, 255, 255, 0.37)"}`,
-  },
+const Root = styled('div')(({ theme }) => ({
+	backgroundColor: theme.palette.background.default,
+	color: theme.palette.text.primary,
+	'& ::-webkit-scrollbar-thumb': {
+		boxShadow: `inset 0 0 0 20px ${theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.24)' : 'rgba(255, 255, 255, 0.24)'}`
+	},
+	'& ::-webkit-scrollbar-thumb:active': {
+		boxShadow: `inset 0 0 0 20px ${theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.37)' : 'rgba(255, 255, 255, 0.37)'}`
+	}
 }));
 const StyledContent = styled(FuseScrollbars)(() => ({
-  overscrollBehavior: "contain",
-  overflowX: "hidden",
-  overflowY: "auto",
-  WebkitOverflowScrolling: "touch",
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "100% 40px, 100% 10px",
-  backgroundAttachment: "local, scroll",
+	overscrollBehavior: 'contain',
+	overflowX: 'hidden',
+	overflowY: 'auto',
+	WebkitOverflowScrolling: 'touch',
+	backgroundRepeat: 'no-repeat',
+	backgroundSize: '100% 40px, 100% 10px',
+	backgroundAttachment: 'local, scroll'
 }));
-
-
 
 /**
  * The navbar style 1 content.
  */
 function NavbarStyle1Content(props) {
-  const { data: myshopData, isLoading } = useGetMyShopAndPlan({queryAllData:false});
+	const { data: myshopData, isLoading } = useGetMyShopAndPlan({ queryAllData: false });
 
-  const { className = "" } = props;
+	const { className = '' } = props;
 
-  useEffect(() => {}, [myshopData?.data?.merchant?.merchantShopplan?.plankey]);
-  return (
-    <Root
-      className={clsx(
-        "flex h-full flex-auto flex-col overflow-hidden",
-        className
-      )}
-    >
-      <div className="flex h-48 shrink-0 flex-row items-center px-20 md:h-72">
-        <div className="mx-4 flex flex-1">
-          <Logo />
-        </div>
+	useEffect(() => {}, [myshopData?.data?.merchant?.merchantShopplan?.plankey]);
 
-        <NavbarToggleButton className="h-40 w-40 p-0" />
-      </div>
+	console.log('PLAY___KEY', myshopData?.data?.merchant?.merchantShopplan?.plankey);
+	return (
+		<Root className={clsx('flex h-full flex-auto flex-col overflow-hidden', className)}>
+			<div className="flex h-48 shrink-0 flex-row items-center px-20 md:h-72">
+				<div className="mx-4 flex flex-1">
+					<Logo />
+				</div>
 
-      <StyledContent
-        className="flex min-h-0 flex-1 flex-col"
-        option={{ suppressScrollX: true, wheelPropagation: false }}
-      >
-        <UserNavbarHeader />
+				<NavbarToggleButton className="h-40 w-40 p-0" />
+			</div>
 
-        {isLoading ? (
-          <>
-            <Typography>loading...</Typography>
-          </>
-        ) : (
-          <>
-            {myshopData?.data?.merchant?.merchantShopplan?.plankey === "RETAIL" && (
-              <>
-                <Navigation layout="vertical" />
-              </>
-            )}
+			<StyledContent
+				className="flex min-h-0 flex-1 flex-col"
+				option={{ suppressScrollX: true, wheelPropagation: false }}
+			>
+				<UserNavbarHeader />
 
-            {myshopData?.data?.merchant?.merchantShopplan?.plankey ===
-              "WHOLESALEANDRETAILERS" && (
-              <>
-                <WholesaleRetailNavigation layout="vertical" />
-              </>
-            )}
+				{isLoading ? (
+					<Typography>loading...</Typography>
+				) : (
+					<>
+						{myshopData?.data?.merchant?.merchantShopplan?.plankey === 'RETAIL' && (
+							<Navigation layout="vertical" />
+						)}
 
-            {myshopData?.data?.merchant?.merchantShopplan?.plankey === "MANUFACTURERS" && (
-              <>
-                <ManufacturersNavigation layout="vertical" />
-              </>
-            )}
+						{myshopData?.data?.merchant?.merchantShopplan?.plankey === 'WHOLESALEANDRETAILERS' && (
+							<WholesaleRetailNavigation layout="vertical" />
+						)}
 
-            {myshopData?.data?.merchant?.merchantShopplan?.plankey === "REALESTATES" && (
-              <>
-                <RealEstateNavigation layout="vertical" />
-              </>
-            )}
+						{myshopData?.data?.merchant?.merchantShopplan?.plankey === 'MANUFACTURERS' && (
+							<ManufacturersNavigation layout="vertical" />
+						)}
 
-            {myshopData?.data?.merchant?.merchantShopplan?.plankey === "HOTELSANDAPARTMENTS" && (
-              <>
-                <HotelsApartmentsNavigation layout="vertical" />
-              </>
-            )}
+						{myshopData?.data?.merchant?.merchantShopplan?.plankey === 'REALESTATES' && (
+							<RealEstateNavigation layout="vertical" />
+						)}
 
-            {myshopData?.data?.merchant?.merchantShopplan?.plankey === "FOODVENDORS" && (
-              <>
-                <FoodMartNavigation layout="vertical" />
-              </>
-            )}
+						{myshopData?.data?.merchant?.merchantShopplan?.plankey === 'HOTELSANDAPARTMENTS' && (
+							<HotelsApartmentsNavigation layout="vertical" />
+						)}
 
-            {myshopData?.data?.merchant?.merchantShopplan?.plankey === "LOGISTICS" && (
-              <>
-                <LogisticsNavigation layout="vertical" />
-              </>
-            )}
-          </>
-        )}
+						{myshopData?.data?.merchant?.merchantShopplan?.plankey === 'FOODVENDORS' && (
+							<FoodMartNavigation layout="vertical" />
+						)}
 
-        <div className="flex-0 flex items-center justify-center py-48 opacity-20">
-          <img
-            className="w-full max-w-64"
-            src="assets/images/afslogo/afslogo.png"
-            alt="footer logo"
-            width={45}
-            height={45}
-          />
-        </div>
-      </StyledContent>
-    </Root>
-  );
+						{myshopData?.data?.merchant?.merchantShopplan?.plankey === 'LOGISTICS' && (
+							<LogisticsNavigation layout="vertical" />
+						)}
+					</>
+				)}
+
+				<div className="flex-0 flex items-center justify-center py-48 opacity-20">
+					<img
+						className="w-full max-w-64"
+						src="assets/images/afslogo/afslogo.png"
+						alt="footer logo"
+						width={45}
+						height={45}
+					/>
+				</div>
+			</StyledContent>
+		</Root>
+	);
 }
 
 export default memo(NavbarStyle1Content);

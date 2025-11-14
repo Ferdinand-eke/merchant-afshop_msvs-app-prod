@@ -24,7 +24,7 @@ const HelpCenterAppConfig = {
 					path: '',
 					element: <HelpCenterHome />
 				},
-				
+
 				{
 					path: 'faqs',
 					element: <HelpCenterFaqs />

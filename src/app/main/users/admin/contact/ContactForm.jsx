@@ -10,25 +10,16 @@ import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
-import Autocomplete from '@mui/material/Autocomplete/Autocomplete';
-import Checkbox from '@mui/material/Checkbox/Checkbox';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import history from '@history';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showMessage } from '@fuse/core/FuseMessage/fuseMessageSlice';
 import { useAppDispatch } from 'app/store/hooks';
-import ContactEmailSelector from './email-selector/ContactEmailSelector';
-import PhoneNumberSelector from './phone-number-selector/PhoneNumberSelector';
-import {
-	useCreateContactsItemMutation,
-	useDeleteContactsItemMutation,
-	useGetContactsItemQuery,
-	useGetContactsTagsQuery,
-	useUpdateContactsItemMutation
-} from '../ContactsApi';
-import ContactModel from '../models/ContactModel';
 import { useGetAdminById } from 'src/app/aaqueryhooks/adminHandlingQuery';
+import ContactEmailSelector from './email-selector/ContactEmailSelector';
+
+import ContactModel from '../models/ContactModel';
 
 function BirtdayIcon() {
 	return <FuseSvgIcon size={20}>heroicons-solid:cake</FuseSvgIcon>;
@@ -86,13 +77,11 @@ function ContactForm() {
 	// useGetAdminById(contactId, {
 	// 	return: !contactId || contactId === 'new'
 	// });
-console.log("ADMIN FORM DATAS", admin?.data)
+	console.log('ADMIN FORM DATAS', admin?.data);
 	// const [createContact] = useCreateContactsItemMutation();
 	// const [updateContact] = useUpdateContactsItemMutation();
 	// const [deleteContact] = useDeleteContactsItemMutation();
 	// const { data: tags } = useGetContactsTagsQuery();
-
-
 
 	const { control, watch, reset, handleSubmit, formState } = useForm({
 		mode: 'all',
@@ -100,7 +89,7 @@ console.log("ADMIN FORM DATAS", admin?.data)
 	});
 	const { isValid, dirtyFields, errors } = formState;
 	const form = watch();
-	//admin?.data
+	// admin?.data
 	// useEffect(() => {
 	// 	if (contactId === 'new') {
 	// 		reset(ContactModel({}));
@@ -116,26 +105,24 @@ console.log("ADMIN FORM DATAS", admin?.data)
 	// 	}
 	// }, [contactId, admin?.data, reset, routeParams]);
 
-
-	useEffect(() => {
-		// if (contactId === 'new') {
-		// 	reset(ContactModel({}));
-		// }
-		if (id === 'new') {
-			reset(ContactModel({}));
-		}
-	}, 
-	// [contactId, reset]
-	[id, reset]
+	useEffect(
+		() => {
+			// if (contactId === 'new') {
+			// 	reset(ContactModel({}));
+			// }
+			if (id === 'new') {
+				reset(ContactModel({}));
+			}
+		},
+		// [contactId, reset]
+		[id, reset]
 	);
 
-	
 	useEffect(() => {
 		if (admin?.data) {
 			reset({ ...admin?.data });
 		}
 	}, [admin?.data, reset]);
-
 
 	/**
 	 * Form Submit
@@ -153,15 +140,12 @@ console.log("ADMIN FORM DATAS", admin?.data)
 		}
 	}, [form]);
 
-
 	function handleRemoveContact() {
 		// if (!contact) {
 		// 	return;
 		// }
 		if (!admin?.data) {
-			return;
 		}
-		
 
 		// deleteContact(admin?.data.id).then(() => {
 		// 	navigate('/users/admin');
@@ -186,9 +170,9 @@ console.log("ADMIN FORM DATAS", admin?.data)
 	// 	}, 0);
 	// 	return null;
 	// }
-	
-	if (adminIsError && id !== 'new' ) {
-		//&& id !== 'new'
+
+	if (adminIsError && id !== 'new') {
+		// && id !== 'new'
 		setTimeout(() => {
 			navigate('/users/admin');
 			dispatch(showMessage({ message: 'NOT FOUND' }));
@@ -203,8 +187,6 @@ console.log("ADMIN FORM DATAS", admin?.data)
 	// 	return <FuseLoading className="min-h-screen" />;
 	// }
 
-
-	
 	return (
 		<>
 			<Box
@@ -221,7 +203,6 @@ console.log("ADMIN FORM DATAS", admin?.data)
 					/>
 				)}
 			</Box>
-
 
 			<div className="relative flex flex-col flex-auto items-center px-24 sm:px-48">
 				<div className="w-full">
@@ -450,7 +431,6 @@ console.log("ADMIN FORM DATAS", admin?.data)
 						/>
 					)}
 				/> */}
-
 
 				<Controller
 					control={control}

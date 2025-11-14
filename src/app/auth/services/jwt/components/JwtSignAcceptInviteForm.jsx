@@ -1,104 +1,98 @@
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
-import { z } from "zod";
-import _ from "@lodash";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { Link, useParams } from "react-router-dom";
-import Button from "@mui/material/Button";
-import useJwtAuth from "../useJwtAuth";
-import { useAdminInvitationAcceptance } from "src/app/aaqueryhooks/adminHandlingQuery";
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
+import { z } from 'zod';
+import _ from '@lodash';
+import TextField from '@mui/material/TextField';
+import { useParams } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import { useAdminInvitationAcceptance } from 'src/app/aaqueryhooks/adminHandlingQuery';
+import useJwtAuth from '../useJwtAuth';
 /**
  * Form Validation Schema
  */
 const schema = z
-  .object({
-    // email: z.string().email('You must enter a valid email').nonempty('You must enter an email'),
-    activationCode: z
-      .string()
-      .min(4, "Password is too short - must be at least 4 chars.")
-      .nonempty("You must enter an activation code"),
-    password: z
-      .string()
-      .min(4, "Password is too short - must be at least 4 chars.")
-      .nonempty("Please enter your password."),
-    passwordConfirm: z.string().nonempty("Password confirmation is required"),
-    // acceptTermsConditions: z.boolean().refine((val) => val === true, 'The terms and conditions must be accepted.'),
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    message: "Passwords must match",
-    path: ["passwordConfirm"],
-  });
+	.object({
+		// email: z.string().email('You must enter a valid email').nonempty('You must enter an email'),
+		activationCode: z
+			.string()
+			.min(4, 'Password is too short - must be at least 4 chars.')
+			.nonempty('You must enter an activation code'),
+		password: z
+			.string()
+			.min(4, 'Password is too short - must be at least 4 chars.')
+			.nonempty('Please enter your password.'),
+		passwordConfirm: z.string().nonempty('Password confirmation is required')
+		// acceptTermsConditions: z.boolean().refine((val) => val === true, 'The terms and conditions must be accepted.'),
+	})
+	.refine((data) => data.password === data.passwordConfirm, {
+		message: 'Passwords must match',
+		path: ['passwordConfirm']
+	});
 const defaultValues = {
-  // email: '',
-  activationCode: "",
-  activationToken:"",
-  password: "",
-  passwordConfirm: "",
-  acceptTermsConditions: false,
-  // remember: true
+	// email: '',
+	activationCode: '',
+	activationToken: '',
+	password: '',
+	passwordConfirm: '',
+	acceptTermsConditions: false
+	// remember: true
 };
 
 function JwtSignAcceptInviteForm() {
-	const acceptInvite = useAdminInvitationAcceptance()
+	const acceptInvite = useAdminInvitationAcceptance();
 	const routeParams = useParams();
 	const { token } = routeParams;
-  const { signIn } = useJwtAuth();
-  const { control, formState, handleSubmit, setValue, setError } = useForm({
-    mode: "onChange",
-    defaultValues,
-    resolver: zodResolver(schema),
-  });
-  const { isValid, dirtyFields, errors } = formState;
+	const { signIn } = useJwtAuth();
+	const { control, formState, handleSubmit, setValue, setError } = useForm({
+		mode: 'onChange',
+		defaultValues,
+		resolver: zodResolver(schema)
+	});
+	const { isValid, dirtyFields, errors } = formState;
 
-//   console.log("Token STRING", token)
+	//   console.log("Token STRING", token)
 
-  function onSubmit(formData) {
-   
-	const formDataWithUpdatedTokenParam = {...formData, activationToken:token}
+	function onSubmit(formData) {
+		const formDataWithUpdatedTokenParam = { ...formData, activationToken: token };
 
-	console.log("ACCEPT-INVITE-Values", formDataWithUpdatedTokenParam);
-	// return
-	acceptInvite.mutate(formDataWithUpdatedTokenParam)
-    
-  }
+		console.log('ACCEPT-INVITE-Values', formDataWithUpdatedTokenParam);
+		// return
+		acceptInvite.mutate(formDataWithUpdatedTokenParam);
+	}
 
+	useEffect(() => {
+		if (acceptInvite.isError) {
+			window.alert(acceptInvite.error);
+		}
+	}, [acceptInvite.isError]);
+	return (
+		<form
+			name="loginForm"
+			noValidate
+			className="mt-32 flex w-full flex-col justify-center"
+			onSubmit={handleSubmit(onSubmit)}
+		>
+			<Controller
+				name="activationCode"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mb-24"
+						label="Activation Code"
+						autoFocus
+						type="name"
+						error={!!errors.activationCode}
+						helperText={errors?.activationCode?.message}
+						variant="outlined"
+						required
+						fullWidth
+					/>
+				)}
+			/>
 
-  useEffect(()=>{
-if(acceptInvite.isError){
-	window.alert(acceptInvite.error)
-}
-  },[acceptInvite.isError])
-  return (
-    <form
-      name="loginForm"
-      noValidate
-      className="mt-32 flex w-full flex-col justify-center"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <Controller
-        name="activationCode"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className="mb-24"
-            label="Activation Code"
-            autoFocus
-            type="name"
-            error={!!errors.activationCode}
-            helperText={errors?.activationCode?.message}
-            variant="outlined"
-            required
-            fullWidth
-          />
-        )}
-      />
-
-      {/* <Controller
+			{/* <Controller
 				name="email"
 				control={control}
 				render={({ field }) => (
@@ -117,43 +111,43 @@ if(acceptInvite.isError){
 				)}
 			/> */}
 
-      <Controller
-        name="password"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className="mb-24"
-            label="Password"
-            type="password"
-            error={!!errors.password}
-            helperText={errors?.password?.message}
-            variant="outlined"
-            required
-            fullWidth
-          />
-        )}
-      />
+			<Controller
+				name="password"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mb-24"
+						label="Password"
+						type="password"
+						error={!!errors.password}
+						helperText={errors?.password?.message}
+						variant="outlined"
+						required
+						fullWidth
+					/>
+				)}
+			/>
 
-      <Controller
-        name="passwordConfirm"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            className="mb-24"
-            label="Password (Confirm)"
-            type="password"
-            error={!!errors.passwordConfirm}
-            helperText={errors?.passwordConfirm?.message}
-            variant="outlined"
-            required
-            fullWidth
-          />
-        )}
-      />
+			<Controller
+				name="passwordConfirm"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mb-24"
+						label="Password (Confirm)"
+						type="password"
+						error={!!errors.passwordConfirm}
+						helperText={errors?.passwordConfirm?.message}
+						variant="outlined"
+						required
+						fullWidth
+					/>
+				)}
+			/>
 
-      {/* <div className="flex flex-col items-center justify-center sm:flex-row sm:justify-between">
+			{/* <div className="flex flex-col items-center justify-center sm:flex-row sm:justify-between">
 				<Controller
 					name="remember"
 					control={control}
@@ -180,19 +174,19 @@ if(acceptInvite.isError){
 				</Link>
 			</div> */}
 
-      <Button
-        variant="contained"
-        color="secondary"
-        className=" mt-16 w-full"
-        aria-label="Sign in"
-        disabled={_.isEmpty(dirtyFields) || !isValid || acceptInvite.isLoading}
-        type="submit"
-        size="large"
-      >
-        Accept Invite
-      </Button>
-    </form>
-  );
+			<Button
+				variant="contained"
+				color="secondary"
+				className=" mt-16 w-full"
+				aria-label="Sign in"
+				disabled={_.isEmpty(dirtyFields) || !isValid || acceptInvite.isLoading}
+				type="submit"
+				size="large"
+			>
+				Accept Invite
+			</Button>
+		</form>
+	);
 }
 
 export default JwtSignAcceptInviteForm;

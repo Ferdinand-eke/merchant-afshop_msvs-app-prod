@@ -19,12 +19,9 @@ function ManageReservationContent() {
 				<FuseSvgIcon>heroicons-outline:x</FuseSvgIcon>
 			</IconButton>
 
-
 			<Outlet />
 		</div>
 	);
 }
-
-
 
 export default ManageReservationContent;

@@ -6,19 +6,14 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import withSlices from 'app/store/withSlices';
 import { wholesaleretailNavigationSlice, selectNavigation } from '../store/wholesaleretailNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
-import { useNavigate } from 'react-router';
-
 
 function WholesaleRetailNavigation(props) {
-	const { className = '', layout = 'vertical', dense, active, 
-	
- } = props;
+	const { className = '', layout = 'vertical', dense, active } = props;
 
 	const navigation = useAppSelector(selectNavigation);
-	
+
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const dispatch = useAppDispatch();
-
 
 	return useMemo(() => {
 		function handleItemClick() {
@@ -26,6 +21,7 @@ function WholesaleRetailNavigation(props) {
 				dispatch(navbarCloseMobile());
 			}
 		}
+
 		return (
 			<FuseNavigation
 				className={clsx('navigation flex-1', className)}

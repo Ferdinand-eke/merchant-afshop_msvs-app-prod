@@ -11,7 +11,11 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 // 	useDeleteECommerceProductMutation,
 // 	useUpdateECommerceProductMutation
 // } from '../ECommerceApi';
-import { useCreatePropertyType, useDeletePropertyType, useUpdatePropertyType } from 'src/app/aaqueryhooks/propertytypeHandlingQuery';
+import {
+	useCreatePropertyType,
+	useDeletePropertyType,
+	useUpdatePropertyType
+} from 'src/app/aaqueryhooks/propertytypeHandlingQuery';
 
 /**
  * The product header.
@@ -29,13 +33,13 @@ function ProductHeader() {
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
 
-	const createPropertyType = useCreatePropertyType()
-	const updatePropertyType = useUpdatePropertyType()
-	const deletePropertyType = useDeletePropertyType() 
+	const createPropertyType = useCreatePropertyType();
+	const updatePropertyType = useUpdatePropertyType();
+	const deletePropertyType = useDeletePropertyType();
 
 	function handleSaveProduct() {
 		// saveProduct(getValues());
-		updatePropertyType.mutate(getValues())
+		updatePropertyType.mutate(getValues());
 	}
 
 	function handleCreateProduct() {
@@ -44,13 +48,13 @@ function ProductHeader() {
 		// 	.then((data) => {
 		// 		navigate(`/types/propertytypes/${data.id}`);
 		// 	});
-		createPropertyType.mutate(getValues())
+		createPropertyType.mutate(getValues());
 	}
 
 	function handleRemoveProduct() {
 		// removeProduct(productId);
 		// navigate('/types/propertytypes');
-		deletePropertyType.mutate(productId)
+		deletePropertyType.mutate(productId);
 	}
 
 	return (

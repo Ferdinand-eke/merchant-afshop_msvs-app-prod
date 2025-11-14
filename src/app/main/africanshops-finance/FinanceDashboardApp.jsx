@@ -1,16 +1,14 @@
-import FusePageSimple from "@fuse/core/FusePageSimple";
-import { motion } from "framer-motion";
-import FuseLoading from "@fuse/core/FuseLoading";
-import FinanceDashboardAppHeader from "./FinanceDashboardAppHeader";
-import PreviousStatementWidget from "./widgets/PreviousStatementWidget";
-import CurrentStatementWidget from "./widgets/CurrentStatementWidget";
-import AccountBalanceWidget from "./widgets/AccountBalanceWidget";
-import RecentTransactionsWidget from "./widgets/RecentTransactionsWidget";
-import BudgetWidget from "./widgets/BudgetWidget";
-import { useGetFinanceDashboardWidgetsQuery } from "./FinanceDashboardApi";
+import FusePageSimple from '@fuse/core/FusePageSimple';
+import { motion } from 'framer-motion';
+import FuseLoading from '@fuse/core/FuseLoading';
 import useGetMyShopDetails, {
-  useGetShopAccountBalance,
-} from "app/configs/data/server-calls/shopdetails/useShopDetails";
+	useGetShopAccountBalance
+} from 'app/configs/data/server-calls/shopdetails/useShopDetails';
+import FinanceDashboardAppHeader from './FinanceDashboardAppHeader';
+import PreviousStatementWidget from './widgets/PreviousStatementWidget';
+import CurrentStatementWidget from './widgets/CurrentStatementWidget';
+import AccountBalanceWidget from './widgets/AccountBalanceWidget';
+import { useGetFinanceDashboardWidgetsQuery } from './FinanceDashboardApi';
 // import { useMemo } from "react";
 // import {
 //   Button,
@@ -22,106 +20,103 @@ import useGetMyShopDetails, {
 // import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 
 const container = {
-  show: {
-    transition: {
-      staggerChildren: 0.04,
-    },
-  },
+	show: {
+		transition: {
+			staggerChildren: 0.04
+		}
+	}
 };
 const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
+	hidden: { opacity: 0, y: 20 },
+	show: { opacity: 1, y: 0 }
 };
 
 /**
  * The finance dashboard app.
  */
 function FinanceDashboardApp() {
-  const { data: widgets, isLoading } = useGetFinanceDashboardWidgetsQuery();
+	const { data: widgets, isLoading } = useGetFinanceDashboardWidgetsQuery();
 
-  const {
-    data: shopData,
-    isLoading: shopDataLoading,
-    isError,
-  } = useGetMyShopDetails();
+	const { data: shopData, isLoading: shopDataLoading, isError } = useGetMyShopDetails();
 
-  const {
-    data: shopAccount,
-    isLoading: accountLoading,
-    isError: accountError,
-  } = useGetShopAccountBalance();
+	const { data: shopAccount, isLoading: accountLoading, isError: accountError } = useGetShopAccountBalance();
 
-  if (isLoading) {
-    return <FuseLoading />;
-  }
+	if (isLoading) {
+		return <FuseLoading />;
+	}
 
-  if (!widgets) {
-    return null;
-  }
+	if (!widgets) {
+		return null;
+	}
 
-  return (
-    <FusePageSimple
-      header={
-        <FinanceDashboardAppHeader
-          shopData={shopData}
-          isLoading={shopDataLoading}
-        />
-      }
-      content={
-        <div className="w-full px-24 md:px-32 pb-24">
-          <motion.div
-            className="w-full"
-            variants={container}
-            initial="hidden"
-            animate="show"
-          >
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-32 w-full mt-32">
-              <div className="grid gap-32 sm:grid-flow-col xl:grid-flow-row">
-                <motion.div variants={item} className="flex flex-col flex-auto">
-                  <PreviousStatementWidget
-                    account={shopAccount?.data}
-                    accountLoading={accountLoading}
-                    accountError={accountError}
-                  />
-                </motion.div>
+	return (
+		<FusePageSimple
+			header={
+				<FinanceDashboardAppHeader
+					shopData={shopData}
+					isLoading={shopDataLoading}
+				/>
+			}
+			content={
+				<div className="w-full px-24 md:px-32 pb-24">
+					<motion.div
+						className="w-full"
+						variants={container}
+						initial="hidden"
+						animate="show"
+					>
+						<div className="grid grid-cols-1 xl:grid-cols-2 gap-32 w-full mt-32">
+							<div className="grid gap-32 sm:grid-flow-col xl:grid-flow-row">
+								<motion.div
+									variants={item}
+									className="flex flex-col flex-auto"
+								>
+									<PreviousStatementWidget
+										account={shopAccount?.data}
+										accountLoading={accountLoading}
+										accountError={accountError}
+									/>
+								</motion.div>
 
-                <motion.div variants={item} className="flex flex-col flex-auto">
-                  <CurrentStatementWidget
-                    shopData={shopData?.data?.merchant}
-                    shopDataLoading={shopDataLoading}
-                    isError={isError}
-                  />
-                </motion.div>
-              </div>
-              <motion.div variants={item} className="flex flex-col flex-auto">
-                <AccountBalanceWidget
-                   shopData={shopData?.data?.merchant}
-                   shopDataLoading={shopDataLoading}
-                   isError={isError}
+								<motion.div
+									variants={item}
+									className="flex flex-col flex-auto"
+								>
+									<CurrentStatementWidget
+										shopData={shopData?.data?.merchant}
+										shopDataLoading={shopDataLoading}
+										isError={isError}
+									/>
+								</motion.div>
+							</div>
+							<motion.div
+								variants={item}
+								className="flex flex-col flex-auto"
+							>
+								<AccountBalanceWidget
+									shopData={shopData?.data?.merchant}
+									shopDataLoading={shopDataLoading}
+									isError={isError}
+									account={shopAccount?.data}
+									accountLoading={accountLoading}
+									accountError={accountError}
+								/>
+							</motion.div>
+						</div>
 
-                   account={shopAccount?.data}
-                   accountLoading={accountLoading}
-                   accountError={accountError}
-                />
-              </motion.div>
-            </div>
-
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-32 w-full mt-32">
-              <motion.div
-                variants={item}
-                className="xl:col-span-2 flex flex-col flex-auto"
-              >
-                {/* <RecentTransactionsWidget /> */}
-                
-
-                
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      }
-    />
-  );
+						<div className="grid grid-cols-1 xl:grid-cols-3 gap-32 w-full mt-32">
+							<motion.div
+								variants={item}
+								className="xl:col-span-2 flex flex-col flex-auto"
+							>
+								{/* <RecentTransactionsWidget /> */}
+							</motion.div>
+						</div>
+					</motion.div>
+				</div>
+			}
+		/>
+	);
 }
 
 export default FinanceDashboardApp;

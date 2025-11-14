@@ -1,176 +1,176 @@
-import FusePageSimple from "@fuse/core/FusePageSimple";
-import { styled } from "@mui/material/styles";
-import Avatar from "@mui/material/Avatar";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
-import Typography from "@mui/material/Typography";
-import { motion } from "framer-motion";
-import { useState } from "react";
-import Box from "@mui/material/Box";
-import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
-import AboutTab from "./tabs/about/AboutTab";
-import PhotosVideosTab from "./tabs/photos-videos/PhotosVideosTab";
-import TimelineTab from "./tabs/timeline/TimelineTab";
-import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
-import { useTheme } from "@mui/material/styles";
-import { useNavigate, useParams } from "react-router";
-import useGetMyShopDetails from "app/configs/data/server-calls/shopdetails/useShopDetails";
-import { useSingleShopFoodMart } from "app/configs/data/server-calls/foodmart/useShopFoodMarts";
+import FusePageSimple from '@fuse/core/FusePageSimple';
+import { styled, useTheme } from '@mui/material/styles';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import Box from '@mui/material/Box';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import { useNavigate, useParams } from 'react-router';
+import useGetMyShopDetails from 'app/configs/data/server-calls/shopdetails/useShopDetails';
+import { useSingleShopFoodMart } from 'app/configs/data/server-calls/foodmart/useShopFoodMarts';
+import TimelineTab from './tabs/timeline/TimelineTab';
+import PhotosVideosTab from './tabs/photos-videos/PhotosVideosTab';
+import AboutTab from './tabs/about/AboutTab';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
-  "& .FusePageSimple-header": {
-    backgroundColor: theme.palette.background.paper,
-    borderBottomWidth: 1,
-    borderStyle: "solid",
-    borderColor: theme.palette.divider,
-    "& > .container": {
-      maxWidth: "100%",
-    },
-  },
+	'& .FusePageSimple-header': {
+		backgroundColor: theme.palette.background.paper,
+		borderBottomWidth: 1,
+		borderStyle: 'solid',
+		borderColor: theme.palette.divider,
+		'& > .container': {
+			maxWidth: '100%'
+		}
+	}
 }));
 
 /**
  * The profile page.
  */
 function FoodMartProfileApp() {
-  const routeParams = useParams();
-    const { foodMartId } = routeParams;
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const [selectedTab, setSelectedTab] = useState(0);
-  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
-  const {
-      data: foodMartList,
-      isLoading,
-      isError
-    } = useSingleShopFoodMart(foodMartId, {
-      skip: !foodMartId || foodMartId === 'new'
-    });
+	const routeParams = useParams();
+	const { foodMartId } = routeParams;
+	const theme = useTheme();
+	const navigate = useNavigate();
+	const [selectedTab, setSelectedTab] = useState(0);
+	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+	const {
+		data: foodMartList,
+		isLoading,
+		isError
+	} = useSingleShopFoodMart(foodMartId, {
+		skip: !foodMartId || foodMartId === 'new'
+	});
 
-  const { data: shopData, isLoading: shopDataLoading } = useGetMyShopDetails();
+	const { data: shopData, isLoading: shopDataLoading } = useGetMyShopDetails();
 
-  console.log("FOODMART_IN_ROOT", foodMartList?.data?.foodMart)
+	console.log('FOODMART_IN_ROOT', foodMartList?.data?.foodMart);
 
-  function handleTabChange(event, value) {
-    setSelectedTab(value);
-  }
+	function handleTabChange(event, value) {
+		setSelectedTab(value);
+	}
 
-  return (
-    <Root
-      header={
-        <div className="flex flex-col w-full">
-          {/* <img
+	return (
+		<Root
+			header={
+				<div className="flex flex-col w-full">
+					{/* <img
 						className="h-160 lg:h-320 object-cover w-full"
 						src="assets/images/pages/profile/cover.jpg"
 						alt="Profile Cover"
 					/>
 					 */}
 
-          <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}
-          >
-            <Typography
-              className="flex items-center sm:mb-12"
-              onClick={() => navigate(-1)}
-              role="button"
-              color="inherit"
-            >
-              <FuseSvgIcon size={20}>
-                {theme.direction === "ltr"
-                  ? "heroicons-outline:arrow-sm-left"
-                  : "heroicons-outline:arrow-sm-right"}
-              </FuseSvgIcon>
-              <span className="flex mx-4 font-medium">Food Mart List</span>
-            </Typography>
-          </motion.div>
+					<motion.div
+						initial={{ x: 20, opacity: 0 }}
+						animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}
+					>
+						<Typography
+							className="flex items-center sm:mb-12"
+							onClick={() => navigate(-1)}
+							role="button"
+							color="inherit"
+						>
+							<FuseSvgIcon size={20}>
+								{theme.direction === 'ltr'
+									? 'heroicons-outline:arrow-sm-left'
+									: 'heroicons-outline:arrow-sm-right'}
+							</FuseSvgIcon>
+							<span className="flex mx-4 font-medium">Food Mart List</span>
+						</Typography>
+					</motion.div>
 
-          <div className="mt-24 flex flex-col flex-0 lg:flex-row items-center max-w-5xl w-full mx-auto px-32 lg:h-52">
-            <div className="flex flex-col items-center lg:items-start mt-16 lg:mt-0 lg:ml-32">
-              <Typography className="text-lg font-bold leading-none">
-                {foodMartList?.data?.foodMart?.title}
-              </Typography>
-              <Typography color="text.secondary">{foodMartList?.data?.foodMart?.address}</Typography>
-            </div>
+					<div className="mt-24 flex flex-col flex-0 lg:flex-row items-center max-w-5xl w-full mx-auto px-32 lg:h-52">
+						<div className="flex flex-col items-center lg:items-start mt-16 lg:mt-0 lg:ml-32">
+							<Typography className="text-lg font-bold leading-none">
+								{foodMartList?.data?.foodMart?.title}
+							</Typography>
+							<Typography color="text.secondary">{foodMartList?.data?.foodMart?.address}</Typography>
+						</div>
 
-            <div className="hidden lg:flex h-32 mx-32 border-l-2" />
+						<div className="hidden lg:flex h-32 mx-32 border-l-2" />
 
-            <div className="flex items-center mt-24 lg:mt-0 space-x-24">
-              <div className="flex flex-col items-center">
-                <Typography className="font-bold">200k</Typography>
-                <Typography
-                  className="text-sm font-medium"
-                  color="text.secondary"
-                >
-                  FOLLOWERS
-                </Typography>
-              </div>
-              <div className="flex flex-col items-center">
-                <Typography className="font-bold">1.2k</Typography>
-                <Typography
-                  className="text-sm font-medium"
-                  color="text.secondary"
-                >
-                  FOLLOWING
-                </Typography>
-              </div>
-            </div>
+						<div className="flex items-center mt-24 lg:mt-0 space-x-24">
+							<div className="flex flex-col items-center">
+								<Typography className="font-bold">200k</Typography>
+								<Typography
+									className="text-sm font-medium"
+									color="text.secondary"
+								>
+									FOLLOWERS
+								</Typography>
+							</div>
+							<div className="flex flex-col items-center">
+								<Typography className="font-bold">1.2k</Typography>
+								<Typography
+									className="text-sm font-medium"
+									color="text.secondary"
+								>
+									FOLLOWING
+								</Typography>
+							</div>
+						</div>
 
-            <div className="flex flex-1 justify-end my-16 lg:my-0">
-              <Tabs
-                value={selectedTab}
-                onChange={handleTabChange}
-                indicatorColor="primary"
-                textColor="inherit"
-                variant="scrollable"
-                scrollButtons={false}
-                className="-mx-4 min-h-40"
-                classes={{
-                  indicator: "flex justify-center bg-transparent w-full h-full",
-                }}
-                TabIndicatorProps={{
-                  children: (
-                    <Box
-                      sx={{ bgcolor: "text.disabled" }}
-                      className="w-full h-full rounded-full opacity-20"
-                    />
-                  ),
-                }}
-              >
-                <Tab
-                  className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
-                  disableRipple
-                  label="Timeline"
-                />
-                <Tab
-                  className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
-                  disableRipple
-                  label="About"
-                />
-                <Tab
-                  className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
-                  disableRipple
-                  label="Reservations"
-                />
-              </Tabs>
-            </div>
-          </div>
-        </div>
-      }
-      content={
-        <div className="flex flex-auto justify-center w-full max-w-5xl mx-auto p-24 sm:p-32">
-          {selectedTab === 0 && <PhotosVideosTab 
-          merchantData={shopData?.data?.merchant}
-          foodMart={foodMartList?.data?.foodMart}
-          />}
+						<div className="flex flex-1 justify-end my-16 lg:my-0">
+							<Tabs
+								value={selectedTab}
+								onChange={handleTabChange}
+								indicatorColor="primary"
+								textColor="inherit"
+								variant="scrollable"
+								scrollButtons={false}
+								className="-mx-4 min-h-40"
+								classes={{
+									indicator: 'flex justify-center bg-transparent w-full h-full'
+								}}
+								TabIndicatorProps={{
+									children: (
+										<Box
+											sx={{ bgcolor: 'text.disabled' }}
+											className="w-full h-full rounded-full opacity-20"
+										/>
+									)
+								}}
+							>
+								<Tab
+									className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
+									disableRipple
+									label="Timeline"
+								/>
+								<Tab
+									className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
+									disableRipple
+									label="About"
+								/>
+								<Tab
+									className="text-14 font-semibold min-h-40 min-w-64 mx-4 px-12 "
+									disableRipple
+									label="Reservations"
+								/>
+							</Tabs>
+						</div>
+					</div>
+				</div>
+			}
+			content={
+				<div className="flex flex-auto justify-center w-full max-w-5xl mx-auto p-24 sm:p-32">
+					{selectedTab === 0 && (
+						<PhotosVideosTab
+							merchantData={shopData?.data?.merchant}
+							foodMart={foodMartList?.data?.foodMart}
+						/>
+					)}
 
-          {selectedTab === 1 && <AboutTab />}
-          {selectedTab === 2 && <TimelineTab />}
-        </div>
-      }
-      scroll={isMobile ? "normal" : "page"}
-    />
-  );
+					{selectedTab === 1 && <AboutTab />}
+					{selectedTab === 2 && <TimelineTab />}
+				</div>
+			}
+			scroll={isMobile ? 'normal' : 'page'}
+		/>
+	);
 }
 
 export default FoodMartProfileApp;

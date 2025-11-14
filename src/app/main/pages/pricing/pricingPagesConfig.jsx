@@ -23,7 +23,6 @@ const pricingPagesConfig = {
 				{
 					path: 'modern',
 					element: <ModernPricingPage />
-					
 				},
 				{
 					path: 'simple',

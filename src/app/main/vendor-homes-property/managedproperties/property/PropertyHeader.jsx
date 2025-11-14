@@ -7,11 +7,14 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import {
+	useAddShopEstatePropertyMutation,
+	useEstatePropertyUpdateMutation
+} from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
+import {
 	useCreateECommerceProductMutation,
 	useDeleteECommerceProductMutation,
 	useUpdateECommerceProductMutation
 } from '../ECommerceApi';
-import { useAddShopEstatePropertyMutation, useEstatePropertyUpdateMutation } from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
 
 /**
  * The product header.
@@ -29,23 +32,20 @@ function PropertyHeader() {
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
 
-	const addEstateProperty = useAddShopEstatePropertyMutation()
-	const updateProperty = useEstatePropertyUpdateMutation()
+	const addEstateProperty = useAddShopEstatePropertyMutation();
+	const updateProperty = useEstatePropertyUpdateMutation();
 
 	function handleSaveProduct() {
 		updateProperty.mutate(getValues());
 	}
 
 	function handleCreateProduct() {
-		addEstateProperty.mutate(getValues())
+		addEstateProperty.mutate(getValues());
 	}
-
 
 	function handleRemoveProduct() {
-		console.log("Deleting UpdateEstateProperty-Values", getValues())
-	
+		console.log('Deleting UpdateEstateProperty-Values', getValues());
 	}
-
 
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
@@ -138,16 +138,13 @@ function PropertyHeader() {
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid  
-						|| addEstateProperty.isLoading
-						}
+						disabled={_.isEmpty(dirtyFields) || !isValid || addEstateProperty.isLoading}
 						onClick={handleCreateProduct}
 					>
 						Add Estate|Property
 					</Button>
 				)}
 			</motion.div>
-			
 		</div>
 	);
 }

@@ -13,6 +13,8 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import { useSingleShopProduct } from 'app/configs/data/server-calls/products/useShopProducts';
+import useGetMyShopDetails from 'app/configs/data/server-calls/shopdetails/useShopDetails';
 import ProductHeader from './ShopProductHeader';
 import BasicInfoTab from './tabs/BasicInfoTab';
 import InventoryTab from './tabs/InventoryTab';
@@ -20,10 +22,7 @@ import PricingTab from './tabs/PricingTab';
 import ProductImagesTab from './tabs/ProductImagesTab';
 import ShippingTab from './tabs/ShippingTab';
 import ProductPageLoading from './components/ProductPageLoading';
-import { useGetECommerceProductQuery } from '../ECommerceApi';
 import ProductModel from './models/ProductModel';
-import { useSingleShopProduct } from 'app/configs/data/server-calls/products/useShopProducts';
-import useGetMyShopDetails from 'app/configs/data/server-calls/shopdetails/useShopDetails';
 /**
  * Form Validation Schema
  */
@@ -46,16 +45,15 @@ function ShopProduct() {
 	// 	skip: !productId || productId === 'new'
 	// });
 	const { data: shopData, isLoading: shopDataLoading } = useGetMyShopDetails();
-	const {data:products,
+	const {
+		data: products,
 		isLoading,
 		isError
 	} = useSingleShopProduct(productId, {
 		skip: !productId || productId === 'new'
-	})
+	});
 
-
-
-	console.log("AUT_SHOP_DATA", shopData?.data)
+	console.log('AUT_SHOP_DATA', shopData?.data);
 
 	// Persistent tab state using localStorage
 	const TAB_STORAGE_KEY = `product_tab_${productId}`;
@@ -93,7 +91,11 @@ function ShopProduct() {
 	}
 
 	if (isLoading || shopDataLoading) {
-		return <ProductPageLoading message={productId === 'new' ? "Preparing new product form..." : "Loading product details..."} />;
+		return (
+			<ProductPageLoading
+				message={productId === 'new' ? 'Preparing new product form...' : 'Loading product details...'}
+			/>
+		);
 	}
 
 	/**
@@ -128,7 +130,12 @@ function ShopProduct() {
 	/**
 	 * Wait while product data is loading and form is setted
 	 */
-	if (_.isEmpty(form) || (products?.data?.product && routeParams.productId !== products?.data?.product.slug && routeParams.productId !== 'new')) {
+	if (
+		_.isEmpty(form) ||
+		(products?.data?.product &&
+			routeParams.productId !== products?.data?.product.slug &&
+			routeParams.productId !== 'new')
+	) {
 		return <ProductPageLoading message="Setting up product form..." />;
 	}
 
@@ -185,9 +192,7 @@ function ShopProduct() {
 									<Tab
 										key={index}
 										className="h-72"
-										icon={
-											<FuseSvgIcon size={20}>{tab.icon}</FuseSvgIcon>
-										}
+										icon={<FuseSvgIcon size={20}>{tab.icon}</FuseSvgIcon>}
 										iconPosition="start"
 										label={tab.label}
 									/>

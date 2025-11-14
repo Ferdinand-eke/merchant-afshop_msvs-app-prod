@@ -7,5 +7,4 @@ function PropertyTypesApp() {
 	return <Outlet />;
 }
 
-
 export default PropertyTypesApp;

@@ -100,5 +100,4 @@ function FirebaseAuthProvider(props) {
 	) : null;
 }
 
-
 export default FirebaseAuthProvider;

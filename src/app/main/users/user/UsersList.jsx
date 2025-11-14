@@ -4,24 +4,22 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useAppSelector } from 'app/store/hooks';
-import ContactListItem from './ContactListItem';
-import { selectFilteredContactList, selectGroupedFilteredContacts, useGetContactsListQuery } from './ContactsApi';
 import useGetAllUsers from 'src/app/aaqueryhooks/usersHandlingQuery';
+import ContactListItem from './ContactListItem';
+import { selectFilteredContactList, selectGroupedFilteredContacts } from './ContactsApi';
 
 /**
  * The contacts list.
  */
 function UsersList() {
-
 	// const { data, isLoading } = useGetContactsListQuery();
-	const {data:usresData, isLoading:usersIsLoading} = useGetAllUsers()
+	const { data: usresData, isLoading: usersIsLoading } = useGetAllUsers();
 
 	// const filteredData = useAppSelector(selectFilteredContactList(data));
 
 	// const groupedFilteredContacts = useAppSelector(selectGroupedFilteredContacts(filteredData));
 
-
-	console.log("users-on-HOMES", usresData?.data?.userlist)
+	console.log('users-on-HOMES', usresData?.data?.userlist);
 	const filteredData = useAppSelector(selectFilteredContactList(usresData?.data?.userlist));
 
 	const groupedFilteredContacts = useAppSelector(selectGroupedFilteredContacts(filteredData));
@@ -52,7 +50,6 @@ function UsersList() {
 			animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
 			className="flex flex-col flex-auto w-full max-h-full"
 		>
-
 			{Object.entries(groupedFilteredContacts).map(([key, group]) => {
 				return (
 					<div
@@ -79,7 +76,6 @@ function UsersList() {
 			})}
 		</motion.div>
 	);
-
 }
 
 export default UsersList;

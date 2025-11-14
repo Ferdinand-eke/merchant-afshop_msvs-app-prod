@@ -11,4 +11,3 @@ function AWSAuthProvider(props) {
 }
 
 export default AWSAuthProvider;
-

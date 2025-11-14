@@ -6,17 +6,13 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import withSlices from 'app/store/withSlices';
 import { logisticsNavigationSlice, selectNavigation } from '../store/logisticsNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
-import { useNavigate } from 'react-router';
 
 function LogisticsNavigation(props) {
-	const { className = '', layout = 'vertical', dense, active,
-
-	 } = props;
+	const { className = '', layout = 'vertical', dense, active } = props;
 	const navigation = useAppSelector(selectNavigation);
-	
+
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const dispatch = useAppDispatch();
-
 
 	return useMemo(() => {
 		function handleItemClick() {
@@ -24,7 +20,6 @@ function LogisticsNavigation(props) {
 				dispatch(navbarCloseMobile());
 			}
 		}
-
 
 		return (
 			<FuseNavigation
@@ -39,6 +34,5 @@ function LogisticsNavigation(props) {
 		);
 	}, [dispatch, isMobile, navigation, active, className, dense, layout]);
 }
-
 
 export default withSlices([logisticsNavigationSlice])(LogisticsNavigation);

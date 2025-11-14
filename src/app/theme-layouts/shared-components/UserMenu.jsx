@@ -1,5 +1,3 @@
-import _ from '@lodash';
-import clsx from 'clsx';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -20,12 +18,11 @@ import Divider from '@mui/material/Divider';
  * The user menu.
  */
 
-
 function UserMenu() {
 	const user = useAppSelector(selectUser);
-	
+
 	const { signOut } = useAuth();
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 	const [userMenu, setUserMenu] = useState(null);
 	const userMenuClick = (event) => {
 		setUserMenu(event.currentTarget);
@@ -34,12 +31,9 @@ function UserMenu() {
 		setUserMenu(null);
 	};
 
-	
-
 	// if (!user) {
 	// 	return null;
 	// }navigate
-
 
 	return (
 		<>
@@ -61,7 +55,6 @@ function UserMenu() {
 					>
 						{user.role?.toString()}
 						{(!user.role || (Array.isArray(user.role) && user.role.length === 0)) && 'Guest'}
-					
 					</Typography>
 				</div>
 
@@ -105,19 +98,16 @@ function UserMenu() {
 				}}
 			>
 				{!user.role || user.role.length === 0 ? (
-					<>
-						<MenuItem
-							component={Link}
-							to="/sign-in"
-							role="button"
-						>
-							<ListItemIcon className="min-w-40">
-								<FuseSvgIcon>heroicons-outline:lock-closed</FuseSvgIcon>
-							</ListItemIcon>
-							<ListItemText primary="Sign In" />
-						</MenuItem>
-						
-					</>
+					<MenuItem
+						component={Link}
+						to="/sign-in"
+						role="button"
+					>
+						<ListItemIcon className="min-w-40">
+							<FuseSvgIcon>heroicons-outline:lock-closed</FuseSvgIcon>
+						</ListItemIcon>
+						<ListItemText primary="Sign In" />
+					</MenuItem>
 				) : (
 					<>
 						<MenuItem
@@ -167,10 +157,10 @@ function UserMenu() {
 							<ListItemText primary="Settings" />
 						</MenuItem>
 
-						<Divider variant="middle"  />
+						<Divider variant="middle" />
 						<MenuItem
 							onClick={() => {
-								navigate("/", { replace: true })
+								navigate('/', { replace: true });
 								signOut();
 							}}
 						>

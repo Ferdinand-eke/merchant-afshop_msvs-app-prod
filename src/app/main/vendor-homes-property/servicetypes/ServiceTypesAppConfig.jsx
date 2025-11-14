@@ -27,11 +27,11 @@ const ServiceTypesAppConfig = {
 					path: 'servicetypes',
 					element: <ServiceTypes />
 				},
-				//packages/servicetypes
+				// packages/servicetypes
 				{
 					path: 'servicetypes/:productId/*',
 					element: <ServiceType />
-				},
+				}
 				// {
 				// 	path: 'orders',
 				// 	element: <Orders />

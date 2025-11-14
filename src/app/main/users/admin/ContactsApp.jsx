@@ -5,7 +5,6 @@ import { styled } from '@mui/material/styles';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import StaffHeader from './StaffHeader';
 import UsersList from './UsersList';
-import { useGetContactsListQuery, useGetContactsCountriesQuery, useGetContactsTagsQuery } from './ContactsApi';
 import StaffContactsSidebarContent from './StaffContactsSidebarContent';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
@@ -29,9 +28,6 @@ function ContactsApp() {
 	useEffect(() => {
 		setRightSidebarOpen(Boolean(routeParams.id));
 	}, [routeParams]);
-
-
-	
 
 	return (
 		<Root

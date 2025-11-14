@@ -144,8 +144,6 @@ function MailDetails() {
 			</Box>
 		</>
 	);
-
-	
 }
 
 export default withRouter(MailDetails);

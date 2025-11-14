@@ -6,21 +6,14 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import withSlices from 'app/store/withSlices';
 import { navigationSlice, selectNavigation } from './store/navigationSlice';
 import { navbarCloseMobile } from '../navbar/navbarSlice';
-import { useNavigate } from 'react-router';
-
 
 function Navigation(props) {
-	const { className = '', layout = 'vertical', dense, active, 
-	
- } = props;
+	const { className = '', layout = 'vertical', dense, active } = props;
 
 	const navigation = useAppSelector(selectNavigation);
-	
+
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const dispatch = useAppDispatch();
-
-	
-
 
 	return useMemo(() => {
 		function handleItemClick() {

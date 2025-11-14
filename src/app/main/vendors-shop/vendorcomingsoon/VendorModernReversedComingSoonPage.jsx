@@ -1,11 +1,6 @@
-import { Controller, useForm } from 'react-hook-form';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { useForm } from 'react-hook-form';
 import Typography from '@mui/material/Typography';
-import _ from '@lodash';
 import Paper from '@mui/material/Paper';
-import AvatarGroup from '@mui/material/AvatarGroup';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import FuseCountdown from '@fuse/core/FuseCountdown';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -110,8 +105,9 @@ function VendorModernReversedComingSoonPage() {
 							<div>our community</div>
 						</div>
 						<div className="mt-24 text-lg leading-6 tracking-tight text-gray-400">
-							This feature is currently in development stage, we hope to be done with this, 
-							so you can enjoy the possibilities we envisiage to make your experiece here worthwhile. thanks for your patience.
+							This feature is currently in development stage, we hope to be done with this, so you can
+							enjoy the possibilities we envisiage to make your experiece here worthwhile. thanks for your
+							patience.
 						</div>
 						{/* <div className="mt-32 flex items-center">
 							<AvatarGroup
@@ -146,8 +142,8 @@ function VendorModernReversedComingSoonPage() {
 							Almost there!
 						</Typography>
 						<Typography className="mt-2">
-							You will be notified when we are ready? Do keep watch however, so you can get involved here as soon this feature is 
-							launched!
+							You will be notified when we are ready? Do keep watch however, so you can get involved here
+							as soon this feature is launched!
 						</Typography>
 
 						<div className="flex flex-col items-center py-48">

@@ -17,20 +17,52 @@ function ReservationsCalendar({ reservations, isLoading }) {
 				{/* Header Skeleton */}
 				<Box className="flex items-center justify-between p-16 bg-gradient-to-r from-blue-500 to-purple-600">
 					<Box className="flex items-center gap-12">
-						<Skeleton variant="circular" width={40} height={40} className="bg-white/20" />
+						<Skeleton
+							variant="circular"
+							width={40}
+							height={40}
+							className="bg-white/20"
+						/>
 						<Box>
-							<Skeleton variant="text" width={180} height={24} className="bg-white/20" />
-							<Skeleton variant="text" width={120} height={16} className="bg-white/20" />
+							<Skeleton
+								variant="text"
+								width={180}
+								height={24}
+								className="bg-white/20"
+							/>
+							<Skeleton
+								variant="text"
+								width={120}
+								height={16}
+								className="bg-white/20"
+							/>
 						</Box>
 					</Box>
-					<Skeleton variant="rectangular" width={80} height={32} className="bg-white/20 rounded-lg" />
+					<Skeleton
+						variant="rectangular"
+						width={80}
+						height={32}
+						className="bg-white/20 rounded-lg"
+					/>
 				</Box>
 
 				{/* Month Navigation Skeleton */}
 				<Box className="flex items-center justify-between p-16 border-b">
-					<Skeleton variant="circular" width={32} height={32} />
-					<Skeleton variant="text" width={150} height={28} />
-					<Skeleton variant="circular" width={32} height={32} />
+					<Skeleton
+						variant="circular"
+						width={32}
+						height={32}
+					/>
+					<Skeleton
+						variant="text"
+						width={150}
+						height={28}
+					/>
+					<Skeleton
+						variant="circular"
+						width={32}
+						height={32}
+					/>
 				</Box>
 
 				{/* Calendar Grid Skeleton */}
@@ -38,8 +70,16 @@ function ReservationsCalendar({ reservations, isLoading }) {
 					{/* Day Names */}
 					<Box className="grid grid-cols-7 gap-4 mb-8">
 						{[...Array(7)].map((_, i) => (
-							<Box key={i} className="text-center">
-								<Skeleton variant="text" width={30} height={16} className="mx-auto" />
+							<Box
+								key={i}
+								className="text-center"
+							>
+								<Skeleton
+									variant="text"
+									width={30}
+									height={16}
+									className="mx-auto"
+								/>
 							</Box>
 						))}
 					</Box>
@@ -63,18 +103,46 @@ function ReservationsCalendar({ reservations, isLoading }) {
 					{/* Selected Date Details Skeleton */}
 					<Box className="mt-16 p-16 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl">
 						<Box className="flex items-center gap-8 mb-12">
-							<Skeleton variant="circular" width={20} height={20} />
-							<Skeleton variant="text" width={250} height={20} />
+							<Skeleton
+								variant="circular"
+								width={20}
+								height={20}
+							/>
+							<Skeleton
+								variant="text"
+								width={250}
+								height={20}
+							/>
 						</Box>
 						<Box className="flex flex-col gap-8">
 							{[1, 2].map((idx) => (
-								<Box key={idx} className="flex items-center gap-12 p-12 bg-white dark:bg-gray-800 rounded-lg">
-									<Skeleton variant="circular" width={32} height={32} />
+								<Box
+									key={idx}
+									className="flex items-center gap-12 p-12 bg-white dark:bg-gray-800 rounded-lg"
+								>
+									<Skeleton
+										variant="circular"
+										width={32}
+										height={32}
+									/>
 									<Box className="flex-1">
-										<Skeleton variant="text" width="70%" height={16} />
-										<Skeleton variant="text" width="50%" height={14} />
+										<Skeleton
+											variant="text"
+											width="70%"
+											height={16}
+										/>
+										<Skeleton
+											variant="text"
+											width="50%"
+											height={14}
+										/>
 									</Box>
-									<Skeleton variant="rectangular" width={60} height={24} className="rounded-full" />
+									<Skeleton
+										variant="rectangular"
+										width={60}
+										height={24}
+										className="rounded-full"
+									/>
 								</Box>
 							))}
 						</Box>
@@ -115,7 +183,7 @@ function ReservationsCalendar({ reservations, isLoading }) {
 	const getReservationsForDate = (date) => {
 		if (!reservations?.data?.reservations) return [];
 
-		return reservations?.data?.reservations?.filter(reservation => {
+		return reservations?.data?.reservations?.filter((reservation) => {
 			const startDate = new Date(reservation.startDate);
 			const endDate = new Date(reservation.endDate);
 			startDate.setHours(0, 0, 0, 0);
@@ -142,8 +210,20 @@ function ReservationsCalendar({ reservations, isLoading }) {
 		calendarDays.push(day);
 	}
 
-	const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-		'July', 'August', 'September', 'October', 'November', 'December'];
+	const monthNames = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December'
+	];
 	const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 	return (
@@ -152,14 +232,15 @@ function ReservationsCalendar({ reservations, isLoading }) {
 			<Box className="flex items-center justify-between p-16 bg-gradient-to-r from-blue-500 to-purple-600">
 				<Box className="flex items-center gap-12">
 					<Box className="flex items-center justify-center w-40 h-40 rounded-full bg-white/20">
-						<FuseSvgIcon className="text-white" size={24}>
+						<FuseSvgIcon
+							className="text-white"
+							size={24}
+						>
 							heroicons-outline:calendar
 						</FuseSvgIcon>
 					</Box>
 					<Box>
-						<Typography className="text-white font-bold text-lg">
-							Reservations Calendar
-						</Typography>
+						<Typography className="text-white font-bold text-lg">Reservations Calendar</Typography>
 						<Typography className="text-white/80 text-xs">
 							{reservations?.data?.data?.length || 0} total reservations
 						</Typography>
@@ -178,13 +259,19 @@ function ReservationsCalendar({ reservations, isLoading }) {
 
 			{/* Month Navigation */}
 			<Box className="flex items-center justify-between p-16 border-b">
-				<IconButton onClick={goToPreviousMonth} size="small">
+				<IconButton
+					onClick={goToPreviousMonth}
+					size="small"
+				>
 					<FuseSvgIcon size={20}>heroicons-outline:chevron-left</FuseSvgIcon>
 				</IconButton>
 				<Typography className="text-lg font-semibold">
 					{monthNames[month]} {year}
 				</Typography>
-				<IconButton onClick={goToNextMonth} size="small">
+				<IconButton
+					onClick={goToNextMonth}
+					size="small"
+				>
 					<FuseSvgIcon size={20}>heroicons-outline:chevron-right</FuseSvgIcon>
 				</IconButton>
 			</Box>
@@ -192,11 +279,12 @@ function ReservationsCalendar({ reservations, isLoading }) {
 			<Box className="flex-1 overflow-y-auto overflow-x-hidden p-16 scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-purple-100 dark:scrollbar-thumb-purple-600 dark:scrollbar-track-gray-800">
 				{/* Day Names */}
 				<Box className="grid grid-cols-7 gap-4 mb-8">
-					{dayNames.map(day => (
-						<Box key={day} className="text-center">
-							<Typography className="text-xs font-semibold text-gray-500">
-								{day}
-							</Typography>
+					{dayNames.map((day) => (
+						<Box
+							key={day}
+							className="text-center"
+						>
+							<Typography className="text-xs font-semibold text-gray-500">{day}</Typography>
 						</Box>
 					))}
 				</Box>
@@ -264,7 +352,10 @@ function ReservationsCalendar({ reservations, isLoading }) {
 					>
 						<Box className="p-16 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl">
 							<Typography className="font-semibold mb-12 flex items-center gap-8">
-								<FuseSvgIcon size={20} className="text-purple-600">
+								<FuseSvgIcon
+									size={20}
+									className="text-purple-600"
+								>
 									heroicons-outline:calendar
 								</FuseSvgIcon>
 								{selectedDate.toLocaleDateString('en-US', {
@@ -281,7 +372,10 @@ function ReservationsCalendar({ reservations, isLoading }) {
 										className="flex items-center gap-12 p-12 bg-white dark:bg-gray-800 rounded-lg shadow-sm"
 									>
 										<Avatar className="w-32 h-32 bg-purple-600">
-											<FuseSvgIcon className="text-white" size={20}>
+											<FuseSvgIcon
+												className="text-white"
+												size={20}
+											>
 												heroicons-outline:user
 											</FuseSvgIcon>
 										</Avatar>
@@ -290,7 +384,8 @@ function ReservationsCalendar({ reservations, isLoading }) {
 												Booking #{reservation.paymentResult?.reference || reservation.id}
 											</Typography>
 											<Typography className="text-xs text-gray-500">
-												{new Date(reservation.startDate).toLocaleDateString()} - {new Date(reservation.endDate).toLocaleDateString()}
+												{new Date(reservation.startDate).toLocaleDateString()} -{' '}
+												{new Date(reservation.endDate).toLocaleDateString()}
 											</Typography>
 										</Box>
 										<Chip

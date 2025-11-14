@@ -4,22 +4,19 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useAppSelector } from 'app/store/hooks';
-import ContactListItem from './ContactListItem';
-import { selectFilteredContactList, selectGroupedFilteredContacts, useGetContactsListQuery } from './ContactsApi';
-import useGetAllUsers from 'src/app/aaqueryhooks/usersHandlingQuery';
 import useGetAllListings from 'src/app/aaqueryhooks/listingssHandlingQuery';
+import ContactListItem from './ContactListItem';
+import { selectFilteredContactList, selectGroupedFilteredContacts } from './ContactsApi';
 
 /**
  * The contacts list.
  */
 function UsersList() {
-
 	// const { data, isLoading } = useGetContactsListQuery();
 	// const {data:usresData, isLoading:usersIsLoading} = useGetAllUsers()
 	// const filteredData = useAppSelector(selectFilteredContactList(data));
 
 	// const groupedFilteredContacts = useAppSelector(selectGroupedFilteredContacts(filteredData));
-
 
 	// console.log("users-on-HOMES", usresData?.data?.userlist)
 	// const filteredData = useAppSelector(selectFilteredContactList(usresData?.data?.userlist));
@@ -30,12 +27,11 @@ function UsersList() {
 	// 	return <FuseLoading />;
 	// }
 
-	const {data:listingData, isLoading:listingIsLoading} = useGetAllListings()
+	const { data: listingData, isLoading: listingIsLoading } = useGetAllListings();
 
 	const filteredData = useAppSelector(selectFilteredContactList(listingData?.data?.listings));
 
 	const groupedFilteredContacts = useAppSelector(selectGroupedFilteredContacts(filteredData));
-
 
 	if (listingIsLoading) {
 		return <FuseLoading />;
@@ -86,7 +82,6 @@ function UsersList() {
 			})}
 		</motion.div>
 	);
-
 }
 
 export default UsersList;

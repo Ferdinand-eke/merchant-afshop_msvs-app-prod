@@ -6,7 +6,10 @@ import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { useAddShopFoodMartMutation, useFoodMartUpdateMutation } from 'app/configs/data/server-calls/foodmart/useShopFoodMarts';
+import {
+	useAddShopFoodMartMutation,
+	useFoodMartUpdateMutation
+} from 'app/configs/data/server-calls/foodmart/useShopFoodMarts';
 
 /**
  * The product header.
@@ -22,24 +25,22 @@ function FoodMartHeader() {
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
-	const {title, name, images, featuredImageId } = watch();
+	const { title, name, images, featuredImageId } = watch();
 
-	const addNewFoodMart = useAddShopFoodMartMutation()
-	const updateMerchantRcs = useFoodMartUpdateMutation()  
+	const addNewFoodMart = useAddShopFoodMartMutation();
+	const updateMerchantRcs = useFoodMartUpdateMutation();
 
 	function handleSaveFoodMart() {
 		updateMerchantRcs.mutate(getValues());
 	}
 
 	function handleCreateFoodMart() {
-		console.log("creating food mart...", getValues())
-		addNewFoodMart.mutate(getValues())
+		console.log('creating food mart...', getValues());
+		addNewFoodMart.mutate(getValues());
 	}
-
 
 	function handleRemoveFoodMart() {
 		// console.log("Deleting UpdateEstateProperty-Values", getValues())
-	
 	}
 
 	// console.log("creating food mart...", getValues())
@@ -123,8 +124,9 @@ function FoodMartHeader() {
 							className="whitespace-nowrap mx-4"
 							variant="contained"
 							color="secondary"
-							disabled={_.isEmpty(dirtyFields) || !isValid
-							// || updateMerchantRcs.isLoading
+							disabled={
+								_.isEmpty(dirtyFields) || !isValid
+								// || updateMerchantRcs.isLoading
 							}
 							onClick={handleSaveFoodMart}
 						>
@@ -136,8 +138,9 @@ function FoodMartHeader() {
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid  
-						// || addNewFoodMart.isLoading
+						disabled={
+							_.isEmpty(dirtyFields) || !isValid
+							// || addNewFoodMart.isLoading
 						}
 						onClick={handleCreateFoodMart}
 					>
@@ -145,7 +148,6 @@ function FoodMartHeader() {
 					</Button>
 				)}
 			</motion.div>
-			
 		</div>
 	);
 }

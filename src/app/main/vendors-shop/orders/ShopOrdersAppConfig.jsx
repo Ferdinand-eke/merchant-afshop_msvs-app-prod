@@ -8,7 +8,6 @@ const Orders = lazy(() => import('./orders/Orders'));
  * The E-Commerce app configuration.
  */
 
-
 const ShopOrdersAppConfig = {
 	settings: {
 		layout: {}
@@ -29,8 +28,7 @@ const ShopOrdersAppConfig = {
 				{
 					path: 'orders/:orderId/item',
 					element: <Order />
-				},
-				
+				}
 			]
 		}
 	]

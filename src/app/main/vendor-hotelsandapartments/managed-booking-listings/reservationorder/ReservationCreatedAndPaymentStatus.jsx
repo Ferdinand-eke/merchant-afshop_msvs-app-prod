@@ -1,4 +1,3 @@
-import _ from '@lodash';
 import clsx from 'clsx';
 /**
  * The order statuses.
@@ -81,30 +80,30 @@ export const orderStatuses = [
  */
 
 function ReservationCreatedAndPaymentStatus(props) {
-	const {createdAt, isPaid } = props;
+	const { createdAt, isPaid } = props;
 	return (
 		<>
-		{
-			createdAt && isPaid ?
-			<div
-			className={clsx(
-				'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
-				'bg-green text-white'
+			{createdAt && isPaid ? (
+				<div
+					className={clsx(
+						'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
+						'bg-green text-white'
+					)}
+				>
+					Reservation Created & Paid
+				</div>
+			) : (
+				<div
+					className={clsx(
+						'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
+						'bg-red-700 text-white'
+					)}
+				>
+					Reservation Created & Not Paid
+				</div>
 			)}
-		>
-			Reservation Created & Paid
-		</div> : <div
-			className={clsx(
-				'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
-				'bg-red-700 text-white'
-			)}
-		>
-			Reservation Created & Not Paid
-		</div>
-		}
 		</>
 	);
 }
-
 
 export default ReservationCreatedAndPaymentStatus;

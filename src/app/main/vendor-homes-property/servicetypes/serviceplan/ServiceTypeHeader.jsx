@@ -7,11 +7,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import {
-	useCreateECommerceProductMutation,
-	useDeleteECommerceProductMutation,
-	useUpdateECommerceProductMutation
-} from '../ECommerceApi';
-import { useCreateServiceType, useDeleteServiceType, useUpdateServiceType } from 'src/app/aaqueryhooks/servicetypeHandlingQuery';
+	useCreateServiceType,
+	useDeleteServiceType,
+	useUpdateServiceType
+} from 'src/app/aaqueryhooks/servicetypeHandlingQuery';
 
 /**
  * The product header.
@@ -29,17 +28,15 @@ function ServiceTypeHeader() {
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
 
-	const createServiceType = useCreateServiceType()
-	const updateService = useUpdateServiceType()
-	const deleteService = useDeleteServiceType() 
+	const createServiceType = useCreateServiceType();
+	const updateService = useUpdateServiceType();
+	const deleteService = useDeleteServiceType();
 
 	function handleSaveProduct() {
-
 		// console.log("VALUES TO BE SAVED----:", getValues())
 		// return
 		// saveProduct(getValues());
-		updateService.mutate(getValues())
-
+		updateService.mutate(getValues());
 	}
 
 	function handleCreateProduct() {
@@ -49,23 +46,18 @@ function ServiceTypeHeader() {
 		// 		navigate(`/packages/servicetypes/${data.id}`);
 		// 	});
 
-
 		// console.log('Service-Type-VALUES', getValues())
 		// return
-        createServiceType.mutate(getValues()) 
-
+		createServiceType.mutate(getValues());
 	}
 
 	function handleRemoveProduct() {
 		// removeProduct(productId);
 		// navigate('/packages/servicetypes');
 
-		deleteService.mutate(productId)
-
-
+		deleteService.mutate(productId);
 	}
 
-	
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0">

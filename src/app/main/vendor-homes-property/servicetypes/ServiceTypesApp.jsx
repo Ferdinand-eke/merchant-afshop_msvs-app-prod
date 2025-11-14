@@ -7,5 +7,4 @@ function ServiceTypesApp() {
 	return <Outlet />;
 }
 
-
 export default ServiceTypesApp;

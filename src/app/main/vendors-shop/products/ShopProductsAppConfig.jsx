@@ -14,7 +14,7 @@ const ShopProductsAppConfig = {
 	settings: {
 		layout: {}
 	},
-	
+
 	routes: [
 		{
 			path: 'shopproducts-list',
@@ -35,7 +35,7 @@ const ShopProductsAppConfig = {
 				{
 					path: 'inventory',
 					element: <ShopProducts />
-				},
+				}
 				// {
 				// 	path: 'orders',
 				// 	element: <Orders />

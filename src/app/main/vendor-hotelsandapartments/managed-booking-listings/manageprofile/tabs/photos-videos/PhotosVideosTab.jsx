@@ -18,7 +18,7 @@ function PhotosVideosTab(props) {
 	const {
 		data: reservationsOnProperty,
 		isLoading: reservationsIsLoading,
-		isError: reservationsIsError,
+		isError: reservationsIsError
 	} = useFetchReservationsOnProperty(Listing?.id);
 
 	const columns = useMemo(
@@ -28,7 +28,10 @@ function PhotosVideosTab(props) {
 				header: 'Booking Reference',
 				Cell: ({ row }) => (
 					<Box className="flex items-center gap-8">
-						<FuseSvgIcon size={16} sx={{ color: '#ea580c' }}>
+						<FuseSvgIcon
+							size={16}
+							sx={{ color: '#ea580c' }}
+						>
 							heroicons-outline:ticket
 						</FuseSvgIcon>
 						<Chip
@@ -37,11 +40,11 @@ function PhotosVideosTab(props) {
 							label={row?.original?.paymentResult?.reference || 'N/A'}
 							sx={{
 								background: 'rgba(249, 115, 22, 0.1)',
-								color: '#ea580c',
+								color: '#ea580c'
 							}}
 						/>
 					</Box>
-				),
+				)
 			},
 			{
 				accessorKey: 'isPaid',
@@ -51,22 +54,18 @@ function PhotosVideosTab(props) {
 					<Chip
 						icon={
 							<FuseSvgIcon size={14}>
-								{row.original.isPaid
-									? 'heroicons-solid:check-circle'
-									: 'heroicons-solid:x-circle'}
+								{row.original.isPaid ? 'heroicons-solid:check-circle' : 'heroicons-solid:x-circle'}
 							</FuseSvgIcon>
 						}
 						label={row.original.isPaid ? 'Paid' : 'Pending'}
 						size="small"
 						sx={{
-							background: row.original.isPaid
-								? 'rgba(34, 197, 94, 0.1)'
-								: 'rgba(239, 68, 68, 0.1)',
+							background: row.original.isPaid ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
 							color: row.original.isPaid ? '#16a34a' : '#dc2626',
-							fontWeight: 600,
+							fontWeight: 600
 						}}
 					/>
-				),
+				)
 			},
 			{
 				accessorKey: 'startDate',
@@ -75,9 +74,7 @@ function PhotosVideosTab(props) {
 					<Chip
 						icon={
 							<FuseSvgIcon size={14}>
-								{row?.original?.isCheckIn
-									? 'heroicons-solid:check'
-									: 'heroicons-outline:clock'}
+								{row?.original?.isCheckIn ? 'heroicons-solid:check' : 'heroicons-outline:clock'}
 							</FuseSvgIcon>
 						}
 						className="text-11 font-semibold"
@@ -87,10 +84,10 @@ function PhotosVideosTab(props) {
 							background: row?.original?.isCheckIn
 								? 'rgba(34, 197, 94, 0.1)'
 								: 'rgba(251, 191, 36, 0.15)',
-							color: row?.original?.isCheckIn ? '#16a34a' : '#d97706',
+							color: row?.original?.isCheckIn ? '#16a34a' : '#d97706'
 						}}
 					/>
-				),
+				)
 			},
 			{
 				accessorKey: 'endDate',
@@ -99,9 +96,7 @@ function PhotosVideosTab(props) {
 					<Chip
 						icon={
 							<FuseSvgIcon size={14}>
-								{row?.original?.isCheckOut
-									? 'heroicons-solid:check'
-									: 'heroicons-outline:calendar'}
+								{row?.original?.isCheckOut ? 'heroicons-solid:check' : 'heroicons-outline:calendar'}
 							</FuseSvgIcon>
 						}
 						className="text-11 font-semibold"
@@ -111,10 +106,10 @@ function PhotosVideosTab(props) {
 							background: row?.original?.isCheckOut
 								? 'rgba(34, 197, 94, 0.1)'
 								: 'rgba(6, 182, 212, 0.15)',
-							color: row?.original?.isCheckOut ? '#16a34a' : '#0891b2',
+							color: row?.original?.isCheckOut ? '#16a34a' : '#0891b2'
 						}}
 					/>
-				),
+				)
 			},
 			{
 				accessorKey: 'management',
@@ -133,12 +128,12 @@ function PhotosVideosTab(props) {
 							color: 'white',
 							'&:hover': {
 								background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
-								boxShadow: '0 4px 8px rgba(234, 88, 12, 0.3)',
-							},
+								boxShadow: '0 4px 8px rgba(234, 88, 12, 0.3)'
+							}
 						}}
 					/>
-				),
-			},
+				)
+			}
 		],
 		[]
 	);
@@ -154,7 +149,7 @@ function PhotosVideosTab(props) {
 				animate={{ opacity: 1, transition: { delay: 0.1 } }}
 				className="flex flex-col flex-1 items-center justify-center h-full"
 			>
-				<MerchantErrorPage message={'Error occurred while retrieving reservations'} />
+				<MerchantErrorPage message="Error occurred while retrieving reservations" />
 			</motion.div>
 		);
 	}
@@ -168,7 +163,7 @@ function PhotosVideosTab(props) {
 					textAlign: 'center',
 					background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
 					border: '1px solid rgba(234, 88, 12, 0.1)',
-					borderRadius: 2,
+					borderRadius: 2
 				}}
 			>
 				<Box
@@ -181,17 +176,26 @@ function PhotosVideosTab(props) {
 						alignItems: 'center',
 						justifyContent: 'center',
 						margin: '0 auto',
-						mb: 3,
+						mb: 3
 					}}
 				>
-					<FuseSvgIcon size={48} sx={{ color: '#f97316' }}>
+					<FuseSvgIcon
+						size={48}
+						sx={{ color: '#f97316' }}
+					>
 						heroicons-outline:calendar
 					</FuseSvgIcon>
 				</Box>
-				<Typography variant="h6" sx={{ fontWeight: 700, color: '#292524', mb: 1 }}>
+				<Typography
+					variant="h6"
+					sx={{ fontWeight: 700, color: '#292524', mb: 1 }}
+				>
 					No Reservations Yet
 				</Typography>
-				<Typography variant="body2" color="text.secondary">
+				<Typography
+					variant="body2"
+					color="text.secondary"
+				>
 					There are no reservations for this property currently
 				</Typography>
 			</Paper>
@@ -201,9 +205,9 @@ function PhotosVideosTab(props) {
 	const container = {
 		show: {
 			transition: {
-				staggerChildren: 0.04,
-			},
-		},
+				staggerChildren: 0.04
+			}
+		}
 	};
 
 	const reservationCount = reservationsOnProperty?.data?.reservations?.length || 0;
@@ -223,7 +227,7 @@ function PhotosVideosTab(props) {
 					mb: 3,
 					background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
 					border: '1px solid rgba(234, 88, 12, 0.1)',
-					borderRadius: 2,
+					borderRadius: 2
 				}}
 			>
 				<Box className="flex items-center gap-16">
@@ -235,15 +239,21 @@ function PhotosVideosTab(props) {
 							background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
 							display: 'flex',
 							alignItems: 'center',
-							justifyContent: 'center',
+							justifyContent: 'center'
 						}}
 					>
-						<FuseSvgIcon className="text-white" size={24}>
+						<FuseSvgIcon
+							className="text-white"
+							size={24}
+						>
 							heroicons-outline:calendar
 						</FuseSvgIcon>
 					</Box>
 					<Box>
-						<Typography variant="h6" sx={{ fontWeight: 700, color: '#292524', mb: 0.5 }}>
+						<Typography
+							variant="h6"
+							sx={{ fontWeight: 700, color: '#292524', mb: 0.5 }}
+						>
 							Reservations on <span style={{ color: '#ea580c' }}>{Listing?.title}</span>
 						</Typography>
 						<Box className="flex items-center gap-8">
@@ -254,10 +264,13 @@ function PhotosVideosTab(props) {
 									background: 'rgba(249, 115, 22, 0.1)',
 									color: '#ea580c',
 									fontWeight: 600,
-									height: 24,
+									height: 24
 								}}
 							/>
-							<Typography variant="caption" color="text.secondary">
+							<Typography
+								variant="caption"
+								color="text.secondary"
+							>
 								Manage bookings and guest arrivals
 							</Typography>
 						</Box>
@@ -270,7 +283,7 @@ function PhotosVideosTab(props) {
 				className="flex flex-col flex-auto shadow-3 rounded-2xl overflow-hidden w-full"
 				elevation={0}
 				sx={{
-					border: '1px solid rgba(234, 88, 12, 0.1)',
+					border: '1px solid rgba(234, 88, 12, 0.1)'
 				}}
 			>
 				<DataTable

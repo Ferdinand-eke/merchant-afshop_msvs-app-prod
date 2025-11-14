@@ -27,8 +27,7 @@ function SettingsApp() {
 			setLeftSidebarOpen(false);
 		}
 	}, [location, isMobile]);
-	
-	
+
 	return (
 		<Root
 			content={

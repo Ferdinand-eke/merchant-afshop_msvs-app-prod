@@ -1,4 +1,3 @@
-import _ from '@lodash';
 import clsx from 'clsx';
 /**
  * The order statuses.
@@ -84,28 +83,27 @@ function ReservationCheckOustStatus(props) {
 	const { isCheckOut } = props;
 	return (
 		<>
-		{
-			isCheckOut ?
-			<div
-			className={clsx(
-				'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
-				'bg-green text-white'
+			{isCheckOut ? (
+				<div
+					className={clsx(
+						'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
+						'bg-green text-white'
+					)}
+				>
+					Checked Out
+				</div>
+			) : (
+				<div
+					className={clsx(
+						'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
+						'bg-orange text-black'
+					)}
+				>
+					Awaiting Check Out
+				</div>
 			)}
-		>
-			Checked Out
-		</div> : <div
-			className={clsx(
-				'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
-				'bg-orange text-black'
-			)}
-		>
-			Awaiting Check Out
-		</div>
-		}
 		</>
 	);
 }
-
-
 
 export default ReservationCheckOustStatus;

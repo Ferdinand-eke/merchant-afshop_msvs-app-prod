@@ -12,27 +12,28 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import useGetMyShopDetails from 'app/configs/data/server-calls/shopdetails/useShopDetails';
+import { useSingleShopEstateProperty } from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
 import ProductHeader from './PropertyHeader';
 import BasicInfoTabProperty from './tabs/BasicInfoTabProperty';
 // import InventoryTabProperty from './tabs/InventoryTabProperty';
 import PricingTabProperty from './tabs/PricingTabProperty';
 import ProductImagesTabProperty from './tabs/ProductImagesTabProperty';
 import ShippingTabProperty from './tabs/ShippingTabProperty';
-import { useGetECommerceProductQuery } from '../ECommerceApi';
 import ProductModel from './models/ProductModel';
-import useGetMyShopDetails from 'app/configs/data/server-calls/shopdetails/useShopDetails';
-import { useSingleShopEstateProperty } from 'app/configs/data/server-calls/estateproperties/useShopEstateProperties';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-	title: z.string().nonempty('You must enter a property name').min(5, 'The property title must be at least 5 characters'),
-	propertyCountry: z.string().nonempty("Country is required"),
-	propertyState: z.string().nonempty("State is required"),
-	propertyLga: z.string().nonempty("L.G.A/County is required"),
+	title: z
+		.string()
+		.nonempty('You must enter a property name')
+		.min(5, 'The property title must be at least 5 characters'),
+	propertyCountry: z.string().nonempty('Country is required'),
+	propertyState: z.string().nonempty('State is required'),
+	propertyLga: z.string().nonempty('L.G.A/County is required')
 	// price: z.number(),
 	// z.number().safe(),
-
 });
 
 /**
@@ -53,19 +54,18 @@ function PropertyListing() {
 		skip: !productId || productId === 'new'
 	});
 
-
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {
 			title: '',
 			category: '',
-            guestCount: 0,
-            roomCount: 0,
-            sittingroomCount: 0,
-            price: 0,
-           
-            description: '',
+			guestCount: 0,
+			roomCount: 0,
+			sittingroomCount: 0,
+			price: 0,
+
+			description: ''
 		},
 		resolver: zodResolver(schema)
 	});
@@ -98,7 +98,7 @@ function PropertyListing() {
 	/**
 	 * Show Message if the requested products is not exists
 	 */
-	
+
 	if (isError && productId !== 'new') {
 		return (
 			<motion.div
@@ -128,10 +128,14 @@ function PropertyListing() {
 	/**
 	 * Wait while propertyList data is loading and form is setted
 	 */
-	if (_.isEmpty(form) || (propertyList?.data?.propertyList && routeParams.productId !== propertyList?.data?.propertyList?.slug && routeParams.productId !== 'new')) {
+	if (
+		_.isEmpty(form) ||
+		(propertyList?.data?.propertyList &&
+			routeParams.productId !== propertyList?.data?.propertyList?.slug &&
+			routeParams.productId !== 'new')
+	) {
 		return <FuseLoading />;
 	}
-
 
 	return (
 		<FormProvider {...methods}>
@@ -169,7 +173,7 @@ function PropertyListing() {
 								label="Property measurement"
 							/>
 						</Tabs>
-						
+
 						<div className="p-16 sm:p-24 max-w-3xl">
 							<div className={tabValue !== 0 ? 'hidden' : ''}>
 								<BasicInfoTabProperty />
@@ -180,10 +184,8 @@ function PropertyListing() {
 							</div>
 
 							<div className={tabValue !== 2 ? 'hidden' : ''}>
-								<PricingTabProperty shopData={shopData?.data?.merchant}/>
+								<PricingTabProperty shopData={shopData?.data?.merchant} />
 							</div>
-
-							
 
 							<div className={tabValue !== 3 ? 'hidden' : ''}>
 								<ShippingTabProperty />
@@ -194,7 +196,6 @@ function PropertyListing() {
 				scroll={isMobile ? 'normal' : 'content'}
 			/>
 		</FormProvider>
-		
 	);
 }
 

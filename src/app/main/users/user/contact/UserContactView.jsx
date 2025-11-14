@@ -18,7 +18,6 @@ import { useGetContactsItemQuery, useGetContactsCountriesQuery, useGetContactsTa
  * The contact view.
  */
 function UserContactView() {
-
 	const { data: countries } = useGetContactsCountriesQuery();
 	const { data: tags } = useGetContactsTagsQuery();
 	const routeParams = useParams();

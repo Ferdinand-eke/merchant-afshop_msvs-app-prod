@@ -11,10 +11,7 @@ import useMyShopEstateProperties from 'app/configs/data/server-calls/estateprope
 import { formatCurrency } from 'src/app/main/vendors-shop/pos/PosUtils';
 
 function PropertiesTable() {
-	
-
-	const {data:listingData, isLoading:listingIsLoading} = useMyShopEstateProperties()
-
+	const { data: listingData, isLoading: listingIsLoading } = useMyShopEstateProperties();
 
 	const columns = useMemo(
 		() => [
@@ -27,10 +24,13 @@ function PropertiesTable() {
 							sx={{
 								width: 56,
 								height: 56,
-								background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+								background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
 							}}
 						>
-							<FuseSvgIcon className="text-white" size={24}>
+							<FuseSvgIcon
+								className="text-white"
+								size={24}
+							>
 								heroicons-outline:home
 							</FuseSvgIcon>
 						</Avatar>
@@ -40,18 +40,22 @@ function PropertiesTable() {
 								to={`/property/managed-listings/${row.original.slug}/${row.original.title}`}
 								className="font-semibold text-16 hover:underline"
 								sx={{
-									color: "#ea580c",
-									transition: "all 0.2s",
-									"&:hover": {
-										color: "#c2410c"
+									color: '#ea580c',
+									transition: 'all 0.2s',
+									'&:hover': {
+										color: '#c2410c'
 									}
 								}}
 							>
 								{row?.original?.title}
 							</Typography>
-							<Typography variant="caption" color="text.secondary" className="flex items-center gap-4 mt-4">
+							<Typography
+								variant="caption"
+								color="text.secondary"
+								className="flex items-center gap-4 mt-4"
+							>
 								<FuseSvgIcon size={14}>heroicons-outline:location-marker</FuseSvgIcon>
-								{row?.original?.address || "Location not specified"}
+								{row?.original?.address || 'Location not specified'}
 							</Typography>
 						</Box>
 					</Box>
@@ -63,11 +67,17 @@ function PropertiesTable() {
 				header: 'Price',
 				Cell: ({ row }) => (
 					<Box>
-						<Typography className="font-bold text-16" sx={{ color: "#ea580c" }}>
+						<Typography
+							className="font-bold text-16"
+							sx={{ color: '#ea580c' }}
+						>
 							₦{formatCurrency(row?.original?.price)}
 						</Typography>
-						<Typography variant="caption" color="text.secondary">
-							Per {row?.original?.priceUnit || "month"}
+						<Typography
+							variant="caption"
+							color="text.secondary"
+						>
+							Per {row?.original?.priceUnit || 'month'}
 						</Typography>
 					</Box>
 				),
@@ -84,8 +94,8 @@ function PropertiesTable() {
 								label={`${row?.original?.roomCount || 0} rooms`}
 								size="small"
 								sx={{
-									backgroundColor: "rgba(234, 88, 12, 0.1)",
-									color: "#ea580c",
+									backgroundColor: 'rgba(234, 88, 12, 0.1)',
+									color: '#ea580c',
 									fontWeight: 600
 								}}
 							/>
@@ -97,8 +107,8 @@ function PropertiesTable() {
 									label={`${row?.original?.bathrooms} baths`}
 									size="small"
 									sx={{
-										backgroundColor: "rgba(59, 130, 246, 0.1)",
-										color: "#3b82f6",
+										backgroundColor: 'rgba(59, 130, 246, 0.1)',
+										color: '#3b82f6',
 										fontWeight: 600
 									}}
 								/>
@@ -120,16 +130,16 @@ function PropertiesTable() {
 								<FuseSvgIcon size={16}>heroicons-outline:clock</FuseSvgIcon>
 							)
 						}
-						label={row.original.isApproved ? "Active" : "Pending"}
+						label={row.original.isApproved ? 'Active' : 'Pending'}
 						size="small"
 						sx={{
 							backgroundColor: row.original.isApproved
-								? "rgba(34, 197, 94, 0.1)"
-								: "rgba(251, 191, 36, 0.1)",
-							color: row.original.isApproved ? "#22c55e" : "#fbbf24",
+								? 'rgba(34, 197, 94, 0.1)'
+								: 'rgba(251, 191, 36, 0.1)',
+							color: row.original.isApproved ? '#22c55e' : '#fbbf24',
 							fontWeight: 700,
-							borderRadius: "8px",
-							height: "28px"
+							borderRadius: '8px',
+							height: '28px'
 						}}
 					/>
 				),
@@ -146,12 +156,12 @@ function PropertiesTable() {
 							variant="contained"
 							size="small"
 							sx={{
-								background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
-								color: "white",
+								background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+								color: 'white',
 								fontWeight: 600,
-								textTransform: "none",
-								"&:hover": {
-									background: "linear-gradient(135deg, #ea580c 0%, #c2410c 100%)",
+								textTransform: 'none',
+								'&:hover': {
+									background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)'
 								}
 							}}
 							startIcon={<FuseSvgIcon size={16}>heroicons-outline:cog</FuseSvgIcon>}
@@ -165,11 +175,11 @@ function PropertiesTable() {
 								variant="outlined"
 								size="small"
 								sx={{
-									borderColor: "#ea580c",
-									color: "#ea580c",
-									"&:hover": {
-										borderColor: "#c2410c",
-										backgroundColor: "rgba(234, 88, 12, 0.05)"
+									borderColor: '#ea580c',
+									color: '#ea580c',
+									'&:hover': {
+										borderColor: '#c2410c',
+										backgroundColor: 'rgba(234, 88, 12, 0.05)'
 									}
 								}}
 							>
@@ -179,7 +189,7 @@ function PropertiesTable() {
 					</Box>
 				),
 				size: 200
-			},
+			}
 		],
 		[]
 	);
@@ -200,23 +210,34 @@ function PropertiesTable() {
 				<Paper
 					className="p-48 rounded-2xl text-center max-w-md"
 					sx={{
-						background: "linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)",
+						background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)'
 					}}
 				>
 					<Box
 						className="flex items-center justify-center w-96 h-96 rounded-full mx-auto mb-24"
 						sx={{
-							background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+							background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
 						}}
 					>
-						<FuseSvgIcon className="text-white" size={48}>
+						<FuseSvgIcon
+							className="text-white"
+							size={48}
+						>
 							heroicons-outline:office-building
 						</FuseSvgIcon>
 					</Box>
-					<Typography variant="h5" className="font-bold mb-12" sx={{ color: "#ea580c" }}>
+					<Typography
+						variant="h5"
+						className="font-bold mb-12"
+						sx={{ color: '#ea580c' }}
+					>
 						No Properties Yet
 					</Typography>
-					<Typography variant="body1" color="text.secondary" className="mb-24">
+					<Typography
+						variant="body1"
+						color="text.secondary"
+						className="mb-24"
+					>
 						Start building your property portfolio by adding your first listing
 					</Typography>
 					<Button
@@ -225,12 +246,12 @@ function PropertiesTable() {
 						variant="contained"
 						size="large"
 						sx={{
-							background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
-							color: "white",
+							background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+							color: 'white',
 							fontWeight: 700,
-							textTransform: "none",
-							"&:hover": {
-								background: "linear-gradient(135deg, #ea580c 0%, #c2410c 100%)",
+							textTransform: 'none',
+							'&:hover': {
+								background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)'
 							}
 						}}
 						startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>}
@@ -248,7 +269,7 @@ function PropertiesTable() {
 				className="flex flex-col flex-auto shadow-lg rounded-2xl overflow-hidden w-full"
 				elevation={0}
 				sx={{
-					border: "1px solid rgba(234, 88, 12, 0.1)",
+					border: '1px solid rgba(234, 88, 12, 0.1)'
 				}}
 			>
 				<DataTable
@@ -260,25 +281,25 @@ function PropertiesTable() {
 					muiTablePaperProps={{
 						elevation: 0,
 						sx: {
-							borderRadius: "16px",
-							overflow: "hidden"
+							borderRadius: '16px',
+							overflow: 'hidden'
 						}
 					}}
 					muiTableHeadCellProps={{
 						sx: {
-							backgroundColor: "rgba(234, 88, 12, 0.05)",
-							color: "#ea580c",
+							backgroundColor: 'rgba(234, 88, 12, 0.05)',
+							color: '#ea580c',
 							fontWeight: 700,
-							fontSize: "14px",
-							borderBottom: "2px solid rgba(234, 88, 12, 0.2)",
+							fontSize: '14px',
+							borderBottom: '2px solid rgba(234, 88, 12, 0.2)'
 						}
 					}}
 					muiTableBodyRowProps={() => ({
 						sx: {
 							'&:hover': {
-								backgroundColor: "rgba(234, 88, 12, 0.02)",
+								backgroundColor: 'rgba(234, 88, 12, 0.02)'
 							},
-							borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
+							borderBottom: '1px solid rgba(0, 0, 0, 0.05)'
 						}
 					})}
 				/>

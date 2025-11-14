@@ -290,7 +290,7 @@ export const MyShopCashOutOrderItemsByOrderItemsIdShopId = (id) => {
 	return AuthApi().post(`/api/myshop/cashout-order-items/${id}`);
 };
 
-/****Sealed-Orders */
+/** **Sealed-Orders */
 export const GetShopSealedOrderItems = (params) => {
 	const queryString = params ? qs.stringify(params, { arrayFormat: 'repeat' }) : '';
 	return AuthApi().get(`/merchant-orders/sealed-orderitems${queryString ? `?${queryString}` : ''}`);
@@ -319,7 +319,20 @@ export const getShopPlanById = (id) => Api().get(`/merchant-plans/${id}/view`); 
  */
 // export const newShopSignup = (formData) =>
 //   Api().post("/api/pre-shop-signup", formData);
-export const newShopSignupWithOtp = (formData) => Api().post('/auth-merchant/register-merchant', formData); // (Mcsvs => Done)
+export const newShopSignupWithOtp = (formData) => {
+	// Extract referral params from formData
+	const { referralParams, ...dataToSend } = formData;
+
+	// Build query string if referral params exist
+	let url = '/auth-merchant/register-merchant';
+
+	if (referralParams && Object.keys(referralParams).length > 0) {
+		const queryString = qs.stringify(referralParams, { arrayFormat: 'repeat' });
+		url = `${url}?${queryString}`;
+	}
+
+	return Api().post(url, dataToSend);
+}; // (Mcsvs => Done)
 // export const getAfPostById = (id) => Api().get(`/posts/${id}`);
 // export const storePreShopUserData = (formData) =>
 //   Api().post("/api/register-preshop-user", formData);
@@ -390,6 +403,26 @@ export const createRoomOnProperty = (formData) => AuthApi().post('/bookings/crea
 export const updateRoomOnProperty = (productFormData) => {
 	return AuthApi().put(`/bookings/${productFormData?.id}/update-room`, productFormData); // (Msvs => done)
 }; // (Msvs => Done)
+
+export const updateRoomImageOnProperty = ({ roomId, updateData }) => {
+	return AuthApi().put(`/bookings/${roomId}/update-room-image`, updateData); // (Msvs => done)
+};
+
+export const deleteSingleRoomImage = ({ roomImageId, deleteData }) => {
+	return AuthApi().delete(`/bookings/${roomImageId}/delete-room-image`, { data: deleteData }); // (Msvs => done)
+};
+
+/** *Property Listing Images Management */
+export const updatePropertyListingImage = ({ propertyId, updateData }) => {
+	console.log('updatePropertyListingImage API - propertyId:', propertyId);
+	console.log('updatePropertyListingImage API - updateData:', updateData);
+	console.log('updatePropertyListingImage API - Full URL:', `/bookings/property-listing/${propertyId}/update-listing-image`);
+	return AuthApi().put(`/bookings/property-listing/${propertyId}/update-listing-image`, updateData); // (Msvs => done)
+};
+
+export const deletePropertyListingImage = ({ propertyId, deleteData }) => {
+	return AuthApi().delete(`/bookings/property-listing/${propertyId}/delete-listing-image`, { data: deleteData }); // (Msvs => done)
+};
 
 /** **Reservations */ // reservations/get-merchant-reservations on-property/:propertyId/get-reservations
 export const getShopBookingsReservationsApi = (params) => {

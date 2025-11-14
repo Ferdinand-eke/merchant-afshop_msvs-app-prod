@@ -17,7 +17,10 @@ function SealedOrdersCountWidget() {
 			<div className="flex items-center justify-between px-16 pt-16">
 				<Box className="flex items-center gap-8">
 					<Box className="flex items-center justify-center w-40 h-40 rounded-full bg-purple-100 dark:bg-purple-900/30">
-						<FuseSvgIcon className="text-purple-600 dark:text-purple-400" size={20}>
+						<FuseSvgIcon
+							className="text-purple-600 dark:text-purple-400"
+							size={20}
+						>
 							heroicons-outline:check-circle
 						</FuseSvgIcon>
 					</Box>
@@ -28,7 +31,10 @@ function SealedOrdersCountWidget() {
 						Completed Orders
 					</Typography>
 				</Box>
-				<IconButton aria-label="more" size="small">
+				<IconButton
+					aria-label="more"
+					size="small"
+				>
 					<FuseSvgIcon size={20}>heroicons-outline:dots-vertical</FuseSvgIcon>
 				</IconButton>
 			</div>
@@ -37,14 +43,20 @@ function SealedOrdersCountWidget() {
 				<Typography className="text-5xl font-bold tracking-tight text-purple-600 dark:text-purple-400">
 					{count}
 				</Typography>
-				<Typography className="text-xs mt-4" color="text.secondary">
+				<Typography
+					className="text-xs mt-4"
+					color="text.secondary"
+				>
 					Sealed food orders
 				</Typography>
 			</div>
 
 			<Box className="flex flex-col gap-8 px-16 mt-16 mb-16">
 				<Box className="flex items-center justify-between">
-					<Typography className="text-xs" color="text.secondary">
+					<Typography
+						className="text-xs"
+						color="text.secondary"
+					>
 						Status
 					</Typography>
 					<Chip
@@ -56,7 +68,10 @@ function SealedOrdersCountWidget() {
 					/>
 				</Box>
 				<Box className="flex items-center justify-between">
-					<Typography className="text-xs" color="text.secondary">
+					<Typography
+						className="text-xs"
+						color="text.secondary"
+					>
 						Customer Satisfaction
 					</Typography>
 					<Typography className="text-xs font-bold text-purple-600">

@@ -65,7 +65,7 @@ function MessengerApp() {
 		[setMainSidebarOpen, setContactSidebarOpen, setUserSidebarOpen]
 	);
 
-	return <VendorModernReversedComingSoonPage />
+	return <VendorModernReversedComingSoonPage />;
 
 	return (
 		<ChatAppContext.Provider value={ChatAppContextData}>

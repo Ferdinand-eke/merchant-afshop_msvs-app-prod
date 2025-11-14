@@ -66,7 +66,6 @@ function FuseNavigation(props) {
 		return null;
 	}
 
-
 	return (
 		<>
 			{inputGlobalStyles}

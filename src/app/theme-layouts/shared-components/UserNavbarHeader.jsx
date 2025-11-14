@@ -46,9 +46,7 @@ function UserNavbarHeader() {
 					{user?.name?.charAt(0)}
 				</Avatar>
 			</div>
-			<Typography className="username whitespace-nowrap text-14 font-medium">
-				{user?.name}
-			</Typography>
+			<Typography className="username whitespace-nowrap text-14 font-medium">{user?.name}</Typography>
 			<Typography
 				className="email whitespace-nowrap text-13 font-medium"
 				color="text.secondary"

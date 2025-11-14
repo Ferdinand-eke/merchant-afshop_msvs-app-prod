@@ -8,7 +8,10 @@ import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Box, Chip, IconButton, Tooltip, CircularProgress } from '@mui/material';
 import { useGetMyShopAndPlan } from 'app/configs/data/server-calls/shopdetails/useShopDetails';
-import { useAddShopBookingsPropertyMutation, useBookingsPropertyUpdateMutation } from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
+import {
+	useAddShopBookingsPropertyMutation,
+	useBookingsPropertyUpdateMutation
+} from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
 
 /**
  * The product header.
@@ -40,6 +43,14 @@ function BookingPropertyHeader() {
 			length: parseInt(getValues()?.length),
 			width: parseInt(getValues()?.width),
 			isRentIndividualRoom: Boolean(getValues()?.isRentIndividualRoom),
+
+			// extra properties added
+			cleaningFee: parseInt(getValues()?.cleaningFee),
+			floorArea: parseInt(getValues()?.floorArea),
+			floorLevel: parseInt(getValues()?.floorLevel),
+			numberOfFloors: parseInt(getValues()?.numberOfFloors),
+			plotArea: parseInt(getValues()?.plotArea),
+			securityDeposit: parseInt(getValues()?.securityDeposit)
 		};
 		updateBookingsProperty.mutate(formData);
 	}
@@ -57,8 +68,18 @@ function BookingPropertyHeader() {
 			length: parseInt(getValues()?.length),
 			width: parseInt(getValues()?.width),
 			isRentIndividualRoom: Boolean(getValues()?.isRentIndividualRoom),
-			propertyShopplan: myshopData?.data?.merchant?.merchantShopplan?.id
+			propertyShopplan: myshopData?.data?.merchant?.merchantShopplan?.id,
+
+			// extra properties added
+			cleaningFee: parseInt(getValues()?.cleaningFee),
+			floorArea: parseInt(getValues()?.floorArea),
+			floorLevel: parseInt(getValues()?.floorLevel),
+			numberOfFloors: parseInt(getValues()?.numberOfFloors),
+			plotArea: parseInt(getValues()?.plotArea),
+			securityDeposit: parseInt(getValues()?.securityDeposit)
 		};
+		console.log('Create__Booking__Apartment', formData);
+		// return
 		addBookingsProperty.mutate(formData);
 	}
 
@@ -72,9 +93,11 @@ function BookingPropertyHeader() {
 			const featured = _.find(imageSrcs, { id: featuredImageId });
 			return featured?.url || imageSrcs[0]?.url;
 		}
+
 		if (images && images.length > 0) {
 			return images[0];
 		}
+
 		return 'assets/images/apps/ecommerce/product-image-placeholder.png';
 	};
 
@@ -86,10 +109,13 @@ function BookingPropertyHeader() {
 			className="w-full"
 			sx={{
 				background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
-				borderBottom: '1px solid rgba(234, 88, 12, 0.1)',
+				borderBottom: '1px solid rgba(234, 88, 12, 0.1)'
 			}}
 		>
-			<Box className="flex flex-col sm:flex-row items-center justify-between gap-16 sm:gap-24 py-16 sm:py-24 px-24 md:px-32" sx={{ width: '100%', maxWidth: '100%' }}>
+			<Box
+				className="flex flex-col sm:flex-row items-center justify-between gap-16 sm:gap-24 py-16 sm:py-24 px-24 md:px-32"
+				sx={{ width: '100%', maxWidth: '100%' }}
+			>
 				{/* Left Section */}
 				<div className="flex flex-col items-start space-y-8 sm:space-y-0 flex-1 min-w-0 w-full">
 					{/* Back Button */}
@@ -112,7 +138,7 @@ function BookingPropertyHeader() {
 								fontWeight: 600,
 								'&:hover': {
 									background: 'rgba(249, 115, 22, 0.08)',
-									color: '#ea580c',
+									color: '#ea580c'
 								}
 							}}
 						>
@@ -136,7 +162,7 @@ function BookingPropertyHeader() {
 									overflow: 'hidden',
 									border: '2px solid',
 									borderColor: 'rgba(234, 88, 12, 0.2)',
-									boxShadow: '0 4px 12px rgba(234, 88, 12, 0.1)',
+									boxShadow: '0 4px 12px rgba(234, 88, 12, 0.1)'
 								}}
 							>
 								<img
@@ -156,7 +182,7 @@ function BookingPropertyHeader() {
 											fontSize: '10px',
 											fontWeight: 700,
 											background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
-											color: 'white',
+											color: 'white'
 										}}
 									/>
 								)}
@@ -185,7 +211,7 @@ function BookingPropertyHeader() {
 										background: 'rgba(249, 115, 22, 0.1)',
 										color: '#ea580c',
 										fontWeight: 600,
-										height: 24,
+										height: 24
 									}}
 								/>
 
@@ -198,7 +224,7 @@ function BookingPropertyHeader() {
 											background: 'rgba(251, 191, 36, 0.15)',
 											color: '#d97706',
 											fontWeight: 600,
-											height: 24,
+											height: 24
 										}}
 									/>
 								)}
@@ -212,7 +238,7 @@ function BookingPropertyHeader() {
 											background: 'rgba(239, 68, 68, 0.1)',
 											color: '#dc2626',
 											fontWeight: 600,
-											height: 24,
+											height: 24
 										}}
 									/>
 								)}
@@ -230,7 +256,10 @@ function BookingPropertyHeader() {
 					{productId !== 'new' ? (
 						<>
 							{/* Delete Button */}
-							<Tooltip title="Delete Property" arrow>
+							<Tooltip
+								title="Delete Property"
+								arrow
+							>
 								<IconButton
 									onClick={handleRemoveListing}
 									sx={{
@@ -240,7 +269,7 @@ function BookingPropertyHeader() {
 										color: '#dc2626',
 										'&:hover': {
 											background: 'rgba(239, 68, 68, 0.1)',
-											borderColor: '#dc2626',
+											borderColor: '#dc2626'
 										}
 									}}
 								>
@@ -255,7 +284,10 @@ function BookingPropertyHeader() {
 								onClick={handleSaveApartment}
 								startIcon={
 									updateBookingsProperty.isLoading ? (
-										<CircularProgress size={20} color="inherit" />
+										<CircularProgress
+											size={20}
+											color="inherit"
+										/>
 									) : (
 										<FuseSvgIcon size={20}>heroicons-outline:save</FuseSvgIcon>
 									)
@@ -269,13 +301,15 @@ function BookingPropertyHeader() {
 									height: 48,
 									px: 3,
 									minWidth: 140,
-									'&:hover': canSave ? {
-										background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
-										boxShadow: '0 8px 16px rgba(234, 88, 12, 0.3)',
-									} : {},
+									'&:hover': canSave
+										? {
+												background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
+												boxShadow: '0 8px 16px rgba(234, 88, 12, 0.3)'
+											}
+										: {},
 									'&.Mui-disabled': {
 										background: 'rgba(120, 113, 108, 0.12)',
-										color: 'rgba(120, 113, 108, 0.5)',
+										color: 'rgba(120, 113, 108, 0.5)'
 									}
 								}}
 							>
@@ -290,7 +324,10 @@ function BookingPropertyHeader() {
 							onClick={handleCreateApartment}
 							startIcon={
 								addBookingsProperty.isLoading ? (
-									<CircularProgress size={20} color="inherit" />
+									<CircularProgress
+										size={20}
+										color="inherit"
+									/>
 								) : (
 									<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 								)
@@ -304,13 +341,15 @@ function BookingPropertyHeader() {
 								height: 48,
 								px: 3,
 								minWidth: 160,
-								'&:hover': canSave ? {
-									background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
-									boxShadow: '0 8px 16px rgba(234, 88, 12, 0.3)',
-								} : {},
+								'&:hover': canSave
+									? {
+											background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
+											boxShadow: '0 8px 16px rgba(234, 88, 12, 0.3)'
+										}
+									: {},
 								'&.Mui-disabled': {
 									background: 'rgba(120, 113, 108, 0.12)',
-									color: 'rgba(120, 113, 108, 0.5)',
+									color: 'rgba(120, 113, 108, 0.5)'
 								}
 							}}
 						>

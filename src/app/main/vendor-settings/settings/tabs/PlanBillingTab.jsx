@@ -11,7 +11,6 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Alert from '@mui/material/Alert';
-import { useEffect } from 'react';
 import { useGetPlanBillingSettingsQuery, useUpdatePlanBillingSettingsMutation } from '../SettingsApi';
 
 const plans = [

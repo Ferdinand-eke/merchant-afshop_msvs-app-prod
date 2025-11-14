@@ -7,9 +7,9 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Box from '@mui/material/Box';
 import { useAppDispatch, useAppSelector } from 'app/store/hooks';
 import { useEffect } from 'react';
+import useGetAllUsers from 'src/app/aaqueryhooks/usersHandlingQuery';
 import { setSearchText, resetSearchText, selectSearchText } from './contactsAppSlice';
 import { selectFilteredContactList, useGetContactsListQuery } from './ContactsApi';
-import useGetAllUsers from 'src/app/aaqueryhooks/usersHandlingQuery';
 
 /**
  * The contacts header.
@@ -18,12 +18,10 @@ function UsersHeader() {
 	const dispatch = useAppDispatch();
 	const searchText = useAppSelector(selectSearchText);
 	const { data, isLoading } = useGetContactsListQuery();
-	
 
 	// const filteredData = useAppSelector(selectFilteredContactList(data));
 
-
-	const {data:usresData, isLoading:usersIsLoading} = useGetAllUsers()
+	const { data: usresData, isLoading: usersIsLoading } = useGetAllUsers();
 
 	const filteredData = useAppSelector(selectFilteredContactList(usresData?.data?.userlist));
 	useEffect(() => {
@@ -103,6 +101,5 @@ function UsersHeader() {
 		</div>
 	);
 }
-
 
 export default UsersHeader;

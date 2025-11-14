@@ -1,7 +1,6 @@
 import SignInPage from './SignInPage';
 import authRoles from '../../auth/authRoles';
 
-
 const SignInConfig = {
 	settings: {
 		layout: {
@@ -24,7 +23,7 @@ const SignInConfig = {
 			}
 		}
 	},
-	
+
 	auth: authRoles.onlyGuest,
 	routes: [
 		{

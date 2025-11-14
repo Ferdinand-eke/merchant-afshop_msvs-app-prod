@@ -1,7 +1,6 @@
 import Button from '@mui/material/Button';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCallback, useEffect } from 'react';
-import FuseLoading from '@fuse/core/FuseLoading';
 import _ from '@lodash';
 import { Controller, useForm } from 'react-hook-form';
 import Box from '@mui/system/Box';
@@ -10,27 +9,16 @@ import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
-import Autocomplete from '@mui/material/Autocomplete/Autocomplete';
-import Checkbox from '@mui/material/Checkbox/Checkbox';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import history from '@history';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { showMessage } from '@fuse/core/FuseMessage/fuseMessageSlice';
 import { useAppDispatch } from 'app/store/hooks';
-import ContactEmailSelector from './email-selector/ContactEmailSelector';
-import PhoneNumberSelector from './phone-number-selector/PhoneNumberSelector';
-import {
-	useCreateContactsItemMutation,
-	useDeleteContactsItemMutation,
-	useGetContactsItemQuery,
-	useGetContactsTagsQuery,
-	useUpdateContactsItemMutation
-} from '../ContactsApi';
+
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import { useAdminRecruitStaff } from 'src/app/aaqueryhooks/adminHandlingQuery';
 import ContactModel from '../models/ContactModel';
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import { useAdminRecruitStaff, useGetAdminById } from 'src/app/aaqueryhooks/adminHandlingQuery';
 // import InputAdornment from '@mui/material/InputAdornment';
 // import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 // import { useGetAdminById } from 'src/app/aaqueryhooks/adminHandlingQuery';
@@ -75,52 +63,47 @@ const schema = z.object({
  * The contact form.
  */
 
-
-
-
-
 export const roleset = [
-		{
-		role: "Admin",
-		// icon: TbBeach,
-	  //   description: "This property is close to the beach",
-	  },
-	  {
-		role: "HR",
-		// icon: TbBeach,
-	  //   description: "This property is close to the beach",
-	  },
-	  {
-		role: "Marketing",
-		// icon: TbBeach,
-	  //   description: "This property is close to the beach",
-	  },
 	{
-	  role: "IT",
-	  // icon: GiWindmill,
-	//   description: "This property has windmills",
+		role: 'Admin'
+		// icon: TbBeach,
+		//   description: "This property is close to the beach",
 	},
 	{
-	  role: "Finance",
-	  // icon: MdOutlineVilla,
-	//   description: "This property is modern",
+		role: 'HR'
+		// icon: TbBeach,
+		//   description: "This property is close to the beach",
 	},
-	
-	
-  ];
-
+	{
+		role: 'Marketing'
+		// icon: TbBeach,
+		//   description: "This property is close to the beach",
+	},
+	{
+		role: 'IT'
+		// icon: GiWindmill,
+		//   description: "This property has windmills",
+	},
+	{
+		role: 'Finance'
+		// icon: MdOutlineVilla,
+		//   description: "This property is modern",
+	}
+];
 
 function AddContactForm() {
-
 	const generateSingleOptions = () => {
 		return roleset.map((option, index) => {
-		  return (
-			<MenuItem key={index} value={option.role}>
-			  {option.role}
-			</MenuItem>
-		  );
+			return (
+				<MenuItem
+					key={index}
+					value={option.role}
+				>
+					{option.role}
+				</MenuItem>
+			);
 		});
-	  };
+	};
 
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
@@ -139,8 +122,8 @@ function AddContactForm() {
 	// } = useGetAdminById(id, {
 	// 	skip: !id || id === 'new'
 	// });
-// console.log("Single-Admin-Contact", admin?.data)
-	const recruitStaff =  useAdminRecruitStaff()
+	// console.log("Single-Admin-Contact", admin?.data)
+	const recruitStaff = useAdminRecruitStaff();
 
 	const { control, watch, reset, handleSubmit, formState } = useForm({
 		mode: 'all',
@@ -149,28 +132,28 @@ function AddContactForm() {
 	const { isValid, dirtyFields, errors } = formState;
 	const form = watch();
 
-	useEffect(() => {
-		// if (contactId === 'new') {
-		// 	reset(ContactModel({}));
-		// }
-		// if (id === 'new') {
-		// 	reset(ContactModel({}));
-		// }
-		reset(ContactModel({}))
-	}, 
-	// [contactId, reset]
-	[
-		// id,
-		 reset]
+	useEffect(
+		() => {
+			// if (contactId === 'new') {
+			// 	reset(ContactModel({}));
+			// }
+			// if (id === 'new') {
+			// 	reset(ContactModel({}));
+			// }
+			reset(ContactModel({}));
+		},
+		// [contactId, reset]
+		[
+			// id,
+			reset
+		]
 	);
 
-	
 	// useEffect(() => {
 	// 	if (admin?.data) {
 	// 		reset({ ...admin?.data });
 	// 	}
 	// }, [admin?.data, reset]);
-
 
 	/**
 	 * Form Submit
@@ -178,10 +161,10 @@ function AddContactForm() {
 
 	const onSubmit = useCallback(() => {
 		// console.log("Crete STAFF-FORMDATA", { contact: form })
-		console.log("Crete STAFF-FORMDATA", form)
+		console.log('Crete STAFF-FORMDATA', form);
 
 		// return
-		recruitStaff.mutate(form)
+		recruitStaff.mutate(form);
 		// if (id === 'new') {
 		// 	// createContact({ contact: form })
 		// 	// 	.unwrap()
@@ -193,7 +176,6 @@ function AddContactForm() {
 		// }
 	}, [form]);
 
-
 	function handleRemoveContact() {
 		// if (!contact) {
 		// 	return;
@@ -201,7 +183,6 @@ function AddContactForm() {
 		// if (!admin?.data) {
 		// 	return;
 		// }
-		
 	}
 
 	const background = watch('background');
@@ -220,8 +201,8 @@ function AddContactForm() {
 	// 	return <FuseLoading className="min-h-screen" />;
 	// }
 
-	console.log("Ading Contacts......")
-	
+	console.log('Ading Contacts......');
+
 	return (
 		<>
 			<Box
@@ -238,7 +219,6 @@ function AddContactForm() {
 					/>
 				)}
 			</Box>
-
 
 			<div className="relative flex flex-col flex-auto items-center px-24 sm:px-48">
 				<div className="w-full">
@@ -332,36 +312,36 @@ function AddContactForm() {
 				</div>
 
 				<Controller
-        control={control}
-        name={`role`}
-        //: { onChange, value }
-        render={({ field}) => (
-          <Select
-			className="mt-32"
-			{...field}
-            id="role"
-            label="Role"
-            //   type="text"
-			placeholder="Role"
-            variant="outlined"
-            fullWidth
-            error={!!errors.role}
-            helperText={errors?.role?.message}
-            //   onChange={onChange} value={value}
-          >
-			<MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-            {/* <MenuItem value="">
+					control={control}
+					name="role"
+					// : { onChange, value }
+					render={({ field }) => (
+						<Select
+							className="mt-32"
+							{...field}
+							id="role"
+							label="Role"
+							//   type="text"
+							placeholder="Role"
+							variant="outlined"
+							fullWidth
+							error={!!errors.role}
+							helperText={errors?.role?.message}
+							//   onChange={onChange} value={value}
+						>
+							<MenuItem value="">
+								<em>None</em>
+							</MenuItem>
+							{/* <MenuItem value="">
             <em>None</em>
           </MenuItem>
           <MenuItem value={10}>Ten</MenuItem>
           <MenuItem value={20}>Twenty</MenuItem>
           <MenuItem value={30}>Thirty</MenuItem> */}
-            {generateSingleOptions()}
-          </Select>
-        )}
-      />
+							{generateSingleOptions()}
+						</Select>
+					)}
+				/>
 
 				<Controller
 					control={control}
@@ -486,29 +466,29 @@ function AddContactForm() {
 					)}
 				/> */}
 
-<Controller
-				control={control}
-				name="email"
-				render={({ field }) => (
-					<TextField
-					className="mt-32"
-						{...field}
-						label="Email"
-						placeholder="Email"
-						variant="outlined"
-						fullWidth
-						error={!!errors.email}
-						helperText={errors?.email?.message}
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<FuseSvgIcon size={20}>heroicons-solid:mail</FuseSvgIcon>
-								</InputAdornment>
-							)
-						}}
-					/>
-				)}
-			/>
+				<Controller
+					control={control}
+					name="email"
+					render={({ field }) => (
+						<TextField
+							className="mt-32"
+							{...field}
+							label="Email"
+							placeholder="Email"
+							variant="outlined"
+							fullWidth
+							error={!!errors.email}
+							helperText={errors?.email?.message}
+							InputProps={{
+								startAdornment: (
+									<InputAdornment position="start">
+										<FuseSvgIcon size={20}>heroicons-solid:mail</FuseSvgIcon>
+									</InputAdornment>
+								)
+							}}
+						/>
+					)}
+				/>
 
 				{/* <Controller
 					control={control}
@@ -524,7 +504,6 @@ function AddContactForm() {
 						/>
 					)}
 				/> */}
-
 
 				<Controller
 					control={control}
@@ -583,27 +562,27 @@ function AddContactForm() {
 					)}
 				/>
 				<Controller
-				control={control}
-				name="phone"
-				render={({ field }) => (
-					<TextField
-						{...field}
-						label="Phone"
-						placeholder="Phone"
-						variant="outlined"
-						fullWidth
-						error={!!errors.phone}
-						helperText={errors?.phone?.message}
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<FuseSvgIcon size={20}>heroicons-solid:tag</FuseSvgIcon>
-								</InputAdornment>
-							)
-						}}
-					/>
-				)}
-			/>
+					control={control}
+					name="phone"
+					render={({ field }) => (
+						<TextField
+							{...field}
+							label="Phone"
+							placeholder="Phone"
+							variant="outlined"
+							fullWidth
+							error={!!errors.phone}
+							helperText={errors?.phone?.message}
+							InputProps={{
+								startAdornment: (
+									<InputAdornment position="start">
+										<FuseSvgIcon size={20}>heroicons-solid:tag</FuseSvgIcon>
+									</InputAdornment>
+								)
+							}}
+						/>
+					)}
+				/>
 				<Controller
 					control={control}
 					name="notes"

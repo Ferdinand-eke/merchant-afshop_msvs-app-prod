@@ -37,7 +37,10 @@ function ModernPricingFeatureItem(props) {
 						}
 					}}
 				>
-					<FuseSvgIcon size={28} sx={{ color: 'white' }}>
+					<FuseSvgIcon
+						size={28}
+						sx={{ color: 'white' }}
+					>
 						{icon}
 					</FuseSvgIcon>
 				</Box>

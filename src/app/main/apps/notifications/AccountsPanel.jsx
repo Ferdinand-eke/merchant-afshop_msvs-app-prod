@@ -2,7 +2,6 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Typography from '@mui/material/Typography';
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/store/hooks';
@@ -10,15 +9,6 @@ import { useLocation } from 'react-router-dom';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Button from '@mui/material/Button';
 import FuseLoading from '@fuse/core/FuseLoading';
-import _ from '@lodash';
-import NotificationCard from './NotificationCard';
-import {
-	// closeAccountsPanel,
-	closeNotificationPanel,
-	selectNotificationPanelState,
-	// toggleAccountsPanel,
-	toggleNotificationPanel
-} from './notificationPanelSlice';
 import {
 	useCreateNotificationMutation,
 	useDeleteAllNotificationsMutation,
@@ -27,7 +17,6 @@ import {
 } from './NotificationApi';
 import NotificationModel from './models/NotificationModel';
 import NotificationTemplate from './NotificationTemplate';
-import AccountsCard from './AccountsCard';
 import { closeAccountsPanel, selectAccountPanelState, toggleAccountsPanel } from './accountPanelSlice';
 
 const StyledSwipeableDrawer = styled(SwipeableDrawer)(({ theme }) => ({
@@ -175,6 +164,5 @@ function AccountsPanel() {
 		</StyledSwipeableDrawer>
 	);
 }
-
 
 export default AccountsPanel;

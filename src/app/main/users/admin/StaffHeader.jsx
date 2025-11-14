@@ -7,10 +7,9 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Box from '@mui/material/Box';
 import { useAppDispatch, useAppSelector } from 'app/store/hooks';
 import { useEffect } from 'react';
-import { setSearchText, resetSearchText, selectSearchText } from './contactsAppSlice';
-import { selectFilteredContactList, useGetContactsListQuery } from './ContactsApi';
-import useGetAllUsers from 'src/app/aaqueryhooks/usersHandlingQuery';
 import useGetAllAdminUsers from 'src/app/aaqueryhooks/adminHandlingQuery';
+import { setSearchText, resetSearchText, selectSearchText } from './contactsAppSlice';
+import { selectFilteredContactList } from './ContactsApi';
 
 /**
  * The contacts header.
@@ -19,13 +18,12 @@ function StaffHeader() {
 	const dispatch = useAppDispatch();
 	const searchText = useAppSelector(selectSearchText);
 	// const { data, isLoading } = useGetContactsListQuery();
-	
 
-	// const filteredData = useAppSelector(selectFilteredContactList(data)); 
+	// const filteredData = useAppSelector(selectFilteredContactList(data));
 
 	// const {data:usersData1, isLoading:usersIsLoading2} = useGetAllAdminUsers()
 	// const {data:usersData, isLoading:usersIsLoading} = useGetAllUsers()
-	const {data:usersData, isLoading:usersIsLoading} = useGetAllAdminUsers()
+	const { data: usersData, isLoading: usersIsLoading } = useGetAllAdminUsers();
 
 	// console.log("ADMIN-Staff11", usersData?.data)
 
@@ -35,7 +33,6 @@ function StaffHeader() {
 			dispatch(resetSearchText());
 		};
 	}, []);
-
 
 	// if (isLoading) {
 	// 	return null;
@@ -102,20 +99,17 @@ function StaffHeader() {
 					// to="new/edit"
 					to="new/create"
 
-				
 					// component={NavLinkAdapter}
 					// to="/users/admin/operate/edit"
 					// to="/users/admin/operate/new"
-						// size={isMobile ? 'small' : 'medium'}
+					// size={isMobile ? 'small' : 'medium'}
 				>
 					<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 					<span className="hidden sm:flex mx-8">Add Admin Staff</span>
 				</Button>
-				
 			</div>
 		</div>
 	);
 }
-
 
 export default StaffHeader;

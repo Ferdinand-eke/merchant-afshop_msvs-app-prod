@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import { selectUser } from 'src/app/auth/user/store/userSlice';
 import { useAppSelector } from 'app/store/hooks';
 import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
-import { useGetMyShopAndPlan } from "app/configs/data/server-calls/shopdetails/useShopDetails";
+import { useGetMyShopAndPlan } from 'app/configs/data/server-calls/shopdetails/useShopDetails';
 
 /**
  * The ShopDashboardAppHeader - Enhanced header with welcome banner for all merchant types
@@ -17,21 +17,21 @@ function ShopDashboardAppHeader() {
 	const user = useAppSelector(selectUser);
 	const { data: shopData } = useGetMyShopAndPlan();
 
-	const merchantName = shopData?.data?.merchant?.merchantshop?.shopname || user?.name || "Merchant";
-	const merchantPlan = shopData?.data?.merchant?.merchantShopplan?.planname || "Business";
+	const merchantName = shopData?.data?.merchant?.merchantshop?.shopname || user?.name || 'Merchant';
+	const merchantPlan = shopData?.data?.merchant?.merchantShopplan?.planname || 'Business';
 
 	// Get merchant-specific icon based on plan
 	const getMerchantIcon = (planKey) => {
 		const icons = {
-			RETAIL: "heroicons-outline:shopping-bag",
-			WHOLESALEANDRETAILERS: "heroicons-outline:shopping-cart",
-			MANUFACTURERS: "heroicons-outline:cube",
-			HOTELSANDAPARTMENTS: "heroicons-outline:home",
-			REALESTATES: "heroicons-outline:office-building",
-			FOODVENDORS: "heroicons-outline:cake",
-			LOGISTICS: "heroicons-outline:truck",
+			RETAIL: 'heroicons-outline:shopping-bag',
+			WHOLESALEANDRETAILERS: 'heroicons-outline:shopping-cart',
+			MANUFACTURERS: 'heroicons-outline:cube',
+			HOTELSANDAPARTMENTS: 'heroicons-outline:home',
+			REALESTATES: 'heroicons-outline:office-building',
+			FOODVENDORS: 'heroicons-outline:cake',
+			LOGISTICS: 'heroicons-outline:truck'
 		};
-		return icons[planKey] || "heroicons-outline:store";
+		return icons[planKey] || 'heroicons-outline:store';
 	};
 
 	const planKey = shopData?.data?.merchant?.merchantShopplan?.plankey;
@@ -49,8 +49,8 @@ function ShopDashboardAppHeader() {
 				<Paper
 					className="relative overflow-hidden rounded-2xl shadow-lg"
 					sx={{
-						background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
-						color: "white",
+						background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+						color: 'white'
 					}}
 				>
 					<Box className="relative z-10 p-24 sm:p-32">
@@ -61,17 +61,23 @@ function ShopDashboardAppHeader() {
 									sx={{
 										width: 64,
 										height: 64,
-										backgroundColor: "rgba(255, 255, 255, 0.2)",
-										color: "white",
+										backgroundColor: 'rgba(255, 255, 255, 0.2)',
+										color: 'white'
 									}}
 								>
 									<FuseSvgIcon size={32}>{merchantIcon}</FuseSvgIcon>
 								</Avatar>
 								<Box>
-									<Typography variant="h4" className="font-bold mb-4">
+									<Typography
+										variant="h4"
+										className="font-bold mb-4"
+									>
 										Welcome back, {merchantName}!
 									</Typography>
-									<Typography variant="body1" className="opacity-90">
+									<Typography
+										variant="body1"
+										className="opacity-90"
+									>
 										Manage your {merchantPlan} business with ease
 									</Typography>
 								</Box>
@@ -84,12 +90,12 @@ function ShopDashboardAppHeader() {
 									to="/merchants/mailbox/inbox"
 									variant="contained"
 									sx={{
-										backgroundColor: "rgba(255, 255, 255, 0.2)",
-										color: "white",
-										backdropFilter: "blur(10px)",
-										"&:hover": {
-											backgroundColor: "rgba(255, 255, 255, 0.3)",
-										},
+										backgroundColor: 'rgba(255, 255, 255, 0.2)',
+										color: 'white',
+										backdropFilter: 'blur(10px)',
+										'&:hover': {
+											backgroundColor: 'rgba(255, 255, 255, 0.3)'
+										}
 									}}
 									startIcon={<FuseSvgIcon size={20}>heroicons-solid:mail</FuseSvgIcon>}
 								>
@@ -101,12 +107,12 @@ function ShopDashboardAppHeader() {
 									to="/africanshops/settings/account"
 									variant="contained"
 									sx={{
-										backgroundColor: "rgba(255, 255, 255, 0.2)",
-										color: "white",
-										backdropFilter: "blur(10px)",
-										"&:hover": {
-											backgroundColor: "rgba(255, 255, 255, 0.3)",
-										},
+										backgroundColor: 'rgba(255, 255, 255, 0.2)',
+										color: 'white',
+										backdropFilter: 'blur(10px)',
+										'&:hover': {
+											backgroundColor: 'rgba(255, 255, 255, 0.3)'
+										}
 									}}
 									startIcon={<FuseSvgIcon size={20}>heroicons-solid:cog</FuseSvgIcon>}
 								>
@@ -117,7 +123,10 @@ function ShopDashboardAppHeader() {
 
 						{/* Notification Bar */}
 						<Box className="flex items-center gap-8 mt-16 p-12 bg-white/10 backdrop-blur-sm rounded-xl">
-							<FuseSvgIcon size={20} className="text-white">
+							<FuseSvgIcon
+								size={20}
+								className="text-white"
+							>
 								heroicons-solid:bell
 							</FuseSvgIcon>
 							<Typography
@@ -134,14 +143,13 @@ function ShopDashboardAppHeader() {
 					{/* Decorative background pattern */}
 					<Box
 						sx={{
-							position: "absolute",
+							position: 'absolute',
 							top: 0,
 							right: 0,
-							width: "50%",
-							height: "100%",
+							width: '50%',
+							height: '100%',
 							opacity: 0.1,
-							background:
-								"radial-gradient(circle at 100% 0%, white 0%, transparent 50%)",
+							background: 'radial-gradient(circle at 100% 0%, white 0%, transparent 50%)'
 						}}
 					/>
 				</Paper>

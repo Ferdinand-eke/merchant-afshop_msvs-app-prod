@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useContext } from 'react';
 import { ChatAppContext } from './MessengerApp';
-import VendorModernReversedComingSoonPage from '../vendors-shop/vendorcomingsoon/VendorModernReversedComingSoonPage';
 
 /**
  * The chat first screen.
@@ -11,7 +10,6 @@ import VendorModernReversedComingSoonPage from '../vendors-shop/vendorcomingsoon
 function MessengerFirstScreen() {
 	const { setMainSidebarOpen } = useContext(ChatAppContext);
 
-	
 	return (
 		<div className="flex flex-col flex-1 items-center justify-center w-full p-24">
 			<FuseSvgIcon

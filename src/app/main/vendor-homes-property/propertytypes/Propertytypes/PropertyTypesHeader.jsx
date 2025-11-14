@@ -35,12 +35,10 @@ function PropertyTypesHeader() {
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="mx-4 sm:mx-8">Add Property Type</span>
-						
 					</Button>
 				</motion.div>
 			</div>
 		</div>
-		
 	);
 }
 

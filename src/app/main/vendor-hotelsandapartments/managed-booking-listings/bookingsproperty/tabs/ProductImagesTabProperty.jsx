@@ -1,12 +1,32 @@
+import { useState } from 'react';
 import { orange } from '@mui/material/colors';
-import { lighten, styled } from '@mui/material/styles';
+import { lighten, styled, alpha } from '@mui/material/styles';
 import clsx from 'clsx';
 import { Controller, useFormContext } from 'react-hook-form';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Box from '@mui/material/Box';
-import { Divider, Typography, Paper, IconButton, Chip, Grid } from '@mui/material';
+import {
+	Divider,
+	Typography,
+	Paper,
+	IconButton,
+	Chip,
+	Grid,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
+	Button,
+	CircularProgress,
+	Tooltip
+} from '@mui/material';
 import { useParams } from 'react-router';
+import { toast } from 'react-toastify';
 import Resizer from 'src/Resizer';
+import {
+	useUpdatePropertyListingImageMutation,
+	useDeletePropertyListingImageMutation
+} from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
 
 const Root = styled('div')(({ theme }) => ({
 	'& .productImageFeaturedStar': {
@@ -64,7 +84,23 @@ function ProductImagesTabProperty() {
 	const { control, watch, setValue } = methods;
 
 	const images = watch('images');
-	const imageSrcs = watch('imageSrcs');
+	const listingImages = watch('listingImages');
+	const listingId = watch('id');
+
+	// State for replace image modal
+	const [replaceModalOpen, setReplaceModalOpen] = useState(false);
+	const [imageToReplace, setImageToReplace] = useState(null);
+	const [newImageFile, setNewImageFile] = useState(null);
+	const [newImagePreview, setNewImagePreview] = useState(null);
+	const [isUploadingImage, setIsUploadingImage] = useState(false);
+
+	// State for delete confirmation modal
+	const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+	const [imageToDelete, setImageToDelete] = useState(null);
+
+	// Mutation hooks
+	const updatePropertyImage = useUpdatePropertyListingImageMutation();
+	const deletePropertyImage = useDeletePropertyListingImageMutation();
 
 	const fileUploadAndResize = (e) => {
 		const files = e.target.files;
@@ -97,6 +133,118 @@ function ProductImagesTabProperty() {
 			return el !== item;
 		});
 		setValue('images', filtered);
+	};
+
+	// Handler for opening replace image modal
+	const handleOpenReplaceModal = (media) => {
+		setImageToReplace(media);
+		setReplaceModalOpen(true);
+	};
+
+	// Handler for file selection in replace modal
+	const handleFileSelect = (event) => {
+		const file = event.target.files[0];
+		if (file) {
+			setNewImageFile(file);
+
+			// Create preview
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setNewImagePreview(reader.result);
+			};
+			reader.readAsDataURL(file);
+		}
+	};
+
+	// Handler for confirming image replacement
+	const handleConfirmReplacement = async () => {
+		if (!newImageFile || !listingId) {
+			toast.error('Please select an image to upload');
+			return;
+		}
+
+		setIsUploadingImage(true);
+
+		try {
+			// Resize and convert image to base64
+			Resizer?.imageFileResizer(
+				newImageFile,
+				720,
+				720,
+				'JPEG',
+				100,
+				0,
+				async (uri) => {
+					try {
+						console.log('Sending update with data:', {
+							propertyId: listingId,
+							cloudinaryPublicId: imageToReplace?.public_id,
+							imageId: imageToReplace?.id,
+							type: imageToReplace.type || 'image',
+							url: uri
+						});
+
+						// Call the mutation to update the image
+						await updatePropertyImage.mutateAsync({
+							propertyId: listingId,
+							cloudinaryPublicId: imageToReplace?.public_id,
+							imageId: imageToReplace?.id,
+							type: imageToReplace.type || 'image',
+							url: uri
+						});
+
+						// Close modal and reset state
+						handleCancelReplacement();
+					} catch (error) {
+						console.error('Error replacing image:', error);
+						setIsUploadingImage(false);
+					}
+				},
+				'base64'
+			);
+		} catch (error) {
+			console.error('Error processing image:', error);
+			toast.error('Failed to process image');
+			setIsUploadingImage(false);
+		}
+	};
+
+	// Handler for canceling image replacement
+	const handleCancelReplacement = () => {
+		setReplaceModalOpen(false);
+		setImageToReplace(null);
+		setNewImageFile(null);
+		setNewImagePreview(null);
+		setIsUploadingImage(false);
+	};
+
+	// Handler for opening delete confirmation modal
+	const handleOpenDeleteModal = (media) => {
+		setImageToDelete(media);
+		setDeleteConfirmOpen(true);
+	};
+
+	// Handler for confirming image deletion
+	const handleConfirmDelete = async () => {
+		if (!imageToDelete) return;
+
+		try {
+			await deletePropertyImage.mutateAsync({
+				propertyId: listingId,
+				cloudinaryPublicId: imageToDelete.public_id,
+				imageId: imageToDelete.id
+			});
+
+			handleCancelDelete();
+		} catch (error) {
+			console.error('Error deleting image:', error);
+		}
+	};
+
+	// Handler for canceling image deletion
+	const handleCancelDelete = () => {
+		setDeleteConfirmOpen(false);
+		setImageToDelete(null);
 	};
 
 	return (
@@ -326,7 +474,7 @@ function ProductImagesTabProperty() {
 				)}
 
 				{/* Existing Images from Server */}
-				{imageSrcs && imageSrcs?.length > 0 && (
+				{listingImages && listingImages?.length > 0 && (
 					<>
 						<Divider sx={{ my: 3 }} />
 						<Typography variant="h6" sx={{ fontWeight: 700, color: '#292524', mb: 3 }}>
@@ -340,7 +488,7 @@ function ProductImagesTabProperty() {
 								render={({ field: { onChange, value } }) => {
 									return (
 										<>
-											{imageSrcs?.map((media) => (
+											{listingImages?.map((media) => (
 												<Grid item xs={12} sm={6} md={4} lg={3} key={media.public_id}>
 													<Box
 														onClick={() => onChange(media.public_id)}
@@ -399,7 +547,7 @@ function ProductImagesTabProperty() {
 															alt="property"
 														/>
 
-														{/* Overlay */}
+														{/* Overlay with Action Buttons */}
 														<Box
 															className="imageOverlay"
 															sx={{
@@ -411,11 +559,52 @@ function ProductImagesTabProperty() {
 																padding: 2,
 																opacity: 0,
 																transition: 'opacity 0.2s ease-in-out',
+																display: 'flex',
+																justifyContent: 'space-between',
+																alignItems: 'center',
 															}}
 														>
 															<Typography variant="caption" className="text-white font-semibold">
 																Click to set as featured
 															</Typography>
+															<Box sx={{ display: 'flex', gap: 1 }}>
+																<Tooltip title="Replace Image">
+																	<IconButton
+																		size="small"
+																		onClick={(e) => {
+																			e.stopPropagation();
+																			handleOpenReplaceModal(media);
+																		}}
+																		sx={{
+																			background: alpha('#f97316', 0.9),
+																			color: 'white',
+																			'&:hover': {
+																				background: alpha('#ea580c', 1),
+																			},
+																		}}
+																	>
+																		<FuseSvgIcon size={16}>heroicons-outline:refresh</FuseSvgIcon>
+																	</IconButton>
+																</Tooltip>
+																<Tooltip title="Delete Image">
+																	<IconButton
+																		size="small"
+																		onClick={(e) => {
+																			e.stopPropagation();
+																			handleOpenDeleteModal(media);
+																		}}
+																		sx={{
+																			background: alpha('#dc2626', 0.9),
+																			color: 'white',
+																			'&:hover': {
+																				background: alpha('#b91c1c', 1),
+																			},
+																		}}
+																	>
+																		<FuseSvgIcon size={16}>heroicons-outline:trash</FuseSvgIcon>
+																	</IconButton>
+																</Tooltip>
+															</Box>
 														</Box>
 													</Box>
 												</Grid>
@@ -463,6 +652,282 @@ function ProductImagesTabProperty() {
 					</Box>
 				)}
 			</Box>
+
+			{/* Replace Image Modal */}
+			<Dialog
+				open={replaceModalOpen}
+				onClose={handleCancelReplacement}
+				maxWidth="md"
+				fullWidth
+				PaperProps={{
+					sx: {
+						borderRadius: 2,
+						border: '1px solid rgba(234, 88, 12, 0.2)',
+					},
+				}}
+			>
+				<DialogTitle
+					sx={{
+						background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
+						borderBottom: '1px solid rgba(234, 88, 12, 0.1)',
+					}}
+				>
+					<Box className="flex items-center gap-12">
+						<Box
+							sx={{
+								width: 40,
+								height: 40,
+								borderRadius: '10px',
+								background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+							}}
+						>
+							<FuseSvgIcon className="text-white" size={20}>
+								heroicons-outline:refresh
+							</FuseSvgIcon>
+						</Box>
+						<Typography variant="h6" sx={{ fontWeight: 700, color: '#292524' }}>
+							Replace Property Image
+						</Typography>
+					</Box>
+				</DialogTitle>
+				<DialogContent sx={{ pt: 3 }}>
+					<Grid container spacing={3}>
+						{/* Current Image */}
+						<Grid item xs={12} md={6}>
+							<Typography variant="subtitle2" sx={{ mb: 2, fontWeight: 600, color: '#292524' }}>
+								Current Image
+							</Typography>
+							<Box
+								sx={{
+									width: '100%',
+									height: 200,
+									borderRadius: 2,
+									overflow: 'hidden',
+									border: '2px solid rgba(234, 88, 12, 0.2)',
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									background: '#f5f5f4',
+								}}
+							>
+								{imageToReplace && (
+									<img
+										src={imageToReplace.url}
+										alt="Current"
+										style={{
+											maxWidth: '100%',
+											maxHeight: '100%',
+											objectFit: 'contain',
+										}}
+									/>
+								)}
+							</Box>
+						</Grid>
+
+						{/* New Image Preview */}
+						<Grid item xs={12} md={6}>
+							<Typography variant="subtitle2" sx={{ mb: 2, fontWeight: 600, color: '#292524' }}>
+								New Image
+							</Typography>
+							<Box
+								sx={{
+									width: '100%',
+									height: 200,
+									borderRadius: 2,
+									overflow: 'hidden',
+									border: '2px dashed rgba(234, 88, 12, 0.3)',
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									background: newImagePreview
+										? '#f5f5f4'
+										: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
+									cursor: 'pointer',
+									position: 'relative',
+								}}
+								component="label"
+							>
+								<input
+									type="file"
+									accept="image/*"
+									style={{ display: 'none' }}
+									onChange={handleFileSelect}
+									disabled={isUploadingImage}
+								/>
+								{newImagePreview ? (
+									<img
+										src={newImagePreview}
+										alt="New preview"
+										style={{
+											maxWidth: '100%',
+											maxHeight: '100%',
+											objectFit: 'contain',
+										}}
+									/>
+								) : (
+									<Box sx={{ textAlign: 'center' }}>
+										<FuseSvgIcon size={48} sx={{ color: '#f97316', mb: 1 }}>
+											heroicons-outline:upload
+										</FuseSvgIcon>
+										<Typography variant="body2" sx={{ color: '#ea580c', fontWeight: 600 }}>
+											Click to select new image
+										</Typography>
+									</Box>
+								)}
+							</Box>
+						</Grid>
+					</Grid>
+
+					{newImageFile && (
+						<Box
+							sx={{
+								mt: 2,
+								p: 2,
+								background: 'rgba(249, 115, 22, 0.1)',
+								borderRadius: 1,
+								border: '1px solid rgba(234, 88, 12, 0.2)',
+							}}
+						>
+							<Typography variant="caption" sx={{ color: '#ea580c', fontWeight: 600 }}>
+								Selected: {newImageFile.name} ({(newImageFile.size / 1024).toFixed(2)} KB)
+							</Typography>
+						</Box>
+					)}
+				</DialogContent>
+				<DialogActions
+					sx={{
+						p: 2,
+						borderTop: '1px solid rgba(234, 88, 12, 0.1)',
+						background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
+					}}
+				>
+					<Button onClick={handleCancelReplacement} disabled={isUploadingImage} sx={{ color: '#6b7280' }}>
+						Cancel
+					</Button>
+					<Button
+						onClick={handleConfirmReplacement}
+						disabled={!newImageFile || isUploadingImage}
+						variant="contained"
+						sx={{
+							background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+							'&:hover': {
+								background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
+							},
+							'&:disabled': {
+								background: '#e5e7eb',
+							},
+						}}
+					>
+						{isUploadingImage ? (
+							<>
+								<CircularProgress size={20} sx={{ mr: 1, color: 'white' }} />
+								Replacing...
+							</>
+						) : (
+							'Replace Image'
+						)}
+					</Button>
+				</DialogActions>
+			</Dialog>
+
+			{/* Delete Confirmation Modal */}
+			<Dialog
+				open={deleteConfirmOpen}
+				onClose={handleCancelDelete}
+				maxWidth="sm"
+				fullWidth
+				PaperProps={{
+					sx: {
+						borderRadius: 2,
+						border: '1px solid rgba(220, 38, 38, 0.2)',
+					},
+				}}
+			>
+				<DialogTitle
+					sx={{
+						background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+						borderBottom: '1px solid rgba(220, 38, 38, 0.1)',
+					}}
+				>
+					<Box className="flex items-center gap-12">
+						<Box
+							sx={{
+								width: 40,
+								height: 40,
+								borderRadius: '10px',
+								background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+							}}
+						>
+							<FuseSvgIcon className="text-white" size={20}>
+								heroicons-outline:exclamation
+							</FuseSvgIcon>
+						</Box>
+						<Typography variant="h6" sx={{ fontWeight: 700, color: '#292524' }}>
+							Delete Property Image
+						</Typography>
+					</Box>
+				</DialogTitle>
+				<DialogContent sx={{ pt: 3 }}>
+					<Typography variant="body1" sx={{ mb: 3, color: '#374151' }}>
+						Are you sure you want to delete this image? This action cannot be undone and the image will be
+						permanently removed from Cloudinary.
+					</Typography>
+					{imageToDelete && (
+						<Box
+							sx={{
+								width: '100%',
+								height: 200,
+								borderRadius: 2,
+								overflow: 'hidden',
+								border: '2px solid rgba(220, 38, 38, 0.2)',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								background: '#f5f5f4',
+							}}
+						>
+							<img
+								src={imageToDelete.url}
+								alt="To delete"
+								style={{
+									maxWidth: '100%',
+									maxHeight: '100%',
+									objectFit: 'contain',
+								}}
+							/>
+						</Box>
+					)}
+				</DialogContent>
+				<DialogActions
+					sx={{
+						p: 2,
+						borderTop: '1px solid rgba(220, 38, 38, 0.1)',
+						background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+					}}
+				>
+					<Button onClick={handleCancelDelete} sx={{ color: '#6b7280' }}>
+						Cancel
+					</Button>
+					<Button
+						onClick={handleConfirmDelete}
+						variant="contained"
+						sx={{
+							background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+							'&:hover': {
+								background: 'linear-gradient(135deg, #b91c1c 0%, #991b1b 100%)',
+							},
+						}}
+					>
+						Delete Image
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</Root>
 	);
 }

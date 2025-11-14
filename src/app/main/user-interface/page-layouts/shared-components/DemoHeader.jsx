@@ -1,5 +1,3 @@
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
@@ -11,6 +9,7 @@ function DemoHeader(props) {
 	const { leftSidebarToggle, rightSidebarToggle } = props;
 
 	function handleClick() {}
+
 	// leftSidebarToggle
 	return (
 		<div className="flex flex-col p-24 w-full sm:py-32 sm:px-40">

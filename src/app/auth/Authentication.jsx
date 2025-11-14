@@ -3,11 +3,8 @@ import FuseAuthorization from '@fuse/core/FuseAuthorization/FuseAuthorization';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'app/store/hooks';
 import FuseSplashScreen from '@fuse/core/FuseSplashScreen/FuseSplashScreen';
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import { fetchUserAttributes } from '@aws-amplify/auth';
 import { resetUser, selectUserRole, setUser } from './user/store/userSlice';
 import useAuth from './useAuth';
-import UserModel from './user/models/UserModel';
 import useJwtAuth from './services/jwt/useJwtAuth';
 import useFirebaseAuth from './services/firebase/useFirebaseAuth';
 
@@ -20,13 +17,10 @@ function Authentication(props) {
 	 * Auth Providers
 	 */
 
-
-
-
 	/**
 	 * Amplify Auth
 	 */
-	// const { user: amplifyUser, authStatus: amplifyAuthStatus } = useAuthenticator();	
+	// const { user: amplifyUser, authStatus: amplifyAuthStatus } = useAuthenticator();
 	/**
 	 * JWT Auth
 	 */
@@ -45,15 +39,12 @@ function Authentication(props) {
 	const inProgress = useMemo(
 		() =>
 			// amplifyAuthStatus === 'configuring' ||
-			jwtAuthStatus === 'configuring' 
-			||
-			firebaseAuthStatus === 'configuring',
+			jwtAuthStatus === 'configuring' || firebaseAuthStatus === 'configuring',
 		[
-			// amplifyAuthStatus, 
-			jwtAuthStatus
-			,
-			 firebaseAuthStatus
-			]
+			// amplifyAuthStatus,
+			jwtAuthStatus,
+			firebaseAuthStatus
+		]
 	);
 	/**
 	 * Any user is authenticated
@@ -61,13 +52,11 @@ function Authentication(props) {
 	const authenticated = useMemo(
 		() =>
 			// amplifyAuthStatus === 'authenticated' ||
-			jwtAuthStatus === 'authenticated' 
-			||
-			firebaseAuthStatus === 'authenticated',
+			jwtAuthStatus === 'authenticated' || firebaseAuthStatus === 'authenticated',
 		[
-			// amplifyAuthStatus, 
-			jwtAuthStatus
-			, firebaseAuthStatus
+			// amplifyAuthStatus,
+			jwtAuthStatus,
+			firebaseAuthStatus
 		]
 	);
 	/**
@@ -76,17 +65,12 @@ function Authentication(props) {
 	const unAuthenticated = useMemo(
 		() =>
 			// amplifyAuthStatus === 'unauthenticated' &&
-			jwtAuthStatus === 'unauthenticated' 
-			
-			&&
-			firebaseAuthStatus === 'unauthenticated',
+			jwtAuthStatus === 'unauthenticated' && firebaseAuthStatus === 'unauthenticated',
 		[
 			// amplifyAuthStatus,
-			 jwtAuthStatus
-			 , 
-			 firebaseAuthStatus
-			
-			]
+			jwtAuthStatus,
+			firebaseAuthStatus
+		]
 	);
 	/**
 	 * Sign Out
@@ -162,11 +146,14 @@ function Authentication(props) {
 		// 		})
 		// 	);
 		// }
-	}, [inProgress, authenticated, 
+	}, [
+		inProgress,
+		authenticated,
 		// amplifyUser,
-		 jwtUser, 
-		 firebaseUser, 
-		 isLoading]);
+		jwtUser,
+		firebaseUser,
+		isLoading
+	]);
 	return useMemo(
 		() =>
 			isLoading ? (

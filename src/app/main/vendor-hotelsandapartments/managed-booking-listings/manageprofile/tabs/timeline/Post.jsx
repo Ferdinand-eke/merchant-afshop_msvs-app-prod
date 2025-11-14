@@ -75,6 +75,7 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 
 	const handleReplySubmit = (commentId) => {
 		const replyText = replyStates[commentId]?.replyText;
+
 		if (replyText?.trim()) {
 			const updatedComments = comments.map((comment) => {
 				if (comment.id === commentId) {
@@ -92,6 +93,7 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 						replies: [...(comment.replies || []), newReply]
 					};
 				}
+
 				return comment;
 			});
 			setComments(updatedComments);
@@ -114,6 +116,7 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 
 	const handleSnackbarClose = () => {
 		setShowUndoSnackbar(false);
+
 		if (isClosed && onDelete) {
 			onDelete(post?.id);
 		}
@@ -147,23 +150,22 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 								</Avatar>
 								<Box>
 									<Box className="flex items-center gap-8">
-										<Typography className="text-14 font-semibold">
-											{post?.author?.name}
-										</Typography>
+										<Typography className="text-14 font-semibold">{post?.author?.name}</Typography>
 										{post?.author?.badge && (
 											<Box className="px-8 py-2 bg-grey-200 rounded text-11 font-semibold">
 												{post?.author?.badge}
 											</Box>
 										)}
 										{post?.author?.verified && (
-											<FuseSvgIcon size={16} className="text-blue-600">
+											<FuseSvgIcon
+												size={16}
+												className="text-blue-600"
+											>
 												heroicons-solid:check-badge
 											</FuseSvgIcon>
 										)}
 									</Box>
-									<Typography className="text-12 text-grey-600">
-										{post?.author?.title}
-									</Typography>
+									<Typography className="text-12 text-grey-600">{post?.author?.title}</Typography>
 									<Box className="flex items-center gap-4 text-11 text-grey-500">
 										<Typography className="text-11">{post?.timestamp}</Typography>
 										<span>•</span>
@@ -202,10 +204,16 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 										Follow
 									</Button>
 								)}
-								<IconButton size="small" onClick={handleMenuOpen}>
+								<IconButton
+									size="small"
+									onClick={handleMenuOpen}
+								>
 									<FuseSvgIcon size={20}>heroicons-outline:ellipsis-horizontal</FuseSvgIcon>
 								</IconButton>
-								<IconButton size="small" onClick={handleClose}>
+								<IconButton
+									size="small"
+									onClick={handleClose}
+								>
 									<FuseSvgIcon size={20}>heroicons-outline:x-mark</FuseSvgIcon>
 								</IconButton>
 							</Box>
@@ -218,28 +226,46 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 							onClose={handleMenuClose}
 						>
 							<MenuItem onClick={handleMenuClose}>
-								<FuseSvgIcon size={20} className="mr-12">heroicons-outline:bookmark</FuseSvgIcon>
+								<FuseSvgIcon
+									size={20}
+									className="mr-12"
+								>
+									heroicons-outline:bookmark
+								</FuseSvgIcon>
 								Save post
 							</MenuItem>
 							<MenuItem onClick={handleMenuClose}>
-								<FuseSvgIcon size={20} className="mr-12">heroicons-outline:link</FuseSvgIcon>
+								<FuseSvgIcon
+									size={20}
+									className="mr-12"
+								>
+									heroicons-outline:link
+								</FuseSvgIcon>
 								Copy link
 							</MenuItem>
 							<MenuItem onClick={handleMenuClose}>
-								<FuseSvgIcon size={20} className="mr-12">heroicons-outline:flag</FuseSvgIcon>
+								<FuseSvgIcon
+									size={20}
+									className="mr-12"
+								>
+									heroicons-outline:flag
+								</FuseSvgIcon>
 								Report post
 							</MenuItem>
 							<MenuItem onClick={handleMenuClose}>
-								<FuseSvgIcon size={20} className="mr-12">heroicons-outline:bell-slash</FuseSvgIcon>
+								<FuseSvgIcon
+									size={20}
+									className="mr-12"
+								>
+									heroicons-outline:bell-slash
+								</FuseSvgIcon>
 								Unfollow {post?.author?.name}
 							</MenuItem>
 						</Menu>
 
 						{/* Post Content */}
 						<Box className="px-16 pb-12">
-							<Typography className="text-14 whitespace-pre-wrap">
-								{post?.content}
-							</Typography>
+							<Typography className="text-14 whitespace-pre-wrap">{post?.content}</Typography>
 							{post?.readMore && (
 								<Button
 									size="small"
@@ -295,9 +321,7 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 												💡
 											</Box>
 										</Box>
-										<Typography className="text-12 text-grey-600">
-											{likeCount}
-										</Typography>
+										<Typography className="text-12 text-grey-600">{likeCount}</Typography>
 									</Box>
 								)}
 							</Box>
@@ -324,7 +348,10 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 						<Box className="flex items-center justify-around px-8 py-8">
 							<Button
 								startIcon={
-									<FuseSvgIcon size={20} className={liked ? 'text-blue-600' : ''}>
+									<FuseSvgIcon
+										size={20}
+										className={liked ? 'text-blue-600' : ''}
+									>
 										{liked ? 'heroicons-solid:hand-thumb-up' : 'heroicons-outline:hand-thumb-up'}
 									</FuseSvgIcon>
 								}
@@ -344,9 +371,7 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 
 							<Button
 								startIcon={
-									<FuseSvgIcon size={20}>
-										heroicons-outline:chat-bubble-left-right
-									</FuseSvgIcon>
+									<FuseSvgIcon size={20}>heroicons-outline:chat-bubble-left-right</FuseSvgIcon>
 								}
 								onClick={() => setShowComments(!showComments)}
 								sx={{
@@ -364,9 +389,7 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 
 							<Button
 								startIcon={
-									<FuseSvgIcon size={20}>
-										heroicons-outline:arrow-path-rounded-square
-									</FuseSvgIcon>
+									<FuseSvgIcon size={20}>heroicons-outline:arrow-path-rounded-square</FuseSvgIcon>
 								}
 								sx={{
 									textTransform: 'none',
@@ -382,11 +405,7 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 							</Button>
 
 							<Button
-								startIcon={
-									<FuseSvgIcon size={20}>
-										heroicons-outline:paper-airplane
-									</FuseSvgIcon>
-								}
+								startIcon={<FuseSvgIcon size={20}>heroicons-outline:paper-airplane</FuseSvgIcon>}
 								sx={{
 									textTransform: 'none',
 									color: 'text.secondary',
@@ -443,7 +462,10 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 
 								{/* Existing Comments */}
 								{comments?.map((comment) => (
-									<Box key={comment?.id} className="mb-16">
+									<Box
+										key={comment?.id}
+										className="mb-16"
+									>
 										<Box className="flex gap-12">
 											<Avatar
 												src={comment?.author?.avatar}
@@ -536,7 +558,10 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 
 												{/* Nested Replies */}
 												{comment?.replies?.map((reply) => (
-													<Box key={reply?.id} className="flex gap-12 mt-12 ml-16">
+													<Box
+														key={reply?.id}
+														className="flex gap-12 mt-12 ml-16"
+													>
 														<Avatar
 															src={reply?.author?.avatar}
 															sx={{ width: 28, height: 28 }}
@@ -601,7 +626,11 @@ function Post({ post, currentUserAvatar = '', onDelete }) {
 				onClose={handleSnackbarClose}
 				message="Post hidden"
 				action={
-					<Button color="primary" size="small" onClick={handleUndo}>
+					<Button
+						color="primary"
+						size="small"
+						onClick={handleUndo}
+					>
 						Undo
 					</Button>
 				}

@@ -1,87 +1,71 @@
-import { lazy } from "react";
-import { Navigate } from "react-router-dom";
-const ManageReservationPage = lazy(
-  () => import("./manageprofile/tabs/photos-videos/ManageReservationPage")
-);
-const ManageReservationContent = lazy(
-  () => import("./manageprofile/tabs/photos-videos/ManageReservationContent")
-);
-const ManagedBookingListingApp = lazy(
-  () => import("./ManagedBookingListingApp")
-);
-const BookingPropertyListing = lazy(
-  () => import("./bookingsproperty/BookingPropertyListing")
-);
-const BookingProperties = lazy(() => import("./properties/BookingProperties"));
-const BookingProfileApp = lazy(
-  () => import("./manageprofile/BookingProfileApp")
-);
+import { lazy } from 'react';
+import { Navigate } from 'react-router-dom';
 
-const ReservationsOfBookedProperties = lazy(
-  () => import("./reservations/ReservationsOfBookedProperties")
-);
-const ReservationOrder = lazy(
-  () => import("./reservationorder/ReservationOrder")
-);
+const ManageReservationPage = lazy(() => import('./manageprofile/tabs/photos-videos/ManageReservationPage'));
+const ManageReservationContent = lazy(() => import('./manageprofile/tabs/photos-videos/ManageReservationContent'));
+const ManagedBookingListingApp = lazy(() => import('./ManagedBookingListingApp'));
+const BookingPropertyListing = lazy(() => import('./bookingsproperty/BookingPropertyListing'));
+const BookingProperties = lazy(() => import('./properties/BookingProperties'));
+const BookingProfileApp = lazy(() => import('./manageprofile/BookingProfileApp'));
+
+const ReservationsOfBookedProperties = lazy(() => import('./reservations/ReservationsOfBookedProperties'));
+const ReservationOrder = lazy(() => import('./reservationorder/ReservationOrder'));
 
 const SimpleWithSidebarsContentScrollComponent = lazy(
-  () =>
-    import(
-      "../../user-interface/page-layouts/simple/with-sidebars/SimpleWithSidebarsContentScrollComponent"
-    )
+	() => import('../../user-interface/page-layouts/simple/with-sidebars/SimpleWithSidebarsContentScrollComponent')
 );
 /**
  * The E-Commerce app configuration.
  */
 
 const ManagedBookingsListingsAppConfig = {
-  settings: {
-    layout: {},
-  },
+	settings: {
+		layout: {}
+	},
 
-  routes: [
-    {
-      path: "bookings",
-      element: <ManagedBookingListingApp />,
-      children: [
-        {
-          path: "",
-          element: <Navigate to="managed-listings" />,
-        },
-        {
-          path: "managed-listings",
-          element: <BookingProperties />,
-        }, //(Msvs => Done)
-        {
-          path: "managed-listings/:productId/*",
-          element: <BookingPropertyListing />,
-        }, //(Msvs => Done)
+	routes: [
+		{
+			path: 'bookings',
+			element: <ManagedBookingListingApp />,
+			children: [
+				{
+					path: '',
+					element: <Navigate to="managed-listings" />
+				},
+				{
+					path: 'managed-listings',
+					element: <BookingProperties />
+				}, // (Msvs => Done)
+				{
+					path: 'managed-listings/:productId/*',
+					element: <BookingPropertyListing />
+				}, // (Msvs => Done)
 
-        /***Handling PROPERTY OWNED Reservations STARTS HERE */
-        {
-          path: "managed-listings/:productId/manage",
-          element: <BookingProfileApp />,
-        },
+				/** *Handling PROPERTY OWNED Reservations STARTS HERE */
+				{
+					path: 'managed-listings/:productId/manage',
+					element: <BookingProfileApp />
+				},
 
-        {
-          path: ":reservationId/handle-arrival",
-          element: <ManageReservationPage />,
-        }, //(Msvs => Done)
+				{
+					path: ':reservationId/handle-arrival',
+					element: <ManageReservationPage />
+				}, // (Msvs => Done)
 
-        /***Handling Reservations ENDS HERE */
+				/** *Handling Reservations ENDS HERE */
 
-        {
-          path: "list-reservations",
-          element: <ReservationsOfBookedProperties />,
-        }, //(Msvs: => : Done)
+				{
+					path: 'list-reservations',
+					element: <ReservationsOfBookedProperties />
+				}, // (Msvs: => : Done)
 
-        {
-          path: "list-reservation/:reservationId/manage",
-          element: <ReservationOrder />,
-        }, //(Msvs: => : Done)
-      ],
-    },
-  ],
+				{
+					path: 'list-reservation/:reservationId/manage',
+					element: <ReservationOrder />
+				} // (Msvs: => : Done)
+			]
+		}
+	]
 };
 
 export default ManagedBookingsListingsAppConfig;

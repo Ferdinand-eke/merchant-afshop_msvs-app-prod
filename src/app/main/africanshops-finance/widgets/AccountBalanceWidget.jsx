@@ -10,12 +10,7 @@ import { useGetFinanceDashboardWidgetsQuery } from '../FinanceDashboardApi';
 /**
  * The AccountBalanceWidget widget.
  */
-function AccountBalanceWidget({shopData, shopDataLoading, isError,
-	account,
-	accountLoading,
-	accountError
-}) {
-	
+function AccountBalanceWidget({ shopData, shopDataLoading, isError, account, accountLoading, accountError }) {
 	const theme = useTheme();
 	const { data: widgets, isLoading } = useGetFinanceDashboardWidgetsQuery();
 

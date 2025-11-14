@@ -46,7 +46,6 @@ function FuseNavVerticalLayout1(props) {
 		onItemClick?.(item);
 	}
 
-	
 	return (
 		<StyledList
 			className={clsx(

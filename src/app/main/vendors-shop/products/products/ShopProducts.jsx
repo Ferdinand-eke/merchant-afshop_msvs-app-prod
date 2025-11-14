@@ -6,7 +6,6 @@ import ShopProductsTable from './ShopProductsTable';
  * The products page.
  */
 function ShopProducts() {
-	
 	return (
 		<>
 			<GlobalStyles
@@ -18,9 +17,8 @@ function ShopProducts() {
 			/>
 			<div className="w-full h-full container flex flex-col">
 				<ShopProductsHeader />
-				
+
 				<ShopProductsTable />
-				
 			</div>
 		</>
 	);

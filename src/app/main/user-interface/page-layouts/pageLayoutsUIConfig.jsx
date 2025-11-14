@@ -256,7 +256,7 @@ const pageLayoutsUIConfig = {
 						}
 					]
 				},
-				
+
 				{
 					path: 'simple',
 					children: [

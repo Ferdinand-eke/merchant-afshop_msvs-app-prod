@@ -81,7 +81,14 @@ function ModernPricingCard(props) {
 					}}
 				>
 					<Chip
-						icon={<FuseSvgIcon size={16} sx={{ color: 'white !important' }}>heroicons-solid:star</FuseSvgIcon>}
+						icon={
+							<FuseSvgIcon
+								size={16}
+								sx={{ color: 'white !important' }}
+							>
+								heroicons-solid:star
+							</FuseSvgIcon>
+						}
 						label="MOST POPULAR"
 						size="small"
 						sx={{
@@ -126,7 +133,8 @@ function ModernPricingCard(props) {
 						overflow: 'hidden'
 					}}
 				>
-					{subtitle?.substring(0, 120)}{subtitle?.length > 120 && '...'}
+					{subtitle?.substring(0, 120)}
+					{subtitle?.length > 120 && '...'}
 				</Typography>
 
 				{/* Decorative Divider with Gradient */}
@@ -154,7 +162,10 @@ function ModernPricingCard(props) {
 							boxShadow: '0 4px 12px rgba(255, 107, 53, 0.25)'
 						}}
 					>
-						<Typography className="text-24 font-black" sx={{ color: 'white' }}>
+						<Typography
+							className="text-24 font-black"
+							sx={{ color: 'white' }}
+						>
 							%
 						</Typography>
 					</Box>
@@ -176,36 +187,52 @@ function ModernPricingCard(props) {
 				<Box
 					className="mb-32 p-16 rounded-lg"
 					sx={{
-						backgroundColor: (theme) => theme.palette.mode === 'dark'
-							? 'rgba(255, 107, 53, 0.1)'
-							: 'rgba(255, 107, 53, 0.05)',
+						backgroundColor: (theme) =>
+							theme.palette.mode === 'dark' ? 'rgba(255, 107, 53, 0.1)' : 'rgba(255, 107, 53, 0.05)',
 						border: '1px solid',
-						borderColor: (theme) => theme.palette.mode === 'dark'
-							? 'rgba(255, 107, 53, 0.2)'
-							: 'rgba(255, 107, 53, 0.1)'
+						borderColor: (theme) =>
+							theme.palette.mode === 'dark' ? 'rgba(255, 107, 53, 0.2)' : 'rgba(255, 107, 53, 0.1)'
 					}}
 				>
 					{period === 'month' ? (
 						<>
-							<Typography className="text-13 font-bold mb-4" sx={{ color: '#FF6B35' }}>
+							<Typography
+								className="text-13 font-bold mb-4"
+								sx={{ color: '#FF6B35' }}
+							>
 								Negotiated Commission
 							</Typography>
-							<Typography className="text-13" color="text.secondary">
+							<Typography
+								className="text-13"
+								color="text.secondary"
+							>
 								Only <span className="font-bold">{monthlyPrice}%</span> commission when you earn
 							</Typography>
-							<Typography className="text-12 mt-4" color="text.secondary">
+							<Typography
+								className="text-12 mt-4"
+								color="text.secondary"
+							>
 								Alternative: <span className="font-bold">{yearlyPrice}%</span> standard rate
 							</Typography>
 						</>
 					) : (
 						<>
-							<Typography className="text-13 font-bold mb-4" sx={{ color: '#FF6B35' }}>
+							<Typography
+								className="text-13 font-bold mb-4"
+								sx={{ color: '#FF6B35' }}
+							>
 								Percentage Commission
 							</Typography>
-							<Typography className="text-13" color="text.secondary">
+							<Typography
+								className="text-13"
+								color="text.secondary"
+							>
 								Only <span className="font-bold">{yearlyPrice}%</span> commission when you earn
 							</Typography>
-							<Typography className="text-12 mt-4" color="text.secondary">
+							<Typography
+								className="text-12 mt-4"
+								color="text.secondary"
+							>
 								Alternative: <span className="font-bold">{monthlyPrice}%</span> negotiated rate
 							</Typography>
 						</>
@@ -233,9 +260,7 @@ function ModernPricingCard(props) {
 							background: isPopular
 								? 'linear-gradient(135deg, #F77F00 0%, #FF6B35 100%)'
 								: 'rgba(255, 107, 53, 0.1)',
-							boxShadow: isPopular
-								? '0 6px 24px rgba(255, 107, 53, 0.4)'
-								: 'none',
+							boxShadow: isPopular ? '0 6px 24px rgba(255, 107, 53, 0.4)' : 'none',
 							borderColor: isPopular ? 'transparent' : '#F77F00',
 							transform: 'translateY(-2px)'
 						},
@@ -249,18 +274,22 @@ function ModernPricingCard(props) {
 
 				{/* Trust Badge */}
 				<Box className="flex items-center justify-center gap-8 mb-24">
-					<FuseSvgIcon size={16} sx={{ color: '#10B981' }}>
+					<FuseSvgIcon
+						size={16}
+						sx={{ color: '#10B981' }}
+					>
 						heroicons-solid:check-circle
 					</FuseSvgIcon>
-					<Typography className="text-12 font-medium" sx={{ color: '#10B981' }}>
+					<Typography
+						className="text-12 font-medium"
+						sx={{ color: '#10B981' }}
+					>
 						No credit card required
 					</Typography>
 				</Box>
 
 				{/* Feature Details */}
-				<Box sx={{ mt: 'auto' }}>
-					{details}
-				</Box>
+				<Box sx={{ mt: 'auto' }}>{details}</Box>
 			</Box>
 		</Paper>
 	);

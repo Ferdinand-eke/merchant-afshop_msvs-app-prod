@@ -1,5 +1,4 @@
 import { lazy } from 'react';
-import { Navigate } from 'react-router-dom';
 import { authRoles } from 'src/app/auth';
 
 const ModernReversedForgotPasswordPage = lazy(() => import('./ModernReversedForgotPasswordPage'));
@@ -28,15 +27,13 @@ const forgotPasswordConfig = {
 			}
 		}
 	},
-	
+
 	auth: authRoles.onlyGuest,
 	routes: [
-
 		{
 			path: 'forgot-password',
 			element: <ModernReversedForgotPasswordPage />
-		},
-
+		}
 	]
 };
 export default forgotPasswordConfig;

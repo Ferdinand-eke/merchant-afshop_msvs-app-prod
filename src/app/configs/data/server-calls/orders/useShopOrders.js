@@ -46,13 +46,9 @@ export function useShopItemsInOrders(page = 1, limit = 10, orderId) {
 		...(orderId && { orderId })
 	};
 
-	return useQuery(
-		['__myshop_items_orders', page, limit, orderId],
-		() => GetShopItemsInOrders(params),
-		{
-			keepPreviousData: true
-		}
-	);
+	return useQuery(['__myshop_items_orders', page, limit, orderId], () => GetShopItemsInOrders(params), {
+		keepPreviousData: true
+	});
 }
 
 export function useFindShopItemsInOrders(itemId) {
@@ -88,13 +84,9 @@ export function useShopSealedOrderItems(page = 1, limit = 10) {
 		limit: limit.toString()
 	};
 
-	return useQuery(
-		['__myshop_sealed_orders', page, limit],
-		() => GetShopSealedOrderItems(params),
-		{
-			keepPreviousData: true
-		}
-	);
+	return useQuery(['__myshop_sealed_orders', page, limit], () => GetShopSealedOrderItems(params), {
+		keepPreviousData: true
+	});
 }
 
 /** ****

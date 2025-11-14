@@ -65,7 +65,6 @@ function Logo() {
 					<span className="react-text text-12 font-semibold">React</span>
 				</div>
 			</div> */}
-
 		</Root>
 	);
 }

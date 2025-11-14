@@ -16,7 +16,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-toolbar': {},
 	'& .FusePageSimple-content': {},
 	'& .FusePageSimple-sidebarHeader': {
-		width:''
+		width: ''
 	},
 	'& .FusePageSimple-sidebarContent': {}
 }));
@@ -44,18 +44,16 @@ function SimpleWithSidebarsContentScrollComponent() {
 					}}
 				/>
 			}
-			content={<DemoContent/>}
+			content={<DemoContent />}
 			leftSidebarOpen={leftSidebarOpen}
 			leftSidebarOnClose={() => {
 				setLeftSidebarOpen(false);
 			}}
-
-			leftSidebarContent={<DemoSidebar/>}
+			leftSidebarContent={<DemoSidebar />}
 			rightSidebarOpen={rightSidebarOpen}
 			rightSidebarOnClose={() => {
 				setRightSidebarOpen(false);
 			}}
-
 			// rightSidebarContent={<DemoSidebar />}
 			scroll="content"
 		/>

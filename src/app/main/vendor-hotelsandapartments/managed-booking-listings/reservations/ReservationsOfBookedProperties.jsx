@@ -13,7 +13,7 @@ function ReservationsOfBookedProperties() {
 				height: '100vh',
 				display: 'flex',
 				flexDirection: 'column',
-				overflow: 'hidden',
+				overflow: 'hidden'
 			}}
 		>
 			{/* Fixed Header */}
@@ -25,7 +25,7 @@ function ReservationsOfBookedProperties() {
 				sx={{
 					overflow: 'hidden',
 					display: 'flex',
-					flexDirection: 'column',
+					flexDirection: 'column'
 				}}
 			>
 				<ReservationsTable />

@@ -8,7 +8,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import FormHelperText from '@mui/material/FormHelperText';
 import _ from '@lodash';
-import { useEffect } from 'react';
 import { useGetNotificationSettingsQuery, useUpdateNotificationSettingsMutation } from '../SettingsApi';
 
 const defaultValues = {
@@ -50,8 +49,6 @@ function NotificationsTab() {
 	 * Form Submit
 	 */
 	function onSubmit(formData) {
-
-
 		// updateNotificationSettings(formData);
 	}
 

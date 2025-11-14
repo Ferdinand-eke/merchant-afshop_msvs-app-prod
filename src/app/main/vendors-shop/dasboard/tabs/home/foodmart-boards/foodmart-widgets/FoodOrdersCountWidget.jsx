@@ -12,11 +12,7 @@ import { Box, LinearProgress } from '@mui/material';
  */
 
 function FoodOrdersCountWidget() {
-
-	const {
-		data: foodOrders,
-		isLoading: foodOrdersIsLoading,
-	} = useMerchantFoodOrders();
+	const { data: foodOrders, isLoading: foodOrdersIsLoading } = useMerchantFoodOrders();
 
 	if (foodOrdersIsLoading) {
 		return <FuseLoading />;
@@ -34,7 +30,10 @@ function FoodOrdersCountWidget() {
 			<div className="flex items-center justify-between px-16 pt-16">
 				<Box className="flex items-center gap-8">
 					<Box className="flex items-center justify-center w-40 h-40 rounded-full bg-blue-100 dark:bg-blue-900/30">
-						<FuseSvgIcon className="text-blue-600 dark:text-blue-400" size={20}>
+						<FuseSvgIcon
+							className="text-blue-600 dark:text-blue-400"
+							size={20}
+						>
 							heroicons-outline:shopping-cart
 						</FuseSvgIcon>
 					</Box>
@@ -45,7 +44,10 @@ function FoodOrdersCountWidget() {
 						Active Orders
 					</Typography>
 				</Box>
-				<IconButton aria-label="more" size="small">
+				<IconButton
+					aria-label="more"
+					size="small"
+				>
 					<FuseSvgIcon size={20}>heroicons-outline:dots-vertical</FuseSvgIcon>
 				</IconButton>
 			</div>
@@ -54,19 +56,23 @@ function FoodOrdersCountWidget() {
 				<Typography className="text-5xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
 					{count}
 				</Typography>
-				<Typography className="text-xs mt-4" color="text.secondary">
+				<Typography
+					className="text-xs mt-4"
+					color="text.secondary"
+				>
 					Pending food orders
 				</Typography>
 			</div>
 
 			<Box className="px-16 mt-16 mb-16">
 				<Box className="flex items-center justify-between mb-8">
-					<Typography className="text-xs font-medium" color="text.secondary">
+					<Typography
+						className="text-xs font-medium"
+						color="text.secondary"
+					>
 						Delivery Success Rate
 					</Typography>
-					<Typography className="text-xs font-bold text-blue-600">
-						{deliveryRate}%
-					</Typography>
+					<Typography className="text-xs font-bold text-blue-600">{deliveryRate}%</Typography>
 				</Box>
 				<LinearProgress
 					variant="determinate"

@@ -7,5 +7,4 @@ function ManagedListingApp() {
 	return <Outlet />;
 }
 
-
 export default ManagedListingApp;

@@ -16,6 +16,5 @@ const merchantProfileAppConfig = {
 			element: <ProfileApp />
 		}
 	]
-	
 };
 export default merchantProfileAppConfig;

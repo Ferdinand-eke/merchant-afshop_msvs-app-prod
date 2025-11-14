@@ -2,20 +2,17 @@
 import { useMemo } from 'react';
 import DataTable from 'app/shared-components/data-table/DataTable';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { Chip, ListItemIcon, MenuItem, Paper } from '@mui/material';
-import _ from '@lodash';
+import { ListItemIcon, MenuItem, Paper } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import clsx from 'clsx';
 import Button from '@mui/material/Button';
-import { useDeleteECommerceProductsMutation, useGetECommerceProductsQuery } from '../ECommerceApi';
 import useGetAllPropertytypes from 'src/app/aaqueryhooks/propertytypeHandlingQuery';
+import { useDeleteECommerceProductsMutation, useGetECommerceProductsQuery } from '../ECommerceApi';
 
 function ProductsTable() {
-	
 	const { data: products, isLoading } = useGetECommerceProductsQuery();
-	const {data:propertyTypes, isLoading:propertyTypesIsLoading} = useGetAllPropertytypes()
+	const { data: propertyTypes, isLoading: propertyTypesIsLoading } = useGetAllPropertytypes();
 	// console.log("PROPERTY-TYPES", propertyTypes?.data?.propertytypes)
 
 	const [removeProducts] = useDeleteECommerceProductsMutation();
@@ -128,7 +125,6 @@ function ProductsTable() {
 	// 	[]
 	// );
 
-
 	const columns = useMemo(
 		() => [
 			// {
@@ -160,7 +156,7 @@ function ProductsTable() {
 			{
 				accessorKey: 'name',
 				header: 'Name',
-				
+
 				Cell: ({ row }) => (
 					<Typography
 						component={Link}
@@ -247,6 +243,7 @@ function ProductsTable() {
 	if (propertyTypesIsLoading) {
 		return <FuseLoading />;
 	}
+
 	return (
 		<Paper
 			className="flex flex-col flex-auto shadow-3 rounded-t-16 overflow-hidden rounded-b-0 w-full h-full"
@@ -254,7 +251,7 @@ function ProductsTable() {
 		>
 			<DataTable
 				// data={products}
-				data={ propertyTypes?.data?.propertytypes}
+				data={propertyTypes?.data?.propertytypes}
 				columns={columns}
 				renderRowActionMenuItems={({ closeMenu, row, table }) => [
 					<MenuItem

@@ -10,11 +10,11 @@ import { Link, useParams } from 'react-router-dom';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import FuseLoading from '@fuse/core/FuseLoading';
+import { useMerchantFindSingleFoodOrder } from 'app/configs/data/server-calls/foodmartmenuitems/useMerchantFoodOrder';
+import { getJustMyShopDetailsAndPlan } from 'app/configs/data/client/clientToApiRoutes';
 import InvoiceTab from './tabs/InvoiceTab';
 import OrderDetailsTab from './tabs/OrderDetailsTab';
 import ProductsTab from './tabs/ProductsTab';
-import { useMerchantFindSingleFoodOrder } from 'app/configs/data/server-calls/foodmartmenuitems/useMerchantFoodOrder';
-import { getJustMyShopDetailsAndPlan } from 'app/configs/data/client/clientToApiRoutes';
 
 /**
  * The order.
@@ -26,7 +26,6 @@ function FoodOrder() {
 	const [loading, setLoading] = useState(false);
 	const [myshopData, setMyshopData] = useState({});
 
-
 	const {
 		data: order,
 		isLoading,
@@ -34,29 +33,25 @@ function FoodOrder() {
 	} = useMerchantFindSingleFoodOrder(orderId, {
 		skip: !orderId
 	});
-	
+
 	useEffect(() => {
 		if (orderId) {
-		  getSingleApiShopDetails();
+			getSingleApiShopDetails();
 		}
-	  }, [orderId]);
-	
-	  async function getSingleApiShopDetails() {
+	}, [orderId]);
+
+	async function getSingleApiShopDetails() {
 		setLoading(true);
 		const responseData = await getJustMyShopDetailsAndPlan();
+
 		if (responseData) {
-		  setMyshopData(responseData?.data);
-	
-		  setTimeout(
-			function () {
-			  setLoading(false);
-			}.bind(this),
-			250
-		  );
+			setMyshopData(responseData?.data);
+
+			setTimeout(function () {
+				setLoading(false);
+			}, 250);
 		}
-	  }
-
-
+	}
 
 	const theme = useTheme();
 	const isMobile = useThemeMediaQuery((_theme) => _theme.breakpoints.down('lg'));
@@ -165,9 +160,19 @@ function FoodOrder() {
 					</Tabs>
 					{order?.data && (
 						<div className="p-16 sm:p-24 max-w-3xl w-full">
-							{tabValue === 0 && <OrderDetailsTab order={order?.data} isError={isError}/>}
+							{tabValue === 0 && (
+								<OrderDetailsTab
+									order={order?.data}
+									isError={isError}
+								/>
+							)}
 							{tabValue === 1 && <ProductsTab />}
-							{tabValue === 2 && <InvoiceTab order={order?.data}  myshopData={myshopData}/>}
+							{tabValue === 2 && (
+								<InvoiceTab
+									order={order?.data}
+									myshopData={myshopData}
+								/>
+							)}
 						</div>
 					)}
 				</>

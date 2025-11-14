@@ -16,6 +16,5 @@ const profileAppConfig = {
 			element: <ProfileApp />
 		}
 	]
-	
 };
 export default profileAppConfig;

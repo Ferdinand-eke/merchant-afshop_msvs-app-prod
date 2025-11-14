@@ -11,11 +11,10 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import _ from '@lodash';
-import { useEffect } from 'react';
 
 const defaultValues = {
 	currentEmail: '',
-	shopemail: '',
+	shopemail: ''
 	// twoStepVerification: false,
 	// askPasswordChange: false
 };
@@ -27,13 +26,12 @@ const schema = z.object({
 	// newPassword: z.string().min(6, 'Password must be at least 6 characters').or(z.literal('')).optional(),
 
 	currentEmail: z.string().email('You must enter a valid email').nonempty('You must enter an email'),
-	shopemail: z.string().email('You must enter a valid email').nonempty('You must enter an email'),
+	shopemail: z.string().email('You must enter a valid email').nonempty('You must enter an email')
 	// confirmPassword: '',
 
 	// twoStepVerification: z.boolean(),
 	// askPasswordChange: z.boolean()
 });
-
 
 function ChangeEmailSetting() {
 	const { control, setError, reset, handleSubmit, formState, getValues } = useForm({
@@ -47,9 +45,7 @@ function ChangeEmailSetting() {
 	 * Form Submit
 	 */
 	function onSubmit(formData) {
-
-
-		console.log("Form Data", formData)
+		console.log('Form Data', formData);
 	}
 
 	return (
@@ -131,14 +127,8 @@ function ChangeEmailSetting() {
 					</Button>
 				</div>
 
-
 				<div className="my-40 border-t" />
-
-								
-
-				
 			</form>
-
 		</div>
 	);
 }

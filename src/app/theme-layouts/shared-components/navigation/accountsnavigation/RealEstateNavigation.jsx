@@ -6,12 +6,13 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import withSlices from 'app/store/withSlices';
 import { estatesNavigationSlice, selectNavigation } from '../store/estatesNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
+
 const AFS_ESTATES = import.meta.env.VITE_AFS_ESTATES;
 
 function RealEstateNavigation(props) {
 	const { className = '', layout = 'vertical', dense, active } = props;
 	const navigation = useAppSelector(selectNavigation);
-	
+
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const dispatch = useAppDispatch();
 	return useMemo(() => {
@@ -20,7 +21,6 @@ function RealEstateNavigation(props) {
 				dispatch(navbarCloseMobile());
 			}
 		}
-
 
 		return (
 			<FuseNavigation
@@ -35,6 +35,5 @@ function RealEstateNavigation(props) {
 		);
 	}, [dispatch, isMobile, navigation, active, className, dense, layout]);
 }
-
 
 export default withSlices([estatesNavigationSlice])(RealEstateNavigation);

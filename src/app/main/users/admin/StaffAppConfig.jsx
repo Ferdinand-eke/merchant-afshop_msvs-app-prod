@@ -3,7 +3,6 @@ import ContactView from './contact/ContactView';
 import ContactForm from './contact/ContactForm';
 import AddContactForm from './contact/AddContactForm';
 // import { authRoles } from 'src/app/auth';
-import authRoles from '../../../auth/authRoles';
 
 const ContactsApp = lazy(() => import('./ContactsApp'));
 const PropertyType = lazy(() => import('./propertytype/PropertyType'));
@@ -34,16 +33,12 @@ const StaffAppConfig = {
 				{
 					path: ':id/edit',
 					element: <ContactForm />
-		
-				},
+				}
 
-				
-				// { 
+				// {
 				// 	path: 'operate/:productId/*',
 				// 	element: <PropertyType />
 				// },
-
-
 			]
 		}
 	]

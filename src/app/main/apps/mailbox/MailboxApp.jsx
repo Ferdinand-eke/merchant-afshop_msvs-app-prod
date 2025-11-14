@@ -3,7 +3,6 @@ import { Outlet, useLocation, useParams } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import MailboxAppSidebarContent from './MailboxAppSidebarContent';
 import Mails from './mails/Mails';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
@@ -48,7 +47,6 @@ function MailboxApp() {
 	return (
 		<Root
 			content={<Mails onToggleLeftSidebar={() => setLeftSidebarOpen(!leftSidebarOpen)} />}
-
 			// leftSidebarContent={<MailboxAppSidebarContent />}
 			leftSidebarOpen={leftSidebarOpen}
 			leftSidebarOnClose={() => setLeftSidebarOpen(false)}

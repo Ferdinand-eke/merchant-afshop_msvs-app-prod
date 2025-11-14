@@ -30,8 +30,8 @@ const PropertyTypesAppConfig = {
 				{
 					path: 'propertytypes/:productId/*',
 					element: <PropertyType />
-				},
-				
+				}
+
 				// {
 				// 	path: 'orders',
 				// 	element: <Orders />

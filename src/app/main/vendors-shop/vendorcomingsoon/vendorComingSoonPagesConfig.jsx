@@ -25,12 +25,11 @@ const vendorComingSoonPagesConfig = {
 					path: '',
 					element: <Navigate to="coming-soon" />
 				},
-			
+
 				{
 					path: 'coming-soon',
 					element: <ModernReversedComingSoonPage />
-				},
-				
+				}
 			]
 		}
 	]

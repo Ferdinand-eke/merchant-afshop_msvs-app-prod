@@ -76,7 +76,6 @@ function NavbarWrapperLayout2(props) {
 					<NavbarToggleFabLayout2 />
 				</Hidden>
 			)}
-			
 		</>
 	);
 }

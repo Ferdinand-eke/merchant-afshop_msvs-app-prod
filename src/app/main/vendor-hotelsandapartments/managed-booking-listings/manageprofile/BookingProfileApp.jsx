@@ -1,5 +1,5 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -8,27 +8,26 @@ import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
-import AboutManageRoomsTab from './tabs/about/AboutManageRoomsTab';
-import PhotosVideosTab from './tabs/photos-videos/PhotosVideosTab';
-import TimelineTab from './tabs/timeline/TimelineTab';
 import { useSingleShopBookingsProperty } from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
 import { useNavigate, useParams } from 'react-router';
-import ManageReservationPage from './tabs/photos-videos/ManageReservationPage';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { useTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
-import { Button, Chip, Paper, IconButton } from '@mui/material';
+import { Button, Chip, IconButton } from '@mui/material';
+import ManageReservationPage from './tabs/photos-videos/ManageReservationPage';
+import TimelineTab from './tabs/timeline/TimelineTab';
+import PhotosVideosTab from './tabs/photos-videos/PhotosVideosTab';
+import AboutManageRoomsTab from './tabs/about/AboutManageRoomsTab';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
-		backgroundColor: 'transparent',
-	},
+		backgroundColor: 'transparent'
+	}
 }));
 
 const TABS = {
 	timeline: 0,
 	rooms: 1,
-	reservations: 2,
+	reservations: 2
 };
 
 /**
@@ -48,11 +47,7 @@ function BookingProfileApp() {
 	const [selectedTab, setSelectedTab] = useState(getStoredTab);
 
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const {
-		data: propertyList,
-		isLoading,
-		isError,
-	} = useSingleShopBookingsProperty(productId);
+	const { data: propertyList, isLoading, isError } = useSingleShopBookingsProperty(productId);
 
 	function handleTabChange(event, value) {
 		setSelectedTab(value);
@@ -87,7 +82,7 @@ function BookingProfileApp() {
 				<Box
 					sx={{
 						background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
-						borderBottom: '1px solid rgba(234, 88, 12, 0.1)',
+						borderBottom: '1px solid rgba(234, 88, 12, 0.1)'
 					}}
 				>
 					{/* Compact Profile Section */}
@@ -114,8 +109,8 @@ function BookingProfileApp() {
 										py: 1,
 										fontSize: '14px',
 										'&:hover': {
-											background: 'rgba(249, 115, 22, 0.08)',
-										},
+											background: 'rgba(249, 115, 22, 0.08)'
+										}
 									}}
 								>
 									Back
@@ -132,7 +127,7 @@ function BookingProfileApp() {
 												width: 56,
 												height: 56,
 												border: '2px solid white',
-												boxShadow: '0 2px 8px rgba(234, 88, 12, 0.15)',
+												boxShadow: '0 2px 8px rgba(234, 88, 12, 0.15)'
 											}}
 											src={featuredImage}
 											alt="Property"
@@ -140,12 +135,20 @@ function BookingProfileApp() {
 									</motion.div>
 
 									<Box className="flex-1 min-w-0">
-										<Typography variant="h6" className="font-bold mb-4 truncate" sx={{ color: '#292524' }}>
+										<Typography
+											variant="h6"
+											className="font-bold mb-4 truncate"
+											sx={{ color: '#292524' }}
+										>
 											{property?.title || 'Property'}
 										</Typography>
 										<Box className="flex flex-wrap items-center gap-6">
 											<Chip
-												icon={<FuseSvgIcon size={12}>heroicons-outline:location-marker</FuseSvgIcon>}
+												icon={
+													<FuseSvgIcon size={12}>
+														heroicons-outline:location-marker
+													</FuseSvgIcon>
+												}
 												label="Abuja, FCT"
 												size="small"
 												sx={{
@@ -154,7 +157,7 @@ function BookingProfileApp() {
 													fontWeight: 600,
 													height: 20,
 													fontSize: '11px',
-													'& .MuiChip-icon': { marginLeft: '4px' },
+													'& .MuiChip-icon': { marginLeft: '4px' }
 												}}
 											/>
 											<Chip
@@ -167,11 +170,13 @@ function BookingProfileApp() {
 													fontWeight: 600,
 													height: 20,
 													fontSize: '11px',
-													'& .MuiChip-icon': { marginLeft: '4px' },
+													'& .MuiChip-icon': { marginLeft: '4px' }
 												}}
 											/>
 											<Chip
-												icon={<FuseSvgIcon size={12}>heroicons-outline:check-circle</FuseSvgIcon>}
+												icon={
+													<FuseSvgIcon size={12}>heroicons-outline:check-circle</FuseSvgIcon>
+												}
 												label="Verified"
 												size="small"
 												sx={{
@@ -180,7 +185,7 @@ function BookingProfileApp() {
 													fontWeight: 600,
 													height: 20,
 													fontSize: '11px',
-													'& .MuiChip-icon': { marginLeft: '4px' },
+													'& .MuiChip-icon': { marginLeft: '4px' }
 												}}
 											/>
 										</Box>
@@ -190,26 +195,44 @@ function BookingProfileApp() {
 								{/* Stats - Compact */}
 								<Box className="hidden md:flex items-center gap-20">
 									<Box className="text-center">
-										<Typography className="text-16 font-bold" sx={{ color: '#ea580c', lineHeight: 1.2 }}>
+										<Typography
+											className="text-16 font-bold"
+											sx={{ color: '#ea580c', lineHeight: 1.2 }}
+										>
 											200K
 										</Typography>
-										<Typography className="text-9 font-medium" color="text.secondary">
+										<Typography
+											className="text-9 font-medium"
+											color="text.secondary"
+										>
 											VIEWS
 										</Typography>
 									</Box>
 									<Box className="text-center">
-										<Typography className="text-16 font-bold" sx={{ color: '#ea580c', lineHeight: 1.2 }}>
+										<Typography
+											className="text-16 font-bold"
+											sx={{ color: '#ea580c', lineHeight: 1.2 }}
+										>
 											1.2K
 										</Typography>
-										<Typography className="text-9 font-medium" color="text.secondary">
+										<Typography
+											className="text-9 font-medium"
+											color="text.secondary"
+										>
 											BOOKINGS
 										</Typography>
 									</Box>
 									<Box className="text-center">
-										<Typography className="text-16 font-bold" sx={{ color: '#ea580c', lineHeight: 1.2 }}>
+										<Typography
+											className="text-16 font-bold"
+											sx={{ color: '#ea580c', lineHeight: 1.2 }}
+										>
 											4.9
 										</Typography>
-										<Typography className="text-9 font-medium" color="text.secondary">
+										<Typography
+											className="text-9 font-medium"
+											color="text.secondary"
+										>
 											RATING
 										</Typography>
 									</Box>
@@ -224,11 +247,14 @@ function BookingProfileApp() {
 											border: '1px solid rgba(234, 88, 12, 0.2)',
 											'&:hover': {
 												background: 'rgba(249, 115, 22, 0.08)',
-												borderColor: '#ea580c',
-											},
+												borderColor: '#ea580c'
+											}
 										}}
 									>
-										<FuseSvgIcon size={16} sx={{ color: '#ea580c' }}>
+										<FuseSvgIcon
+											size={16}
+											sx={{ color: '#ea580c' }}
+										>
 											heroicons-outline:share
 										</FuseSvgIcon>
 									</IconButton>
@@ -239,11 +265,14 @@ function BookingProfileApp() {
 											border: '1px solid rgba(234, 88, 12, 0.2)',
 											'&:hover': {
 												background: 'rgba(249, 115, 22, 0.08)',
-												borderColor: '#ea580c',
-											},
+												borderColor: '#ea580c'
+											}
 										}}
 									>
-										<FuseSvgIcon size={16} sx={{ color: '#ea580c' }}>
+										<FuseSvgIcon
+											size={16}
+											sx={{ color: '#ea580c' }}
+										>
 											heroicons-outline:dots-vertical
 										</FuseSvgIcon>
 									</IconButton>
@@ -268,14 +297,14 @@ function BookingProfileApp() {
 										py: 1,
 										color: '#78716c',
 										'&.Mui-selected': {
-											color: '#ea580c',
-										},
+											color: '#ea580c'
+										}
 									},
 									'& .MuiTabs-indicator': {
 										backgroundColor: '#ea580c',
 										height: 2,
-										borderRadius: '2px 2px 0 0',
-									},
+										borderRadius: '2px 2px 0 0'
+									}
 								}}
 							>
 								<Tab
@@ -302,7 +331,7 @@ function BookingProfileApp() {
 				<Box
 					sx={{
 						background: 'linear-gradient(180deg, #fafaf9 0%, #f5f5f4 50%, #fef3e2 100%)',
-						minHeight: 'calc(100vh - 400px)',
+						minHeight: 'calc(100vh - 400px)'
 					}}
 				>
 					<div className="flex flex-auto justify-center w-full max-w-6xl mx-auto p-24 sm:p-32">

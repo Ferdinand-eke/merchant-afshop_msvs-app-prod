@@ -4,13 +4,11 @@ import Typography from '@mui/material/Typography';
 import { memo } from 'react';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { useGetProjectDashboardWidgetsQuery } from '../../../ProjectDashboardApi';
 
 /**
  * The IssuesWidget widget.
  */
-function IssuesWidget({orderItems, isLoading}) {
-
+function IssuesWidget({ orderItems, isLoading }) {
 	if (isLoading) {
 		return <FuseLoading />;
 	}
@@ -36,22 +34,14 @@ function IssuesWidget({orderItems, isLoading}) {
 				</IconButton>
 			</div>
 			<div className="text-center mt-8">
-				<Typography className="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">
-				
-				</Typography>
-				<Typography className="text-lg font-medium text-amber-600">
-				
-					{orderItems?.length}
-					</Typography>
+				<Typography className="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500" />
+				<Typography className="text-lg font-medium text-amber-600">{orderItems?.length}</Typography>
 			</div>
 			<Typography
 				className="flex items-baseline justify-center w-full mt-20 mb-24"
 				color="text.secondary"
 			>
-				<span className="truncate">Existing Orders</span>:<b className="px-8">
-			
-					{orderItems?.length}
-					</b>
+				<span className="truncate">Existing Orders</span>:<b className="px-8">{orderItems?.length}</b>
 			</Typography>
 		</Paper>
 	);

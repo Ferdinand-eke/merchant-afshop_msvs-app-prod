@@ -90,7 +90,7 @@ function AccountsCard(props) {
 				)}
 
 				<div className="flex flex-auto flex-col">
-				<Typography className="line-clamp-1 font-semibold">Check ACCOUNT NOTIFICATION PANEL</Typography>
+					<Typography className="line-clamp-1 font-semibold">Check ACCOUNT NOTIFICATION PANEL</Typography>
 					{/* {item.title && <Typography className="line-clamp-1 font-semibold">{item.title}</Typography>} */}
 
 					{item.description && (

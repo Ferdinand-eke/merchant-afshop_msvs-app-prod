@@ -8,24 +8,20 @@ import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Box from '@mui/system/Box';
-import { format } from 'date-fns/format';
-import _ from '@lodash';
 import { showMessage } from '@fuse/core/FuseMessage/fuseMessageSlice';
 import { useAppDispatch } from 'app/store/hooks';
-import { useGetContactsItemQuery, useGetContactsCountriesQuery, useGetContactsTagsQuery } from '../ContactsApi';
 import { useApproveAProperty, useGetSingleListing } from 'src/app/aaqueryhooks/listingssHandlingQuery';
+import { useGetContactsCountriesQuery, useGetContactsTagsQuery } from '../ContactsApi';
 
 /**
  * The contact view.
  */
 function ContactView() {
-
-
 	const { data: countries } = useGetContactsCountriesQuery();
 	const { data: tags } = useGetContactsTagsQuery();
 	const routeParams = useParams();
 	const { id: contactId } = routeParams;
-	
+
 	// const {
 	// 	data: contact,
 	// 	isLoading,
@@ -34,9 +30,9 @@ function ContactView() {
 	// 	skip: !contactId
 	// });
 
-	const {data:listingData, isLoading:listingIsLoading, isError:listIsError} = useGetSingleListing(contactId)
+	const { data: listingData, isLoading: listingIsLoading, isError: listIsError } = useGetSingleListing(contactId);
 	// console.log("SINGLE LISING-DATA", listingData)
-	const ApproveListing = useApproveAProperty()
+	const ApproveListing = useApproveAProperty();
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
@@ -49,7 +45,7 @@ function ContactView() {
 	// 	return <FuseLoading className="min-h-screen" />;
 	// }
 
-	// if (isError) { 
+	// if (isError) {
 	// 	setTimeout(() => {
 	// 		navigate('/properties/listings');
 	// 		dispatch(showMessage({ message: 'NOT FOUND' }));
@@ -60,7 +56,6 @@ function ContactView() {
 	// if (!contact) {
 	// 	return null;
 	// }
-
 
 	if (listingIsLoading) {
 		return <FuseLoading className="min-h-screen" />;
@@ -74,9 +69,10 @@ function ContactView() {
 		return null;
 	}
 
-	if(!listingData?.data){
+	if (!listingData?.data) {
 		return null;
 	}
+
 	return (
 		<>
 			<Box
@@ -121,33 +117,33 @@ function ContactView() {
 						{/* {listingData?.data?.isApproved && <div className="flex items-center ml-auto mb-4">
 							
 						</div>} */}
-						
-						
-						<div className="flex items-center ml-auto mb-4">
-							{!listingData?.data?.isApproved && <Button
-								variant="contained"
-								color="secondary"
-								onClick={() =>ApproveListing.mutate(listingData?.data?.id)}
-								// component={NavLinkAdapter}
-								// to="edit"
-								disabled={ApproveListing.isLoading}
-							>
-								<FuseSvgIcon size={20}>heroicons-outline:pencil-alt</FuseSvgIcon>
-								<span className="mx-8">Approve</span>
-							</Button>}
 
-							{
-								listingData?.data?.isApproved && <Button
-								variant="contained"
-								color="secondary"
-								component={NavLinkAdapter}
-								to="edit"
-							>
-								<FuseSvgIcon size={20}>heroicons-outline:pencil-alt</FuseSvgIcon>
-								<span className="mx-8">Edit</span>
-							</Button>
-							}
-							
+						<div className="flex items-center ml-auto mb-4">
+							{!listingData?.data?.isApproved && (
+								<Button
+									variant="contained"
+									color="secondary"
+									onClick={() => ApproveListing.mutate(listingData?.data?.id)}
+									// component={NavLinkAdapter}
+									// to="edit"
+									disabled={ApproveListing.isLoading}
+								>
+									<FuseSvgIcon size={20}>heroicons-outline:pencil-alt</FuseSvgIcon>
+									<span className="mx-8">Approve</span>
+								</Button>
+							)}
+
+							{listingData?.data?.isApproved && (
+								<Button
+									variant="contained"
+									color="secondary"
+									component={NavLinkAdapter}
+									to="edit"
+								>
+									<FuseSvgIcon size={20}>heroicons-outline:pencil-alt</FuseSvgIcon>
+									<span className="mx-8">Edit</span>
+								</Button>
+							)}
 						</div>
 					</div>
 
@@ -263,7 +259,7 @@ function ContactView() {
 								</div>
 							)} */}
 
-{/* This div is for address */}
+						{/* This div is for address */}
 						{listingData?.data?.locationValue && (
 							<div className="flex items-center">
 								<FuseSvgIcon>heroicons-outline:location-marker</FuseSvgIcon>

@@ -1,16 +1,5 @@
 import { memo, useState } from 'react';
-import {
-	Paper,
-	Typography,
-	Box,
-	Chip,
-	Grid,
-	Card,
-	CardContent,
-	Skeleton,
-	LinearProgress,
-	Button
-} from '@mui/material';
+import { Paper, Typography, Box, Chip, Grid, Card, CardContent, Skeleton, LinearProgress, Button } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { motion } from 'framer-motion';
 import {
@@ -65,7 +54,8 @@ function AcquisitionsTab() {
 		.reduce((acc, acq) => {
 			const date = new Date(acq.createdAt || acq.acquisitionDate);
 			const monthYear = `${date.toLocaleString('en-US', { month: 'short' })} ${date.getFullYear()}`;
-			const existing = acc.find(item => item.month === monthYear);
+			const existing = acc.find((item) => item.month === monthYear);
+
 			if (existing) {
 				existing.count += 1;
 				existing.value += acq.acquisitionAmount || 0;
@@ -76,6 +66,7 @@ function AcquisitionsTab() {
 					value: acq.acquisitionAmount || 0
 				});
 			}
+
 			return acc;
 		}, [])
 		.sort((a, b) => {
@@ -118,19 +109,51 @@ function AcquisitionsTab() {
 	if (isLoading) {
 		return (
 			<Box className="w-full">
-				<Grid container spacing={2} className="mb-24">
+				<Grid
+					container
+					spacing={2}
+					className="mb-24"
+				>
 					{[1, 2, 3].map((i) => (
-						<Grid item xs={12} sm={4} key={i}>
-							<Skeleton variant="rectangular" height={120} className="rounded-xl" />
+						<Grid
+							item
+							xs={12}
+							sm={4}
+							key={i}
+						>
+							<Skeleton
+								variant="rectangular"
+								height={120}
+								className="rounded-xl"
+							/>
 						</Grid>
 					))}
 				</Grid>
-				<Grid container spacing={2}>
-					<Grid item xs={12} md={8}>
-						<Skeleton variant="rectangular" height={400} className="rounded-xl" />
+				<Grid
+					container
+					spacing={2}
+				>
+					<Grid
+						item
+						xs={12}
+						md={8}
+					>
+						<Skeleton
+							variant="rectangular"
+							height={400}
+							className="rounded-xl"
+						/>
 					</Grid>
-					<Grid item xs={12} md={4}>
-						<Skeleton variant="rectangular" height={400} className="rounded-xl" />
+					<Grid
+						item
+						xs={12}
+						md={4}
+					>
+						<Skeleton
+							variant="rectangular"
+							height={400}
+							className="rounded-xl"
+						/>
 					</Grid>
 				</Grid>
 			</Box>
@@ -140,8 +163,16 @@ function AcquisitionsTab() {
 	return (
 		<Box className="w-full">
 			{/* Stats Section */}
-			<Grid container spacing={2} className="mb-24">
-				<Grid item xs={12} sm={4}>
+			<Grid
+				container
+				spacing={2}
+				className="mb-24"
+			>
+				<Grid
+					item
+					xs={12}
+					sm={4}
+				>
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -155,7 +186,12 @@ function AcquisitionsTab() {
 										<Typography className="text-3xl font-bold mt-8">{totalAcquisitions}</Typography>
 									</Box>
 									<Box className="w-48 h-48 rounded-full bg-white/20 flex items-center justify-center">
-										<FuseSvgIcon className="text-white" size={24}>heroicons-outline:shopping-bag</FuseSvgIcon>
+										<FuseSvgIcon
+											className="text-white"
+											size={24}
+										>
+											heroicons-outline:shopping-bag
+										</FuseSvgIcon>
 									</Box>
 								</Box>
 							</CardContent>
@@ -163,7 +199,11 @@ function AcquisitionsTab() {
 					</motion.div>
 				</Grid>
 
-				<Grid item xs={12} sm={4}>
+				<Grid
+					item
+					xs={12}
+					sm={4}
+				>
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -174,10 +214,17 @@ function AcquisitionsTab() {
 								<Box className="flex items-center justify-between">
 									<Box>
 										<Typography className="text-sm opacity-90">Total Value</Typography>
-										<Typography className="text-3xl font-bold mt-8">{formatCurrency(totalValue)}</Typography>
+										<Typography className="text-3xl font-bold mt-8">
+											{formatCurrency(totalValue)}
+										</Typography>
 									</Box>
 									<Box className="w-48 h-48 rounded-full bg-white/20 flex items-center justify-center">
-										<FuseSvgIcon className="text-white" size={24}>heroicons-outline:currency-dollar</FuseSvgIcon>
+										<FuseSvgIcon
+											className="text-white"
+											size={24}
+										>
+											heroicons-outline:currency-dollar
+										</FuseSvgIcon>
 									</Box>
 								</Box>
 							</CardContent>
@@ -185,7 +232,11 @@ function AcquisitionsTab() {
 					</motion.div>
 				</Grid>
 
-				<Grid item xs={12} sm={4}>
+				<Grid
+					item
+					xs={12}
+					sm={4}
+				>
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -196,10 +247,17 @@ function AcquisitionsTab() {
 								<Box className="flex items-center justify-between">
 									<Box>
 										<Typography className="text-sm opacity-90">Average Value</Typography>
-										<Typography className="text-3xl font-bold mt-8">{formatCurrency(avgValue)}</Typography>
+										<Typography className="text-3xl font-bold mt-8">
+											{formatCurrency(avgValue)}
+										</Typography>
 									</Box>
 									<Box className="w-48 h-48 rounded-full bg-white/20 flex items-center justify-center">
-										<FuseSvgIcon className="text-white" size={24}>heroicons-outline:chart-bar</FuseSvgIcon>
+										<FuseSvgIcon
+											className="text-white"
+											size={24}
+										>
+											heroicons-outline:chart-bar
+										</FuseSvgIcon>
 									</Box>
 								</Box>
 							</CardContent>
@@ -209,23 +267,55 @@ function AcquisitionsTab() {
 			</Grid>
 
 			{/* Charts Section */}
-			<Grid container spacing={2} className="mb-24">
+			<Grid
+				container
+				spacing={2}
+				className="mb-24"
+			>
 				{/* Growth Chart */}
-				<Grid item xs={12} md={8}>
+				<Grid
+					item
+					xs={12}
+					md={8}
+				>
 					<Paper className="p-20 shadow rounded-xl">
 						<Box className="flex items-center justify-between mb-20">
 							<Box>
 								<Typography className="text-lg font-bold">Acquisition Growth Over Time</Typography>
-								<Typography className="text-sm text-gray-500">Monthly acquisition value trends</Typography>
+								<Typography className="text-sm text-gray-500">
+									Monthly acquisition value trends
+								</Typography>
 							</Box>
-							<FuseSvgIcon className="text-blue-600" size={32}>heroicons-outline:trending-up</FuseSvgIcon>
+							<FuseSvgIcon
+								className="text-blue-600"
+								size={32}
+							>
+								heroicons-outline:trending-up
+							</FuseSvgIcon>
 						</Box>
-						<ResponsiveContainer width="100%" height={300}>
+						<ResponsiveContainer
+							width="100%"
+							height={300}
+						>
 							<AreaChart data={timelineData}>
 								<defs>
-									<linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-										<stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
-										<stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+									<linearGradient
+										id="colorValue"
+										x1="0"
+										y1="0"
+										x2="0"
+										y2="1"
+									>
+										<stop
+											offset="5%"
+											stopColor="#3b82f6"
+											stopOpacity={0.8}
+										/>
+										<stop
+											offset="95%"
+											stopColor="#3b82f6"
+											stopOpacity={0}
+										/>
 									</linearGradient>
 								</defs>
 								<CartesianGrid strokeDasharray="3 3" />
@@ -248,16 +338,28 @@ function AcquisitionsTab() {
 				</Grid>
 
 				{/* Status Distribution */}
-				<Grid item xs={12} md={4}>
+				<Grid
+					item
+					xs={12}
+					md={4}
+				>
 					<Paper className="p-20 shadow rounded-xl">
 						<Box className="flex items-center justify-between mb-20">
 							<Box>
 								<Typography className="text-lg font-bold">Status Distribution</Typography>
 								<Typography className="text-sm text-gray-500">By acquisition status</Typography>
 							</Box>
-							<FuseSvgIcon className="text-purple-600" size={32}>heroicons-outline:chart-pie</FuseSvgIcon>
+							<FuseSvgIcon
+								className="text-purple-600"
+								size={32}
+							>
+								heroicons-outline:chart-pie
+							</FuseSvgIcon>
 						</Box>
-						<ResponsiveContainer width="100%" height={300}>
+						<ResponsiveContainer
+							width="100%"
+							height={300}
+						>
 							<PieChart>
 								<Pie
 									data={statusChartData}
@@ -270,7 +372,10 @@ function AcquisitionsTab() {
 									dataKey="value"
 								>
 									{statusChartData.map((entry, index) => (
-										<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+										<Cell
+											key={`cell-${index}`}
+											fill={COLORS[index % COLORS.length]}
+										/>
 									))}
 								</Pie>
 								<Tooltip />
@@ -300,7 +405,12 @@ function AcquisitionsTab() {
 
 				{acquisitions.length === 0 ? (
 					<Box className="flex flex-col items-center justify-center py-48 text-center">
-						<FuseSvgIcon className="text-gray-400" size={64}>heroicons-outline:inbox</FuseSvgIcon>
+						<FuseSvgIcon
+							className="text-gray-400"
+							size={64}
+						>
+							heroicons-outline:inbox
+						</FuseSvgIcon>
 						<Typography className="text-gray-500 mt-16 text-lg">No acquisitions yet</Typography>
 						<Typography className="text-gray-400 text-sm mt-8">
 							Your property acquisitions will appear here
@@ -316,9 +426,17 @@ function AcquisitionsTab() {
 								transition={{ delay: idx * 0.05 }}
 							>
 								<Paper className="p-16 hover:shadow-md transition-shadow bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20">
-									<Grid container spacing={2} alignItems="center">
+									<Grid
+										container
+										spacing={2}
+										alignItems="center"
+									>
 										{/* Property Image/Icon */}
-										<Grid item xs={12} sm={2}>
+										<Grid
+											item
+											xs={12}
+											sm={2}
+										>
 											<Box className="w-64 h-64 sm:w-full sm:h-80 rounded-lg overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
 												{acquisition.property?.image ? (
 													<img
@@ -327,13 +445,22 @@ function AcquisitionsTab() {
 														className="w-full h-full object-cover"
 													/>
 												) : (
-													<FuseSvgIcon className="text-white" size={32}>heroicons-outline:home</FuseSvgIcon>
+													<FuseSvgIcon
+														className="text-white"
+														size={32}
+													>
+														heroicons-outline:home
+													</FuseSvgIcon>
 												)}
 											</Box>
 										</Grid>
 
 										{/* Property Details */}
-										<Grid item xs={12} sm={4}>
+										<Grid
+											item
+											xs={12}
+											sm={4}
+										>
 											<Typography className="font-semibold text-base mb-4">
 												{acquisition.property?.title || 'Property'}
 											</Typography>
@@ -348,17 +475,25 @@ function AcquisitionsTab() {
 										</Grid>
 
 										{/* Financial Details */}
-										<Grid item xs={12} sm={3}>
+										<Grid
+											item
+											xs={12}
+											sm={3}
+										>
 											<Box className="flex flex-col gap-8">
 												<Box>
-													<Typography className="text-xs text-gray-500">Acquisition Amount</Typography>
+													<Typography className="text-xs text-gray-500">
+														Acquisition Amount
+													</Typography>
 													<Typography className="text-lg font-bold text-green-600">
 														{formatCurrency(acquisition.acquisitionAmount || 0)}
 													</Typography>
 												</Box>
 												{acquisition.property?.price && (
 													<Box>
-														<Typography className="text-xs text-gray-500">Original Price</Typography>
+														<Typography className="text-xs text-gray-500">
+															Original Price
+														</Typography>
 														<Typography className="text-sm">
 															{formatCurrency(acquisition.property.price)}
 														</Typography>
@@ -368,12 +503,20 @@ function AcquisitionsTab() {
 										</Grid>
 
 										{/* Progress/Date */}
-										<Grid item xs={12} sm={3}>
+										<Grid
+											item
+											xs={12}
+											sm={3}
+										>
 											<Box className="flex flex-col gap-8">
 												<Box>
-													<Typography className="text-xs text-gray-500 mb-4">Acquisition Date</Typography>
+													<Typography className="text-xs text-gray-500 mb-4">
+														Acquisition Date
+													</Typography>
 													<Typography className="text-sm">
-														{new Date(acquisition.createdAt || acquisition.acquisitionDate).toLocaleDateString('en-US', {
+														{new Date(
+															acquisition.createdAt || acquisition.acquisitionDate
+														).toLocaleDateString('en-US', {
 															year: 'numeric',
 															month: 'short',
 															day: 'numeric'
@@ -382,7 +525,9 @@ function AcquisitionsTab() {
 												</Box>
 												{acquisition.completionPercentage !== undefined && (
 													<Box>
-														<Typography className="text-xs text-gray-500 mb-4">Progress</Typography>
+														<Typography className="text-xs text-gray-500 mb-4">
+															Progress
+														</Typography>
 														<Box className="flex items-center gap-8">
 															<LinearProgress
 																variant="determinate"
@@ -400,7 +545,11 @@ function AcquisitionsTab() {
 													size="small"
 													variant="outlined"
 													fullWidth
-													endIcon={<FuseSvgIcon size={16}>heroicons-outline:arrow-right</FuseSvgIcon>}
+													endIcon={
+														<FuseSvgIcon size={16}>
+															heroicons-outline:arrow-right
+														</FuseSvgIcon>
+													}
 												>
 													View Details
 												</Button>

@@ -24,5 +24,4 @@ function SelectMailMessage() {
 	);
 }
 
-
 export default SelectMailMessage;

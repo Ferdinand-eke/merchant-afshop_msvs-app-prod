@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
@@ -18,18 +17,8 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
  * PostContent Modal Component
  * LinkedIn-style post creation modal
  */
-function PostContent({
-	open = false,
-	onClose,
-	onPost,
-	userDetails = {},
-	postVisibility = 'Anyone'
-}) {
-	const {
-		name = 'User Name',
-		avatar = '',
-		title = ''
-	} = userDetails;
+function PostContent({ open = false, onClose, onPost, userDetails = {}, postVisibility = 'Anyone' }) {
+	const { name = 'User Name', avatar = '', title = '' } = userDetails;
 
 	const [postText, setPostText] = useState('');
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -50,11 +39,12 @@ function PostContent({
 
 	const handlePost = () => {
 		if (postText.trim()) {
-			onPost && onPost({
-				content: postText,
-				visibility,
-				timestamp: new Date()
-			});
+			onPost &&
+				onPost({
+					content: postText,
+					visibility,
+					timestamp: new Date()
+				});
 			setPostText('');
 			onClose && onClose();
 		}
@@ -75,6 +65,7 @@ function PostContent({
 				if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
 					return;
 				}
+
 				handleClose();
 			}}
 			maxWidth="sm"
@@ -105,18 +96,12 @@ function PostContent({
 							{!avatar && name.charAt(0).toUpperCase()}
 						</Avatar>
 						<Box>
-							<Typography className="text-16 font-semibold">
-								{name}
-							</Typography>
+							<Typography className="text-16 font-semibold">{name}</Typography>
 							<Button
 								variant="text"
 								size="small"
 								onClick={handleVisibilityClick}
-								endIcon={
-									<FuseSvgIcon size={16}>
-										heroicons-solid:chevron-down
-									</FuseSvgIcon>
-								}
+								endIcon={<FuseSvgIcon size={16}>heroicons-solid:chevron-down</FuseSvgIcon>}
 								sx={{
 									textTransform: 'none',
 									padding: '2px 8px',

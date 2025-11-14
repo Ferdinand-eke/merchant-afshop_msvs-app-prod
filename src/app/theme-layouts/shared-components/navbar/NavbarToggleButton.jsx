@@ -6,7 +6,6 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { navbarToggle, navbarToggleMobile } from './navbarSlice';
 
-
 /**
  * The navbar toggle button.
  */

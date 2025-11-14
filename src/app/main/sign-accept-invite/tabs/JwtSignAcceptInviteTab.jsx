@@ -1,15 +1,10 @@
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 // import JwtSignInForm from '../../../auth/services/jwt/components/JwtSignInForm';
 import JwtSignAcceptInviteForm from 'src/app/auth/services/jwt/components/JwtSignAcceptInviteForm';
 
 function jwtSignInTab() {
-
 	return (
 		<div className="w-full">
 			<JwtSignAcceptInviteForm />
-			
 
 			{/* <div className="mt-32 flex items-center">
 				<div className="mt-px flex-auto border-t" />

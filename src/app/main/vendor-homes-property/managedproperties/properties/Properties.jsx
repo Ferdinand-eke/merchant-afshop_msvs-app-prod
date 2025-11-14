@@ -20,8 +20,8 @@ function Properties() {
 			<Box
 				className="w-full h-full flex flex-col"
 				sx={{
-					background: "linear-gradient(180deg, #fafaf9 0%, #f5f5f4 50%, #fef3e2 100%)",
-					minHeight: "100vh",
+					background: 'linear-gradient(180deg, #fafaf9 0%, #f5f5f4 50%, #fef3e2 100%)',
+					minHeight: '100vh'
 				}}
 			>
 				<PropertiesHeader />

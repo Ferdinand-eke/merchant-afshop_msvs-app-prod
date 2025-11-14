@@ -1,25 +1,12 @@
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import IconButton from '@mui/material/IconButton';
-import Input from '@mui/material/Input';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { lighten } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import FuseLoading from '@fuse/core/FuseLoading';
-import ActivityItem from './ActivityItem';
-import PostItem from './PostItem';
-import { useGetProfileTimelineQuery } from '../../ProfileApi';
 import PropertyListItem from './PropertyListItem';
 
 /**
  * The timeline tab.
  */
-function TimelineTab({listings, loading}) {
-	console.log("Listings proped down", listings)
+function TimelineTab({ listings, loading }) {
+	console.log('Listings proped down', listings);
 	// const { data: timeline, isLoading } = useGetProfileTimelineQuery();
 
 	// if (isLoading) {
@@ -137,13 +124,12 @@ function TimelineTab({listings, loading}) {
 						</motion.div>
 					))} */}
 
-{listings?.map((post) => (
+					{listings?.map((post) => (
 						<motion.div
 							variants={item}
 							key={post.id}
 						>
 							<PropertyListItem item={post} />
-
 						</motion.div>
 					))}
 				</div>

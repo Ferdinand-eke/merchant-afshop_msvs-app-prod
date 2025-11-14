@@ -21,9 +21,7 @@ function StaffContactsSidebarContent() {
 
 			<Outlet />
 		</div>
-
 	);
 }
-
 
 export default StaffContactsSidebarContent;

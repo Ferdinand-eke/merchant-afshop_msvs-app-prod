@@ -8,8 +8,7 @@ import FuseLoading from '@fuse/core/FuseLoading';
 /**
  * The OverdueWidget widget.
  */
-function OverdueWidget({merchantProducts, isLoading,}) {
-
+function OverdueWidget({ merchantProducts, isLoading }) {
 	if (isLoading) {
 		return <FuseLoading />;
 	}
@@ -35,22 +34,14 @@ function OverdueWidget({merchantProducts, isLoading,}) {
 				</IconButton>
 			</div>
 			<div className="text-center mt-8">
-				<Typography className="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">
-				
-				</Typography>
-				<Typography className="text-lg font-medium text-red-600">
-				
-					{merchantProducts?.length}
-					</Typography>
+				<Typography className="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500" />
+				<Typography className="text-lg font-medium text-red-600">{merchantProducts?.length}</Typography>
 			</div>
 			<Typography
 				className="flex items-baseline justify-center w-full mt-20 mb-24"
 				color="text.secondary"
 			>
-				<span className="truncate">Products Count</span>:<b className="px-8">
-				
-					{merchantProducts?.length}
-					</b>
+				<span className="truncate">Products Count</span>:<b className="px-8">{merchantProducts?.length}</b>
 			</Typography>
 		</Paper>
 	);

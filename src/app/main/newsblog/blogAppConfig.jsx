@@ -44,8 +44,7 @@ const blogAppConfig = {
 		{
 			path: 'news-blog/:slug',
 			element: <SingleBlogPost />
-		},
+		}
 	]
-	
 };
 export default blogAppConfig;

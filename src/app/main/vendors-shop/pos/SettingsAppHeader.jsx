@@ -29,5 +29,4 @@ function SettingsAppHeader(props) {
 	);
 }
 
-
 export default SettingsAppHeader;

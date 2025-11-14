@@ -10,9 +10,7 @@ import ListItemButton from '@mui/material/ListItemButton';
  * The contact list item.
  */
 function ContactListItem(props) {
-
 	const { contact } = props;
-
 
 	return (
 		<>
@@ -29,7 +27,6 @@ function ContactListItem(props) {
 					/>
 				</ListItemAvatar>
 
-
 				<ListItemText
 					classes={{ root: 'm-0', primary: 'font-medium leading-5 truncate' }}
 					primary={contact?.name}
@@ -44,7 +41,6 @@ function ContactListItem(props) {
 						</Typography>
 					}
 				/>
-
 			</ListItemButton>
 			<Divider />
 		</>

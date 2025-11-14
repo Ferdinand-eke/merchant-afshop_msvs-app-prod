@@ -5,16 +5,15 @@ import { alpha } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import { Link } from 'react-router-dom';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import ModernPricingPage from '../modern/ModernPricingPage';
 import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
+import ModernPricingPage from '../modern/ModernPricingPage';
 
 /**
  * AfricanShops Merchant Landing Page - Redesigned for Production
  * Modern, professional, and engaging merchant onboarding experience
  */
 function LandingCenterHome() {
-
 	// Merchant onboarding steps data
 	const stepsToOnboard = [
 		{
@@ -68,21 +67,24 @@ function LandingCenterHome() {
 		{
 			icon: 'heroicons-outline:currency-dollar',
 			title: 'Ultra-Low Fees',
-			description: 'Start listing for free. Pay only 5% transaction fee when you make a sale. No hidden charges, no surprises.',
+			description:
+				'Start listing for free. Pay only 5% transaction fee when you make a sale. No hidden charges, no surprises.',
 			stat: '5% Fee',
 			gradient: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)'
 		},
 		{
 			icon: 'heroicons-outline:chart-bar',
 			title: 'Powerful Analytics',
-			description: 'Advanced tools and insights to manage, promote, and scale your business. Data-driven decisions made easy.',
+			description:
+				'Advanced tools and insights to manage, promote, and scale your business. Data-driven decisions made easy.',
 			stat: '1000+ Merchants',
 			gradient: 'linear-gradient(135deg, #F77F00 0%, #FCBF49 100%)'
 		},
 		{
 			icon: 'heroicons-outline:support',
 			title: '24/7 Support',
-			description: 'Round-the-clock sales assistance and support team. Maximum visibility for your products and services.',
+			description:
+				'Round-the-clock sales assistance and support team. Maximum visibility for your products and services.',
 			stat: '10K+ Products',
 			gradient: 'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)'
 		}
@@ -107,7 +109,8 @@ function LandingCenterHome() {
 						right: 0,
 						bottom: 0,
 						opacity: 0.1,
-						background: 'radial-gradient(circle at 20% 50%, white 0%, transparent 50%), radial-gradient(circle at 80% 80%, white 0%, transparent 50%)'
+						background:
+							'radial-gradient(circle at 20% 50%, white 0%, transparent 50%), radial-gradient(circle at 80% 80%, white 0%, transparent 50%)'
 					}}
 				/>
 
@@ -160,8 +163,8 @@ function LandingCenterHome() {
 							className="text-18 sm:text-22 font-medium tracking-normal max-w-3xl text-center leading-relaxed"
 							sx={{ color: 'rgba(255, 255, 255, 0.95)' }}
 						>
-							Join Africa's fastest-growing marketplace. Whether you're in retail, real estate,
-							logistics, or hospitality - we've got the perfect merchant solution for you.
+							Join Africa's fastest-growing marketplace. Whether you're in retail, real estate, logistics,
+							or hospitality - we've got the perfect merchant solution for you.
 						</Typography>
 					</motion.div>
 
@@ -234,11 +237,20 @@ function LandingCenterHome() {
 							{ value: '50K+', label: 'Orders Delivered' },
 							{ value: '24/7', label: 'Support Available' }
 						].map((stat, index) => (
-							<div key={index} className="text-center">
-								<Typography className="text-32 sm:text-40 font-black" sx={{ color: 'white' }}>
+							<div
+								key={index}
+								className="text-center"
+							>
+								<Typography
+									className="text-32 sm:text-40 font-black"
+									sx={{ color: 'white' }}
+								>
 									{stat.value}
 								</Typography>
-								<Typography className="text-14 font-medium mt-4" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+								<Typography
+									className="text-14 font-medium mt-4"
+									sx={{ color: 'rgba(255, 255, 255, 0.8)' }}
+								>
 									{stat.label}
 								</Typography>
 							</div>
@@ -256,8 +268,17 @@ function LandingCenterHome() {
 						height: '100px'
 					}}
 				>
-					<svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-						<path d="M0 50L60 45C120 40 240 30 360 28.3C480 26.7 600 33.3 720 38.3C840 43.3 960 46.7 1080 45C1200 43.3 1320 36.7 1380 33.3L1440 30V100H1380C1320 100 1200 100 1080 100C960 100 840 100 720 100C600 100 480 100 360 100C240 100 120 100 60 100H0V50Z" fill="currentColor" className="text-gray-50 dark:text-gray-900"/>
+					<svg
+						viewBox="0 0 1440 100"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						className="w-full h-full"
+					>
+						<path
+							d="M0 50L60 45C120 40 240 30 360 28.3C480 26.7 600 33.3 720 38.3C840 43.3 960 46.7 1080 45C1200 43.3 1320 36.7 1380 33.3L1440 30V100H1380C1320 100 1200 100 1080 100C960 100 840 100 720 100C600 100 480 100 360 100C240 100 120 100 60 100H0V50Z"
+							fill="currentColor"
+							className="text-gray-50 dark:text-gray-900"
+						/>
 					</svg>
 				</Box>
 			</Box>
@@ -302,18 +323,22 @@ function LandingCenterHome() {
 											boxShadow: '0 8px 24px rgba(255, 107, 53, 0.25)'
 										}}
 									>
-										<FuseSvgIcon size={32} sx={{ color: 'white' }}>
+										<FuseSvgIcon
+											size={32}
+											sx={{ color: 'white' }}
+										>
 											{prop.icon}
 										</FuseSvgIcon>
 									</Box>
 
 									{/* Title */}
-									<Typography className="text-24 font-bold mb-12">
-										{prop.title}
-									</Typography>
+									<Typography className="text-24 font-bold mb-12">{prop.title}</Typography>
 
 									{/* Description */}
-									<Typography className="text-15 leading-relaxed mb-20" color="text.secondary">
+									<Typography
+										className="text-15 leading-relaxed mb-20"
+										color="text.secondary"
+									>
 										{prop.description}
 									</Typography>
 
@@ -336,7 +361,10 @@ function LandingCenterHome() {
 			</div>
 
 			{/* How It Works Section */}
-			<Box className="mt-80 px-16 sm:px-40 py-64" sx={{ backgroundColor: 'transparent' }}>
+			<Box
+				className="mt-80 px-16 sm:px-40 py-64"
+				sx={{ backgroundColor: 'transparent' }}
+			>
 				<div className="max-w-7xl mx-auto">
 					{/* Section Header */}
 					<motion.div
@@ -360,7 +388,10 @@ function LandingCenterHome() {
 						<Typography className="text-40 sm:text-52 font-black tracking-tight leading-tight mt-16">
 							How It Works
 						</Typography>
-						<Typography className="text-18 sm:text-20 mt-16 max-w-2xl mx-auto" color="text.secondary">
+						<Typography
+							className="text-18 sm:text-20 mt-16 max-w-2xl mx-auto"
+							color="text.secondary"
+						>
 							Start selling online in 4 simple steps. We've made it incredibly easy for you.
 						</Typography>
 					</motion.div>
@@ -412,7 +443,10 @@ function LandingCenterHome() {
 													border: '2px solid rgba(255, 255, 255, 0.4)'
 												}}
 											>
-												<Typography className="text-28 font-black" sx={{ color: 'white' }}>
+												<Typography
+													className="text-28 font-black"
+													sx={{ color: 'white' }}
+												>
 													{step.id}
 												</Typography>
 											</Box>
@@ -429,14 +463,20 @@ function LandingCenterHome() {
 													justifyContent: 'center'
 												}}
 											>
-												<FuseSvgIcon size={28} sx={{ color: '#FF6B35' }}>
+												<FuseSvgIcon
+													size={28}
+													sx={{ color: '#FF6B35' }}
+												>
 													{step.icon}
 												</FuseSvgIcon>
 											</Box>
 										</div>
 
 										{/* Title */}
-										<Typography className="text-26 font-black mt-20" sx={{ color: 'white' }}>
+										<Typography
+											className="text-26 font-black mt-20"
+											sx={{ color: 'white' }}
+										>
 											{step.title}
 										</Typography>
 									</Box>
@@ -445,7 +485,10 @@ function LandingCenterHome() {
 									<div className="p-32">
 										<div className="space-y-16">
 											{step.features.map((feature, fIndex) => (
-												<div key={fIndex} className="flex items-start gap-12">
+												<div
+													key={fIndex}
+													className="flex items-start gap-12"
+												>
 													<Box
 														sx={{
 															width: 24,
@@ -459,11 +502,17 @@ function LandingCenterHome() {
 															marginTop: '2px'
 														}}
 													>
-														<FuseSvgIcon size={14} sx={{ color: 'white' }}>
+														<FuseSvgIcon
+															size={14}
+															sx={{ color: 'white' }}
+														>
 															heroicons-solid:check
 														</FuseSvgIcon>
 													</Box>
-													<Typography className="text-15 leading-relaxed" color="text.secondary">
+													<Typography
+														className="text-15 leading-relaxed"
+														color="text.secondary"
+													>
 														{feature}
 													</Typography>
 												</div>
@@ -503,10 +552,16 @@ function LandingCenterHome() {
 				/>
 
 				<div className="relative py-64 px-32 sm:px-64 text-center">
-					<Typography className="text-36 sm:text-48 font-black mb-20" sx={{ color: 'white' }}>
+					<Typography
+						className="text-36 sm:text-48 font-black mb-20"
+						sx={{ color: 'white' }}
+					>
 						Ready to Start Selling?
 					</Typography>
-					<Typography className="text-18 sm:text-20 mb-40 max-w-2xl mx-auto" sx={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+					<Typography
+						className="text-18 sm:text-20 mb-40 max-w-2xl mx-auto"
+						sx={{ color: 'rgba(255, 255, 255, 0.9)' }}
+					>
 						Join thousands of successful merchants already growing their business with AfricanShops
 					</Typography>
 					<Button

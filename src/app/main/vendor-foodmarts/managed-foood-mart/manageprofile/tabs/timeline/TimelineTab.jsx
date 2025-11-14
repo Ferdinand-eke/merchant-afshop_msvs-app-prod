@@ -10,11 +10,11 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { lighten } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import FuseLoading from '@fuse/core/FuseLoading';
+import { useAppDispatch } from 'app/store/hooks';
 import ActivityItem from './ActivityItem';
 import PostItem from './PostItem';
 import { useGetProfileTimelineQuery } from '../../ProfileApi';
 import { toggleFoodMartMenuPanel } from '../../formpanels/foodmartMenuPanelSlice';
-import { useAppDispatch } from 'app/store/hooks';
 
 /**
  * The timeline tab.
@@ -119,14 +119,12 @@ function TimelineTab() {
 									size="small"
 									aria-label="post"
 									onClick={() => dispatch(toggleFoodMartMenuPanel())}
-
 								>
 									Post Menu
 								</Button>
 							</div>
 						</Box>
 					</Card>
-					
 
 					{timeline.posts.map((post) => (
 						<motion.div

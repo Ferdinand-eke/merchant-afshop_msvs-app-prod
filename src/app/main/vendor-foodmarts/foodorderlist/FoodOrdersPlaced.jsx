@@ -17,13 +17,11 @@ function FoodOrdersPlaced() {
 			/>
 			<div className="w-full h-full container flex flex-col">
 				<FoodOrdersHeader />
-				
+
 				<ReservationsTable />
-				
 			</div>
 		</>
 	);
 }
-
 
 export default FoodOrdersPlaced;

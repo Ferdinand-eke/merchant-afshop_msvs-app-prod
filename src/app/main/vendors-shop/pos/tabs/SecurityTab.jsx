@@ -4,14 +4,10 @@ import { z } from 'zod';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import FormHelperText from '@mui/material/FormHelperText';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import _ from '@lodash';
-import { useEffect } from 'react';
 // import { useGetSecuritySettingsQuery, useUpdateSecuritySettingsMutation } from '../SettingsApi';
 import SecuritySetting from './securitsettings/SecuritySetting';
 import ChangeEmailSetting from './securitsettings/ChangeEmailSetting';
@@ -25,20 +21,20 @@ const defaultValues = {
 /**
  * Form Validation Schema
  */
-const schema = z.object({
-
-	oldPassword: z.string().nonempty('Please enter your current password.'),
-	// password: z.string().min(6, 'Password must be at least 6 characters').or(z.literal('')).optional(),
-	password: z
+const schema = z
+	.object({
+		oldPassword: z.string().nonempty('Please enter your current password.'),
+		// password: z.string().min(6, 'Password must be at least 6 characters').or(z.literal('')).optional(),
+		password: z
 			.string()
 			.nonempty('Please enter your password.')
 			.min(8, 'Password is too short - should be 8 chars minimum.'),
-	passwordConfirm: z.string().nonempty('Password confirmation is required'),
-}).refine((data) => data.password === data.passwordConfirm, {
-	message: 'Passwords must match',
-	path: ['passwordConfirm']
-});;
-
+		passwordConfirm: z.string().nonempty('Password confirmation is required')
+	})
+	.refine((data) => data.password === data.passwordConfirm, {
+		message: 'Passwords must match',
+		path: ['passwordConfirm']
+	});
 
 function SecurityTab() {
 	// const { data: securitySettings } = useGetSecuritySettingsQuery();
@@ -68,9 +64,7 @@ function SecurityTab() {
 	 * Form Submit
 	 */
 	function onSubmit(formData) {
-
-
-		console.log("Form Data", formData)
+		console.log('Form Data', formData);
 	}
 
 	return (
@@ -152,7 +146,6 @@ function SecurityTab() {
 					</Button>
 				</div>
 
-
 				<div className="my-40 border-t" />
 
 				{/* <>
@@ -224,10 +217,6 @@ function SecurityTab() {
 					</div>
 				</div>
 				</> */}
-
-				
-
-				
 			</form>
 
 			<ChangeEmailSetting />

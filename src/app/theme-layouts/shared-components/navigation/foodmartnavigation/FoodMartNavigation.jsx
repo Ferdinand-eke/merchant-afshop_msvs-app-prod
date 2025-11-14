@@ -6,17 +6,13 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import withSlices from 'app/store/withSlices';
 import { foodmartNavigationSlice, selectNavigation } from '../store/foodmartNavigationSlice';
 import { navbarCloseMobile } from '../../navbar/navbarSlice';
-import { useNavigate } from 'react-router';
 
 function FoodMartNavigation(props) {
-	const { className = '', layout = 'vertical', dense, active, 
-	
-} = props;
+	const { className = '', layout = 'vertical', dense, active } = props;
 	const navigation = useAppSelector(selectNavigation);
-	
+
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const dispatch = useAppDispatch();
-
 
 	return useMemo(() => {
 		function handleItemClick() {
@@ -24,8 +20,6 @@ function FoodMartNavigation(props) {
 				dispatch(navbarCloseMobile());
 			}
 		}
-
-
 
 		return (
 			<FuseNavigation
@@ -40,6 +34,5 @@ function FoodMartNavigation(props) {
 		);
 	}, [dispatch, isMobile, navigation, active, className, dense, layout]);
 }
-
 
 export default withSlices([foodmartNavigationSlice])(FoodMartNavigation);

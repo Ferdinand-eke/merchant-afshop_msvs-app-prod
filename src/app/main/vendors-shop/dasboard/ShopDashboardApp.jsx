@@ -15,7 +15,6 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	}
 }));
 
-
 /**
  * The ProjectDashboardApp page.
  */
@@ -23,12 +22,11 @@ function ShopDashboardApp() {
 	const { isLoading } = useGetProjectDashboardWidgetsQuery();
 	const [tabValue, setTabValue] = useState(0);
 
-
 	function handleChangeTab(_event, value) {
 		setTabValue(value);
 	}
 
-	if(isLoading){
+	if (isLoading) {
 		return (
 			<ContentLoadingPlaceholder
 				title="Loading Your Dashboard..."
@@ -77,15 +75,7 @@ function ShopDashboardApp() {
 							label="Team"
 						/> */}
 					</Tabs>
-					{tabValue === 0 && <>
-					
-						<HomeTab />
-						
-
-				
-				
-
-					</>}
+					{tabValue === 0 && <HomeTab />}
 
 					{/* {tabValue === 1 && <BudgetTab />}
 					{tabValue === 2 && <TeamTab />} */}

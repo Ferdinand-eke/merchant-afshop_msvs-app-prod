@@ -17,7 +17,7 @@ const ManagedFoodMartsAppConfig = {
 	settings: {
 		layout: {}
 	},
-	
+
 	routes: [
 		{
 			path: 'foodmarts',
@@ -34,7 +34,6 @@ const ManagedFoodMartsAppConfig = {
 				{
 					path: 'managed-foodmerchants/:productId/*',
 					element: <FoodMartListing />
-					
 				},
 				{
 					path: 'management-portal/:foodMartId/manage',
@@ -49,8 +48,7 @@ const ManagedFoodMartsAppConfig = {
 				{
 					path: 'list/food-orders/:orderId/view',
 					element: <FoodOrder />
-				},
-
+				}
 			]
 		}
 	]

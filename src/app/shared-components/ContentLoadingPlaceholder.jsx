@@ -1,5 +1,5 @@
-import { CircularProgress, Skeleton, Typography } from "@mui/material";
-import { motion } from "framer-motion";
+import { CircularProgress, Skeleton, Typography } from '@mui/material';
+import { motion } from 'framer-motion';
 
 /**
  * ContentLoadingPlaceholder Component
@@ -10,16 +10,16 @@ import { motion } from "framer-motion";
  * @param {number} cardCount - Number of skeleton cards to show (default: 4)
  */
 function ContentLoadingPlaceholder({
-	title = "Loading Dashboard...",
-	subtitle = "Preparing your merchant experience",
+	title = 'Loading Dashboard...',
+	subtitle = 'Preparing your merchant experience',
 	cardCount = 4
 }) {
 	return (
 		<div
 			className="flex-auto p-24 sm:p-40"
 			style={{
-				background: "linear-gradient(180deg, #fafaf9 0%, #f5f5f4 50%, #fef3e2 100%)",
-				minHeight: "100vh",
+				background: 'linear-gradient(180deg, #fafaf9 0%, #f5f5f4 50%, #fef3e2 100%)',
+				minHeight: '100vh'
 			}}
 		>
 			<div className="flex flex-col">
@@ -30,8 +30,8 @@ function ContentLoadingPlaceholder({
 						width="40%"
 						height={60}
 						sx={{
-							backgroundColor: "rgba(234, 88, 12, 0.1)",
-							borderRadius: "8px",
+							backgroundColor: 'rgba(234, 88, 12, 0.1)',
+							borderRadius: '8px'
 						}}
 					/>
 					<Skeleton
@@ -39,9 +39,9 @@ function ContentLoadingPlaceholder({
 						width="60%"
 						height={30}
 						sx={{
-							backgroundColor: "rgba(234, 88, 12, 0.08)",
-							borderRadius: "8px",
-							marginTop: "8px",
+							backgroundColor: 'rgba(234, 88, 12, 0.08)',
+							borderRadius: '8px',
+							marginTop: '8px'
 						}}
 					/>
 				</div>
@@ -56,8 +56,8 @@ function ContentLoadingPlaceholder({
 							transition={{
 								duration: 0.5,
 								repeat: Infinity,
-								repeatType: "reverse",
-								repeatDelay: 0.5,
+								repeatType: 'reverse',
+								repeatDelay: 0.5
 							}}
 							className="flex flex-col items-center gap-6"
 						>
@@ -68,10 +68,10 @@ function ContentLoadingPlaceholder({
 									size={140}
 									thickness={3}
 									sx={{
-										color: "#ea580c",
-										position: "absolute",
+										color: '#ea580c',
+										position: 'absolute',
 										top: -20,
-										left: -20,
+										left: -20
 									}}
 								/>
 
@@ -79,7 +79,7 @@ function ContentLoadingPlaceholder({
 								<div
 									className="w-[100px] h-[100px] rounded-full flex items-center justify-center shadow-2xl"
 									style={{
-										background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+										background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
 									}}
 								>
 									<img
@@ -87,7 +87,7 @@ function ContentLoadingPlaceholder({
 										alt="AfricanShops"
 										className="w-16 h-16"
 										onError={(e) => {
-											e.target.style.display = "none";
+											e.target.style.display = 'none';
 											e.target.parentElement.innerHTML = `
 												<div style="color: white; font-size: 2rem; font-weight: 900;">AS</div>
 											`;
@@ -102,25 +102,25 @@ function ContentLoadingPlaceholder({
 								transition={{
 									duration: 2,
 									repeat: Infinity,
-									ease: "easeInOut",
+									ease: 'easeInOut'
 								}}
 							>
 								<Typography
 									sx={{
-										fontSize: "1.5rem",
+										fontSize: '1.5rem',
 										fontWeight: 700,
-										color: "#ea580c",
-										textAlign: "center",
+										color: '#ea580c',
+										textAlign: 'center'
 									}}
 								>
 									{title}
 								</Typography>
 								<Typography
 									sx={{
-										fontSize: "1rem",
-										color: "#6b7280",
-										textAlign: "center",
-										marginTop: "8px",
+										fontSize: '1rem',
+										color: '#6b7280',
+										textAlign: 'center',
+										marginTop: '8px'
 									}}
 								>
 									{subtitle}
@@ -143,7 +143,7 @@ function ContentLoadingPlaceholder({
 								variant="rectangular"
 								height={256}
 								sx={{
-									backgroundColor: "rgba(234, 88, 12, 0.1)",
+									backgroundColor: 'rgba(234, 88, 12, 0.1)'
 								}}
 							/>
 
@@ -154,8 +154,8 @@ function ContentLoadingPlaceholder({
 									width="60%"
 									height={24}
 									sx={{
-										backgroundColor: "rgba(234, 88, 12, 0.08)",
-										borderRadius: "8px",
+										backgroundColor: 'rgba(234, 88, 12, 0.08)',
+										borderRadius: '8px'
 									}}
 								/>
 								<Skeleton
@@ -163,8 +163,8 @@ function ContentLoadingPlaceholder({
 									width="90%"
 									height={32}
 									sx={{
-										backgroundColor: "rgba(234, 88, 12, 0.1)",
-										borderRadius: "8px",
+										backgroundColor: 'rgba(234, 88, 12, 0.1)',
+										borderRadius: '8px'
 									}}
 								/>
 								<Skeleton
@@ -172,8 +172,8 @@ function ContentLoadingPlaceholder({
 									width="70%"
 									height={24}
 									sx={{
-										backgroundColor: "rgba(234, 88, 12, 0.08)",
-										borderRadius: "8px",
+										backgroundColor: 'rgba(234, 88, 12, 0.08)',
+										borderRadius: '8px'
 									}}
 								/>
 								<div className="flex justify-between pt-4">
@@ -182,8 +182,8 @@ function ContentLoadingPlaceholder({
 										width="40%"
 										height={28}
 										sx={{
-											backgroundColor: "rgba(234, 88, 12, 0.12)",
-											borderRadius: "8px",
+											backgroundColor: 'rgba(234, 88, 12, 0.12)',
+											borderRadius: '8px'
 										}}
 									/>
 									<Skeleton
@@ -191,8 +191,8 @@ function ContentLoadingPlaceholder({
 										width="30%"
 										height={28}
 										sx={{
-											backgroundColor: "rgba(234, 88, 12, 0.08)",
-											borderRadius: "8px",
+											backgroundColor: 'rgba(234, 88, 12, 0.08)',
+											borderRadius: '8px'
 										}}
 									/>
 								</div>
@@ -201,9 +201,9 @@ function ContentLoadingPlaceholder({
 									width="100%"
 									height={48}
 									sx={{
-										backgroundColor: "rgba(234, 88, 12, 0.15)",
-										borderRadius: "12px",
-										marginTop: "16px",
+										backgroundColor: 'rgba(234, 88, 12, 0.15)',
+										borderRadius: '12px',
+										marginTop: '16px'
 									}}
 								/>
 							</div>
@@ -218,8 +218,8 @@ function ContentLoadingPlaceholder({
 						width={300}
 						height={40}
 						sx={{
-							backgroundColor: "rgba(234, 88, 12, 0.1)",
-							borderRadius: "8px",
+							backgroundColor: 'rgba(234, 88, 12, 0.1)',
+							borderRadius: '8px'
 						}}
 					/>
 				</div>

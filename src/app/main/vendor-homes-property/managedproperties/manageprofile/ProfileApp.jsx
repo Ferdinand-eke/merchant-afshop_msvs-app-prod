@@ -38,6 +38,7 @@ function ProfileApp() {
 			const savedTab = window.localStorage.getItem(TAB_STORAGE_KEY);
 			return savedTab ? parseInt(savedTab, 10) : 0;
 		}
+
 		return 0;
 	});
 

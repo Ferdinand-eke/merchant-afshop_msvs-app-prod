@@ -1,4 +1,3 @@
-import _ from '@lodash';
 import clsx from 'clsx';
 /**
  * The order statuses.
@@ -84,28 +83,27 @@ function OrdersDeliveryStatus(props) {
 	const { isDelivered } = props;
 	return (
 		<>
-		{
-			isDelivered ?
-			<div
-			className={clsx(
-				'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
-				'bg-green text-white'
+			{isDelivered ? (
+				<div
+					className={clsx(
+						'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
+						'bg-green text-white'
+					)}
+				>
+					Delivered
+				</div>
+			) : (
+				<div
+					className={clsx(
+						'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
+						'bg-orange text-black'
+					)}
+				>
+					Awaiting Delivery
+				</div>
 			)}
-		>
-			Delivered
-		</div> : <div
-			className={clsx(
-				'inline text-12 font-semibold py-4 px-12 rounded-full truncate',
-				'bg-orange text-black'
-			)}
-		>
-			Awaiting Delivery 
-		</div>
-		}
 		</>
 	);
 }
-
-
 
 export default OrdersDeliveryStatus;

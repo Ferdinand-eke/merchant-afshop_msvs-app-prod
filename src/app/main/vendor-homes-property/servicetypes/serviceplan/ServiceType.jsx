@@ -12,15 +12,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useGetSingleServiveType } from 'src/app/aaqueryhooks/servicetypeHandlingQuery';
 import ServiceTypeHeader from './ServiceTypeHeader';
 import BasicInfoTab from './tabs/BasicInfoTab';
-import InventoryTab from './tabs/InventoryTab';
-import PricingTab from './tabs/PricingTab';
-import ProductImagesTab from './tabs/ProductImagesTab';
-import ShippingTab from './tabs/ShippingTab';
-import { useGetECommerceProductQuery } from '../ECommerceApi';
 import ProductModel from './models/ProductModel';
-import { useGetSingleServiveType } from 'src/app/aaqueryhooks/servicetypeHandlingQuery';
 /**
  * Form Validation Schema
  */
@@ -45,19 +40,18 @@ function ServiceType() {
 	// });
 
 	const {
-		data:serviceType,
-		isLoading:serviceTypeLoading,
+		data: serviceType,
+		isLoading: serviceTypeLoading,
 		isError: serviceTypeError
-
 	} = useGetSingleServiveType(productId, {
 		skip: !productId || productId === 'new'
-	})
+	});
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {
-			title:'',
+			title: '',
 			description: ''
 		},
 		resolver: zodResolver(schema)
@@ -75,7 +69,6 @@ function ServiceType() {
 	// 	}
 	// }, [product, reset]);
 
-
 	useEffect(() => {
 		if (serviceType?.data) {
 			reset({ ...serviceType?.data });
@@ -83,7 +76,7 @@ function ServiceType() {
 	}, [serviceType?.data, reset]);
 
 	/**
-	 * Tab Change  
+	 * Tab Change
 	 */
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -102,8 +95,9 @@ function ServiceType() {
 
 	if (
 		// isError && productId !== 'new'
-		serviceTypeError && productId !== 'new'
-		) {
+		serviceTypeError &&
+		productId !== 'new'
+	) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -136,7 +130,12 @@ function ServiceType() {
 	// 	return <FuseLoading />;
 	// }
 
-	if (_.isEmpty(form) || (serviceType?.data?.servicetype && routeParams.productId !== serviceType?.data?.servicetype.id && routeParams.productId !== 'new')) {
+	if (
+		_.isEmpty(form) ||
+		(serviceType?.data?.servicetype &&
+			routeParams.productId !== serviceType?.data?.servicetype.id &&
+			routeParams.productId !== 'new')
+	) {
 		return <FuseLoading />;
 	}
 
@@ -197,13 +196,12 @@ function ServiceType() {
 								<ShippingTab />
 							</div> */}
 						</div>
-					</> 
+					</>
 				}
 				scroll={isMobile ? 'normal' : 'content'}
 			/>
 		</FormProvider>
 	);
 }
-
 
 export default ServiceType;

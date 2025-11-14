@@ -2,30 +2,21 @@
 import { useMemo } from 'react';
 import DataTable from 'app/shared-components/data-table/DataTable';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { Chip, ListItemIcon, MenuItem, Paper } from '@mui/material';
-import _ from '@lodash';
+import { ListItemIcon, MenuItem, Paper } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import clsx from 'clsx';
 import Button from '@mui/material/Button';
-import { useDeleteECommerceProductsMutation, useGetECommerceProductsQuery } from '../ECommerceApi';
 import useGetAllServicetypes from 'src/app/aaqueryhooks/servicetypeHandlingQuery';
+import { useDeleteECommerceProductsMutation } from '../ECommerceApi';
 
 function ServiceTypesTable() {
-	
 	// const { data: products, isLoading } = useGetECommerceProductsQuery();
-	const {data:seriveTypes, isLoading:seriveTypesIsLoading, isError:serviceTypeError} = useGetAllServicetypes()
+	const { data: seriveTypes, isLoading: seriveTypesIsLoading, isError: serviceTypeError } = useGetAllServicetypes();
 	// console.log("SERVICE-TYPES", seriveTypes?.data?.servicetypes)
 
 	const [removeProducts] = useDeleteECommerceProductsMutation();
-
-	
-
-
-
-
 
 	const columns = useMemo(
 		() => [
@@ -133,22 +124,22 @@ function ServiceTypesTable() {
 				)
 			}
 		],
-		
+
 		[]
 	);
 
 	// if (isLoading) {
 	// 	return <FuseLoading />;
 	// }
-	//seriveTypesIsLoading
+	// seriveTypesIsLoading
 	if (seriveTypesIsLoading) {
 		return <FuseLoading />;
 	}
 
 	if (
-		// isError && productId !== 'new' 
-		serviceTypeError 
-		) {
+		// isError && productId !== 'new'
+		serviceTypeError
+	) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -225,7 +216,7 @@ function ServiceTypesTable() {
 				}}
 			/>
 
-{/* <DataTable
+			{/* <DataTable
 				data={seriveTypes?.data?.servicetypes}
 				columns={columns}
 				renderRowActionMenuItems={({ closeMenu, row, table }) => [

@@ -4,41 +4,38 @@ import { z } from 'zod';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import FormHelperText from '@mui/material/FormHelperText';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import _ from '@lodash';
 import { useEffect } from 'react';
-import { useInitiateBaseMerchantSettingsChangeEmail, useShopSettingsChangeEmail } from 'app/configs/data/server-calls/auth/useAuth';
+import {
+	useInitiateBaseMerchantSettingsChangeEmail,
+	useShopSettingsChangeEmail
+} from 'app/configs/data/server-calls/auth/useAuth';
 
 const defaultValues = {
 	currentEmail: '',
-	newEmail: '',
+	newEmail: ''
 };
 /**
  * Form Validation Schema
  */
 const schema = z.object({
 	currentEmail: z.string().email('You must enter a valid email').nonempty('You must enter an email'),
-	newEmail: z.string().email('You must enter a valid email').nonempty('You must enter an email'),
-	
-
+	newEmail: z.string().email('You must enter a valid email').nonempty('You must enter an email')
 });
 
-
 function ChangeEmailSetting(props) {
-	 const {basemerchant} = props
+	const { basemerchant } = props;
 	const { control, setError, reset, handleSubmit, formState, getValues } = useForm({
 		defaultValues,
 		mode: 'all',
 		resolver: zodResolver(schema)
 	});
 	const { isValid, dirtyFields, errors } = formState;
-	const initateChangeMail = useInitiateBaseMerchantSettingsChangeEmail()
-	const changeMail = useShopSettingsChangeEmail()
+	const initateChangeMail = useInitiateBaseMerchantSettingsChangeEmail();
+	const changeMail = useShopSettingsChangeEmail();
 
 	// useEffect(() => {
 	// 	reset(securitySettings);
@@ -51,17 +48,14 @@ function ChangeEmailSetting(props) {
 		reset({
 			currentEmail: basemerchant?.shopemail
 		});
-	  }, [basemerchant, reset]);
-	
+	}, [basemerchant, reset]);
 
 	/**
 	 * Form Submit
 	 */
 	function onSubmit(formData) {
-
-
-		console.log("Form Data", formData)
-		initateChangeMail.mutate(formData)
+		console.log('Form Data', formData);
+		initateChangeMail.mutate(formData);
 		// return
 	}
 
@@ -138,8 +132,9 @@ function ChangeEmailSetting(props) {
 					<Button
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid
-						// || changeMail.isLoading
+						disabled={
+							_.isEmpty(dirtyFields) || !isValid
+							// || changeMail.isLoading
 						}
 						type="submit"
 					>
@@ -147,13 +142,8 @@ function ChangeEmailSetting(props) {
 					</Button>
 				</div>
 
-
 				<div className="my-40 border-t" />
-
-								
-
-				
-			</form> 
+			</form>
 		</div>
 	);
 }

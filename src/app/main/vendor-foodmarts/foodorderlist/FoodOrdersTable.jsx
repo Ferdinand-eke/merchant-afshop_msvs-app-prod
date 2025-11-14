@@ -1,30 +1,20 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { motion } from "framer-motion";
-import { useMemo } from "react";
-import DataTable from "app/shared-components/data-table/DataTable";
-import FuseLoading from "@fuse/core/FuseLoading";
-import { Chip, ListItemIcon, MenuItem, Paper } from "@mui/material";
-import _ from "@lodash";
-import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
-import { Link } from "react-router-dom";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import Button from "@mui/material/Button";
-import MerchantErrorPage from "../FoodMerchantErrorPage";
-import useMerchantFoodOrders from "app/configs/data/server-calls/foodmartmenuitems/useMerchantFoodOrder";
-import { formatCurrency } from "../../vendors-shop/pos/PosUtils";
-import FoodOrdersCreatedAndPaymentStatus from "../foodorder/FoodOrdersCreatedAndPaymentStatus";
+import { motion } from 'framer-motion';
+import { useMemo } from 'react';
+import DataTable from 'app/shared-components/data-table/DataTable';
+import FuseLoading from '@fuse/core/FuseLoading';
+import { Paper } from '@mui/material';
+import { Link } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
+import useMerchantFoodOrders from 'app/configs/data/server-calls/foodmartmenuitems/useMerchantFoodOrder';
+import MerchantErrorPage from '../FoodMerchantErrorPage';
+import { formatCurrency } from '../../vendors-shop/pos/PosUtils';
+import FoodOrdersCreatedAndPaymentStatus from '../foodorder/FoodOrdersCreatedAndPaymentStatus';
 
 function FoodOrdersTable() {
-  const {
-    data: foorOrders,
-    isLoading: foorOrdersIsLoading,
-    isError,
-  } = useMerchantFoodOrders();
+	const { data: foorOrders, isLoading: foorOrdersIsLoading, isError } = useMerchantFoodOrders();
 
-
-
-  const columns = useMemo(
+	const columns = useMemo(
 		() => [
 			{
 				accessorKey: 'refOrderId',
@@ -55,9 +45,12 @@ function FoodOrdersTable() {
 			},
 			{
 				id: 'isPaid',
-				accessorFn: (row) => <FoodOrdersCreatedAndPaymentStatus 
-				createdAt={row?.createdAt}
-				isPaid={row?.isPaid} />,
+				accessorFn: (row) => (
+					<FoodOrdersCreatedAndPaymentStatus
+						createdAt={row?.createdAt}
+						isPaid={row?.isPaid}
+					/>
+				),
 				accessorKey: 'isPaid',
 				header: 'Payment Status'
 			},
@@ -69,40 +62,46 @@ function FoodOrdersTable() {
 		[]
 	);
 
-  if (foorOrdersIsLoading) {
-    return <FuseLoading />;
-  }
+	if (foorOrdersIsLoading) {
+		return <FuseLoading />;
+	}
 
-  if (isError) {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { delay: 0.1 } }}
-        className="flex flex-col flex-1 items-center justify-center h-full"
-      >
-        <MerchantErrorPage message={" Error occurred while retriving food orders"}/>
-      </motion.div>
-    );
-  }
+	if (isError) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-col flex-1 items-center justify-center h-full"
+			>
+				<MerchantErrorPage message=" Error occurred while retriving food orders" />
+			</motion.div>
+		);
+	}
 
-  if (!foorOrders?.data?.data) {
-    return (
-      <div className="flex flex-1 items-center justify-center h-full">
-        <Typography color="text.secondary" variant="h5">
-          There are no listings!
-        </Typography>
-      </div>
-    );
-  }
+	if (!foorOrders?.data?.data) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<Typography
+					color="text.secondary"
+					variant="h5"
+				>
+					There are no listings!
+				</Typography>
+			</div>
+		);
+	}
 
-  return (
-    <Paper
-      className="flex flex-col flex-auto shadow-3 rounded-t-16 overflow-hidden rounded-b-0 w-full h-full"
-      elevation={0}
-    >
-      <DataTable data={foorOrders?.data?.data} columns={columns} />
-    </Paper>
-  );
+	return (
+		<Paper
+			className="flex flex-col flex-auto shadow-3 rounded-t-16 overflow-hidden rounded-b-0 w-full h-full"
+			elevation={0}
+		>
+			<DataTable
+				data={foorOrders?.data?.data}
+				columns={columns}
+			/>
+		</Paper>
+	);
 }
 
 export default FoodOrdersTable;

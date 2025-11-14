@@ -1,8 +1,5 @@
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 
 /**
@@ -17,7 +14,6 @@ function FoodOrdersHeader() {
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
 				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Manage Food Orders</Typography>
-				
 			</motion.span>
 
 			{/* <div className="flex flex-1 items-center justify-end space-x-8">

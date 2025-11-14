@@ -1,23 +1,17 @@
-import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { useGetFinanceDashboardWidgetsQuery } from '../FinanceDashboardApi';
-import { useAppDispatch } from 'app/store/hooks';
-import { toggleNotificationPanel } from '../../apps/notifications/notificationPanelSlice';
-import { motion, useAnimation } from 'framer-motion';
 
 /**
  * The CurrentStatementWidget widget.
  */
-function CurrentStatementWidget({shopData, shopDataLoading, isError}) {
+function CurrentStatementWidget({ shopData, shopDataLoading, isError }) {
 	// const [animate, setAnimate] = useState(false);
 	// const dispatch = useAppDispatch();
 	// const controls = useAnimation();
 
-	
 	// const { data: widgets, isLoading } = useGetFinanceDashboardWidgetsQuery();
 
 	if (shopDataLoading) {
@@ -30,7 +24,7 @@ function CurrentStatementWidget({shopData, shopDataLoading, isError}) {
 		return null;
 	}
 
-	console.log("ShopDATAAA", shopData)
+	console.log('ShopDATAAA', shopData);
 	// const { status, date, limit, spent, minimum } = widget;
 
 	// useEffect(() => {
@@ -51,7 +45,7 @@ function CurrentStatementWidget({shopData, shopDataLoading, isError}) {
 					<Typography className="text-lg font-medium tracking-tight leading-6 truncate">
 						Current Statement
 					</Typography>
-					<Typography className="text-orange-600 font-medium text-sm">Merchant's Earnings  </Typography>
+					<Typography className="text-orange-600 font-medium text-sm">Merchant's Earnings </Typography>
 					{/* {status === 'paid' && (
 						<Typography className="text-green-600 font-medium text-sm">Paid on {date}</Typography>
 					)}
@@ -67,10 +61,6 @@ function CurrentStatementWidget({shopData, shopDataLoading, isError}) {
 						<FuseSvgIcon>heroicons-outline:dots-vertical</FuseSvgIcon>
 					</IconButton>
 				</div> */}
-
-				
-
-				
 			</div>
 			<div className="flex flex-row flex-wrap mt-16 -mx-24">
 				<div className="flex flex-col mx-24 my-12">
@@ -86,7 +76,6 @@ function CurrentStatementWidget({shopData, shopDataLoading, isError}) {
 							currency: 'NGN'
 						})}
 					</Typography>
-
 				</div>
 				{/* <div className="flex flex-col mx-24 my-12">
 					<Typography
@@ -134,13 +123,12 @@ function CurrentStatementWidget({shopData, shopDataLoading, isError}) {
 			</div>
 
 			<div className="absolute bottom-0 ltr:right-0 rtl:left-0 w-96 h-96 -m-24">
-
-			<FuseSvgIcon
-						size={96}
-						className="opacity-25 text-green-500 dark:text-green-400"
-					>
-						heroicons-outline:check-circle
-					</FuseSvgIcon>
+				<FuseSvgIcon
+					size={96}
+					className="opacity-25 text-green-500 dark:text-green-400"
+				>
+					heroicons-outline:check-circle
+				</FuseSvgIcon>
 				{/* {status === 'paid' && (
 					<FuseSvgIcon
 						size={96}

@@ -14,7 +14,7 @@ function BookingPropertiesHeader() {
 	const { data: listingData, isLoading } = useMyShopBookingsProperties({ limit: 1000, offset: 0 });
 
 	const totalProperties = listingData?.data?.bookingLists?.length || 0;
-	const activeProperties = listingData?.data?.bookingLists?.filter(p => p.isApproved)?.length || 0;
+	const activeProperties = listingData?.data?.bookingLists?.filter((p) => p.isApproved)?.length || 0;
 	const pendingProperties = totalProperties - activeProperties;
 
 	return (
@@ -23,7 +23,7 @@ function BookingPropertiesHeader() {
 				className="relative overflow-hidden rounded-xl shadow-lg"
 				sx={{
 					background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
-					color: 'white',
+					color: 'white'
 				}}
 			>
 				<Box className="relative z-10 p-12 sm:p-16">
@@ -39,21 +39,30 @@ function BookingPropertiesHeader() {
 								className="flex items-center justify-center w-40 h-40 rounded-lg"
 								sx={{
 									backgroundColor: 'rgba(255, 255, 255, 0.2)',
-									backdropFilter: 'blur(10px)',
+									backdropFilter: 'blur(10px)'
 								}}
 							>
-								<FuseSvgIcon className="text-white" size={20}>
+								<FuseSvgIcon
+									className="text-white"
+									size={20}
+								>
 									heroicons-outline:home
 								</FuseSvgIcon>
 							</Box>
 							<Box>
-								<Typography variant="h6" className="font-bold mb-2">
+								<Typography
+									variant="h6"
+									className="font-bold mb-2"
+								>
 									Booking Listings
 								</Typography>
 								<Box className="flex items-center gap-12">
 									{!isLoading && (
 										<>
-											<Typography variant="caption" className="opacity-90">
+											<Typography
+												variant="caption"
+												className="opacity-90"
+											>
 												{totalProperties} Total
 											</Typography>
 											<Box
@@ -61,10 +70,13 @@ function BookingPropertiesHeader() {
 													width: 4,
 													height: 4,
 													borderRadius: '50%',
-													backgroundColor: 'rgba(255, 255, 255, 0.5)',
+													backgroundColor: 'rgba(255, 255, 255, 0.5)'
 												}}
 											/>
-											<Typography variant="caption" className="opacity-90">
+											<Typography
+												variant="caption"
+												className="opacity-90"
+											>
 												{activeProperties} Active
 											</Typography>
 											<Box
@@ -72,10 +84,13 @@ function BookingPropertiesHeader() {
 													width: 4,
 													height: 4,
 													borderRadius: '50%',
-													backgroundColor: 'rgba(255, 255, 255, 0.5)',
+													backgroundColor: 'rgba(255, 255, 255, 0.5)'
 												}}
 											/>
-											<Typography variant="caption" className="opacity-90">
+											<Typography
+												variant="caption"
+												className="opacity-90"
+											>
 												{pendingProperties} Pending
 											</Typography>
 										</>
@@ -101,8 +116,8 @@ function BookingPropertiesHeader() {
 									height: 36,
 									px: 2,
 									'&:hover': {
-										backgroundColor: 'white',
-									},
+										backgroundColor: 'white'
+									}
 								}}
 								startIcon={<FuseSvgIcon size={16}>heroicons-outline:plus</FuseSvgIcon>}
 							>
@@ -121,7 +136,7 @@ function BookingPropertiesHeader() {
 						width: '50%',
 						height: '100%',
 						opacity: 0.1,
-						background: 'radial-gradient(circle at 100% 0%, white 0%, transparent 50%)',
+						background: 'radial-gradient(circle at 100% 0%, white 0%, transparent 50%)'
 					}}
 				/>
 			</Paper>

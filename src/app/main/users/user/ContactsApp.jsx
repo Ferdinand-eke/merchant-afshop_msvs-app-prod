@@ -29,7 +29,6 @@ function ContactsApp() {
 		setRightSidebarOpen(Boolean(routeParams.id));
 	}, [routeParams]);
 
-
 	return (
 		<Root
 			header={<UsersHeader />}

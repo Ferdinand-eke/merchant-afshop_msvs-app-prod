@@ -18,4 +18,3 @@ const ProjectDashboardAppConfig = {
 	]
 };
 export default ProjectDashboardAppConfig;
-

@@ -86,7 +86,10 @@ function ModernReversedResetPasswordPage() {
 							<Typography className="mt-32 text-40 font-black leading-tight tracking-tight">
 								Create New Password
 							</Typography>
-							<Typography className="mt-8" color="text.secondary">
+							<Typography
+								className="mt-8"
+								color="text.secondary"
+							>
 								Enter the OTP code sent to your email, then create a strong new password.
 							</Typography>
 						</motion.div>
@@ -100,7 +103,8 @@ function ModernReversedResetPasswordPage() {
 							<Box
 								className="mt-32 p-20 rounded-xl"
 								sx={{
-									background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 127, 0, 0.05) 100%)',
+									background:
+										'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 127, 0, 0.05) 100%)',
 									border: '1px solid',
 									borderColor: alpha('#FF6B35', 0.2)
 								}}
@@ -118,17 +122,26 @@ function ModernReversedResetPasswordPage() {
 											flexShrink: 0
 										}}
 									>
-										<FuseSvgIcon size={18} sx={{ color: 'white' }}>
+										<FuseSvgIcon
+											size={18}
+											sx={{ color: 'white' }}
+										>
 											heroicons-solid:shield-check
 										</FuseSvgIcon>
 									</Box>
 									<div>
-										<Typography className="text-14 font-bold mb-4" sx={{ color: '#FF6B35' }}>
+										<Typography
+											className="text-14 font-bold mb-4"
+											sx={{ color: '#FF6B35' }}
+										>
 											Password Security Requirements
 										</Typography>
-										<Typography className="text-13 leading-relaxed" color="text.secondary">
-											Your password must be at least 8 characters long. Choose a strong,
-											unique password to keep your account secure.
+										<Typography
+											className="text-13 leading-relaxed"
+											color="text.secondary"
+										>
+											Your password must be at least 8 characters long. Choose a strong, unique
+											password to keep your account secure.
 										</Typography>
 									</div>
 								</Box>
@@ -162,7 +175,10 @@ function ModernReversedResetPasswordPage() {
 										InputProps={{
 											startAdornment: (
 												<Box sx={{ mr: 1, display: 'flex', alignItems: 'center' }}>
-													<FuseSvgIcon size={20} color="action">
+													<FuseSvgIcon
+														size={20}
+														color="action"
+													>
 														heroicons-outline:key
 													</FuseSvgIcon>
 												</Box>
@@ -189,7 +205,10 @@ function ModernReversedResetPasswordPage() {
 										InputProps={{
 											startAdornment: (
 												<Box sx={{ mr: 1, display: 'flex', alignItems: 'center' }}>
-													<FuseSvgIcon size={20} color="action">
+													<FuseSvgIcon
+														size={20}
+														color="action"
+													>
 														heroicons-outline:lock-closed
 													</FuseSvgIcon>
 												</Box>
@@ -216,7 +235,10 @@ function ModernReversedResetPasswordPage() {
 										InputProps={{
 											startAdornment: (
 												<Box sx={{ mr: 1, display: 'flex', alignItems: 'center' }}>
-													<FuseSvgIcon size={20} color="action">
+													<FuseSvgIcon
+														size={20}
+														color="action"
+													>
 														heroicons-outline:lock-closed
 													</FuseSvgIcon>
 												</Box>
@@ -250,12 +272,22 @@ function ModernReversedResetPasswordPage() {
 							</Button>
 
 							<Box className="mt-32 flex items-center justify-center gap-8">
-								<FuseSvgIcon size={16} sx={{ color: '#FF6B35' }}>
+								<FuseSvgIcon
+									size={16}
+									sx={{ color: '#FF6B35' }}
+								>
 									heroicons-solid:arrow-left
 								</FuseSvgIcon>
-								<Typography className="text-md font-medium" color="text.secondary">
+								<Typography
+									className="text-md font-medium"
+									color="text.secondary"
+								>
 									<span>Return to</span>
-									<Link className="ml-4 font-bold" to="/sign-in" style={{ color: '#FF6B35' }}>
+									<Link
+										className="ml-4 font-bold"
+										to="/sign-in"
+										style={{ color: '#FF6B35' }}
+									>
 										Sign in
 									</Link>
 								</Typography>
@@ -269,7 +301,10 @@ function ModernReversedResetPasswordPage() {
 							transition={{ delay: 0.4 }}
 							className="mt-32"
 						>
-							<Typography className="text-13 font-bold mb-12" color="text.secondary">
+							<Typography
+								className="text-13 font-bold mb-12"
+								color="text.secondary"
+							>
 								Password Tips:
 							</Typography>
 							<Box className="space-y-8">
@@ -278,11 +313,20 @@ function ModernReversedResetPasswordPage() {
 									'Include numbers and special characters',
 									"Don't reuse passwords from other accounts"
 								].map((tip, index) => (
-									<Box key={index} className="flex items-start gap-8">
-										<FuseSvgIcon size={16} sx={{ color: '#10B981', mt: 0.25 }}>
+									<Box
+										key={index}
+										className="flex items-start gap-8"
+									>
+										<FuseSvgIcon
+											size={16}
+											sx={{ color: '#10B981', mt: 0.25 }}
+										>
 											heroicons-solid:check-circle
 										</FuseSvgIcon>
-										<Typography className="text-12" color="text.secondary">
+										<Typography
+											className="text-12"
+											color="text.secondary"
+										>
 											{tip}
 										</Typography>
 									</Box>
@@ -321,7 +365,10 @@ function ModernReversedResetPasswordPage() {
 							transition={{ delay: 0.2, duration: 0.5 }}
 						>
 							{/* Main Heading */}
-							<Typography className="text-56 font-black leading-tight mb-16" sx={{ color: 'white' }}>
+							<Typography
+								className="text-56 font-black leading-tight mb-16"
+								sx={{ color: 'white' }}
+							>
 								Almost There!
 							</Typography>
 
@@ -330,8 +377,8 @@ function ModernReversedResetPasswordPage() {
 								className="text-18 leading-relaxed mb-40"
 								sx={{ color: 'rgba(255, 255, 255, 0.95)' }}
 							>
-								You're one step away from regaining full access to your merchant account.
-								Create a strong password to secure your business data.
+								You're one step away from regaining full access to your merchant account. Create a
+								strong password to secure your business data.
 							</Typography>
 
 							{/* Security Features Grid */}
@@ -340,17 +387,20 @@ function ModernReversedResetPasswordPage() {
 									{
 										icon: 'heroicons-outline:shield-check',
 										title: 'Enterprise-Grade Security',
-										description: 'Your password is encrypted with industry-standard AES-256 encryption'
+										description:
+											'Your password is encrypted with industry-standard AES-256 encryption'
 									},
 									{
 										icon: 'heroicons-outline:finger-print',
 										title: 'Unique Authentication',
-										description: 'Each password reset link is single-use and time-limited for your safety'
+										description:
+											'Each password reset link is single-use and time-limited for your safety'
 									},
 									{
 										icon: 'heroicons-outline:lock-closed',
 										title: 'Account Protection',
-										description: 'We never share your credentials and monitor for suspicious activity'
+										description:
+											'We never share your credentials and monitor for suspicious activity'
 									}
 								].map((feature, index) => (
 									<motion.div
@@ -378,12 +428,18 @@ function ModernReversedResetPasswordPage() {
 													flexShrink: 0
 												}}
 											>
-												<FuseSvgIcon size={24} sx={{ color: '#FF6B35' }}>
+												<FuseSvgIcon
+													size={24}
+													sx={{ color: '#FF6B35' }}
+												>
 													{feature.icon}
 												</FuseSvgIcon>
 											</Box>
 											<div className="flex-1">
-												<Typography className="text-16 font-bold mb-8" sx={{ color: 'white' }}>
+												<Typography
+													className="text-16 font-bold mb-8"
+													sx={{ color: 'white' }}
+												>
 													{feature.title}
 												</Typography>
 												<Typography
@@ -412,17 +468,23 @@ function ModernReversedResetPasswordPage() {
 										borderLeft: '4px solid white'
 									}}
 								>
-									<Typography className="text-15 font-bold mb-12" sx={{ color: 'white' }}>
+									<Typography
+										className="text-15 font-bold mb-12"
+										sx={{ color: 'white' }}
+									>
 										What Happens After Reset?
 									</Typography>
 									<Box className="space-y-8">
 										{[
-											'You\'ll be redirected to the sign-in page',
+											"You'll be redirected to the sign-in page",
 											'Use your new password to access your account',
 											'All active sessions will be logged out for security',
 											'You can change your password anytime in settings'
 										].map((item, index) => (
-											<Box key={index} className="flex items-start gap-8">
+											<Box
+												key={index}
+												className="flex items-start gap-8"
+											>
 												<Box
 													sx={{
 														width: 20,
@@ -436,7 +498,10 @@ function ModernReversedResetPasswordPage() {
 														mt: 0.25
 													}}
 												>
-													<Typography className="text-11 font-black" sx={{ color: '#FF6B35' }}>
+													<Typography
+														className="text-11 font-black"
+														sx={{ color: '#FF6B35' }}
+													>
 														{index + 1}
 													</Typography>
 												</Box>
@@ -478,10 +543,16 @@ function ModernReversedResetPasswordPage() {
 								</AvatarGroup>
 
 								<div>
-									<Typography className="text-15 font-bold mb-4" sx={{ color: 'white' }}>
+									<Typography
+										className="text-15 font-bold mb-4"
+										sx={{ color: 'white' }}
+									>
 										Trusted by 1,000+ Merchants
 									</Typography>
-									<Typography className="text-13" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+									<Typography
+										className="text-13"
+										sx={{ color: 'rgba(255, 255, 255, 0.8)' }}
+									>
 										Your security is our top priority
 									</Typography>
 								</div>

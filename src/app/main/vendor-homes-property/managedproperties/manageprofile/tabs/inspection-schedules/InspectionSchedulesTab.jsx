@@ -44,9 +44,9 @@ function InspectionSchedulesTab() {
 
 	// Calculate stats
 	const totalInspections = schedules.length;
-	const upcomingInspections = schedules.filter(s => new Date(s.scheduledDate) >= new Date()).length;
-	const completedInspections = schedules.filter(s => s.status === 'COMPLETED').length;
-	const pendingInspections = schedules.filter(s => s.status === 'PENDING').length;
+	const upcomingInspections = schedules.filter((s) => new Date(s.scheduledDate) >= new Date()).length;
+	const completedInspections = schedules.filter((s) => s.status === 'COMPLETED').length;
+	const pendingInspections = schedules.filter((s) => s.status === 'PENDING').length;
 
 	// Get calendar data
 	const year = currentDate.getFullYear();
@@ -74,7 +74,7 @@ function InspectionSchedulesTab() {
 
 	// Get inspections for a specific date
 	const getInspectionsForDate = (date) => {
-		return schedules.filter(schedule => {
+		return schedules.filter((schedule) => {
 			const scheduleDate = new Date(schedule.scheduledDate);
 			scheduleDate.setHours(0, 0, 0, 0);
 			date.setHours(0, 0, 0, 0);
@@ -91,17 +91,28 @@ function InspectionSchedulesTab() {
 		calendarDays.push(day);
 	}
 
-	const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-		'July', 'August', 'September', 'October', 'November', 'December'];
+	const monthNames = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December'
+	];
 	const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 	// Recent activity notifications
-	const recentActivities = schedules
-		.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-		.slice(0, 10);
+	const recentActivities = schedules.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 10);
 
 	const handleDateClick = (date) => {
 		const inspections = getInspectionsForDate(date);
+
 		if (inspections.length > 0) {
 			setSelectedDate(date);
 			setIsSliderOpen(true);
@@ -116,14 +127,32 @@ function InspectionSchedulesTab() {
 	if (isLoading) {
 		return (
 			<Box className="w-full">
-				<Grid container spacing={2} className="mb-24">
+				<Grid
+					container
+					spacing={2}
+					className="mb-24"
+				>
 					{[1, 2, 3, 4].map((i) => (
-						<Grid item xs={12} sm={6} md={3} key={i}>
-							<Skeleton variant="rectangular" height={120} className="rounded-xl" />
+						<Grid
+							item
+							xs={12}
+							sm={6}
+							md={3}
+							key={i}
+						>
+							<Skeleton
+								variant="rectangular"
+								height={120}
+								className="rounded-xl"
+							/>
 						</Grid>
 					))}
 				</Grid>
-				<Skeleton variant="rectangular" height={600} className="rounded-2xl" />
+				<Skeleton
+					variant="rectangular"
+					height={600}
+					className="rounded-2xl"
+				/>
 			</Box>
 		);
 	}
@@ -131,8 +160,17 @@ function InspectionSchedulesTab() {
 	return (
 		<Box className="w-full">
 			{/* Stats Section */}
-			<Grid container spacing={2} className="mb-24">
-				<Grid item xs={12} sm={6} md={3}>
+			<Grid
+				container
+				spacing={2}
+				className="mb-24"
+			>
+				<Grid
+					item
+					xs={12}
+					sm={6}
+					md={3}
+				>
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -146,7 +184,12 @@ function InspectionSchedulesTab() {
 										<Typography className="text-3xl font-bold mt-8">{totalInspections}</Typography>
 									</Box>
 									<Box className="w-48 h-48 rounded-full bg-white/20 flex items-center justify-center">
-										<FuseSvgIcon className="text-white" size={24}>heroicons-outline:calendar</FuseSvgIcon>
+										<FuseSvgIcon
+											className="text-white"
+											size={24}
+										>
+											heroicons-outline:calendar
+										</FuseSvgIcon>
 									</Box>
 								</Box>
 							</CardContent>
@@ -154,7 +197,12 @@ function InspectionSchedulesTab() {
 					</motion.div>
 				</Grid>
 
-				<Grid item xs={12} sm={6} md={3}>
+				<Grid
+					item
+					xs={12}
+					sm={6}
+					md={3}
+				>
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -165,10 +213,17 @@ function InspectionSchedulesTab() {
 								<Box className="flex items-center justify-between">
 									<Box>
 										<Typography className="text-sm opacity-90">Upcoming</Typography>
-										<Typography className="text-3xl font-bold mt-8">{upcomingInspections}</Typography>
+										<Typography className="text-3xl font-bold mt-8">
+											{upcomingInspections}
+										</Typography>
 									</Box>
 									<Box className="w-48 h-48 rounded-full bg-white/20 flex items-center justify-center">
-										<FuseSvgIcon className="text-white" size={24}>heroicons-outline:clock</FuseSvgIcon>
+										<FuseSvgIcon
+											className="text-white"
+											size={24}
+										>
+											heroicons-outline:clock
+										</FuseSvgIcon>
 									</Box>
 								</Box>
 							</CardContent>
@@ -176,7 +231,12 @@ function InspectionSchedulesTab() {
 					</motion.div>
 				</Grid>
 
-				<Grid item xs={12} sm={6} md={3}>
+				<Grid
+					item
+					xs={12}
+					sm={6}
+					md={3}
+				>
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -187,10 +247,17 @@ function InspectionSchedulesTab() {
 								<Box className="flex items-center justify-between">
 									<Box>
 										<Typography className="text-sm opacity-90">Completed</Typography>
-										<Typography className="text-3xl font-bold mt-8">{completedInspections}</Typography>
+										<Typography className="text-3xl font-bold mt-8">
+											{completedInspections}
+										</Typography>
 									</Box>
 									<Box className="w-48 h-48 rounded-full bg-white/20 flex items-center justify-center">
-										<FuseSvgIcon className="text-white" size={24}>heroicons-outline:check-circle</FuseSvgIcon>
+										<FuseSvgIcon
+											className="text-white"
+											size={24}
+										>
+											heroicons-outline:check-circle
+										</FuseSvgIcon>
 									</Box>
 								</Box>
 							</CardContent>
@@ -198,7 +265,12 @@ function InspectionSchedulesTab() {
 					</motion.div>
 				</Grid>
 
-				<Grid item xs={12} sm={6} md={3}>
+				<Grid
+					item
+					xs={12}
+					sm={6}
+					md={3}
+				>
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -209,10 +281,17 @@ function InspectionSchedulesTab() {
 								<Box className="flex items-center justify-between">
 									<Box>
 										<Typography className="text-sm opacity-90">Pending</Typography>
-										<Typography className="text-3xl font-bold mt-8">{pendingInspections}</Typography>
+										<Typography className="text-3xl font-bold mt-8">
+											{pendingInspections}
+										</Typography>
 									</Box>
 									<Box className="w-48 h-48 rounded-full bg-white/20 flex items-center justify-center">
-										<FuseSvgIcon className="text-white" size={24}>heroicons-outline:exclamation</FuseSvgIcon>
+										<FuseSvgIcon
+											className="text-white"
+											size={24}
+										>
+											heroicons-outline:exclamation
+										</FuseSvgIcon>
 									</Box>
 								</Box>
 							</CardContent>
@@ -224,23 +303,39 @@ function InspectionSchedulesTab() {
 			{/* Calendar and Activity Section */}
 			<Box className="flex flex-col lg:flex-row gap-16">
 				{/* Calendar - 70% width */}
-				<Paper className="flex-1 lg:w-[70%] shadow rounded-2xl overflow-hidden" sx={{ height: 'calc(100vh - 400px)', minHeight: '600px' }}>
+				<Paper
+					className="flex-1 lg:w-[70%] shadow rounded-2xl overflow-hidden"
+					sx={{ height: 'calc(100vh - 400px)', minHeight: '600px' }}
+				>
 					{/* Calendar Header */}
 					<Box className="flex items-center justify-between p-16 bg-gradient-to-r from-blue-500 to-purple-600">
 						<Box className="flex items-center gap-12">
 							<Box className="flex items-center justify-center w-40 h-40 rounded-full bg-white/20">
-								<FuseSvgIcon className="text-white" size={24}>heroicons-outline:calendar</FuseSvgIcon>
+								<FuseSvgIcon
+									className="text-white"
+									size={24}
+								>
+									heroicons-outline:calendar
+								</FuseSvgIcon>
 							</Box>
 							<Typography className="text-white font-bold text-lg">Inspection Calendar</Typography>
 						</Box>
 						<Box className="flex items-center gap-8">
-							<IconButton onClick={goToPreviousMonth} size="small" className="text-white">
+							<IconButton
+								onClick={goToPreviousMonth}
+								size="small"
+								className="text-white"
+							>
 								<FuseSvgIcon size={20}>heroicons-outline:chevron-left</FuseSvgIcon>
 							</IconButton>
 							<Typography className="text-white font-semibold min-w-[150px] text-center">
 								{monthNames[month]} {year}
 							</Typography>
-							<IconButton onClick={goToNextMonth} size="small" className="text-white">
+							<IconButton
+								onClick={goToNextMonth}
+								size="small"
+								className="text-white"
+							>
 								<FuseSvgIcon size={20}>heroicons-outline:chevron-right</FuseSvgIcon>
 							</IconButton>
 						</Box>
@@ -255,8 +350,11 @@ function InspectionSchedulesTab() {
 					<Box className="flex-1 overflow-y-auto p-16">
 						{/* Day Names */}
 						<Box className="grid grid-cols-7 gap-4 mb-8">
-							{dayNames.map(day => (
-								<Box key={day} className="text-center">
+							{dayNames.map((day) => (
+								<Box
+									key={day}
+									className="text-center"
+								>
 									<Typography className="text-xs font-semibold text-gray-500">{day}</Typography>
 								</Box>
 							))}
@@ -290,7 +388,9 @@ function InspectionSchedulesTab() {
 												${isPast && !isToday ? 'opacity-60' : ''}
 											`}
 										>
-											<Typography className={`text-center text-sm font-medium ${isToday ? 'text-blue-600 font-bold' : ''}`}>
+											<Typography
+												className={`text-center text-sm font-medium ${isToday ? 'text-blue-600 font-bold' : ''}`}
+											>
 												{day}
 											</Typography>
 											{hasInspections && (
@@ -309,11 +409,19 @@ function InspectionSchedulesTab() {
 				</Paper>
 
 				{/* Activity Notifications - 30% width */}
-				<Paper className="lg:w-[30%] shadow rounded-2xl overflow-hidden" sx={{ height: 'calc(100vh - 400px)', minHeight: '600px' }}>
+				<Paper
+					className="lg:w-[30%] shadow rounded-2xl overflow-hidden"
+					sx={{ height: 'calc(100vh - 400px)', minHeight: '600px' }}
+				>
 					<Box className="p-16 bg-gradient-to-r from-purple-500 to-pink-600">
 						<Box className="flex items-center gap-12">
 							<Box className="flex items-center justify-center w-40 h-40 rounded-full bg-white/20">
-								<FuseSvgIcon className="text-white" size={24}>heroicons-outline:bell</FuseSvgIcon>
+								<FuseSvgIcon
+									className="text-white"
+									size={24}
+								>
+									heroicons-outline:bell
+								</FuseSvgIcon>
 							</Box>
 							<Typography className="text-white font-bold text-lg">Recent Activity</Typography>
 						</Box>
@@ -322,7 +430,12 @@ function InspectionSchedulesTab() {
 					<Box className="overflow-y-auto p-16 h-full scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-purple-100 dark:scrollbar-thumb-purple-600 dark:scrollbar-track-gray-800">
 						{recentActivities.length === 0 ? (
 							<Box className="flex flex-col items-center justify-center h-full text-center">
-								<FuseSvgIcon className="text-gray-400" size={48}>heroicons-outline:calendar</FuseSvgIcon>
+								<FuseSvgIcon
+									className="text-gray-400"
+									size={48}
+								>
+									heroicons-outline:calendar
+								</FuseSvgIcon>
 								<Typography className="text-gray-500 mt-16">No recent activities</Typography>
 							</Box>
 						) : (
@@ -337,7 +450,12 @@ function InspectionSchedulesTab() {
 										<Box className="p-12 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg hover:shadow-md transition-shadow">
 											<Box className="flex items-start gap-12">
 												<Avatar className="w-32 h-32 bg-purple-600">
-													<FuseSvgIcon className="text-white" size={20}>heroicons-outline:user</FuseSvgIcon>
+													<FuseSvgIcon
+														className="text-white"
+														size={20}
+													>
+														heroicons-outline:user
+													</FuseSvgIcon>
 												</Avatar>
 												<Box className="flex-1">
 													<Typography className="text-sm font-medium">
@@ -355,7 +473,13 @@ function InspectionSchedulesTab() {
 														size="small"
 														label={activity.status}
 														className="mt-8"
-														color={activity.status === 'COMPLETED' ? 'success' : activity.status === 'PENDING' ? 'warning' : 'default'}
+														color={
+															activity.status === 'COMPLETED'
+																? 'success'
+																: activity.status === 'PENDING'
+																	? 'warning'
+																	: 'default'
+														}
 													/>
 												</Box>
 											</Box>

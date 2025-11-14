@@ -1,8 +1,5 @@
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 
 /**
@@ -16,7 +13,9 @@ function ProductsHeader() {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Manage Users And Their Listings</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">
+					Manage Users And Their Listings
+				</Typography>
 			</motion.span>
 
 			<div className="flex flex-1 items-center justify-end space-x-8">
@@ -37,7 +36,6 @@ function ProductsHeader() {
 						<span className="mx-4 sm:mx-8">Add Property/Listing</span>
 					</Button>
 				</motion.div> */}
-				
 			</div>
 		</div>
 	);

@@ -27,7 +27,6 @@ const StyledAccordion = styled(Accordion)(() => ({
 	}
 }));
 
-
 /**
  * The faq list component.
  */

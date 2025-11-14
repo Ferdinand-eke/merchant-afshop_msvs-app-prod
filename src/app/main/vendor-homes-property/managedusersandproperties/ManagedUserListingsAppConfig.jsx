@@ -5,7 +5,7 @@ const ManagedUserListingApp = lazy(() => import('./ManagedUserListingApp'));
 const PropertyListing = lazy(() => import('./product/PropertyListing'));
 const Products = lazy(() => import('./products/Products'));
 const ProfileApp = lazy(() => import('./manageprofile/ProfileApp'));
-const PropertyProfileApp = lazy(() => import('./manageuserpropertyprofile/PropertyProfileApp'))
+const PropertyProfileApp = lazy(() => import('./manageuserpropertyprofile/PropertyProfileApp'));
 // const Order = lazy(() => import('./order/Order'));
 // const Orders = lazy(() => import('./orders/Orders'));
 /**
@@ -13,8 +13,6 @@ const PropertyProfileApp = lazy(() => import('./manageuserpropertyprofile/Proper
  */
 
 const ManagedUserListingsAppConfig = {
-
-	
 	settings: {
 		layout: {}
 	},
@@ -32,8 +30,7 @@ const ManagedUserListingsAppConfig = {
 					path: 'managed-user-listings',
 					element: <Products />
 				},
-				
-			
+
 				{
 					path: 'managed-user-listings/:userId/userproperties',
 					element: <ProfileApp />
@@ -49,13 +46,12 @@ const ManagedUserListingsAppConfig = {
 					element: <PropertyProfileApp />
 				},
 
-				
 				{
 					path: 'managed-user-listings/:productId/*',
 					element: <PropertyListing />
-				},
+				}
 
-				// { 
+				// {
 				// 	path: 'orders',
 				// 	element: <Orders />
 				// },
@@ -67,7 +63,5 @@ const ManagedUserListingsAppConfig = {
 		}
 	]
 };
-
-
 
 export default ManagedUserListingsAppConfig;

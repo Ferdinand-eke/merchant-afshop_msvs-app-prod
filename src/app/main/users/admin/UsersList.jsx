@@ -4,23 +4,20 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useAppSelector } from 'app/store/hooks';
-import ContactListItem from './ContactListItem';
-import { selectFilteredContactList, selectGroupedFilteredContacts, useGetContactsListQuery } from './ContactsApi';
-import useGetAllUsers from 'src/app/aaqueryhooks/usersHandlingQuery';
 import useGetAllAdminUsers from 'src/app/aaqueryhooks/adminHandlingQuery';
+import ContactListItem from './ContactListItem';
+import { selectFilteredContactList, selectGroupedFilteredContacts } from './ContactsApi';
 
 /**
  * The contacts list.
  */
 function UsersList() {
-
 	// const { data, isLoading } = useGetContactsListQuery();
 	// const {data:usersData, isLoading:usersIsLoading} = useGetAllUsers()
-	const {data:usersData, isLoading:usersIsLoading} = useGetAllAdminUsers()
+	const { data: usersData, isLoading: usersIsLoading } = useGetAllAdminUsers();
 	// const filteredData = useAppSelector(selectFilteredContactList(data));
 
 	// const groupedFilteredContacts = useAppSelector(selectGroupedFilteredContacts(filteredData));
-
 
 	// console.log("users-on-HOMES", usersData?.data?.userlist)
 	const filteredData = useAppSelector(selectFilteredContactList(usersData?.data));
@@ -47,7 +44,6 @@ function UsersList() {
 		);
 	}
 
-	
 	return (
 		<motion.div
 			initial={{ y: 20, opacity: 0 }}
@@ -75,16 +71,11 @@ function UsersList() {
 								/>
 							))}
 						</List>
-
-						
 					</div>
 				);
 			})}
 		</motion.div>
 	);
-
 }
-
-
 
 export default UsersList;

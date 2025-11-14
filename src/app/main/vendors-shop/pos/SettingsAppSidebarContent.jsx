@@ -1,12 +1,9 @@
-import FuseNavigation from '@fuse/core/FuseNavigation/FuseNavigation';
 import Typography from '@mui/material/Typography';
 import { alpha, styled } from '@mui/material/styles';
 import Hidden from '@mui/material/Hidden';
 import IconButton from '@mui/material/IconButton';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import clsx from 'clsx';
-import SettingsAppNavigation from './SettingsAppNavigation';
-import { formatCurrency } from './PosUtils';
 import DisplayCart from './posframes/DisplayCart';
 
 const Root = styled('div')(({ theme }) => ({
@@ -61,12 +58,8 @@ function SettingsAppSidebarContent(props) {
 			{/* <FuseNavigation navigation={SettingsAppNavigation.children} /> */}
 
 			<>
-
-
-			<DisplayCart />
+				<DisplayCart />
 			</>
-
-			
 		</Root>
 	);
 }

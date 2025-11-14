@@ -12,8 +12,7 @@ import { Box, Chip } from '@mui/material';
  * The SummaryAccountWidget widget - Displays merchant earnings with clear visual hierarchy
  */
 
-function SummaryAccountWidget({shopData, isLoading}) {
-
+function SummaryAccountWidget({ shopData, isLoading }) {
 	if (isLoading) {
 		return <FuseLoading />;
 	}
@@ -29,7 +28,10 @@ function SummaryAccountWidget({shopData, isLoading}) {
 			<div className="flex items-center justify-between px-16 pt-16">
 				<Box className="flex items-center gap-8">
 					<Box className="flex items-center justify-center w-40 h-40 rounded-full bg-green-100 dark:bg-green-900/30">
-						<FuseSvgIcon className="text-green-600 dark:text-green-400" size={20}>
+						<FuseSvgIcon
+							className="text-green-600 dark:text-green-400"
+							size={20}
+						>
 							heroicons-outline:currency-dollar
 						</FuseSvgIcon>
 					</Box>
@@ -40,7 +42,10 @@ function SummaryAccountWidget({shopData, isLoading}) {
 						Total Earnings
 					</Typography>
 				</Box>
-				<IconButton aria-label="more" size="small">
+				<IconButton
+					aria-label="more"
+					size="small"
+				>
 					<FuseSvgIcon size={20}>heroicons-outline:dots-vertical</FuseSvgIcon>
 				</IconButton>
 			</div>
@@ -49,7 +54,10 @@ function SummaryAccountWidget({shopData, isLoading}) {
 				<Typography className="text-4xl font-bold tracking-tight text-green-600 dark:text-green-400">
 					₦{formatCurrency(balance)}
 				</Typography>
-				<Typography className="text-xs mt-4" color="text.secondary">
+				<Typography
+					className="text-xs mt-4"
+					color="text.secondary"
+				>
 					Available Balance
 				</Typography>
 			</div>
@@ -72,7 +80,10 @@ function SummaryAccountWidget({shopData, isLoading}) {
 						variant="outlined"
 						className="text-xs"
 					/>
-					<Typography className="text-xs" color="text.secondary">
+					<Typography
+						className="text-xs"
+						color="text.secondary"
+					>
 						Last updated: Today
 					</Typography>
 				</Box>

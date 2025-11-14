@@ -29,11 +29,9 @@ function PropertiesApp() {
 		setRightSidebarOpen(Boolean(routeParams.id));
 	}, [routeParams]);
 
-
 	return (
 		<Root
 			header={<UsersHeader />}
-			
 			content={<UsersList />}
 			ref={pageLayout}
 			rightSidebarContent={<ContactsSidebarContent />}

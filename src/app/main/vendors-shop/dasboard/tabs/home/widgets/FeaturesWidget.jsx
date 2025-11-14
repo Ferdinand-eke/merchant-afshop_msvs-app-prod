@@ -8,12 +8,10 @@ import FuseLoading from '@fuse/core/FuseLoading';
 /**
  * The FeaturesWidget widget. sealedOrderItems
  */
-function FeaturesWidget({sealedOrderItems, isLoading}) {
-
+function FeaturesWidget({ sealedOrderItems, isLoading }) {
 	if (isLoading) {
 		return <FuseLoading />;
 	}
-
 
 	if (!sealedOrderItems) {
 		return null;
@@ -26,7 +24,6 @@ function FeaturesWidget({sealedOrderItems, isLoading}) {
 					className="px-16 text-lg font-medium tracking-tight leading-6 truncate"
 					color="text.secondary"
 				>
-			
 					Sealed Orders
 				</Typography>
 				<IconButton
@@ -37,22 +34,14 @@ function FeaturesWidget({sealedOrderItems, isLoading}) {
 				</IconButton>
 			</div>
 			<div className="text-center mt-8">
-				<Typography className="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">
-				
-				</Typography>
-				<Typography className="text-lg font-medium text-green-600">
-					
-					{sealedOrderItems?.length}
-					</Typography>
+				<Typography className="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500" />
+				<Typography className="text-lg font-medium text-green-600">{sealedOrderItems?.length}</Typography>
 			</div>
 			<Typography
 				className="flex items-baseline justify-center w-full mt-20 mb-24"
 				color="text.secondary"
 			>
-				<span className="truncate">Sealed Oders Count</span>:<b className="px-8">
-				
-					{sealedOrderItems?.length}
-					</b>
+				<span className="truncate">Sealed Oders Count</span>:<b className="px-8">{sealedOrderItems?.length}</b>
 			</Typography>
 		</Paper>
 	);

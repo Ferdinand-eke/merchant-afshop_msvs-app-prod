@@ -36,7 +36,7 @@ function ProfileApp() {
 		setSelectedTab(value);
 	}
 
-	return <VendorModernReversedComingSoonPage />
+	return <VendorModernReversedComingSoonPage />;
 
 	return (
 		<Root

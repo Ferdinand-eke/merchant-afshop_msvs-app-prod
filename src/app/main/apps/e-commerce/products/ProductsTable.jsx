@@ -12,7 +12,6 @@ import Button from '@mui/material/Button';
 import { useDeleteECommerceProductsMutation, useGetECommerceProductsQuery } from '../ECommerceApi';
 
 function ProductsTable() {
-	
 	const { data: products, isLoading } = useGetECommerceProductsQuery();
 	const [removeProducts] = useDeleteECommerceProductsMutation();
 	const columns = useMemo(

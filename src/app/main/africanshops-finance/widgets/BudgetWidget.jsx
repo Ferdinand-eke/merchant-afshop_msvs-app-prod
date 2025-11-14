@@ -6,8 +6,8 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import LinearProgress from '@mui/material/LinearProgress';
 import IconButton from '@mui/material/IconButton';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { useGetFinanceDashboardWidgetsQuery } from '../FinanceDashboardApi';
 import useGetMyShopTransferLogs from 'app/configs/data/server-calls/transferlog/useShopTransferLogs';
+import { useGetFinanceDashboardWidgetsQuery } from '../FinanceDashboardApi';
 
 /**
  * The BudgetWidget widget.
@@ -15,8 +15,8 @@ import useGetMyShopTransferLogs from 'app/configs/data/server-calls/transferlog/
 function BudgetWidget() {
 	const { data: widgets, isLoading } = useGetFinanceDashboardWidgetsQuery();
 
-	const {data:transferLogs} = useGetMyShopTransferLogs()
-	console.log("TransferLOGS", transferLogs?.data?.data)
+	const { data: transferLogs } = useGetMyShopTransferLogs();
+	console.log('TransferLOGS', transferLogs?.data?.data);
 
 	if (isLoading) {
 		return <FuseLoading />;

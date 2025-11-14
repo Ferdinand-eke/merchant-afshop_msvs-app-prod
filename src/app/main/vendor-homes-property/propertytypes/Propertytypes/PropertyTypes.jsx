@@ -18,7 +18,6 @@ function PropertyTypes() {
 			<div className="w-full h-full container flex flex-col">
 				<PropertyTypesHeader />
 				<PropertyTypesTable />
-				
 			</div>
 		</>
 	);

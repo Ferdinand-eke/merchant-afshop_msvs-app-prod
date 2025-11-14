@@ -3,7 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import {
@@ -29,8 +29,6 @@ function ProductHeader() {
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
 
-	
-
 	function handleSaveProduct() {
 		saveProduct(getValues());
 	}
@@ -47,7 +45,6 @@ function ProductHeader() {
 		removeProduct(productId);
 		navigate('/property/managed-listings');
 	}
-
 
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
@@ -148,7 +145,6 @@ function ProductHeader() {
 					</Button>
 				)}
 			</motion.div>
-			
 		</div>
 	);
 }

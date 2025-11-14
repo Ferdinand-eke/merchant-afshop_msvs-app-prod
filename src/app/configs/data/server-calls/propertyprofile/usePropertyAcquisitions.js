@@ -12,15 +12,11 @@ import {
  * @returns {Object} React Query result with acquisitions data
  */
 export default function usePropertyAcquisitions({ limit = 10, offset = 0 } = {}) {
-	return useQuery(
-		['property_acquisitions', { limit, offset }],
-		() => getPropertyAcquisitions({ limit, offset }),
-		{
-			staleTime: 5 * 60 * 1000, // 5 minutes
-			refetchOnWindowFocus: false,
-			keepPreviousData: true // Keep previous data while fetching new page
-		}
-	);
+	return useQuery(['property_acquisitions', { limit, offset }], () => getPropertyAcquisitions({ limit, offset }), {
+		staleTime: 5 * 60 * 1000, // 5 minutes
+		refetchOnWindowFocus: false,
+		keepPreviousData: true // Keep previous data while fetching new page
+	});
 }
 
 /**

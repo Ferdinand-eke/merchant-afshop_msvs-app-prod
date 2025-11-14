@@ -4,10 +4,8 @@ import AppContext from 'app/AppContext';
 import { lazy, memo, Suspense, useContext } from 'react';
 import { useRoutes } from 'react-router-dom';
 import { selectFuseCurrentLayoutConfig } from '@fuse/core/FuseSettings/fuseSettingsSlice';
-import Configurator from 'app/theme-layouts/shared-components/configurator/Configurator';
 import FuseSuspense from '@fuse/core/FuseSuspense';
 import { useAppSelector } from 'app/store/hooks';
-import FooterLayout1 from './components/FooterLayout1';
 import LeftSideLayout1 from './components/LeftSideLayout1';
 
 import NavbarWrapperLayout1 from './components/NavbarWrapperLayout1';
@@ -30,7 +28,6 @@ const Root = styled('div')(({ config }) => ({
 		}
 	})
 }));
-
 
 /**
  * The layout 1.

@@ -41,8 +41,9 @@ function OffersTab() {
 	const pagination = offersData?.data?.payload?.pagination || {};
 
 	// Filter offers based on search and status
-	const filteredOffers = offers.filter(offer => {
-		const matchesSearch = searchQuery === '' ||
+	const filteredOffers = offers.filter((offer) => {
+		const matchesSearch =
+			searchQuery === '' ||
 			offer.buyerName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
 			offer.propertyTitle?.toLowerCase().includes(searchQuery.toLowerCase());
 
@@ -93,12 +94,29 @@ function OffersTab() {
 		return (
 			<Box className="w-full">
 				<Box className="mb-24">
-					<Skeleton variant="rectangular" height={60} className="rounded-xl mb-16" />
+					<Skeleton
+						variant="rectangular"
+						height={60}
+						className="rounded-xl mb-16"
+					/>
 				</Box>
-				<Grid container spacing={2}>
+				<Grid
+					container
+					spacing={2}
+				>
 					{[1, 2, 3, 4, 5, 6].map((i) => (
-						<Grid item xs={12} sm={6} md={4} key={i}>
-							<Skeleton variant="rectangular" height={200} className="rounded-xl" />
+						<Grid
+							item
+							xs={12}
+							sm={6}
+							md={4}
+							key={i}
+						>
+							<Skeleton
+								variant="rectangular"
+								height={200}
+								className="rounded-xl"
+							/>
 						</Grid>
 					))}
 				</Grid>
@@ -113,7 +131,12 @@ function OffersTab() {
 				<Box className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-16 mb-16">
 					<Box className="flex items-center gap-12">
 						<Box className="w-48 h-48 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-							<FuseSvgIcon className="text-white" size={24}>heroicons-outline:currency-dollar</FuseSvgIcon>
+							<FuseSvgIcon
+								className="text-white"
+								size={24}
+							>
+								heroicons-outline:currency-dollar
+							</FuseSvgIcon>
 						</Box>
 						<Box>
 							<Typography className="text-xl font-bold">Property Offers</Typography>
@@ -124,8 +147,15 @@ function OffersTab() {
 					</Box>
 				</Box>
 
-				<Grid container spacing={2}>
-					<Grid item xs={12} sm={8}>
+				<Grid
+					container
+					spacing={2}
+				>
+					<Grid
+						item
+						xs={12}
+						sm={8}
+					>
 						<TextField
 							fullWidth
 							placeholder="Search by buyer name or property..."
@@ -141,8 +171,15 @@ function OffersTab() {
 							size="small"
 						/>
 					</Grid>
-					<Grid item xs={12} sm={4}>
-						<FormControl fullWidth size="small">
+					<Grid
+						item
+						xs={12}
+						sm={4}
+					>
+						<FormControl
+							fullWidth
+							size="small"
+						>
 							<InputLabel>Status</InputLabel>
 							<Select
 								value={statusFilter}
@@ -164,28 +201,49 @@ function OffersTab() {
 			{filteredOffers.length === 0 ? (
 				<Paper className="p-32 shadow rounded-xl">
 					<Box className="flex flex-col items-center justify-center text-center">
-						<FuseSvgIcon className="text-gray-400" size={64}>heroicons-outline:inbox</FuseSvgIcon>
+						<FuseSvgIcon
+							className="text-gray-400"
+							size={64}
+						>
+							heroicons-outline:inbox
+						</FuseSvgIcon>
 						<Typography className="text-gray-500 mt-16 text-lg">
-							{searchQuery || statusFilter !== 'all' ? 'No offers match your filters' : 'No offers received yet'}
+							{searchQuery || statusFilter !== 'all'
+								? 'No offers match your filters'
+								: 'No offers received yet'}
 						</Typography>
 					</Box>
 				</Paper>
 			) : (
 				<>
-					<Grid container spacing={2}>
+					<Grid
+						container
+						spacing={2}
+					>
 						{filteredOffers.map((offer, idx) => (
-							<Grid item xs={12} sm={6} md={4} key={offer.id}>
+							<Grid
+								item
+								xs={12}
+								sm={6}
+								md={4}
+								key={offer.id}
+							>
 								<motion.div
 									initial={{ opacity: 0, y: 20 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: idx * 0.05 }}
 								>
 									<Card className="h-full hover:shadow-lg transition-shadow">
-										<CardActionArea onClick={() => handleOfferClick(offer.id)} className="h-full">
+										<CardActionArea
+											onClick={() => handleOfferClick(offer.id)}
+											className="h-full"
+										>
 											<CardContent className="h-full">
 												{/* Offer Amount */}
 												<Box className="mb-16">
-													<Typography className="text-sm text-gray-500 mb-4">Offer Amount</Typography>
+													<Typography className="text-sm text-gray-500 mb-4">
+														Offer Amount
+													</Typography>
 													<Typography className="text-2xl font-bold text-green-600">
 														{formatCurrency(offer.offerAmount || 0)}
 													</Typography>
@@ -193,7 +251,9 @@ function OffersTab() {
 
 												{/* Property Title */}
 												<Box className="mb-12">
-													<Typography className="text-sm text-gray-500 mb-4">Property</Typography>
+													<Typography className="text-sm text-gray-500 mb-4">
+														Property
+													</Typography>
 													<Typography className="text-base font-semibold line-clamp-2">
 														{offer.propertyTitle || 'N/A'}
 													</Typography>
@@ -201,10 +261,15 @@ function OffersTab() {
 
 												{/* Buyer Info */}
 												<Box className="mb-12">
-													<Typography className="text-sm text-gray-500 mb-4">Buyer</Typography>
+													<Typography className="text-sm text-gray-500 mb-4">
+														Buyer
+													</Typography>
 													<Box className="flex items-center gap-8">
 														<Box className="w-32 h-32 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
-															<FuseSvgIcon className="text-purple-600" size={16}>
+															<FuseSvgIcon
+																className="text-purple-600"
+																size={16}
+															>
 																heroicons-outline:user
 															</FuseSvgIcon>
 														</Box>
@@ -222,7 +287,9 @@ function OffersTab() {
 														size="small"
 													/>
 													<Typography className="text-xs text-gray-500">
-														{new Date(offer.createdAt || offer.offerDate).toLocaleDateString('en-US', {
+														{new Date(
+															offer.createdAt || offer.offerDate
+														).toLocaleDateString('en-US', {
 															month: 'short',
 															day: 'numeric'
 														})}

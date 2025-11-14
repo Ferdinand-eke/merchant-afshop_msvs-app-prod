@@ -1,13 +1,10 @@
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
 import { Controller, useFormContext } from 'react-hook-form';
 
 /**
  * The basic info tab.
  */
 function BasicInfoTab() {
-	
-
 	const methods = useFormContext();
 	const { control, formState } = methods;
 	const { errors } = formState;

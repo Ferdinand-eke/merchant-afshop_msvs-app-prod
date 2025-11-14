@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Paper, Typography, Box, Avatar, Divider, Chip } from '@mui/material';
+import { Paper, Typography, Box, Divider } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { motion } from 'framer-motion';
 
@@ -110,17 +110,16 @@ function SocialActivityFeed({ merchantData }) {
 			<Box className="p-16 bg-gradient-to-r from-purple-500 to-pink-600 flex-shrink-0">
 				<Box className="flex items-center gap-12">
 					<Box className="flex items-center justify-center w-40 h-40 rounded-full bg-white/20">
-						<FuseSvgIcon className="text-white" size={24}>
+						<FuseSvgIcon
+							className="text-white"
+							size={24}
+						>
 							heroicons-outline:lightning-bolt
 						</FuseSvgIcon>
 					</Box>
 					<Box>
-						<Typography className="text-white font-bold text-lg">
-							Activity Feed
-						</Typography>
-						<Typography className="text-white/80 text-xs">
-							Recent merchant activities
-						</Typography>
+						<Typography className="text-white font-bold text-lg">Activity Feed</Typography>
+						<Typography className="text-white/80 text-xs">Recent merchant activities</Typography>
 					</Box>
 				</Box>
 			</Box>
@@ -134,26 +133,30 @@ function SocialActivityFeed({ merchantData }) {
 					className="flex flex-col gap-12"
 				>
 					{activities.map((activity, index) => (
-						<motion.div key={activity.id} variants={item}>
+						<motion.div
+							key={activity.id}
+							variants={item}
+						>
 							<Box className="flex gap-12">
 								{/* Activity Icon */}
-								<Box className={`flex-shrink-0 flex items-center justify-center w-40 h-40 rounded-full ${activity.bgColor}`}>
-									<FuseSvgIcon className={activity.color} size={20}>
+								<Box
+									className={`flex-shrink-0 flex items-center justify-center w-40 h-40 rounded-full ${activity.bgColor}`}
+								>
+									<FuseSvgIcon
+										className={activity.color}
+										size={20}
+									>
 										{activity.icon}
 									</FuseSvgIcon>
 								</Box>
 
 								{/* Activity Content */}
 								<Box className="flex-1 min-w-0">
-									<Typography className="text-sm font-semibold truncate">
-										{activity.title}
-									</Typography>
+									<Typography className="text-sm font-semibold truncate">{activity.title}</Typography>
 									<Typography className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
 										{activity.description}
 									</Typography>
-									<Typography className="text-xs text-gray-400 mt-4">
-										{activity.time}
-									</Typography>
+									<Typography className="text-xs text-gray-400 mt-4">{activity.time}</Typography>
 								</Box>
 							</Box>
 							{index < activities.length - 1 && <Divider className="mt-12" />}
@@ -167,29 +170,29 @@ function SocialActivityFeed({ merchantData }) {
 				<Box className="flex items-center justify-between">
 					<Box className="text-center flex-1">
 						<Typography className="text-lg font-bold text-blue-600">
-							{activities.filter(a => a.type === 'booking').length}
+							{activities.filter((a) => a.type === 'booking').length}
 						</Typography>
-						<Typography className="text-xs text-gray-500">
-							Bookings
-						</Typography>
+						<Typography className="text-xs text-gray-500">Bookings</Typography>
 					</Box>
-					<Divider orientation="vertical" flexItem />
+					<Divider
+						orientation="vertical"
+						flexItem
+					/>
 					<Box className="text-center flex-1">
 						<Typography className="text-lg font-bold text-green-600">
-							{activities.filter(a => a.type === 'checkin').length}
+							{activities.filter((a) => a.type === 'checkin').length}
 						</Typography>
-						<Typography className="text-xs text-gray-500">
-							Check-ins
-						</Typography>
+						<Typography className="text-xs text-gray-500">Check-ins</Typography>
 					</Box>
-					<Divider orientation="vertical" flexItem />
+					<Divider
+						orientation="vertical"
+						flexItem
+					/>
 					<Box className="text-center flex-1">
 						<Typography className="text-lg font-bold text-yellow-600">
-							{activities.filter(a => a.type === 'review').length}
+							{activities.filter((a) => a.type === 'review').length}
 						</Typography>
-						<Typography className="text-xs text-gray-500">
-							Reviews
-						</Typography>
+						<Typography className="text-xs text-gray-500">Reviews</Typography>
 					</Box>
 				</Box>
 			</Box>

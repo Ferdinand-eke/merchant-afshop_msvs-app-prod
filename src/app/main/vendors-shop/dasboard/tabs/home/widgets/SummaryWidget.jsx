@@ -2,7 +2,7 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import FuseLoading from '@fuse/core/FuseLoading';
@@ -12,8 +12,7 @@ import { formatCurrency } from 'src/app/main/vendors-shop/pos/PosUtils';
  * The SummaryWidget widget.
  */
 
-function SummaryWidget({shopData, isLoading}) {
-
+function SummaryWidget({ shopData, isLoading }) {
 	if (isLoading) {
 		return <FuseLoading />;
 	}
@@ -21,8 +20,6 @@ function SummaryWidget({shopData, isLoading}) {
 	if (!shopData) {
 		return null;
 	}
-
-	
 
 	return (
 		<Paper className="flex flex-col flex-auto shadow rounded-2xl overflow-hidden">
@@ -36,11 +33,7 @@ function SummaryWidget({shopData, isLoading}) {
 					variant="filled"
 					size="small"
 				>
-					<MenuItem
-								
-							>
-								Move to Wallet
-							</MenuItem>
+					<MenuItem>Move to Wallet</MenuItem>
 				</Select>
 				<IconButton
 					aria-label="more"
@@ -50,12 +43,9 @@ function SummaryWidget({shopData, isLoading}) {
 				</IconButton>
 			</div>
 			<div className="text-center mt-8">
-				
 				<Typography className="text-lg font-medium text-blue-600 dark:text-blue-500">
-					
 					NGN {formatCurrency(shopData?.shopaccount?.accountbalance)}
-					</Typography>
-					
+				</Typography>
 			</div>
 			<Typography
 				className="flex items-baseline justify-center w-full mt-20 mb-24"

@@ -1,12 +1,11 @@
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 
 /**
  * The error 500 page.
  */
-function MerchantErrorPage({message}) {
+function MerchantErrorPage({ message }) {
 	return (
 		<div className="flex flex-1 flex-col items-center justify-center p-16">
 			<div className="w-full max-w-3xl text-center">
@@ -302,7 +301,7 @@ function MerchantErrorPage({message}) {
 						className="mt-8 text-center text-lg font-medium tracking-tight md:text-xl"
 					>
 						{/* Server Error 500. Our staff has been notified, thank you for your understanding. */}
-                        {message}
+						{message}
 					</Typography>
 				</motion.div>
 

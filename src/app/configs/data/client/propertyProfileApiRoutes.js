@@ -16,7 +16,9 @@ export const getInspectionSchedules = () => {
  */
 export const getPropertyOffers = ({ propertyId, page = 1, limit = 10 }) => {
 	const params = new URLSearchParams();
+
 	if (propertyId) params.append('propertyId', propertyId);
+
 	params.append('page', page);
 	params.append('limit', limit);
 

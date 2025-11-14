@@ -94,6 +94,4 @@ function OrdersStatus(props) {
 	);
 }
 
-
-
 export default OrdersStatus;

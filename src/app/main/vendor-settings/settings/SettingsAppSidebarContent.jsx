@@ -59,7 +59,6 @@ function SettingsAppSidebarContent(props) {
 			<FuseNavigation navigation={SettingsAppNavigation.children} />
 
 			{/* <FuseNavigation navigation={SettingsAppNavigation.children} /> */}
-			
 		</Root>
 	);
 }

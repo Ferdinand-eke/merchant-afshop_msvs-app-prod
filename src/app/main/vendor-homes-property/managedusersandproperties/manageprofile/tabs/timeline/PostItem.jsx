@@ -19,7 +19,6 @@ import Card from '@mui/material/Card';
  * The post item.
  */
 function PostItem(props) {
-	
 	const { item } = props;
 	return (
 		<Card className="mb-32">

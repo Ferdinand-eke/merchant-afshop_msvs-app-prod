@@ -30,7 +30,7 @@ const SettingsAppConfig = {
 					path: 'security',
 					element: <SecurityTab />
 				},
-				
+
 				// {
 				// 	path: 'plan-billing',
 				// 	element: <PlanBillingTab />

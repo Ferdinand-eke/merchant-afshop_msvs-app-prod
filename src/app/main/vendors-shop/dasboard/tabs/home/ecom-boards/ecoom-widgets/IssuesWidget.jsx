@@ -3,14 +3,12 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { memo } from 'react';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import FuseLoading from '@fuse/core/FuseLoading';
 import { Box, LinearProgress } from '@mui/material';
 
 /**
  * The IssuesWidget widget - Displays active orders
  */
-function IssuesWidget({ordersCount, isLoading}) {
-
+function IssuesWidget({ ordersCount, isLoading }) {
 	// if (isLoading) {
 	// 	return <FuseLoading />;
 	// }
@@ -27,7 +25,10 @@ function IssuesWidget({ordersCount, isLoading}) {
 			<div className="flex items-center justify-between px-16 pt-16">
 				<Box className="flex items-center gap-8">
 					<Box className="flex items-center justify-center w-40 h-40 rounded-full bg-blue-100 dark:bg-blue-900/30">
-						<FuseSvgIcon className="text-blue-600 dark:text-blue-400" size={20}>
+						<FuseSvgIcon
+							className="text-blue-600 dark:text-blue-400"
+							size={20}
+						>
 							heroicons-outline:shopping-cart
 						</FuseSvgIcon>
 					</Box>
@@ -38,7 +39,10 @@ function IssuesWidget({ordersCount, isLoading}) {
 						Active Orders
 					</Typography>
 				</Box>
-				<IconButton aria-label="more" size="small">
+				<IconButton
+					aria-label="more"
+					size="small"
+				>
 					<FuseSvgIcon size={20}>heroicons-outline:dots-vertical</FuseSvgIcon>
 				</IconButton>
 			</div>
@@ -47,19 +51,23 @@ function IssuesWidget({ordersCount, isLoading}) {
 				<Typography className="text-5xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
 					{ordersCount}
 				</Typography>
-				<Typography className="text-xs mt-4" color="text.secondary">
+				<Typography
+					className="text-xs mt-4"
+					color="text.secondary"
+				>
 					Pending orders
 				</Typography>
 			</div>
 
 			<Box className="px-16 mt-16 mb-16">
 				<Box className="flex items-center justify-between mb-8">
-					<Typography className="text-xs font-medium" color="text.secondary">
+					<Typography
+						className="text-xs font-medium"
+						color="text.secondary"
+					>
 						Completion Rate
 					</Typography>
-					<Typography className="text-xs font-bold text-blue-600">
-						{completionRate}%
-					</Typography>
+					<Typography className="text-xs font-bold text-blue-600">{completionRate}%</Typography>
 				</Box>
 				<LinearProgress
 					variant="determinate"

@@ -1,17 +1,13 @@
-import { TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from '@mui/lab';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import Avatar from '@mui/material/Avatar';
+import { TimelineContent, TimelineItem } from '@mui/lab';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { format } from 'date-fns/format';
-import { Link } from 'react-router-dom';
 import { lighten } from '@mui/material/styles';
 
 /**
  * The ActivityTimelineItem component.
  */
 function ActivityTimelineItem(props) {
-
 	const { item, last } = props;
 	return (
 		<TimelineItem>

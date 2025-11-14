@@ -82,38 +82,47 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 	};
 
 	const handleDecline = () => {
-		declineOffer({ offerId, rejectionReason }, {
-			onSuccess: () => {
-				setIsDeclineDialogOpen(false);
-				setRejectionReason('');
-				onClose();
+		declineOffer(
+			{ offerId, rejectionReason },
+			{
+				onSuccess: () => {
+					setIsDeclineDialogOpen(false);
+					setRejectionReason('');
+					onClose();
+				}
 			}
-		});
+		);
 	};
 
 	const handleCounterOffer = () => {
-		sendCounterOffer({
-			offerId,
-			counterOfferAmount: parseFloat(counterOfferAmount),
-			counterOfferMessage
-		}, {
-			onSuccess: () => {
-				setIsCounterDialogOpen(false);
-				setCounterOfferAmount('');
-				setCounterOfferMessage('');
-				onClose();
+		sendCounterOffer(
+			{
+				offerId,
+				counterOfferAmount: parseFloat(counterOfferAmount),
+				counterOfferMessage
+			},
+			{
+				onSuccess: () => {
+					setIsCounterDialogOpen(false);
+					setCounterOfferAmount('');
+					setCounterOfferMessage('');
+					onClose();
+				}
 			}
-		});
+		);
 	};
 
 	const handleRevoke = () => {
-		revokeApproval({ offerId, revocationReason }, {
-			onSuccess: () => {
-				setIsRevokeDialogOpen(false);
-				setRevocationReason('');
-				onClose();
+		revokeApproval(
+			{ offerId, revocationReason },
+			{
+				onSuccess: () => {
+					setIsRevokeDialogOpen(false);
+					setRevocationReason('');
+					onClose();
+				}
 			}
-		});
+		);
 	};
 
 	const canAccept = offer.status?.toUpperCase() === 'PENDING';
@@ -139,18 +148,29 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 					<Box className="p-20 bg-gradient-to-r from-green-500 to-emerald-600 text-white">
 						<Box className="flex items-center justify-between mb-12">
 							<Typography className="text-xl font-bold">Offer Details</Typography>
-							<IconButton onClick={onClose} size="small" className="text-white">
+							<IconButton
+								onClick={onClose}
+								size="small"
+								className="text-white"
+							>
 								<FuseSvgIcon size={24}>heroicons-outline:x</FuseSvgIcon>
 							</IconButton>
 						</Box>
 						{offer.offerAmount && (
 							<Box className="flex items-center gap-12">
 								<Box className="w-48 h-48 rounded-full bg-white/20 flex items-center justify-center">
-									<FuseSvgIcon className="text-white" size={24}>heroicons-outline:currency-dollar</FuseSvgIcon>
+									<FuseSvgIcon
+										className="text-white"
+										size={24}
+									>
+										heroicons-outline:currency-dollar
+									</FuseSvgIcon>
 								</Box>
 								<Box>
 									<Typography className="text-sm opacity-90">Offer Amount</Typography>
-									<Typography className="text-2xl font-bold">{formatCurrency(offer.offerAmount)}</Typography>
+									<Typography className="text-2xl font-bold">
+										{formatCurrency(offer.offerAmount)}
+									</Typography>
 								</Box>
 							</Box>
 						)}
@@ -164,7 +184,12 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 							</Box>
 						) : !offer.id ? (
 							<Box className="flex flex-col items-center justify-center h-full text-center">
-								<FuseSvgIcon className="text-gray-400" size={64}>heroicons-outline:inbox</FuseSvgIcon>
+								<FuseSvgIcon
+									className="text-gray-400"
+									size={64}
+								>
+									heroicons-outline:inbox
+								</FuseSvgIcon>
 								<Typography className="text-gray-500 mt-16 text-lg">Offer not found</Typography>
 							</Box>
 						) : (
@@ -185,12 +210,21 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 
 								{/* Property Information */}
 								<Box>
-									<Typography className="text-sm font-semibold text-gray-600 mb-12">Property Information</Typography>
+									<Typography className="text-sm font-semibold text-gray-600 mb-12">
+										Property Information
+									</Typography>
 									<Paper className="p-16">
 										<Box className="flex items-start gap-12 mb-12">
-											<FuseSvgIcon size={20} className="text-gray-500">heroicons-outline:home</FuseSvgIcon>
+											<FuseSvgIcon
+												size={20}
+												className="text-gray-500"
+											>
+												heroicons-outline:home
+											</FuseSvgIcon>
 											<Box className="flex-1">
-												<Typography className="text-sm text-gray-500">Property Title</Typography>
+												<Typography className="text-sm text-gray-500">
+													Property Title
+												</Typography>
 												<Typography className="text-base font-medium">
 													{offer.propertyTitle || 'N/A'}
 												</Typography>
@@ -198,9 +232,16 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 										</Box>
 										{offer.propertyPrice && (
 											<Box className="flex items-start gap-12">
-												<FuseSvgIcon size={20} className="text-gray-500">heroicons-outline:tag</FuseSvgIcon>
+												<FuseSvgIcon
+													size={20}
+													className="text-gray-500"
+												>
+													heroicons-outline:tag
+												</FuseSvgIcon>
 												<Box className="flex-1">
-													<Typography className="text-sm text-gray-500">Listed Price</Typography>
+													<Typography className="text-sm text-gray-500">
+														Listed Price
+													</Typography>
 													<Typography className="text-base font-medium">
 														{formatCurrency(offer.propertyPrice)}
 													</Typography>
@@ -214,10 +255,17 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 
 								{/* Buyer Information */}
 								<Box>
-									<Typography className="text-sm font-semibold text-gray-600 mb-12">Buyer Information</Typography>
+									<Typography className="text-sm font-semibold text-gray-600 mb-12">
+										Buyer Information
+									</Typography>
 									<Paper className="p-16">
 										<Box className="flex items-start gap-12 mb-12">
-											<FuseSvgIcon size={20} className="text-gray-500">heroicons-outline:user</FuseSvgIcon>
+											<FuseSvgIcon
+												size={20}
+												className="text-gray-500"
+											>
+												heroicons-outline:user
+											</FuseSvgIcon>
 											<Box className="flex-1">
 												<Typography className="text-sm text-gray-500">Name</Typography>
 												<Typography className="text-base font-medium">
@@ -227,19 +275,33 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 										</Box>
 										{offer.buyerEmail && (
 											<Box className="flex items-start gap-12 mb-12">
-												<FuseSvgIcon size={20} className="text-gray-500">heroicons-outline:mail</FuseSvgIcon>
+												<FuseSvgIcon
+													size={20}
+													className="text-gray-500"
+												>
+													heroicons-outline:mail
+												</FuseSvgIcon>
 												<Box className="flex-1">
 													<Typography className="text-sm text-gray-500">Email</Typography>
-													<Typography className="text-base font-medium">{offer.buyerEmail}</Typography>
+													<Typography className="text-base font-medium">
+														{offer.buyerEmail}
+													</Typography>
 												</Box>
 											</Box>
 										)}
 										{offer.buyerPhone && (
 											<Box className="flex items-start gap-12">
-												<FuseSvgIcon size={20} className="text-gray-500">heroicons-outline:phone</FuseSvgIcon>
+												<FuseSvgIcon
+													size={20}
+													className="text-gray-500"
+												>
+													heroicons-outline:phone
+												</FuseSvgIcon>
 												<Box className="flex-1">
 													<Typography className="text-sm text-gray-500">Phone</Typography>
-													<Typography className="text-base font-medium">{offer.buyerPhone}</Typography>
+													<Typography className="text-base font-medium">
+														{offer.buyerPhone}
+													</Typography>
 												</Box>
 											</Box>
 										)}
@@ -252,7 +314,9 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 								{offer.message && (
 									<>
 										<Box>
-											<Typography className="text-sm font-semibold text-gray-600 mb-12">Message from Buyer</Typography>
+											<Typography className="text-sm font-semibold text-gray-600 mb-12">
+												Message from Buyer
+											</Typography>
 											<Paper className="p-16 bg-gray-50 dark:bg-gray-800">
 												<Typography className="text-sm">{offer.message}</Typography>
 											</Paper>
@@ -265,13 +329,17 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 								{offer.counterOfferAmount && (
 									<>
 										<Box>
-											<Typography className="text-sm font-semibold text-gray-600 mb-12">Counter Offer</Typography>
+											<Typography className="text-sm font-semibold text-gray-600 mb-12">
+												Counter Offer
+											</Typography>
 											<Paper className="p-16 bg-blue-50 dark:bg-blue-900/20">
 												<Typography className="text-lg font-bold text-blue-600 mb-8">
 													{formatCurrency(offer.counterOfferAmount)}
 												</Typography>
 												{offer.counterOfferMessage && (
-													<Typography className="text-sm">{offer.counterOfferMessage}</Typography>
+													<Typography className="text-sm">
+														{offer.counterOfferMessage}
+													</Typography>
 												)}
 											</Paper>
 										</Box>
@@ -284,7 +352,8 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 									<Box className="flex items-center gap-8 mb-8">
 										<FuseSvgIcon size={14}>heroicons-outline:calendar</FuseSvgIcon>
 										<Typography className="text-xs">
-											Created: {new Date(offer.createdAt || offer.offerDate).toLocaleDateString('en-US', {
+											Created:{' '}
+											{new Date(offer.createdAt || offer.offerDate).toLocaleDateString('en-US', {
 												year: 'numeric',
 												month: 'long',
 												day: 'numeric',
@@ -307,9 +376,16 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 					{/* Action Buttons */}
 					{!isLoading && offer.id && (
 						<Box className="p-20 border-t border-gray-200 dark:border-gray-700">
-							<Grid container spacing={2}>
+							<Grid
+								container
+								spacing={2}
+							>
 								{canAccept && (
-									<Grid item xs={12} sm={6}>
+									<Grid
+										item
+										xs={12}
+										sm={6}
+									>
 										<Button
 											fullWidth
 											variant="contained"
@@ -323,7 +399,11 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 									</Grid>
 								)}
 								{canDecline && (
-									<Grid item xs={12} sm={6}>
+									<Grid
+										item
+										xs={12}
+										sm={6}
+									>
 										<Button
 											fullWidth
 											variant="contained"
@@ -336,7 +416,11 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 									</Grid>
 								)}
 								{canCounter && (
-									<Grid item xs={12} sm={6}>
+									<Grid
+										item
+										xs={12}
+										sm={6}
+									>
 										<Button
 											fullWidth
 											variant="contained"
@@ -349,12 +433,17 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 									</Grid>
 								)}
 								{canRevoke && (
-									<Grid item xs={12}>
+									<Grid
+										item
+										xs={12}
+									>
 										<Button
 											fullWidth
 											variant="outlined"
 											color="warning"
-											startIcon={<FuseSvgIcon>heroicons-outline:exclamation-triangle</FuseSvgIcon>}
+											startIcon={
+												<FuseSvgIcon>heroicons-outline:exclamation-triangle</FuseSvgIcon>
+											}
 											onClick={() => setIsRevokeDialogOpen(true)}
 										>
 											Revoke Approval
@@ -368,7 +457,12 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 			</Drawer>
 
 			{/* Decline Offer Dialog */}
-			<Dialog open={isDeclineDialogOpen} onClose={() => setIsDeclineDialogOpen(false)} maxWidth="sm" fullWidth>
+			<Dialog
+				open={isDeclineDialogOpen}
+				onClose={() => setIsDeclineDialogOpen(false)}
+				maxWidth="sm"
+				fullWidth
+			>
 				<DialogTitle>Decline Offer</DialogTitle>
 				<DialogContent>
 					<Typography className="text-sm text-gray-600 mb-16">
@@ -386,14 +480,24 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={() => setIsDeclineDialogOpen(false)}>Cancel</Button>
-					<Button onClick={handleDecline} color="error" variant="contained" disabled={isDeclining}>
+					<Button
+						onClick={handleDecline}
+						color="error"
+						variant="contained"
+						disabled={isDeclining}
+					>
 						{isDeclining ? 'Declining...' : 'Decline Offer'}
 					</Button>
 				</DialogActions>
 			</Dialog>
 
 			{/* Counter Offer Dialog */}
-			<Dialog open={isCounterDialogOpen} onClose={() => setIsCounterDialogOpen(false)} maxWidth="sm" fullWidth>
+			<Dialog
+				open={isCounterDialogOpen}
+				onClose={() => setIsCounterDialogOpen(false)}
+				maxWidth="sm"
+				fullWidth
+			>
 				<DialogTitle>Send Counter Offer</DialogTitle>
 				<DialogContent>
 					<Typography className="text-sm text-gray-600 mb-16">
@@ -433,7 +537,12 @@ function OfferDetailsSlider({ open, onClose, offerId }) {
 			</Dialog>
 
 			{/* Revoke Approval Dialog */}
-			<Dialog open={isRevokeDialogOpen} onClose={() => setIsRevokeDialogOpen(false)} maxWidth="sm" fullWidth>
+			<Dialog
+				open={isRevokeDialogOpen}
+				onClose={() => setIsRevokeDialogOpen(false)}
+				maxWidth="sm"
+				fullWidth
+			>
 				<DialogTitle>Revoke Offer Approval</DialogTitle>
 				<DialogContent>
 					<Typography className="text-sm text-gray-600 mb-16">
