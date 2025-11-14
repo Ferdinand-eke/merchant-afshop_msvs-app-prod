@@ -25,7 +25,8 @@ import { toast } from 'react-toastify';
 import Resizer from 'src/Resizer';
 import {
 	useUpdatePropertyListingImageMutation,
-	useDeletePropertyListingImageMutation
+	useDeletePropertyListingImageMutation,
+	useBookingsPropertyUpdateMutation
 } from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
 
 const Root = styled('div')(({ theme }) => ({
@@ -98,9 +99,15 @@ function ProductImagesTabProperty() {
 	const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 	const [imageToDelete, setImageToDelete] = useState(null);
 
+	// State for add more images modal
+	const [addImagesModalOpen, setAddImagesModalOpen] = useState(false);
+	const [newImages, setNewImages] = useState([]);
+	const [isUploadingNewImages, setIsUploadingNewImages] = useState(false);
+
 	// Mutation hooks
 	const updatePropertyImage = useUpdatePropertyListingImageMutation();
 	const deletePropertyImage = useDeletePropertyListingImageMutation();
+	const updateProperty = useBookingsPropertyUpdateMutation();
 
 	const fileUploadAndResize = (e) => {
 		const files = e.target.files;
@@ -245,6 +252,92 @@ function ProductImagesTabProperty() {
 	const handleCancelDelete = () => {
 		setDeleteConfirmOpen(false);
 		setImageToDelete(null);
+	};
+
+	// Handler for opening add images modal
+	const handleOpenAddImagesModal = () => {
+		setAddImagesModalOpen(true);
+	};
+
+	// Handler for adding new images in the modal
+	const handleAddNewImages = (e) => {
+		const files = e.target.files;
+		if (!files || files.length === 0) return;
+
+		const processedImages = [];
+		let processedCount = 0;
+
+		Array.from(files).forEach((file) => {
+			Resizer?.imageFileResizer(
+				file,
+				720,
+				720,
+				'JPEG',
+				100,
+				0,
+				(uri) => {
+					if (uri) {
+						processedImages.push({
+							base64: uri,
+							name: file.name,
+							preview: uri
+						});
+					}
+					processedCount++;
+
+					// When all images are processed, update state
+					if (processedCount === files.length) {
+						setNewImages((prev) => [...prev, ...processedImages]);
+					}
+				},
+				'base64'
+			);
+		});
+	};
+
+	// Handler for removing an image from the new images array
+	const handleRemoveNewImage = (index) => {
+		setNewImages((prev) => prev.filter((_, i) => i !== index));
+	};
+
+	// Handler for submitting new images
+	const handleSubmitNewImages = async () => {
+		if (newImages.length === 0) {
+			toast.error('Please select at least one image to upload');
+			return;
+		}
+
+		if (!listingId) {
+			toast.error('Property ID is missing');
+			return;
+		}
+
+		setIsUploadingNewImages(true);
+
+		try {
+			// Prepare the payload with just the new images
+			const payload = {
+				id: listingId,
+				images: newImages.map((img) => img.base64)
+			};
+
+			// Call the update mutation
+			await updateProperty.mutateAsync(payload);
+
+			// Close modal and reset state
+			handleCancelAddImages();
+			toast.success('Images added successfully!');
+		} catch (error) {
+			console.error('Error adding images:', error);
+			setIsUploadingNewImages(false);
+		}
+	};
+
+	// Handler for canceling add images
+	const handleCancelAddImages = () => {
+		setAddImagesModalOpen(false);
+		setNewImages([]);
+		setIsUploadingNewImages(false);
 	};
 
 	return (
@@ -477,9 +570,24 @@ function ProductImagesTabProperty() {
 				{listingImages && listingImages?.length > 0 && (
 					<>
 						<Divider sx={{ my: 3 }} />
-						<Typography variant="h6" sx={{ fontWeight: 700, color: '#292524', mb: 3 }}>
-							Existing Images
-						</Typography>
+						<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+							<Typography variant="h6" sx={{ fontWeight: 700, color: '#292524' }}>
+								Existing Images
+							</Typography>
+							<Button
+								variant="contained"
+								startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>}
+								onClick={handleOpenAddImagesModal}
+								sx={{
+									background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+									'&:hover': {
+										background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
+									},
+								}}
+							>
+								Add More Images
+							</Button>
+						</Box>
 						<Grid container spacing={3}>
 							<Controller
 								name="featuredImageId"
@@ -925,6 +1033,232 @@ function ProductImagesTabProperty() {
 						}}
 					>
 						Delete Image
+					</Button>
+				</DialogActions>
+			</Dialog>
+
+			{/* Add More Images Modal */}
+			<Dialog
+				open={addImagesModalOpen}
+				onClose={handleCancelAddImages}
+				maxWidth="md"
+				fullWidth
+				PaperProps={{
+					sx: {
+						borderRadius: 2,
+						border: '1px solid rgba(234, 88, 12, 0.2)',
+					},
+				}}
+			>
+				<DialogTitle
+					sx={{
+						background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
+						borderBottom: '1px solid rgba(234, 88, 12, 0.1)',
+					}}
+				>
+					<Box className="flex items-center gap-12">
+						<Box
+							sx={{
+								width: 40,
+								height: 40,
+								borderRadius: '10px',
+								background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+							}}
+						>
+							<FuseSvgIcon className="text-white" size={20}>
+								heroicons-outline:photograph
+							</FuseSvgIcon>
+						</Box>
+						<Typography variant="h6" sx={{ fontWeight: 700, color: '#292524' }}>
+							Add More Property Images
+						</Typography>
+					</Box>
+				</DialogTitle>
+				<DialogContent sx={{ pt: 3 }}>
+					{/* Upload Area */}
+					<Box
+						sx={{
+							mb: 3,
+							p: 4,
+							border: '2px dashed rgba(234, 88, 12, 0.3)',
+							borderRadius: 2,
+							background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
+							textAlign: 'center',
+							cursor: 'pointer',
+							transition: 'all 0.3s ease',
+							'&:hover': {
+								borderColor: 'rgba(234, 88, 12, 0.5)',
+								transform: 'translateY(-2px)',
+							},
+						}}
+						component="label"
+					>
+						<input
+							type="file"
+							multiple
+							accept="image/*"
+							style={{ display: 'none' }}
+							onChange={handleAddNewImages}
+							disabled={isUploadingNewImages}
+						/>
+						<Box
+							sx={{
+								width: 64,
+								height: 64,
+								borderRadius: '50%',
+								background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								margin: '0 auto',
+								mb: 2,
+							}}
+						>
+							<FuseSvgIcon size={32} className="text-white">
+								heroicons-outline:upload
+							</FuseSvgIcon>
+						</Box>
+						<Typography variant="body1" sx={{ fontWeight: 600, color: '#ea580c', mb: 1 }}>
+							Click to browse or drag & drop
+						</Typography>
+						<Typography variant="caption" color="text.secondary">
+							Select multiple images to upload (JPG, PNG)
+						</Typography>
+					</Box>
+
+					{/* Preview Selected Images */}
+					{newImages.length > 0 && (
+						<>
+							<Typography variant="subtitle2" sx={{ mb: 2, fontWeight: 600, color: '#292524' }}>
+								Selected Images ({newImages.length})
+							</Typography>
+							<Grid container spacing={2}>
+								{newImages.map((image, index) => (
+									<Grid item xs={6} sm={4} md={3} key={index}>
+										<Box
+											sx={{
+												position: 'relative',
+												width: '100%',
+												height: 150,
+												borderRadius: 2,
+												overflow: 'hidden',
+												border: '1px solid rgba(234, 88, 12, 0.2)',
+												background: '#f5f5f4',
+											}}
+										>
+											{/* Remove Button */}
+											<IconButton
+												onClick={() => handleRemoveNewImage(index)}
+												sx={{
+													position: 'absolute',
+													top: 4,
+													right: 4,
+													background: 'rgba(220, 38, 38, 0.9)',
+													'&:hover': {
+														background: 'rgba(185, 28, 28, 1)',
+													},
+													width: 32,
+													height: 32,
+													zIndex: 2,
+												}}
+											>
+												<FuseSvgIcon className="text-white" size={16}>
+													heroicons-outline:x
+												</FuseSvgIcon>
+											</IconButton>
+
+											{/* Image Preview */}
+											<img
+												src={image.preview}
+												alt={`Preview ${index + 1}`}
+												style={{
+													width: '100%',
+													height: '100%',
+													objectFit: 'cover',
+												}}
+											/>
+
+											{/* Image Name Overlay */}
+											<Box
+												sx={{
+													position: 'absolute',
+													bottom: 0,
+													left: 0,
+													right: 0,
+													background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)',
+													padding: 1,
+												}}
+											>
+												<Typography
+													variant="caption"
+													className="text-white font-semibold"
+													sx={{
+														display: 'block',
+														whiteSpace: 'nowrap',
+														overflow: 'hidden',
+														textOverflow: 'ellipsis',
+													}}
+												>
+													{image.name}
+												</Typography>
+											</Box>
+										</Box>
+									</Grid>
+								))}
+							</Grid>
+						</>
+					)}
+
+					{/* Empty State */}
+					{newImages.length === 0 && (
+						<Box
+							sx={{
+								textAlign: 'center',
+								py: 4,
+								px: 3,
+							}}
+						>
+							<Typography variant="body2" color="text.secondary">
+								No images selected yet. Click the upload area above to select images.
+							</Typography>
+						</Box>
+					)}
+				</DialogContent>
+				<DialogActions
+					sx={{
+						p: 2,
+						borderTop: '1px solid rgba(234, 88, 12, 0.1)',
+						background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
+					}}
+				>
+					<Button onClick={handleCancelAddImages} disabled={isUploadingNewImages} sx={{ color: '#6b7280' }}>
+						Cancel
+					</Button>
+					<Button
+						onClick={handleSubmitNewImages}
+						disabled={newImages.length === 0 || isUploadingNewImages}
+						variant="contained"
+						sx={{
+							background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+							'&:hover': {
+								background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
+							},
+							'&:disabled': {
+								background: '#e5e7eb',
+							},
+						}}
+					>
+						{isUploadingNewImages ? (
+							<>
+								<CircularProgress size={20} sx={{ mr: 1, color: 'white' }} />
+								Uploading...
+							</>
+						) : (
+							`Add ${newImages.length} Image${newImages.length !== 1 ? 's' : ''}`
+						)}
 					</Button>
 				</DialogActions>
 			</Dialog>

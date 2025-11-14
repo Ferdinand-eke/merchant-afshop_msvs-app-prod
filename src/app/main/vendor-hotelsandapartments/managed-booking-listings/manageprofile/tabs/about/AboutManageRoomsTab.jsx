@@ -13,6 +13,7 @@ import RoomMenuPanel from './formpanels/RoomMenuPanel';
  * The about tab - Manage Rooms
  */
 
+
 function AboutManageRoomsTab(props) {
 	const { Listing } = props;
 	const routeParams = useParams();
@@ -160,6 +161,7 @@ function AboutManageRoomsTab(props) {
 				anchor="right"
 			>
 				{addRoomMenu}
+				
 			</Drawer>
 		</>
 	);

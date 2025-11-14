@@ -37,7 +37,8 @@ import {
 	useGetSingleRoomOfProperty,
 	useRoomOnPropertyUpdateMutation,
 	useUpdateRoomImageMutation,
-	useDeleteRoomImageMutation
+	useDeleteRoomImageMutation,
+	useDeleteRoomMutation
 } from 'app/configs/data/server-calls/hotelsandapartments/useRoomsOnProps';
 import { motion } from 'framer-motion';
 import { closeRoomMenuPanel, selectRoomMenuPanelState } from './roomMenuPanelSlice';
@@ -85,6 +86,7 @@ const STORAGE_KEYS = {
  * Production-Ready Room Management Panel
  * Features: Persistent state, modal image replacement with Cloudinary cleanup
  */
+
 function RoomMenuPanel(props) {
 	const { roomId, setRoomId, apartmentId, toggleNewEntryDrawer } = props;
 
@@ -111,6 +113,9 @@ function RoomMenuPanel(props) {
 	// Image deletion confirmation modal state
 	const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 	const [imageToDelete, setImageToDelete] = useState(null);
+
+	// Room deletion confirmation modal state
+	const [deleteRoomConfirmOpen, setDeleteRoomConfirmOpen] = useState(false);
 
 	// Track if we've already loaded initial room data
 	const hasLoadedInitialData = useRef(false);
@@ -181,6 +186,7 @@ function RoomMenuPanel(props) {
 	const updateRoomOnBookingsProperty = useRoomOnPropertyUpdateMutation();
 	const updateRoomImage = useUpdateRoomImageMutation();
 	const deleteRoomImage = useDeleteRoomImageMutation();
+	const deleteRoom = useDeleteRoomMutation();
 
 	const { data: room } = useGetSingleRoomOfProperty(roomId, {
 		skip: !roomId
@@ -386,8 +392,27 @@ function RoomMenuPanel(props) {
 		updateRoomOnBookingsProperty.mutate(formattedData);
 	}
 
+	// Open delete room confirmation dialog
 	function handleRemoveRoomOnApartment() {
-		console.log('Deleting Room', getValues());
+		setDeleteRoomConfirmOpen(true);
+	}
+
+	// Confirm and execute room deletion
+	function handleConfirmRoomDelete() {
+		if (roomId) {
+			deleteRoom.mutate(roomId, {
+				onSuccess: () => {
+					// Close the panel after successful deletion
+					handleClose();
+					setDeleteRoomConfirmOpen(false);
+				}
+			});
+		}
+	}
+
+	// Cancel room deletion
+	function handleCancelRoomDelete() {
+		setDeleteRoomConfirmOpen(false);
 	}
 
 	useEffect(() => {
@@ -1582,6 +1607,394 @@ function RoomMenuPanel(props) {
 						{deleteRoomImage.isLoading ? 'Deleting...' : 'Yes, Delete Image'}
 					</Button>
 				</DialogActions>
+			</Dialog>
+
+			{/* Delete Room Confirmation Dialog */}
+			<Dialog
+				open={deleteRoomConfirmOpen}
+				onClose={handleCancelRoomDelete}
+				maxWidth="sm"
+				fullWidth
+				PaperProps={{
+					sx: {
+						borderRadius: 3,
+						overflow: 'visible',
+						background: 'linear-gradient(135deg, #FFFFFF 0%, #FEF3F2 100%)'
+					}
+				}}
+			>
+				<DialogTitle sx={{ pb: 2 }}>
+					<Box className="flex items-center gap-16">
+						<Box
+							sx={{
+								width: 56,
+								height: 56,
+								borderRadius: '16px',
+								background: 'linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%)',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								position: 'relative',
+								'&::before': {
+									content: '""',
+									position: 'absolute',
+									inset: -4,
+									borderRadius: '18px',
+									padding: '2px',
+									background: 'linear-gradient(135deg, #EF4444, #DC2626)',
+									WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+									WebkitMaskComposite: 'xor',
+									maskComposite: 'exclude',
+									opacity: 0.3
+								}
+							}}
+						>
+							<FuseSvgIcon
+								size={28}
+								sx={{ color: '#DC2626' }}
+							>
+								heroicons-outline:exclamation-triangle
+							</FuseSvgIcon>
+						</Box>
+						<div className="flex-1">
+							<Typography
+								className="text-22 font-black"
+								sx={{
+									background: 'linear-gradient(135deg, #DC2626 0%, #991B1B 100%)',
+									WebkitBackgroundClip: 'text',
+									WebkitTextFillColor: 'transparent',
+									backgroundClip: 'text'
+								}}
+							>
+								Delete This Room?
+							</Typography>
+							<Typography
+								className="text-13 mt-4"
+								sx={{ color: '#991B1B', fontWeight: 600 }}
+							>
+								This action is permanent and cannot be reversed
+							</Typography>
+						</div>
+					</Box>
+				</DialogTitle>
+
+				<DialogContent sx={{ pt: 2, pb: 3 }}>
+					<Box className="flex flex-col gap-24">
+						{/* Room Preview Card */}
+						{getValues('title') && (
+							<Box
+								sx={{
+									position: 'relative',
+									borderRadius: 3,
+									overflow: 'hidden',
+									border: '2px solid #FCA5A5',
+									background: '#FEF2F2'
+								}}
+							>
+								{/* Room Image */}
+								<Box
+									sx={{
+										position: 'relative',
+										height: 160,
+										background: 'linear-gradient(135deg, #FCA5A5 0%, #F87171 100%)',
+										overflow: 'hidden'
+									}}
+								>
+									{imageSrcs?.[0]?.url ? (
+										<>
+											<img
+												src={imageSrcs[0].url}
+												alt={getValues('title')}
+												style={{
+													width: '100%',
+													height: '100%',
+													objectFit: 'cover'
+												}}
+											/>
+											<Box
+												sx={{
+													position: 'absolute',
+													inset: 0,
+													background: 'rgba(239, 68, 68, 0.25)'
+												}}
+											/>
+										</>
+									) : (
+										<Box
+											sx={{
+												width: '100%',
+												height: '100%',
+												display: 'flex',
+												alignItems: 'center',
+												justifyContent: 'center'
+											}}
+										>
+											<FuseSvgIcon
+												size={64}
+												sx={{ color: 'rgba(255, 255, 255, 0.5)' }}
+											>
+												heroicons-outline:home
+											</FuseSvgIcon>
+										</Box>
+									)}
+
+									{/* Delete Icon Overlay */}
+									<Box
+										sx={{
+											position: 'absolute',
+											top: '50%',
+											left: '50%',
+											transform: 'translate(-50%, -50%)',
+											width: 80,
+											height: 80,
+											borderRadius: '50%',
+											background: 'rgba(255, 255, 255, 0.95)',
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center',
+											boxShadow: '0 8px 32px rgba(220, 38, 38, 0.4)',
+											animation: 'pulse 2s ease-in-out infinite'
+										}}
+									>
+										<FuseSvgIcon
+											size={40}
+											sx={{ color: '#DC2626' }}
+										>
+											heroicons-outline:trash
+										</FuseSvgIcon>
+									</Box>
+								</Box>
+
+								{/* Room Details */}
+								<Box sx={{ p: 3 }}>
+									<Typography
+										className="text-18 font-bold mb-8"
+										sx={{ color: '#7F1D1D' }}
+									>
+										{getValues('title')}
+									</Typography>
+									<Box className="flex items-center gap-12 flex-wrap">
+										{getValues('roomNumber') && (
+											<Chip
+												label={`Room #${getValues('roomNumber')}`}
+												size="small"
+												sx={{
+													background: '#FEE2E2',
+													color: '#991B1B',
+													fontWeight: 700,
+													fontSize: '11px'
+												}}
+											/>
+										)}
+										{getValues('price') && (
+											<Chip
+												label={`$${getValues('price')}/night`}
+												size="small"
+												sx={{
+													background: '#FEE2E2',
+													color: '#991B1B',
+													fontWeight: 700,
+													fontSize: '11px'
+												}}
+											/>
+										)}
+										{getValues('roomStatus') && (
+											<Chip
+												label={getValues('roomStatus')}
+												size="small"
+												sx={{
+													background: '#FEE2E2',
+													color: '#991B1B',
+													fontWeight: 700,
+													fontSize: '11px'
+												}}
+											/>
+										)}
+									</Box>
+								</Box>
+							</Box>
+						)}
+
+						{/* Warning Message */}
+						<Box
+							sx={{
+								p: 3,
+								borderRadius: 2,
+								background: 'linear-gradient(135deg, rgba(254, 242, 242, 0.8) 0%, rgba(254, 226, 226, 0.8) 100%)',
+								border: '2px solid #FECACA'
+							}}
+						>
+							<Box className="flex items-start gap-12">
+								<Box
+									sx={{
+										flexShrink: 0,
+										width: 36,
+										height: 36,
+										borderRadius: '8px',
+										background: '#DC2626',
+										display: 'flex',
+										alignItems: 'center',
+										justifyContent: 'center'
+									}}
+								>
+									<FuseSvgIcon
+										size={20}
+										sx={{ color: 'white' }}
+									>
+										heroicons-outline:shield-exclamation
+									</FuseSvgIcon>
+								</Box>
+								<div className="flex-1">
+									<Typography
+										className="text-14 font-bold mb-8"
+										sx={{ color: '#7F1D1D' }}
+									>
+										⚠️ Complete Room Deletion
+									</Typography>
+									<Typography
+										className="text-13 mb-12"
+										sx={{ color: '#991B1B', lineHeight: 1.6 }}
+									>
+										Deleting this room will permanently remove:
+									</Typography>
+									<Box
+										component="ul"
+										sx={{
+											m: 0,
+											pl: 2.5,
+											color: '#991B1B',
+											'& li': {
+												mb: 0.5,
+												fontSize: '13px',
+												lineHeight: 1.6
+											}
+										}}
+									>
+										<li>All room details and configuration</li>
+										<li>All uploaded images from cloud storage</li>
+										<li>Booking history and reservation data</li>
+										<li>Guest reviews and ratings</li>
+									</Box>
+								</div>
+							</Box>
+						</Box>
+
+						{/* Final Confirmation Text */}
+						<Box
+							sx={{
+								p: 3,
+								borderRadius: 2,
+								background: '#FFFBEB',
+								border: '1px dashed #FCD34D',
+								textAlign: 'center'
+							}}
+						>
+							<Typography
+								className="text-15 font-bold"
+								sx={{ color: '#92400E', mb: 1 }}
+							>
+								💡 Think Twice Before Proceeding
+							</Typography>
+							<Typography
+								className="text-13"
+								sx={{ color: '#78350F', lineHeight: 1.5 }}
+							>
+								This room and all its data will be gone forever. Make sure you really want to do this!
+							</Typography>
+						</Box>
+					</Box>
+				</DialogContent>
+
+				<DialogActions
+					sx={{
+						px: 3,
+						pb: 3,
+						pt: 2,
+						gap: 2,
+						background: 'linear-gradient(135deg, #FAFAFA 0%, #FEF3F2 100%)',
+						borderTop: '1px solid #FECACA'
+					}}
+				>
+					<Button
+						onClick={handleCancelRoomDelete}
+						variant="outlined"
+						size="large"
+						fullWidth
+						sx={{
+							fontWeight: 700,
+							borderWidth: 2,
+							borderColor: '#D1D5DB',
+							color: '#6B7280',
+							height: 48,
+							'&:hover': {
+								borderWidth: 2,
+								borderColor: '#9CA3AF',
+								background: '#F9FAFB'
+							}
+						}}
+					>
+						<FuseSvgIcon
+							size={20}
+							sx={{ mr: 1 }}
+						>
+							heroicons-outline:x
+						</FuseSvgIcon>
+						No, Keep Room
+					</Button>
+					<Button
+						onClick={handleConfirmRoomDelete}
+						variant="contained"
+						size="large"
+						fullWidth
+						disabled={deleteRoom.isLoading}
+						startIcon={
+							deleteRoom.isLoading ? (
+								<CircularProgress
+									size={20}
+									color="inherit"
+								/>
+							) : (
+								<FuseSvgIcon size={20}>heroicons-outline:trash</FuseSvgIcon>
+							)
+						}
+						sx={{
+							fontWeight: 700,
+							height: 48,
+							background: 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)',
+							color: 'white',
+							boxShadow: '0 4px 16px rgba(220, 38, 38, 0.3)',
+							'&:hover': {
+								background: 'linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)',
+								boxShadow: '0 6px 20px rgba(220, 38, 38, 0.4)',
+								transform: 'translateY(-1px)'
+							},
+							'&:disabled': {
+								background: '#FCA5A5',
+								color: 'white',
+								boxShadow: 'none'
+							},
+							transition: 'all 0.3s ease'
+						}}
+					>
+						{deleteRoom.isLoading ? 'Deleting Room...' : 'Yes, Delete Permanently'}
+					</Button>
+				</DialogActions>
+
+				{/* Pulse Animation */}
+				<style>
+					{`
+						@keyframes pulse {
+							0%, 100% {
+								transform: translate(-50%, -50%) scale(1);
+								opacity: 1;
+							}
+							50% {
+								transform: translate(-50%, -50%) scale(1.05);
+								opacity: 0.9;
+							}
+						}
+					`}
+				</style>
 			</Dialog>
 		</>
 	);

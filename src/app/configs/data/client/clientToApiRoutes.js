@@ -387,6 +387,8 @@ export const updateMyShopBookingsPropertyById = (productFormData) => {
 
 export const deleteShopBookingsProperty = (id) => AuthApi().delete(`/myshop/delete-bookingproperty/${id}`);
 
+export const deleteMerchantBookingListing = (id) => AuthApi().delete(`/bookings/merchant-listing/${id}/delete`);
+
 /** *Manage rooms
  * of prperties */
 export const getBookingsPropertyRoomsById = (propertyId) => {
@@ -410,6 +412,10 @@ export const updateRoomImageOnProperty = ({ roomId, updateData }) => {
 
 export const deleteSingleRoomImage = ({ roomImageId, deleteData }) => {
 	return AuthApi().delete(`/bookings/${roomImageId}/delete-room-image`, { data: deleteData }); // (Msvs => done)
+};
+
+export const deleteRoomOnProperty = (roomId) => {
+	return AuthApi().delete(`/bookings/${roomId}/delete-room`); // (Msvs => done)
 };
 
 /** *Property Listing Images Management */

@@ -6,6 +6,7 @@ import {
 	updateRoomOnProperty,
 	updateRoomImageOnProperty,
 	deleteSingleRoomImage,
+	deleteRoomOnProperty,
 	getBookingsPropertyRoomsById,
 	getSingleRoomOfProperty
 } from '../../client/clientToApiRoutes';
@@ -203,6 +204,34 @@ export function useDeleteRoomImageMutation() {
 			onError: (error) => {
 				handleApiError(error);
 				console.error('Image deletion error:', error);
+			}
+		}
+	);
+}
+
+/** ***6) delete entire room from property */
+export function useDeleteRoomMutation() {
+	const queryClient = useQueryClient();
+
+	return useMutation(
+		(roomId) => {
+			return deleteRoomOnProperty(roomId);
+		},
+		{
+			onSuccess: (data, roomId) => {
+				console.log('Delete Room Data:', data);
+
+				if (data?.data?.success) {
+					toast.success(data?.data?.message || 'Room deleted successfully! All images removed from storage.');
+
+					// Invalidate queries to refresh room list
+					queryClient.invalidateQueries('roomsOnBookingProperty');
+					queryClient.invalidateQueries(['_roomsOnBookingProperty', roomId]);
+				}
+			},
+			onError: (error) => {
+				handleApiError(error);
+				console.error('Room deletion error:', error);
 			}
 		}
 	);

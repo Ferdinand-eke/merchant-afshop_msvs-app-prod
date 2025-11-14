@@ -6,11 +6,13 @@ import { useFormContext } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
 import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Box, Chip, IconButton, Tooltip, CircularProgress } from '@mui/material';
+import { Box, Chip, IconButton, Tooltip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { useState } from 'react';
 import { useGetMyShopAndPlan } from 'app/configs/data/server-calls/shopdetails/useShopDetails';
 import {
 	useAddShopBookingsPropertyMutation,
-	useBookingsPropertyUpdateMutation
+	useBookingsPropertyUpdateMutation,
+	useDeleteBookingPropertyMutation
 } from 'app/configs/data/server-calls/hotelsandapartments/useShopBookingsProperties';
 
 /**
@@ -25,10 +27,14 @@ function BookingPropertyHeader() {
 	const { data: myshopData } = useGetMyShopAndPlan(false);
 
 	const theme = useTheme();
-	const { title, images, featuredImageId, imageSrcs } = watch();
+	const { title, images, featuredImageId, imageSrcs, id } = watch();
+
+	// State for delete confirmation dialog
+	const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
 	const addBookingsProperty = useAddShopBookingsPropertyMutation();
 	const updateBookingsProperty = useBookingsPropertyUpdateMutation();
+	const deleteBookingsProperty = useDeleteBookingPropertyMutation();
 
 	function handleSaveApartment() {
 		const formData = {
@@ -83,8 +89,21 @@ function BookingPropertyHeader() {
 		addBookingsProperty.mutate(formData);
 	}
 
+	// Open delete confirmation dialog
 	function handleRemoveListing() {
-		// Handle delete functionality
+		setDeleteConfirmOpen(true);
+	}
+
+	// Confirm and execute delete
+	function handleConfirmDelete() {
+		if (id) {
+			deleteBookingsProperty.mutate(id);
+		}
+	}
+
+	// Cancel delete
+	function handleCancelDelete() {
+		setDeleteConfirmOpen(false);
 	}
 
 	// Get featured image
@@ -358,6 +377,178 @@ function BookingPropertyHeader() {
 					)}
 				</motion.div>
 			</Box>
+
+			{/* Delete Confirmation Dialog */}
+			<Dialog
+				open={deleteConfirmOpen}
+				onClose={handleCancelDelete}
+				maxWidth="sm"
+				fullWidth
+				PaperProps={{
+					sx: {
+						borderRadius: 2,
+						border: '1px solid rgba(220, 38, 38, 0.2)',
+					},
+				}}
+			>
+				<DialogTitle
+					sx={{
+						background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+						borderBottom: '1px solid rgba(220, 38, 38, 0.1)',
+					}}
+				>
+					<Box className="flex items-center gap-12">
+						<Box
+							sx={{
+								width: 48,
+								height: 48,
+								borderRadius: '12px',
+								background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+							}}
+						>
+							<FuseSvgIcon className="text-white" size={24}>
+								heroicons-outline:exclamation
+							</FuseSvgIcon>
+						</Box>
+						<Box>
+							<Typography variant="h6" sx={{ fontWeight: 700, color: '#292524' }}>
+								Delete Property Listing
+							</Typography>
+							<Typography variant="caption" color="text.secondary">
+								This action cannot be undone
+							</Typography>
+						</Box>
+					</Box>
+				</DialogTitle>
+				<DialogContent sx={{ pt: 3, pb: 2 }}>
+					<Box sx={{ mb: 3 }}>
+						<Typography variant="body1" sx={{ mb: 2, color: '#374151', fontWeight: 500 }}>
+							Are you sure you want to delete this property listing?
+						</Typography>
+						<Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+							This will permanently delete:
+						</Typography>
+						<Box component="ul" sx={{ pl: 3, color: 'text.secondary' }}>
+							<Typography component="li" variant="body2" sx={{ mb: 1 }}>
+								Property details and description
+							</Typography>
+							<Typography component="li" variant="body2" sx={{ mb: 1 }}>
+								All uploaded images
+							</Typography>
+							<Typography component="li" variant="body2" sx={{ mb: 1 }}>
+								Room configurations (if any)
+							</Typography>
+							<Typography component="li" variant="body2">
+								Associated booking history
+							</Typography>
+						</Box>
+					</Box>
+
+					{/* Property Info Card */}
+					{title && (
+						<Box
+							sx={{
+								p: 2,
+								borderRadius: 2,
+								background: 'rgba(220, 38, 38, 0.05)',
+								border: '1px solid rgba(220, 38, 38, 0.2)',
+							}}
+						>
+							<Box className="flex items-center gap-12">
+								<Box
+									sx={{
+										width: 60,
+										height: 60,
+										borderRadius: 1.5,
+										overflow: 'hidden',
+										border: '1px solid rgba(220, 38, 38, 0.2)',
+									}}
+								>
+									<img
+										src={getFeaturedImage()}
+										alt={title}
+										style={{
+											width: '100%',
+											height: '100%',
+											objectFit: 'cover',
+										}}
+									/>
+								</Box>
+								<Box sx={{ flex: 1, minWidth: 0 }}>
+									<Typography
+										variant="subtitle1"
+										sx={{
+											fontWeight: 600,
+											color: '#292524',
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+											whiteSpace: 'nowrap',
+										}}
+									>
+										{title}
+									</Typography>
+									<Typography variant="caption" color="text.secondary">
+										Property ID: {id || 'N/A'}
+									</Typography>
+								</Box>
+							</Box>
+						</Box>
+					)}
+				</DialogContent>
+				<DialogActions
+					sx={{
+						p: 3,
+						borderTop: '1px solid rgba(220, 38, 38, 0.1)',
+						background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+						gap: 2,
+					}}
+				>
+					<Button
+						onClick={handleCancelDelete}
+						disabled={deleteBookingsProperty.isLoading}
+						sx={{
+							color: '#6b7280',
+							fontWeight: 600,
+							px: 3,
+							'&:hover': {
+								background: 'rgba(107, 114, 128, 0.08)',
+							},
+						}}
+					>
+						Cancel
+					</Button>
+					<Button
+						onClick={handleConfirmDelete}
+						disabled={deleteBookingsProperty.isLoading}
+						variant="contained"
+						startIcon={
+							deleteBookingsProperty.isLoading ? (
+								<CircularProgress size={18} sx={{ color: 'white' }} />
+							) : (
+								<FuseSvgIcon size={18}>heroicons-outline:trash</FuseSvgIcon>
+							)
+						}
+						sx={{
+							background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+							fontWeight: 700,
+							px: 3,
+							'&:hover': {
+								background: 'linear-gradient(135deg, #b91c1c 0%, #991b1b 100%)',
+								boxShadow: '0 8px 16px rgba(220, 38, 38, 0.3)',
+							},
+							'&.Mui-disabled': {
+								background: 'rgba(220, 38, 38, 0.3)',
+								color: 'white',
+							},
+						}}
+					>
+						{deleteBookingsProperty.isLoading ? 'Deleting...' : 'Delete Property'}
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</Box>
 	);
 }

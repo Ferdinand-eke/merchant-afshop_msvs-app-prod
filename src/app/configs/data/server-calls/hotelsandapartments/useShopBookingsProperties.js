@@ -10,7 +10,8 @@ import {
 	storeShopBookingsProperty,
 	updateMyShopBookingsPropertyById,
 	updatePropertyListingImage,
-	deletePropertyListingImage
+	deletePropertyListingImage,
+	deleteMerchantBookingListing
 } from '../../client/clientToApiRoutes';
 
 /** *1) get all Specific user shop-Bookings property   */
@@ -222,6 +223,37 @@ export function useDeletePropertyListingImageMutation() {
 			onError: (error) => {
 				handleApiError(error);
 				console.error('Image deletion error:', error);
+			}
+		}
+	);
+}
+
+/** ***7) delete entire booking property listing */
+export function useDeleteBookingPropertyMutation() {
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
+
+	return useMutation(
+		(propertyId) => {
+			return deleteMerchantBookingListing(propertyId);
+		},
+		{
+			onSuccess: (data) => {
+				console.log('Delete Booking Property Data:', data);
+
+				if (data?.data?.success) {
+					toast.success(data?.data?.message || 'Property deleted successfully!');
+
+					// Invalidate queries to refresh property list
+					queryClient.invalidateQueries('__myshop_bookingsproperties');
+
+					// Navigate back to listings page
+					navigate('/bookings/managed-listings');
+				}
+			},
+			onError: (error) => {
+				handleApiError(error);
+				console.error('Property deletion error:', error);
 			}
 		}
 	);
