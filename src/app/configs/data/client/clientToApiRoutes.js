@@ -442,10 +442,19 @@ export const getSingleMerchantReservationApi = (reservationId) =>
 export const getReservationsOnPropertyApi = (propertyId) =>
 	AuthApi().get(`/reservations/on-prop/${propertyId}/get-reservations`); // (Msvs : => :done)
 
-export const merchantCheckInGuestReservations = (id) =>
-	AuthApi().put(`/reservations/merchant-handle-reservation/${id}/check-in-guest`); // (Msvs : => :done)
-export const merchantCheckOutGuestReservations = (id) =>
-	AuthApi().put(`/reservations/merchant-handle-reservation/${id}/check-out-guest`);
+export const merchantCheckInGuestReservations = (payload) => {
+	const { reservationId, checkInCode } = payload;
+	return AuthApi().put(`/reservations/merchant-handle-reservation/${reservationId}/check-in-guest`, {
+		checkInCode
+	});
+}; // (Msvs : => :done)
+
+export const merchantCheckOutGuestReservations = (payload) => {
+	const { reservationId, checkOutCode } = payload;
+	return AuthApi().put(`/reservations/merchant-handle-reservation/${reservationId}/check-out-guest`, {
+		checkOutCode
+	});
+};
 export const merchantCashOutReservationEarning = (id) => {
 	return AuthApi().put(`/reservations/merchant-handle-reservation/${id}/cashout-reservation-earning`);
 };

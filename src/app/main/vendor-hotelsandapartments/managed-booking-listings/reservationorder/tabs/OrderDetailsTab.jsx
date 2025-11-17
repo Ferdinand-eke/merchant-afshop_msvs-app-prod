@@ -1,7 +1,7 @@
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Box, Paper, Chip, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Paper, Chip, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -19,25 +19,61 @@ import ReservationCheckOustStatus from '../ReservationCheckOustStatus';
  */
 
 function OrderDetailsTab({ reservation }) {
+
 	const checkInGuest = useCheckInGuest();
 	const checkOutGuestReservation = useCheckOutGuest();
 
 	const [checkInDialogOpen, setCheckInDialogOpen] = useState(false);
 	const [checkOutDialogOpen, setCheckOutDialogOpen] = useState(false);
+	const [checkInCode, setCheckInCode] = useState('');
+	const [checkOutCode, setCheckOutCode] = useState('');
 
+	// Helper function to close check-in dialog and reset code
+	const handleCloseCheckInDialog = () => {
+		setCheckInDialogOpen(false);
+		setCheckInCode('');
+	};
+
+	// Helper function to close check-out dialog and reset code
+	const handleCloseCheckOutDialog = () => {
+		setCheckOutDialogOpen(false);
+		setCheckOutCode('');
+	};
+
+	//checkInCode
 	const handleCheckIn = async () => {
+		// Validate check-in code
+		if (!checkInCode || checkInCode.trim() === '') {
+			toast.error('Please enter the check-in code');
+			return;
+		}
+
 		setCheckInDialogOpen(false);
 		try {
-			checkInGuest.mutate(reservation?.id);
+			checkInGuest.mutate({
+				reservationId: reservation?.id,
+				checkInCode: checkInCode.trim()
+			});
+			setCheckInCode(''); // Reset the code after submission
 		} catch (error) {
 			toast.error(error);
 		}
 	};
 
 	const handleCheckOutGuest = async () => {
+		// Validate check-out code
+		if (!checkOutCode || checkOutCode.trim() === '') {
+			toast.error('Please enter the check-out code');
+			return;
+		}
+
 		setCheckOutDialogOpen(false);
 		try {
-			checkOutGuestReservation.mutate(reservation?.id);
+			checkOutGuestReservation.mutate({
+				reservationId: reservation?.id,
+				checkOutCode: checkOutCode.trim()
+			});
+			setCheckOutCode(''); // Reset the code after submission
 		} catch (error) {
 			toast.error(error);
 		}
@@ -540,7 +576,7 @@ function OrderDetailsTab({ reservation }) {
 			{/* Check-In Confirmation Dialog */}
 			<Dialog
 				open={checkInDialogOpen}
-				onClose={() => setCheckInDialogOpen(false)}
+				onClose={handleCloseCheckInDialog}
 				PaperProps={{
 					sx: {
 						borderRadius: 2,
@@ -625,6 +661,46 @@ function OrderDetailsTab({ reservation }) {
 								</Typography>
 							</Box>
 						</Paper>
+
+						<Box className="mt-16">
+							<TextField
+								fullWidth
+								label="Check-In Code"
+								placeholder="Enter guest's check-in code"
+								value={checkInCode}
+								onChange={(e) => setCheckInCode(e.target.value)}
+								required
+								variant="outlined"
+								size="small"
+								InputProps={{
+									startAdornment: (
+										<FuseSvgIcon size={18} sx={{ color: '#ea580c', mr: 1 }}>
+											heroicons-outline:shield-check
+										</FuseSvgIcon>
+									)
+								}}
+								sx={{
+									'& .MuiOutlinedInput-root': {
+										'&:hover fieldset': {
+											borderColor: '#f97316'
+										},
+										'&.Mui-focused fieldset': {
+											borderColor: '#ea580c'
+										}
+									},
+									'& .MuiInputLabel-root.Mui-focused': {
+										color: '#ea580c'
+									}
+								}}
+							/>
+							<Typography
+								variant="caption"
+								sx={{ color: '#78716c', display: 'block', mt: 1, fontStyle: 'italic' }}
+							>
+								Request the check-in code from the guest to verify their identity
+							</Typography>
+						</Box>
+
 						<Typography
 							variant="caption"
 							sx={{ color: '#78716c', display: 'block', fontStyle: 'italic' }}
@@ -635,7 +711,7 @@ function OrderDetailsTab({ reservation }) {
 				</DialogContent>
 				<DialogActions sx={{ p: 3, pt: 0 }}>
 					<Button
-						onClick={() => setCheckInDialogOpen(false)}
+						onClick={handleCloseCheckInDialog}
 						sx={{
 							color: '#78716c',
 							fontWeight: 600,
@@ -649,6 +725,7 @@ function OrderDetailsTab({ reservation }) {
 					</Button>
 					<Button
 						onClick={handleCheckIn}
+						disabled={!checkInCode.trim() || checkInGuest.isLoading}
 						variant="contained"
 						sx={{
 							background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
@@ -658,6 +735,10 @@ function OrderDetailsTab({ reservation }) {
 							px: 3,
 							'&:hover': {
 								background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)'
+							},
+							'&:disabled': {
+								background: 'rgba(120, 113, 108, 0.12)',
+								color: 'rgba(120, 113, 108, 0.38)'
 							}
 						}}
 					>
@@ -669,7 +750,7 @@ function OrderDetailsTab({ reservation }) {
 			{/* Check-Out Confirmation Dialog */}
 			<Dialog
 				open={checkOutDialogOpen}
-				onClose={() => setCheckOutDialogOpen(false)}
+				onClose={handleCloseCheckOutDialog}
 				PaperProps={{
 					sx: {
 						borderRadius: 2,
@@ -754,6 +835,46 @@ function OrderDetailsTab({ reservation }) {
 								</Typography>
 							</Box>
 						</Paper>
+
+						<Box className="mt-16">
+							<TextField
+								fullWidth
+								label="Check-Out Code"
+								placeholder="Enter guest's check-out code"
+								value={checkOutCode}
+								onChange={(e) => setCheckOutCode(e.target.value)}
+								required
+								variant="outlined"
+								size="small"
+								InputProps={{
+									startAdornment: (
+										<FuseSvgIcon size={18} sx={{ color: '#ea580c', mr: 1 }}>
+											heroicons-outline:shield-check
+										</FuseSvgIcon>
+									)
+								}}
+								sx={{
+									'& .MuiOutlinedInput-root': {
+										'&:hover fieldset': {
+											borderColor: '#f97316'
+										},
+										'&.Mui-focused fieldset': {
+											borderColor: '#ea580c'
+										}
+									},
+									'& .MuiInputLabel-root.Mui-focused': {
+										color: '#ea580c'
+									}
+								}}
+							/>
+							<Typography
+								variant="caption"
+								sx={{ color: '#78716c', display: 'block', mt: 1, fontStyle: 'italic' }}
+							>
+								Request the check-out code from the guest to verify their identity
+							</Typography>
+						</Box>
+
 						<Typography
 							variant="caption"
 							sx={{ color: '#78716c', display: 'block', fontStyle: 'italic' }}
@@ -764,7 +885,7 @@ function OrderDetailsTab({ reservation }) {
 				</DialogContent>
 				<DialogActions sx={{ p: 3, pt: 0 }}>
 					<Button
-						onClick={() => setCheckOutDialogOpen(false)}
+						onClick={handleCloseCheckOutDialog}
 						sx={{
 							color: '#78716c',
 							fontWeight: 600,
@@ -778,6 +899,7 @@ function OrderDetailsTab({ reservation }) {
 					</Button>
 					<Button
 						onClick={handleCheckOutGuest}
+						disabled={!checkOutCode.trim() || checkOutGuestReservation.isLoading}
 						variant="contained"
 						sx={{
 							background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
@@ -787,6 +909,10 @@ function OrderDetailsTab({ reservation }) {
 							px: 3,
 							'&:hover': {
 								background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)'
+							},
+							'&:disabled': {
+								background: 'rgba(120, 113, 108, 0.12)',
+								color: 'rgba(120, 113, 108, 0.38)'
 							}
 						}}
 					>

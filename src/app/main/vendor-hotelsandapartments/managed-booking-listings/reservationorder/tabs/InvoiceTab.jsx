@@ -1,5 +1,5 @@
-import { Box, Paper, Chip, Button, Typography } from '@mui/material';
-import { memo } from 'react';
+import { Box, Paper, Chip, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Divider } from '@mui/material';
+import { memo, useState } from 'react';
 import { calculateCompanyEarnings, calculateShopEarnings } from 'app/configs/Calculus';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { motion } from 'framer-motion';
@@ -16,6 +16,8 @@ function InvoiceTab(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const { order, myshopData } = props;
 
+	const [cashOutDialogOpen, setCashOutDialogOpen] = useState(false);
+
 	const {
 		mutate: cashingOutOrderItemSales,
 		isLoading: cashingOutLoading,
@@ -27,12 +29,11 @@ function InvoiceTab(props) {
 	}
 
 	const handleEarningsCashOut = async () => {
-		if (window.confirm('Cash out earnings?')) {
-			try {
-				cashingOutOrderItemSales(order?.id);
-			} catch (error) {
-				toast.error(error);
-			}
+		setCashOutDialogOpen(false);
+		try {
+			cashingOutOrderItemSales(order?.id);
+		} catch (error) {
+			toast.error(error);
 		}
 	};
 
@@ -521,7 +522,7 @@ function InvoiceTab(props) {
 						>
 							<Box className="flex justify-end">
 								<Button
-									onClick={handleEarningsCashOut}
+									onClick={() => setCashOutDialogOpen(true)}
 									disabled={cashingOutLoading}
 									variant="contained"
 									size={isMobile ? 'medium' : 'large'}
@@ -551,6 +552,303 @@ function InvoiceTab(props) {
 					)}
 				</>
 			)}
+
+			{/* Cash Out Confirmation Dialog */}
+			<Dialog
+				open={cashOutDialogOpen}
+				onClose={() => setCashOutDialogOpen(false)}
+				PaperProps={{
+					sx: {
+						borderRadius: 2,
+						minWidth: { xs: '90%', sm: 500 },
+						maxWidth: 600
+					}
+				}}
+			>
+				<DialogTitle>
+					<Box className="flex items-center gap-12">
+						<Box
+							sx={{
+								width: 56,
+								height: 56,
+								borderRadius: '14px',
+								background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								boxShadow: '0 4px 14px rgba(22, 163, 74, 0.25)'
+							}}
+						>
+							<FuseSvgIcon
+								className="text-white"
+								size={28}
+							>
+								heroicons-outline:cash
+							</FuseSvgIcon>
+						</Box>
+						<Box>
+							<Typography
+								variant="h6"
+								className="font-bold"
+								sx={{ color: '#292524', mb: 0.5 }}
+							>
+								Cash Out Reservation Earnings
+							</Typography>
+							<Typography
+								variant="caption"
+								sx={{ color: '#78716c' }}
+							>
+								Transfer earnings to your account
+							</Typography>
+						</Box>
+					</Box>
+				</DialogTitle>
+
+				<DialogContent sx={{ pt: 3 }}>
+					<Box className="space-y-20">
+						{/* Earnings Summary Card */}
+						<Paper
+							elevation={0}
+							sx={{
+								p: 3,
+								background: 'linear-gradient(135deg, rgba(22, 163, 74, 0.08) 0%, rgba(21, 128, 61, 0.08) 100%)',
+								border: '2px solid rgba(22, 163, 74, 0.2)',
+								borderRadius: 2
+							}}
+						>
+							<Box className="flex items-center justify-between mb-16">
+								<Typography
+									variant="body2"
+									sx={{ color: '#78716c', fontWeight: 500 }}
+								>
+									You're about to receive
+								</Typography>
+								<Chip
+									icon={<FuseSvgIcon size={14}>heroicons-solid:check-circle</FuseSvgIcon>}
+									label="Verified Earnings"
+									size="small"
+									sx={{
+										background: 'rgba(22, 163, 74, 0.15)',
+										color: '#16a34a',
+										fontWeight: 600,
+										border: '1px solid rgba(22, 163, 74, 0.3)'
+									}}
+								/>
+							</Box>
+
+							<Typography
+								variant="h3"
+								className="font-bold"
+								sx={{
+									color: '#16a34a',
+									mb: 2,
+									fontSize: { xs: '2rem', sm: '2.5rem' }
+								}}
+							>
+								{formatter.format(+shopEarning)}
+							</Typography>
+
+							<Divider sx={{ my: 2, borderColor: 'rgba(22, 163, 74, 0.15)' }} />
+
+							<Box className="space-y-8">
+								<Box className="flex items-center justify-between">
+									<Typography
+										variant="caption"
+										sx={{ color: '#78716c', display: 'flex', alignItems: 'center', gap: 1 }}
+									>
+										<FuseSvgIcon size={14} sx={{ color: '#78716c' }}>
+											heroicons-outline:document-text
+										</FuseSvgIcon>
+										Reservation Total
+									</Typography>
+									<Typography
+										variant="body2"
+										sx={{ color: '#57534e', fontWeight: 600 }}
+									>
+										₦{formatCurrency(order?.totalPrice)}
+									</Typography>
+								</Box>
+
+								<Box className="flex items-center justify-between">
+									<Typography
+										variant="caption"
+										sx={{ color: '#78716c', display: 'flex', alignItems: 'center', gap: 1 }}
+									>
+										<FuseSvgIcon size={14} sx={{ color: '#78716c' }}>
+											heroicons-outline:calculator
+										</FuseSvgIcon>
+										Platform Fee ({myshopData?.merchantShopplan?.percetageCommissionCharge}%)
+									</Typography>
+									<Typography
+										variant="body2"
+										sx={{ color: '#dc2626', fontWeight: 600 }}
+									>
+										-₦{formatCurrency(companyEarnings)}
+									</Typography>
+								</Box>
+
+								<Box className="flex items-center justify-between">
+									<Typography
+										variant="caption"
+										sx={{ color: '#78716c', display: 'flex', alignItems: 'center', gap: 1 }}
+									>
+										<FuseSvgIcon size={14} sx={{ color: '#16a34a' }}>
+											heroicons-outline:badge-check
+										</FuseSvgIcon>
+										Your Net Earnings
+									</Typography>
+									<Typography
+										variant="body2"
+										sx={{ color: '#16a34a', fontWeight: 700 }}
+									>
+										₦{formatCurrency(shopEarning)}
+									</Typography>
+								</Box>
+							</Box>
+						</Paper>
+
+						{/* Reservation Details */}
+						<Paper
+							elevation={0}
+							sx={{
+								p: 2.5,
+								background: 'linear-gradient(135deg, #fafaf9 0%, #fef3e2 100%)',
+								border: '1px solid rgba(234, 88, 12, 0.15)',
+								borderRadius: 1.5
+							}}
+						>
+							<Typography
+								variant="caption"
+								sx={{ color: '#78716c', display: 'block', mb: 1.5, fontWeight: 600 }}
+							>
+								Reservation Details
+							</Typography>
+
+							<Box className="space-y-8">
+								<Box className="flex items-center gap-8">
+									<FuseSvgIcon size={16} sx={{ color: '#ea580c' }}>
+										heroicons-solid:user
+									</FuseSvgIcon>
+									<Typography
+										variant="body2"
+										sx={{ color: '#292524' }}
+									>
+										<strong>{order?.paymentdatas?.bookingName}</strong>
+									</Typography>
+								</Box>
+
+								<Box className="flex items-center gap-8">
+									<FuseSvgIcon size={16} sx={{ color: '#ea580c' }}>
+										heroicons-solid:home
+									</FuseSvgIcon>
+									<Typography
+										variant="body2"
+										sx={{ color: '#57534e' }}
+									>
+										{order?.bookingPropertyId?.title}
+									</Typography>
+								</Box>
+
+								<Box className="flex items-center gap-8">
+									<FuseSvgIcon size={16} sx={{ color: '#ea580c' }}>
+										heroicons-solid:receipt-refund
+									</FuseSvgIcon>
+									<Typography
+										variant="body2"
+										sx={{ color: '#57534e' }}
+									>
+										Ref: {order?.paymentResult?.reference}
+									</Typography>
+								</Box>
+							</Box>
+						</Paper>
+
+						{/* Important Notice */}
+						<Paper
+							elevation={0}
+							sx={{
+								p: 2,
+								background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(37, 99, 235, 0.05) 100%)',
+								border: '1px solid rgba(59, 130, 246, 0.2)',
+								borderRadius: 1.5
+							}}
+						>
+							<Box className="flex items-start gap-12">
+								<FuseSvgIcon size={18} sx={{ color: '#3b82f6', mt: 0.25 }}>
+									heroicons-outline:information-circle
+								</FuseSvgIcon>
+								<Box>
+									<Typography
+										variant="body2"
+										sx={{ color: '#292524', fontWeight: 600, mb: 0.5 }}
+									>
+										What happens next?
+									</Typography>
+									<Typography
+										variant="caption"
+										sx={{ color: '#57534e', lineHeight: 1.6 }}
+									>
+										Your earnings will be transferred to your registered bank account within 24-48 hours.
+										You'll receive a confirmation email once the transfer is complete.
+									</Typography>
+								</Box>
+							</Box>
+						</Paper>
+					</Box>
+				</DialogContent>
+
+				<DialogActions sx={{ p: 3, pt: 2 }}>
+					<Button
+						onClick={() => setCashOutDialogOpen(false)}
+						sx={{
+							color: '#78716c',
+							fontWeight: 600,
+							textTransform: 'none',
+							px: 2,
+							'&:hover': {
+								background: 'rgba(120, 113, 108, 0.08)'
+							}
+						}}
+					>
+						Not Now
+					</Button>
+					<Button
+						onClick={handleEarningsCashOut}
+						disabled={cashingOutLoading}
+						variant="contained"
+						startIcon={
+							cashingOutLoading ? (
+								<FuseSvgIcon size={18} className="animate-spin">
+									heroicons-outline:refresh
+								</FuseSvgIcon>
+							) : (
+								<FuseSvgIcon size={18}>heroicons-outline:check-circle</FuseSvgIcon>
+							)
+						}
+						sx={{
+							background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)',
+							color: 'white',
+							fontWeight: 700,
+							textTransform: 'none',
+							px: 4,
+							py: 1.25,
+							fontSize: '0.9375rem',
+							boxShadow: '0 4px 14px rgba(22, 163, 74, 0.25)',
+							'&:hover': {
+								background: 'linear-gradient(135deg, #15803d 0%, #166534 100%)',
+								boxShadow: '0 6px 20px rgba(22, 163, 74, 0.35)'
+							},
+							'&:disabled': {
+								background: 'rgba(120, 113, 108, 0.12)',
+								color: 'rgba(120, 113, 108, 0.38)',
+								boxShadow: 'none'
+							}
+						}}
+					>
+						{cashingOutLoading ? 'Processing...' : `Confirm & Cash Out ${formatter.format(+shopEarning)}`}
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</Box>
 	);
 }
