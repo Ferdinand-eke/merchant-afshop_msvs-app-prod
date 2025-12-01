@@ -32,24 +32,92 @@ function ShopProductHeader() {
 	const deleteSingleProduct = useDeleteSingleProduct();
 
 	function handleSaveProduct() {
-		// console.log("updating Existing product...", getValues());
-		updateProduct.mutate(getValues());
+		const allFormData = getValues();
+
+		const updateProductFormPayload = {
+			...allFormData,
+			// Basic Info fields
+			name: allFormData?.name,
+			shortDescription: allFormData?.shortDescription,
+			description: allFormData?.description,
+			category: allFormData?.category,
+			tradehub: allFormData?.tradehub,
+
+			// Product Images fields
+			images: allFormData?.images,
+			imageLinks: allFormData?.imageLinks,
+			featuredImageId: allFormData?.featuredImageId,
+			dbImages: allFormData?.dbImages,
+
+			// Pricing fields
+			price: parseInt(allFormData?.price) || 0,
+			listprice: parseInt(allFormData?.listprice) || 0,
+			costprice: parseInt(allFormData?.costprice) || 0,
+			priceTiers: allFormData?.priceTiers || [],
+
+			// Inventory fields
+			quantityInStock: parseInt(allFormData?.quantityInStock) || 0,
+			quantityunitweight: allFormData?.quantityunitweight,
+
+			// Shipping fields (newly added)
+			length: parseInt(allFormData?.length) || 0,
+			breadth: parseInt(allFormData?.breadth) || 0,
+			height: parseInt(allFormData?.height) || 0,
+			productWeight: parseInt(allFormData?.productWeight) || 0,
+			perUnitShippingWeight: allFormData?.perUnitShippingWeight,
+			processingTime: allFormData?.processingTime,
+			freeShipping: allFormData?.freeShipping ,
+			fragileItem: allFormData?.fragileItem 
+		};
+
+		console.log("Updating_Product_With_All_Fields", updateProductFormPayload);
+
+		// return
+		updateProduct.mutate(updateProductFormPayload);
 	}
 
 	function handleCreateProduct() {
-		const createProductFormPayload = {
-			...getValues(),
-			breadth: parseInt(getValues?.breadth),
-			costprice: parseInt(getValues?.costprice),
-			height: parseInt(getValues?.height),
-			length: parseInt(getValues?.length),
-			listprice: parseInt(getValues?.listprice),
+		const allFormData = getValues();
 
-			price: parseInt(getValues?.price),
-			productWeight: parseInt(getValues?.productWeight),
-			quantityInStock: parseInt(getValues?.quantityInStock)
+		const createProductFormPayload = {
+			...allFormData,
+			// Basic Info fields
+			name: allFormData?.name,
+			shortDescription: allFormData?.shortDescription,
+			description: allFormData?.description,
+			category: allFormData?.category,
+			tradehub: allFormData?.tradehub,
+
+			// Product Images fields
+			images: allFormData?.images,
+			imageLinks: allFormData?.imageLinks,
+			featuredImageId: allFormData?.featuredImageId,
+			dbImages: allFormData?.dbImages,
+
+			// Pricing fields
+			price: parseInt(allFormData?.price) || 0,
+			listprice: parseInt(allFormData?.listprice) || 0,
+			costprice: parseInt(allFormData?.costprice) || 0,
+			priceTiers: allFormData?.priceTiers || [],
+
+			// Inventory fields
+			quantityInStock: parseInt(allFormData?.quantityInStock) || 0,
+			quantityunitweight: allFormData?.quantityunitweight,
+
+			// Shipping fields (newly added)
+			length: parseInt(allFormData?.length) || 0,
+			breadth: parseInt(allFormData?.breadth) || 0,
+			height: parseInt(allFormData?.height) || 0,
+			productWeight: parseInt(allFormData?.productWeight) || 0,
+			perUnitShippingWeight: allFormData?.perUnitShippingWeight,
+			processingTime: allFormData?.processingTime,
+			freeShipping: allFormData?.freeShipping || false,
+			fragileItem: allFormData?.fragileItem || false
 		};
 
+		console.log("New_Product_With_All_Fields", createProductFormPayload);
+
+		// return
 		addNewProduct.mutate(createProductFormPayload);
 	}
 
@@ -160,18 +228,30 @@ function ShopProductHeader() {
 							variant="contained"
 							color="secondary"
 							onClick={handleRemoveProduct}
-							startIcon={<FuseSvgIcon className="hidden sm:flex">heroicons-outline:trash</FuseSvgIcon>}
+							disabled={deleteSingleProduct?.isLoading}
+							startIcon={
+								deleteSingleProduct?.isLoading ? (
+									<FuseSvgIcon className="animate-spin">heroicons-outline:refresh</FuseSvgIcon>
+								) : (
+									<FuseSvgIcon className="hidden sm:flex">heroicons-outline:trash</FuseSvgIcon>
+								)
+							}
 						>
-							Remove
+							{deleteSingleProduct?.isLoading ? 'Removing...' : 'Remove'}
 						</Button>
 						<Button
 							className="whitespace-nowrap mx-4"
 							variant="contained"
 							color="secondary"
-							disabled={_.isEmpty(dirtyFields) || !isValid || addNewProduct?.isLoading}
+							disabled={_.isEmpty(dirtyFields) || !isValid || updateProduct?.isLoading}
 							onClick={handleSaveProduct}
+							startIcon={
+								updateProduct?.isLoading ? (
+									<FuseSvgIcon className="animate-spin">heroicons-outline:refresh</FuseSvgIcon>
+								) : null
+							}
 						>
-							Save
+							{updateProduct?.isLoading ? 'Saving...' : 'Save'}
 						</Button>
 					</>
 				) : (
@@ -179,10 +259,15 @@ function ShopProductHeader() {
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid || updateProduct?.isLoading}
+						disabled={!isValid || addNewProduct?.isLoading}
 						onClick={handleCreateProduct}
+						startIcon={
+							addNewProduct?.isLoading ? (
+								<FuseSvgIcon className="animate-spin">heroicons-outline:refresh</FuseSvgIcon>
+							) : null
+						}
 					>
-						Add Product
+						{addNewProduct?.isLoading ? 'Adding Product...' : 'Add Product'}
 					</Button>
 				)}
 			</motion.div>

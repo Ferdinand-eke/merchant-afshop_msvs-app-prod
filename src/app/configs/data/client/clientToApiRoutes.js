@@ -176,13 +176,13 @@ export const getProdUnitById = (id) => AuthApi().get(`/unit-weights/${id}`);
 export const getProdShippingWeightUnit = () => Api().get('/shipping-weights');
 
 // {===============================shop product handling starts=======================================}
-export const storeProductImages = (formData) => AuthApi().post('/api/usersprodimages/uploadimages', formData);
+export const storeProductImages = (formData) => AuthApi().post(`/productsbymerchant/${formData?.productId}/uploadimages`, formData);
 
-export const removeProductImagesById = (formData) => AuthApi().post('/api/usersprodimages/removeimage', formData);
+export const removeProductImagesById = (formData) => AuthApi().post(`/productsbymerchant/${formData?.productId}/removeimage`, formData);
 
 export const getShopProducts = () => AuthApi().get('/productsbymerchant/get-merchant-products'); // (Msvs => Done)
 
-export const storeShopProduct = (formData) => AuthApi().post('/api/myshop/create-product', formData);
+export const storeShopProduct = (formData) => AuthApi().post('/productsbymerchant/merchant-product', formData); // (Msvs => Done)
 
 // export const getMyShopProductById = (id) =>
 //   AuthApi().get(`/api/myshop-products/${id}`);
@@ -200,12 +200,39 @@ export const pullMyShopProductByIdFromExport = (productFormData) =>
 
 export const deleteShopProductImage = (imageData) => {
 	console.log('imageDataPayload', imageData);
-	return AuthApi().delete(`/api/myshop/delete-product-image/${imageData?.id}/${imageData?.public_id}`);
+	return AuthApi().delete(`/productsbymerchant/${imageData?.productId}/delete-product-image`, {data:imageData});
+};
+
+// Change/Replace a single product image
+// TODO: Update endpoint when backend provides the correct route
+export const changeShopProductImage = (imageData) => {
+	console.log('changeImagePayload', imageData);
+	// imageData: { productId, oldImagePublicId, newImageFile }
+	return AuthApi().put(`/productsbymerchant/${imageData?.productId}/change-product-image`, imageData);
 };
 
 export const deleteShopProduct = (id) => {
 	console.log('productToDelete', id);
-	return AuthApi().delete(`/api/myshop/delete-product/${id}`);
+	return AuthApi().delete(`/productsbymerchant/delete-product/${id}`);
+};
+
+// Price Tier Management for existing products
+export const addProductPriceTier = (tierData) => {
+	console.log('addPriceTierPayload', tierData);
+	// tierData: { productId, minQuantity, maxQuantity, price }
+	return AuthApi().post(`/productsbymerchant/${tierData?.productId}/add-price-tier`, tierData);
+};
+
+export const updateProductPriceTier = (tierData) => {
+	console.log('updatePriceTierPayload', tierData);
+	// tierData: { productId, tierId, minQuantity, maxQuantity, price } /${tierData?.tierId}
+	return AuthApi().put(`/productsbymerchant/${tierData?.productId}/update-price-tier/${tierData?.tierId}`, tierData);
+};
+
+export const deleteProductPriceTier = (tierData) => {
+	console.log('deletePriceTierPayload', tierData);
+	// tierData: { productId, tierId }
+	return AuthApi().delete(`/productsbymerchant/${tierData?.productId}/delete-price-tier/${tierData?.tierId}`);
 };
 
 // {===============================shop product handling ends   =======================================}

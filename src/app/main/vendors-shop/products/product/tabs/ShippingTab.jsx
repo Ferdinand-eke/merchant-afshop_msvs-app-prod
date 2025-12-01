@@ -19,26 +19,25 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useProductShippingWeightUnit } from 'app/configs/data/server-calls/product-units/useProductUnits';
 import { Controller, useFormContext } from 'react-hook-form';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { useState } from 'react';
 
 /**
  * The enhanced shipping tab with comprehensive logistics fields
  */
 function ShippingTab() {
+	
 	const { data: shippingWeightUnit } = useProductShippingWeightUnit();
 
 	const methods = useFormContext();
 	const { control, formState, watch } = methods;
 	const { errors } = formState;
 
-	const [freeShipping, setFreeShipping] = useState(false);
-	const [fragileItem, setFragileItem] = useState(false);
-
 	const length = watch('length') || 0;
 	const breadth = watch('breadth') || 0;
 	const height = watch('height') || 0;
 	const weight = watch('productWeight') || 0;
 	const selectedWeightUnit = watch('perUnitShippingWeight');
+	const freeShipping = watch('freeShipping');
+	const fragileItem = watch('fragileItem');
 
 	// Calculate dimensional weight (used by most carriers)
 	const dimensionalWeight = length && breadth && height ? ((length * breadth * height) / 5000).toFixed(2) : 0;
@@ -498,90 +497,104 @@ function ShippingTab() {
 
 					<Box className="space-y-20">
 						{/* Free Shipping Toggle */}
-						<Box className="p-16 rounded-lg border border-gray-200 hover:border-primary-300 transition-colors">
-							<FormControlLabel
-								control={
-									<Switch
-										checked={freeShipping}
-										onChange={(e) => setFreeShipping(e.target.checked)}
-										color="primary"
+						<Controller
+							name="freeShipping"
+							control={control}
+							defaultValue={false}
+							render={({ field: { onChange, value } }) => (
+								<Box className="p-16 rounded-lg border border-gray-200 hover:border-primary-300 transition-colors">
+									<FormControlLabel
+										control={
+											<Switch
+												checked={value || false}
+												onChange={(e) => onChange(e.target.checked)}
+												color="primary"
+											/>
+										}
+										label={
+											<Box>
+												<Typography
+													variant="body1"
+													className="font-semibold text-base"
+												>
+													Offer Free Shipping
+												</Typography>
+												<Typography
+													variant="caption"
+													color="text.secondary"
+													className="text-sm"
+												>
+													Cover shipping costs to attract more buyers
+												</Typography>
+											</Box>
+										}
 									/>
-								}
-								label={
-									<Box>
-										<Typography
-											variant="body1"
-											className="font-semibold text-base"
-										>
-											Offer Free Shipping
-										</Typography>
-										<Typography
-											variant="caption"
-											color="text.secondary"
-											className="text-sm"
-										>
-											Cover shipping costs to attract more buyers
-										</Typography>
-									</Box>
-								}
-							/>
-							{freeShipping && (
-								<Chip
-									label="Free Shipping Enabled"
-									color="success"
-									size="small"
-									className="mt-8"
-									icon={<FuseSvgIcon size={16}>heroicons-outline:check-circle</FuseSvgIcon>}
-								/>
-							)}
-						</Box>
-
-						{/* Fragile Item Toggle */}
-						<Box className="p-16 rounded-lg border border-gray-200 hover:border-warning-300 transition-colors">
-							<FormControlLabel
-								control={
-									<Switch
-										checked={fragileItem}
-										onChange={(e) => setFragileItem(e.target.checked)}
-										color="warning"
-									/>
-								}
-								label={
-									<Box>
-										<Typography
-											variant="body1"
-											className="font-semibold text-base"
-										>
-											Fragile Item - Handle with Care
-										</Typography>
-										<Typography
-											variant="caption"
-											color="text.secondary"
-											className="text-sm"
-										>
-											Requires special handling and packaging
-										</Typography>
-									</Box>
-								}
-							/>
-							{fragileItem && (
-								<Box className="mt-12">
-									<Chip
-										label="Fragile - Extra Care Required"
-										color="warning"
-										size="small"
-										icon={<FuseSvgIcon size={16}>heroicons-outline:exclamation</FuseSvgIcon>}
-									/>
-									<Typography
-										variant="caption"
-										color="text.secondary"
-										className="mt-8 block text-sm"
-									>
-										* Fragile items may incur additional packaging and handling fees
-									</Typography>
+									{value && (
+										<Chip
+											label="Free Shipping Enabled"
+											color="success"
+											size="small"
+											className="mt-8"
+											icon={<FuseSvgIcon size={16}>heroicons-outline:check-circle</FuseSvgIcon>}
+										/>
+									)}
 								</Box>
 							)}
-						</Box>
+						/>
+
+						{/* Fragile Item Toggle */}
+						<Controller
+							name="fragileItem"
+							control={control}
+							defaultValue={false}
+							render={({ field: { onChange, value } }) => (
+								<Box className="p-16 rounded-lg border border-gray-200 hover:border-warning-300 transition-colors">
+									<FormControlLabel
+										control={
+											<Switch
+												checked={value || false}
+												onChange={(e) => onChange(e.target.checked)}
+												color="warning"
+											/>
+										}
+										label={
+											<Box>
+												<Typography
+													variant="body1"
+													className="font-semibold text-base"
+												>
+													Fragile Item - Handle with Care
+												</Typography>
+												<Typography
+													variant="caption"
+													color="text.secondary"
+													className="text-sm"
+												>
+													Requires special handling and packaging
+												</Typography>
+											</Box>
+										}
+									/>
+									{value && (
+										<Box className="mt-12">
+											<Chip
+												label="Fragile - Extra Care Required"
+												color="warning"
+												size="small"
+												icon={<FuseSvgIcon size={16}>heroicons-outline:exclamation</FuseSvgIcon>}
+											/>
+											<Typography
+												variant="caption"
+												color="text.secondary"
+												className="mt-8 block text-sm"
+											>
+												* Fragile items may incur additional packaging and handling fees
+											</Typography>
+										</Box>
+									)}
+								</Box>
+							)}
+						/>
 
 						{/* Processing Time */}
 						<Controller

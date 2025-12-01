@@ -9,6 +9,7 @@ const AcademyApp = lazy(() => import('./AcademyApp'));
  * The Academy app config.
  */
 
+
 const HomeAppConfig = {
 	settings: {
 		layout: {

@@ -46,17 +46,20 @@ const routeConfigs = [
 	// PropertiesAppConfig,
 	// ServiceTypesAppConfig,
 
-	/** ****Hotels, apartment and suites management */
-
+	/** ****Hotels, apartment and suites management  starts*/
 	ManagedBookingsListingsAppConfig,
+	/** ****Hotels, apartment and suites management  ends*/
 
 	// PropertyTypesAppConfig,
 	// ManagedUserListingsAppConfig,
-	/** ***Food Mart (Restaurants, Bakeries etc) */
-	ManagedFoodMartsAppConfig,
 
-	/** ***Estates Homes and estate management */
+	/** ***Food Mart (Restaurants, Bakeries etc) starts */
+	ManagedFoodMartsAppConfig,
+	/** ***Food Mart (Restaurants, Bakeries etc) ends */
+
+	/** ***Estates Homes and estate management starts*/
 	ManagedListingsAppConfig,
+	/** ***Estates Homes and estate management ends*/
 
 	/** *User management and properties starts */
 

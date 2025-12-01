@@ -28,10 +28,10 @@ function ShopProductsTable() {
 				enableSorting: false,
 				Cell: ({ row }) => (
 					<div className="flex items-center justify-center">
-						{row?.original?.images?.length ? (
+						{row?.original?.imageLinks?.length ? (
 							<img
 								className="w-full max-h-40 max-w-40 block rounded"
-								src={row?.original.images[0]?.url}
+								src={row?.original.imageLinks[0]?.url}
 								alt={row?.original?.name}
 							/>
 						) : (
@@ -78,7 +78,7 @@ function ShopProductsTable() {
 							className="text-11"
 							size="small"
 							color="default"
-							label={row?.quantityunitweight?.unitname}
+							label={row?.unitweight?.unitname}
 						/>
 						{/* <span>
               { row.quantityInStock }

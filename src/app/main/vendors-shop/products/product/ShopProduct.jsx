@@ -27,7 +27,17 @@ import ProductModel from './models/ProductModel';
  * Form Validation Schema
  */
 const schema = z.object({
-	name: z.string().nonempty('You must enter a product name').min(5, 'The product name must be at least 5 characters')
+	name: z.string().min(1, 'You must enter a product name').min(5, 'The product name must be at least 5 characters'),
+	category: z.string().min(1, 'Product category is required'),
+	tradehub: z.string().min(1, 'Trade hub is required'),
+	price: z.number().min(1, 'Product price must be greater than 0').or(z.string().min(1, 'Product price is required').transform(Number)),
+	quantityInStock: z.number().min(0, 'Quantity in stock cannot be negative').or(z.string().transform(Number)),
+	quantityunitweight: z.string().min(1, 'Quantity unit/weight is required'),
+	length: z.number().min(0, 'Length cannot be negative').or(z.string().transform(Number)),
+	breadth: z.number().min(0, 'Breadth cannot be negative').or(z.string().transform(Number)),
+	height: z.number().min(0, 'Height cannot be negative').or(z.string().transform(Number)),
+	productWeight: z.number().min(0, 'Product weight cannot be negative').or(z.string().transform(Number)),
+	perUnitShippingWeight: z.string().min(1, 'Shipping weight unit is required')
 });
 
 /**
@@ -53,7 +63,7 @@ function ShopProduct() {
 		skip: !productId || productId === 'new'
 	});
 
-	console.log('AUT_SHOP_DATA', shopData?.data);
+	console.log('SINGLE__PRODUCT__DATA',  products?.data?.product);
 
 	// Persistent tab state using localStorage
 	const TAB_STORAGE_KEY = `product_tab_${productId}`;
@@ -62,9 +72,13 @@ function ShopProduct() {
 		return savedTab ? parseInt(savedTab, 10) : 0;
 	});
 
+
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: {
+			freeShipping: '',
+			fragileItem: ''
+		},
 		resolver: zodResolver(schema)
 	});
 	const { reset, watch } = methods;
@@ -81,6 +95,8 @@ function ShopProduct() {
 			reset({ ...products?.data?.product });
 		}
 	}, [products?.data?.product, reset]);
+
+	console.log("SINGLE__PRODCT_FORM_STATE", products?.data?.product);
 
 	/**
 	 * Tab Change with localStorage persistence
@@ -210,11 +226,16 @@ function ShopProduct() {
 								</div>
 
 								<div className={tabValue !== 1 ? 'hidden' : ''}>
-									<ProductImagesTab />
+									<ProductImagesTab 
+									productDataId={products?.data?.product.id || products?.data?.product._id}
+									/>
 								</div>
 
 								<div className={tabValue !== 2 ? 'hidden' : ''}>
-									<PricingTab shopData={shopData?.data?.merchant} />
+									<PricingTab 
+									shopData={shopData?.data?.merchant}
+									productDataId={products?.data?.product.id || products?.data?.product._id}
+									/>
 								</div>
 
 								<div className={tabValue !== 3 ? 'hidden' : ''}>

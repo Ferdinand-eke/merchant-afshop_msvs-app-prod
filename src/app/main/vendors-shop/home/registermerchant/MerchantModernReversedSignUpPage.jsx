@@ -48,6 +48,7 @@ import { toast } from 'react-toastify';
 import FuseLoading from '@fuse/core/FuseLoading';
 import MerchantModernReversedActivatePage from './MerchantModernReversedActivatePage';
 
+
 /**
  * Form Validation Schema
  */
