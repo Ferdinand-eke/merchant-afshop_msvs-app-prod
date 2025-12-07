@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { memo, useState, useEffect } from 'react';
+import { useParams } from 'react-router';
 import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Fade from '@mui/material/Fade';
@@ -15,18 +16,7 @@ import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContentText from '@mui/material/DialogContentText';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { motion } from 'framer-motion';
-import { useThemeMediaQuery } from '@fuse/hooks';
-import { toast } from 'react-toastify';
-import { calculateCompanyEarnings, calculateShopEarnings } from 'app/configs/Calculus';
-import { useCashoutShopOrderItemsEarnings } from 'app/configs/data/server-calls/orders/useShopOrders';
-import { formatCurrency } from '../../../pos/PosUtils';
 
 const Root = styled('div')(({ theme }) => ({
 	'& table ': {
@@ -132,44 +122,12 @@ function InvoiceSkeleton() {
 }
 
 /**
- * Invoice Tab - Enhanced with professional design and loading states
+ * The invoice tab - Enhanced with professional design and loading states
  */
 function InvoiceTab(props) {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const { order, myshopData } = props;
+	const { order } = props;
 	const [isLoading, setIsLoading] = useState(true);
 	const [showInvoice, setShowInvoice] = useState(false);
-	const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-
-	const {
-		mutate: cashingOutOrderItemSales,
-		isLoading: cashingOutLoading,
-		error: cashingOutError,
-		isSuccess: cashingOutSuccess
-	} = useCashoutShopOrderItemsEarnings();
-
-	useEffect(() => {
-		if (cashingOutError) {
-			toast.error(cashingOutError?.message || 'Error cashing out order');
-		}
-	}, [cashingOutError]);
-
-	useEffect(() => {
-		if (cashingOutSuccess) {
-			toast.success('Order cashed out successfully! Funds will be transferred to your account.');
-			setOpenConfirmDialog(false);
-		}
-	}, [cashingOutSuccess]);
-
-	const shopEarning = calculateShopEarnings(
-		order?.price * order?.quantity,
-		myshopData?.merchantShopplan?.percetageCommissionChargeConversion
-	);
-
-	const companyEarnings = calculateCompanyEarnings(
-		order?.price * order?.quantity,
-		myshopData?.merchantShopplan?.percetageCommissionChargeConversion
-	);
 
 	const formatter = new Intl.NumberFormat('en-US', {
 		style: 'currency',
@@ -177,6 +135,10 @@ function InvoiceTab(props) {
 		minimumFractionDigits: 2
 	});
 
+	const routeParams = useParams();
+	const { orderId } = routeParams;
+
+	// Simulate loading state for better UX
 	useEffect(() => {
 		if (order) {
 			const timer = setTimeout(() => {
@@ -189,18 +151,6 @@ function InvoiceTab(props) {
 
 	const handlePrint = () => {
 		window.print();
-	};
-
-	const handleCashout = () => {
-		setOpenConfirmDialog(true);
-	};
-
-	const handleConfirmCashout = () => {
-		cashingOutOrderItemSales(order?.id || order?._id);
-	};
-
-	const handleCancelCashout = () => {
-		setOpenConfirmDialog(false);
 	};
 
 	if (isLoading) {
@@ -317,7 +267,7 @@ function InvoiceTab(props) {
 						>
 							<Box>
 								<Chip
-									label={`Invoice Date: ${new Date(order?.createdAt)?.toLocaleDateString()}`}
+									label={`Invoice Date: ${order?.createdAt}`}
 									color="primary"
 									size="small"
 									sx={{ mb: 2, fontWeight: 600, borderRadius: 1 }}
@@ -346,15 +296,15 @@ function InvoiceTab(props) {
 										variant="body1"
 										fontWeight={600}
 									>
-										{order?.order?.shippingAddress?.fullName}
+										{order?.shippingAddress?.fullName}
 									</Typography>
-									{order?.order?.shippingAddress?.address && (
+									{order?.shippingAddress?.address && (
 										<Typography
 											variant="body2"
 											color="text.secondary"
 											mt={0.5}
 										>
-											{order?.order?.shippingAddress?.address}
+											{order?.shippingAddress?.address}
 										</Typography>
 									)}
 									<Box
@@ -362,19 +312,19 @@ function InvoiceTab(props) {
 										gap={2}
 										mt={1}
 									>
-										{order?.order?.shippingAddress?.phone && (
+										{order?.shippingAddress?.phone && (
 											<Chip
 												icon={<FuseSvgIcon size={14}>heroicons-outline:phone</FuseSvgIcon>}
-												label={order?.order?.shippingAddress?.phone}
+												label={order?.shippingAddress?.phone}
 												size="small"
 												variant="outlined"
 												sx={{ borderRadius: 1 }}
 											/>
 										)}
-										{order?.order?.shippingAddress?.prefContact && (
+										{order?.shippingAddress?.prefContact && (
 											<Chip
 												icon={<FuseSvgIcon size={14}>heroicons-outline:mail</FuseSvgIcon>}
-												label={order?.order?.shippingAddress?.prefContact}
+												label={order?.shippingAddress?.prefContact}
 												size="small"
 												variant="outlined"
 												sx={{ borderRadius: 1 }}
@@ -403,7 +353,7 @@ function InvoiceTab(props) {
 								>
 									<Box
 										component="img"
-										src="assets/images/afslogo/afslogo.png"
+										src="assets/images/afslogo/afLogo.svg"
 										alt="AfricanShops Logo"
 										sx={{ width: 60, height: 60 }}
 									/>
@@ -479,95 +429,50 @@ function InvoiceTab(props) {
 										</TableRow>
 									</TableHead>
 									<TableBody>
-										<TableRow hover>
-											<TableCell>
-												<Typography
-													variant="body1"
-													fontWeight={500}
-												>
-													{order?.name}
-												</Typography>
-											</TableCell>
-											<TableCell align="right">
-												<Typography
-													variant="body2"
-													color="primary.main"
-													fontWeight={600}
-												>
-													NGN {formatCurrency(order?.price)}
-												</Typography>
-											</TableCell>
-											<TableCell align="center">
-												<Chip
-													label={order?.quantity}
-													size="small"
-													color="default"
-													sx={{ fontWeight: 600, minWidth: 50 }}
-												/>
-											</TableCell>
-											<TableCell align="right">
-												<Typography
-													variant="body1"
-													fontWeight={700}
-												>
-													NGN {formatCurrency(order?.price * order?.quantity)}
-												</Typography>
-											</TableCell>
-										</TableRow>
+										{order?.orderItems?.map((product) => (
+											<TableRow
+												key={product?.id}
+												hover
+											>
+												<TableCell>
+													<Typography
+														variant="body1"
+														fontWeight={500}
+													>
+														{product?.name}
+													</Typography>
+												</TableCell>
+												<TableCell align="right">
+													<Typography
+														variant="body2"
+														color="primary.main"
+														fontWeight={600}
+													>
+														{product?.price && formatter.format(+product?.price)}
+													</Typography>
+												</TableCell>
+												<TableCell align="center">
+													<Chip
+														label={product?.quantity}
+														size="small"
+														color="default"
+														sx={{ fontWeight: 600, minWidth: 50 }}
+													/>
+												</TableCell>
+												<TableCell align="right">
+													<Typography
+														variant="body1"
+														fontWeight={700}
+													>
+														{product?.price &&
+															product?.quantity &&
+															formatter.format(+product?.price * product?.quantity)}
+													</Typography>
+												</TableCell>
+											</TableRow>
+										))}
 									</TableBody>
 								</Table>
-							</Paper>
-						</Box>
-
-						{/* Earnings Information */}
-						<Box sx={{ mt: 4 }}>
-							<Paper
-								elevation={0}
-								sx={{
-									p: 2.5,
-									borderRadius: 2,
-									bgcolor: 'info.lighter',
-									border: 1,
-									borderColor: 'info.light'
-								}}
-							>
-								<Box
-									display="flex"
-									alignItems="center"
-									gap={1}
-									mb={1.5}
-								>
-									<FuseSvgIcon
-										size={20}
-										color="info"
-									>
-										heroicons-outline:information-circle
-									</FuseSvgIcon>
-									<Typography
-										variant="subtitle1"
-										fontWeight={600}
-										color="info.dark"
-									>
-										Payment Details For Order Item
-									</Typography>
-								</Box>
-								<Typography
-									variant="body2"
-									color="text.secondary"
-								>
-									At{' '}
-									<span style={{ fontWeight: 600, color: '#2196f3' }}>
-										{myshopData?.merchantShopplan?.percetageCommissionCharge || 0}%
-									</span>{' '}
-									commission you earn{' '}
-									<span style={{ fontWeight: 700, color: '#4caf50' }}>
-										NGN {formatCurrency(shopEarning)}
-									</span>{' '}
-									while commission{' '}
-									<span style={{ fontWeight: 700, color: '#ff9800' }}>
-										NGN {formatCurrency(companyEarnings)}
-									</span>
-								</Typography>
 							</Paper>
 						</Box>
 
@@ -587,13 +492,13 @@ function InvoiceTab(props) {
 											variant="body1"
 											color="text.secondary"
 										>
-											Total Item Price
+											Subtotal
 										</Typography>
 										<Typography
 											variant="body1"
 											fontWeight={600}
 										>
-											NGN {formatCurrency(order?.price * order?.quantity)}
+											{formatter.format(+order?.itemsPrice)}
 										</Typography>
 									</Box>
 									<Divider />
@@ -606,14 +511,13 @@ function InvoiceTab(props) {
 											variant="body1"
 											color="text.secondary"
 										>
-											You Earn
+											Tax
 										</Typography>
 										<Typography
 											variant="body1"
 											fontWeight={600}
-											color="success.main"
 										>
-											NGN {formatCurrency(shopEarning)}
+											{formatter.format(+order?.taxPrice)}
 										</Typography>
 									</Box>
 									<Divider />
@@ -626,16 +530,39 @@ function InvoiceTab(props) {
 											variant="body1"
 											color="text.secondary"
 										>
-											AfricanShops Earns
+											Shipping Fee
 										</Typography>
 										<Typography
 											variant="body1"
 											fontWeight={600}
-											color="warning.main"
 										>
-											NGN {formatCurrency(companyEarnings)}
+											{formatter.format(+order?.shippingPrice || 0)}
 										</Typography>
 									</Box>
+									{order?.discount > 0 && (
+										<>
+											<Divider />
+											<Box
+												display="flex"
+												justifyContent="space-between"
+												alignItems="center"
+											>
+												<Typography
+													variant="body1"
+													color="success.main"
+												>
+													Discount
+												</Typography>
+												<Typography
+													variant="body1"
+													fontWeight={600}
+													color="success.main"
+												>
+													-{formatter.format(+order?.discount)}
+												</Typography>
+											</Box>
+										</>
+									)}
 									<Divider sx={{ borderWidth: 2 }} />
 									<Box
 										display="flex"
@@ -643,7 +570,7 @@ function InvoiceTab(props) {
 										alignItems="center"
 										sx={{
 											p: 2,
-											bgcolor: 'success.main',
+											bgcolor: 'primary.main',
 											borderRadius: 1.5,
 											mt: 1
 										}}
@@ -651,114 +578,69 @@ function InvoiceTab(props) {
 										<Typography
 											variant="h5"
 											fontWeight={700}
-											sx={{ color: 'success.contrastText' }}
+											sx={{ color: 'primary.contrastText' }}
 										>
-											MY TOTAL EARNINGS
+											TOTAL
 										</Typography>
 										<Typography
 											variant="h4"
 											fontWeight={700}
-											sx={{ color: 'success.contrastText' }}
+											sx={{ color: 'primary.contrastText' }}
 										>
-											NGN {formatCurrency(shopEarning)}
+											{formatter.format(+order?.totalPrice)}
 										</Typography>
 									</Box>
 								</Box>
 							</Paper>
 						</Box>
 
-						{/* Thank You Section and Cashout Button */}
-						{order?.order?.isDelivered && order?.order?.isPaid && (
-							<>
-								<Box sx={{ mt: 6 }}>
-									<Paper
-										elevation={0}
-										sx={{
-											p: 3,
-											bgcolor: 'success.lighter',
-											borderRadius: 2,
-											borderLeft: 4,
-											borderColor: 'success.main'
-										}}
-									>
-										<Box
-											display="flex"
-											alignItems="flex-start"
-											gap={2}
-										>
-											<Box
-												component="img"
-												src="assets/images/afslogo/afslogo.png"
-												alt="AfricanShops"
-												sx={{ width: 60, height: 60 }}
-											/>
-											<Box>
-												<Typography
-													variant="subtitle1"
-													fontWeight={600}
-													gutterBottom
-													color="success.dark"
-												>
-													Thank you for your business!
-												</Typography>
-												<Typography
-													variant="body2"
-													color="text.secondary"
-												>
-													In honor of the above transaction with reference{' '}
-													<strong>{order?.order?._id || order?.order?.id  }</strong>, We at AfricanShops consider this
-													Transaction as having fulfilled the purpose for which it was intended and having
-													satisfied our consumers, duly consent the repatriation of funds to this
-													merchant. Warmest Regards!
-												</Typography>
-											</Box>
-										</Box>
-									</Paper>
-								</Box>
-
-								{/* Cashout Button */}
-								<Box
-									sx={{
-										display: 'flex',
-										justifyContent: 'flex-end',
-										mt: 3,
-										'@media print': {
-											display: 'none'
-										}
-									}}
-								>
-									<motion.div
-										initial={{ opacity: 0, x: 20 }}
-										animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-									>
-										<Button
-											onClick={handleCashout}
-											disabled={cashingOutLoading}
-											variant="contained"
-											color="success"
-											size={isMobile ? 'medium' : 'large'}
-											startIcon={<FuseSvgIcon size={20}>heroicons-outline:cash</FuseSvgIcon>}
-											sx={{
-												borderRadius: 2,
-												textTransform: 'none',
-												fontWeight: 600,
-												px: 4,
-												py: 1.5
-											}}
-										>
-											{cashingOutLoading ? 'Processing...' : 'Cash Out Order'}
-										</Button>
-									</motion.div>
-								</Box>
-							</>
-						)}
-
 						{/* Footer */}
 						<Box sx={{ mt: 6, pt: 4, borderTop: 1, borderColor: 'divider' }}>
+							<Paper
+								elevation={0}
+								sx={{
+									p: 3,
+									bgcolor: 'info.lighter',
+									borderRadius: 2,
+									borderLeft: 4,
+									borderColor: 'info.main'
+								}}
+							>
+								<Box
+									display="flex"
+									alignItems="center"
+									gap={1}
+									mb={1}
+								>
+									<FuseSvgIcon
+										size={20}
+										color="info"
+									>
+										heroicons-outline:information-circle
+									</FuseSvgIcon>
+									<Typography
+										variant="subtitle1"
+										fontWeight={600}
+										color="info.dark"
+									>
+										Payment Terms
+									</Typography>
+								</Box>
+								<Typography
+									variant="body2"
+									color="text.secondary"
+								>
+									Payment is due within 15 days of invoice date. Thank you for your business with
+									AfricanShops. We appreciate your trust in our platform and look forward to serving
+									you again.
+								</Typography>
+							</Paper>
+
 							<Box
 								display="flex"
 								justifyContent="space-between"
 								alignItems="center"
+								mt={4}
 							>
 								<Box
 									display="flex"
@@ -767,7 +649,7 @@ function InvoiceTab(props) {
 								>
 									<Box
 										component="img"
-										src="assets/images/afslogo/afslogo.png"
+										src="assets/images/afslogo/afLogo.svg"
 										alt="AfricanShops"
 										sx={{ width: 40, height: 40 }}
 									/>
@@ -807,214 +689,9 @@ function InvoiceTab(props) {
 					</CardContent>
 				</Card>
 			</Fade>
-
-			{/* Confirmation Dialog */}
-			<Dialog
-				open={openConfirmDialog}
-				onClose={handleCancelCashout}
-				maxWidth="sm"
-				fullWidth
-				PaperProps={{
-					sx: {
-						borderRadius: 3,
-						p: 1
-					}
-				}}
-			>
-				<DialogTitle>
-					<Box
-						display="flex"
-						alignItems="center"
-						gap={2}
-					>
-						<Box
-							sx={{
-								width: 48,
-								height: 48,
-								borderRadius: 2,
-								bgcolor: 'warning.lighter',
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'center'
-							}}
-						>
-							<FuseSvgIcon
-								size={24}
-								color="warning"
-							>
-								heroicons-outline:exclamation
-							</FuseSvgIcon>
-						</Box>
-						<Box>
-							<Typography
-								variant="h6"
-								fontWeight={700}
-							>
-								Confirm Cash Out
-							</Typography>
-							<Typography
-								variant="caption"
-								color="text.secondary"
-							>
-								Please review before proceeding
-							</Typography>
-						</Box>
-					</Box>
-				</DialogTitle>
-				<DialogContent>
-					<DialogContentText component="div">
-						<Paper
-							elevation={0}
-							sx={{
-								p: 2.5,
-								bgcolor: 'background.default',
-								borderRadius: 2,
-								mb: 2,
-								border: 1,
-								borderColor: 'divider'
-							}}
-						>
-							<Typography
-								variant="body2"
-								color="text.primary"
-								gutterBottom
-								fontWeight={600}
-							>
-								You are about to cash out your earnings from this order:
-							</Typography>
-							<Divider sx={{ my: 2 }} />
-							<Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-								<Box
-									display="flex"
-									justifyContent="space-between"
-								>
-									<Typography
-										variant="body2"
-										color="text.secondary"
-									>
-										Order ID:
-									</Typography>
-									<Typography
-										variant="body2"
-										fontWeight={600}
-										fontFamily="monospace"
-									>
-										{order?._id?.slice(-8).toUpperCase()}
-									</Typography>
-								</Box>
-								<Box
-									display="flex"
-									justifyContent="space-between"
-								>
-									<Typography
-										variant="body2"
-										color="text.secondary"
-									>
-										Total Order Value:
-									</Typography>
-									<Typography
-										variant="body2"
-										fontWeight={600}
-									>
-										NGN {formatCurrency(order?.price * order?.quantity)}
-									</Typography>
-								</Box>
-								<Divider />
-								<Box
-									display="flex"
-									justifyContent="space-between"
-									alignItems="center"
-									sx={{
-										p: 1.5,
-										bgcolor: 'success.lighter',
-										borderRadius: 1
-									}}
-								>
-									<Typography
-										variant="body1"
-										fontWeight={700}
-										color="success.dark"
-									>
-										Your Earnings:
-									</Typography>
-									<Typography
-										variant="h6"
-										fontWeight={700}
-										color="success.main"
-									>
-										NGN {formatCurrency(shopEarning)}
-									</Typography>
-								</Box>
-							</Box>
-						</Paper>
-						<Paper
-							elevation={0}
-							sx={{
-								p: 2,
-								bgcolor: 'info.lighter',
-								borderRadius: 2,
-								border: 1,
-								borderColor: 'info.light'
-							}}
-						>
-							<Box
-								display="flex"
-								alignItems="flex-start"
-								gap={1}
-							>
-								<FuseSvgIcon
-									size={20}
-									color="info"
-								>
-									heroicons-outline:information-circle
-								</FuseSvgIcon>
-								<Typography
-									variant="body2"
-									color="text.secondary"
-								>
-									This amount will be transferred to your registered bank account within 3-5 business
-									days. Once confirmed, this action cannot be undone.
-								</Typography>
-							</Box>
-						</Paper>
-					</DialogContentText>
-				</DialogContent>
-				<DialogActions sx={{ p: 3, pt: 0 }}>
-					<Button
-						onClick={handleCancelCashout}
-						variant="outlined"
-						color="inherit"
-						disabled={cashingOutLoading}
-						sx={{
-							borderRadius: 2,
-							textTransform: 'none',
-							fontWeight: 600,
-							px: 3
-						}}
-					>
-						Cancel
-					</Button>
-					<Button
-						onClick={handleConfirmCashout}
-						variant="contained"
-						color="success"
-						disabled={cashingOutLoading}
-						startIcon={
-							cashingOutLoading ? null : <FuseSvgIcon size={18}>heroicons-outline:check</FuseSvgIcon>
-						}
-						sx={{
-							borderRadius: 2,
-							textTransform: 'none',
-							fontWeight: 600,
-							px: 4
-						}}
-					>
-						{cashingOutLoading ? 'Processing...' : 'Confirm Cash Out'}
-					</Button>
-				</DialogActions>
-			</Dialog>
 		</Root>
 	);
 }
 
 export default memo(InvoiceTab);
+

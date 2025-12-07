@@ -13,6 +13,7 @@ import {
 	deletePropertyListingImage,
 	deleteMerchantBookingListing
 } from '../../client/clientToApiRoutes';
+import { handleApiError } from '../../../utils/errorHandler';
 
 /** *1) get all Specific user shop-Bookings property   */
 export default function useMyShopBookingsProperties(params = {}) {
@@ -53,23 +54,9 @@ export function useAddShopBookingsPropertyMutation() {
 		},
 		{
 			onError: (error, rollback) => {
-				const {
-					response: { data }
-				} = error ?? {};
-				Array.isArray(data?.message)
-					? data?.message?.map((m) => {
-							console.log('Update Booking Property Error:', m);
-							return toast.error(m);
-						})
-					: toast.error(data?.message);
-				rollback();
-				// console.log('creatBokibg_Property_ERROR', error);
-				// console.log('MutationError 2', error.response.data);
-				// console.log('MutationError 3', error.data);
-				// toast.error(
-				// 	error.response && error.response.data.message ? error.response.data.message : error.message
-				// );
-				// rollback();
+				handleApiError(error, 'Failed to create property. Please try again.');
+
+				if (rollback) rollback();
 			}
 		}
 	);
@@ -90,68 +77,10 @@ export function useBookingsPropertyUpdateMutation() {
 		},
 		onError: (error) => {
 			console.log('Update Booking Property Error__11:', error);
-
-			const {
-				response: { data }
-			} = error ?? {};
-			Array.isArray(data?.message)
-				? data?.message?.map((m) => {
-						console.log('Update Booking Property Error:', m);
-						return toast.error(m);
-					})
-				: toast.error(data?.message);
-			rollback();
-
-			// toast.error(
-
-			//   error.response && error.response.data.message
-			//     ? error.response.data.message
-			//     : error.message
-			// );
+			handleApiError(error, 'Failed to update property. Please try again.');
 		}
 	});
 }
-
-/**
- * Utility function to format and display error messages
- * Handles both NestJS and Express error response formats
- */
-const handleApiError = (error) => {
-	console.error('API Error:', error);
-
-	if (!error?.response?.data) {
-		toast.error(error?.message || 'An unexpected error occurred');
-		return;
-	}
-
-	const { data } = error.response;
-
-	// Handle NestJS validation errors (array of messages)
-	if (Array.isArray(data?.message)) {
-		data.message.forEach((msg) => {
-			if (typeof msg === 'object' && msg?.message) {
-				toast.error(msg.message);
-			} else if (typeof msg === 'string') {
-				toast.error(msg);
-			}
-		});
-		return;
-	}
-
-	// Handle single error message
-	if (data?.message) {
-		toast.error(data.message);
-		return;
-	}
-
-	// Handle generic error field
-	if (data?.error) {
-		toast.error(data.error);
-		return;
-	}
-
-	toast.error('An error occurred while processing your request');
-};
 
 /** ***5) update single property listing image with Cloudinary cleanup */
 export function useUpdatePropertyListingImageMutation() {

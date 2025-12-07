@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { setShopResetMailPAYLOAD } from 'app/configs/utils/authUtils';
+import { handleApiError } from '../../../utils/errorHandler';
 import {
 	authShopChangeEmail,
 	authShopCloseAccountCall,
@@ -23,9 +24,7 @@ export function useShopSettingsChangePass() {
 		},
 
 		onError: (error) => {
-			toast.error(
-				error?.response && error?.response?.data?.message ? error?.response?.data?.message : error?.message
-			);
+			handleApiError(error, 'Failed to change password');
 		}
 	});
 } // (Mcsvs => Done)
@@ -44,9 +43,7 @@ export function useInitiateBaseMerchantSettingsChangeEmail() {
 		},
 
 		onError: (error) => {
-			toast.error(
-				error?.response && error?.response?.data?.message ? error?.response?.data?.message : error?.message
-			);
+			handleApiError(error, 'Failed to initiate email change');
 		}
 	});
 }
@@ -65,9 +62,7 @@ export function useShopSettingsChangeEmail() {
 		},
 
 		onError: (error) => {
-			toast.error(
-				error?.response && error?.response?.data?.message ? error?.response?.data?.message : error?.message
-			);
+			handleApiError(error, 'Failed to change email');
 		}
 	});
 }
@@ -82,9 +77,7 @@ export function useShopSettingsCloseShopAccount() {
 		},
 
 		onError: (error) => {
-			toast.error(
-				error?.response && error?.response?.data?.message ? error?.response?.data?.message : error?.message
-			);
+			handleApiError(error, 'Failed to close account');
 		}
 	});
 }

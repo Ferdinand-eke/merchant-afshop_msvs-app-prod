@@ -4,6 +4,7 @@ import jwtDecode from 'jwt-decode';
 import Cookie from 'js-cookie';
 
 import { toast } from 'react-toastify';
+import { handleApiError } from '../../../utils/errorHandler';
 import config from '../../../../auth/services/jwt/jwtAuthConfig';
 import { merchantSignIn } from '../../client/clientToApiRoutes';
 
@@ -56,11 +57,7 @@ export function useShopAdminLogin() {
 		},
 		onError: (error) => {
 			console.log('LoginError22Block', error);
-
-			const {
-				response: { data }
-			} = error ?? {};
-			Array.isArray(data?.message) ? data?.message?.map((m) => toast.error(m)) : toast.error(data?.message);
+			handleApiError(error, 'Failed to login. Please check your credentials');
 		}
 	});
 }

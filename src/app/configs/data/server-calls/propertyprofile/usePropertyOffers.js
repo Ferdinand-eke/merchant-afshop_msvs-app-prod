@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
+import { handleApiError } from '../../../utils/errorHandler';
 import {
 	getPropertyOffers,
 	getSingleOffer,
@@ -54,7 +55,7 @@ export function useDeclineOfferMutation() {
 			}
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to decline offer');
 		}
 	});
 }
@@ -75,7 +76,7 @@ export function useAcceptOfferMutation() {
 			}
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to accept offer');
 		}
 	});
 }
@@ -96,7 +97,7 @@ export function useSendCounterOfferMutation() {
 			}
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to send counter offer');
 		}
 	});
 }
@@ -117,7 +118,7 @@ export function useRevokeOfferApprovalMutation() {
 			}
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to revoke offer approval');
 		}
 	});
 }

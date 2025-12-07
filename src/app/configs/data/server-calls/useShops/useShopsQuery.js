@@ -6,6 +6,7 @@ import {
 	setMerchantSignUpStorage
 } from 'app/configs/utils/authUtils';
 import { useNavigate } from 'react-router';
+import { handleApiError } from '../../../utils/errorHandler';
 import {
 	// newShopSignup,
 	newShopSignupWithOtp,
@@ -32,7 +33,7 @@ export function useShopSignUp() {
 		onError: (error) => {
 			console.log('MuTationError', error);
 			console.log('MuTationErrorMessage', error.message);
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to sign up. Please try again');
 		}
 	});
 }
@@ -61,15 +62,7 @@ export function useShopSignUpWithOtp() {
 			}
 		},
 		onError: (error) => {
-			const {
-				response: { data }
-			} = error ?? {};
-			Array.isArray(data?.message) ? data?.message?.map((m) => toast.error(m)) : toast.error(data?.message);
-			// toast.error(
-			//     error.response && error.response.data.message
-			//       ? error.response.data.message
-			//       : error.message
-			//   );
+			handleApiError(error, 'Failed to sign up with OTP. Please try again');
 		}
 	});
 } // (Mcsvs => Done)
@@ -90,7 +83,7 @@ export function useStoreShopPreSignUp() {
 		onError: (error) => {
 			console.log('MuTationError', error);
 			console.log('MuTationErrorMessage', error.message);
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to complete registration. Please try again');
 		}
 	});
 }
@@ -172,7 +165,7 @@ export function useStoreShopPreSignUpFromOtp() {
 		onError: (error) => {
 			console.log('MuTationError', error);
 			console.log('MuTationErrorMessage', error.message);
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to activate account. Please try again');
 		}
 	});
 } // (Mcsvs => Done)

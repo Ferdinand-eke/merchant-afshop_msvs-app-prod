@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 // import { toast } from 'react-toastify';
 import { toast } from 'react-toastify';
+import { handleApiError } from '../../../utils/errorHandler';
 import {
 	getMyShopAccountApiDetails,
 	getMyShopWithdrawals,
@@ -33,7 +34,7 @@ export function useShopAccountUpdateMutation() {
 			}
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to update account details');
 		}
 	});
 }
@@ -52,7 +53,7 @@ export function useAccountPinUpdateMutation() {
 			}
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to update account pin');
 		}
 	});
 }
@@ -77,7 +78,7 @@ export function useUpdateMyShopAccountMutation() {
 			}
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to update shop account details');
 		}
 	});
 }
@@ -104,7 +105,7 @@ export function useTransferToShopWalletMutation() {
 		onError: (error) => {
 			// console.log('MuTationError', error);
 			// console.log('MuTationErrorMessage', error.message);
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to transfer to wallet');
 		}
 	});
 }
@@ -155,7 +156,7 @@ export function usePlaceWithdrawalMutation() {
 		onError: (error) => {
 			console.log('MuTationError', error);
 			// console.log('MuTationErrorMessage', error.message);
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to place withdrawal');
 			// toast.error('possible wrong account pin ');
 		}
 	});

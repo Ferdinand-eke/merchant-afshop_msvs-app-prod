@@ -176,9 +176,11 @@ export const getProdUnitById = (id) => AuthApi().get(`/unit-weights/${id}`);
 export const getProdShippingWeightUnit = () => Api().get('/shipping-weights');
 
 // {===============================shop product handling starts=======================================}
-export const storeProductImages = (formData) => AuthApi().post(`/productsbymerchant/${formData?.productId}/uploadimages`, formData);
+export const storeProductImages = (formData) =>
+	AuthApi().post(`/productsbymerchant/${formData?.productId}/uploadimages`, formData);
 
-export const removeProductImagesById = (formData) => AuthApi().post(`/productsbymerchant/${formData?.productId}/removeimage`, formData);
+export const removeProductImagesById = (formData) =>
+	AuthApi().post(`/productsbymerchant/${formData?.productId}/removeimage`, formData);
 
 export const getShopProducts = () => AuthApi().get('/productsbymerchant/get-merchant-products'); // (Msvs => Done)
 
@@ -200,7 +202,7 @@ export const pullMyShopProductByIdFromExport = (productFormData) =>
 
 export const deleteShopProductImage = (imageData) => {
 	console.log('imageDataPayload', imageData);
-	return AuthApi().delete(`/productsbymerchant/${imageData?.productId}/delete-product-image`, {data:imageData});
+	return AuthApi().delete(`/productsbymerchant/${imageData?.productId}/delete-product-image`, { data: imageData });
 };
 
 // Change/Replace a single product image
@@ -280,7 +282,8 @@ export const getMyShopWithdrawals = () => AuthApi().get('/api/myshop/get-my-With
 /** *##########################################################################
  * Handle shop acoount tasks for separate "AACOUNT" model
  *############################################################################# */
-export const getMyShopAccountApiDetails = () => AuthApi().get('/api/myshop/get-account-details'); // newDashboards //done
+export const getMyShopAccountApiDetails = () => AuthApi().get('/fintech-accounts/merchant/account/my-account'); // newDashboards //done /**(Msvs => Done) */
+export const createMerchantFintechAccount = (formData) => AuthApi().post('/fintech-accounts/merchant/account/create', formData); // (Msvs => Done)
 export const updateMyShopAccountBankDetails = (shopFormData) =>
 	AuthApi().put(`/api/myshop/update-account-details`, shopFormData);
 
@@ -314,7 +317,9 @@ export const myShopItemsInOrdersByShopId = (id) => {
 export const MyShopCashOutOrderByOrderIdShopId = (id) => AuthApi().post(`/api/myshop/cashout-order/${id}`);
 
 export const MyShopCashOutOrderItemsByOrderItemsIdShopId = (id) => {
-	return AuthApi().post(`/api/myshop/cashout-order-items/${id}`);
+	console.log('CASHOUT_ORDER_ITEM_ID', id);
+	// return
+	return AuthApi().put(`/merchant-orders/order-item/${id}/cashout`); // newDashboard (Msvs => Done)
 };
 
 /** **Sealed-Orders */
@@ -449,7 +454,10 @@ export const deleteRoomOnProperty = (roomId) => {
 export const updatePropertyListingImage = ({ propertyId, updateData }) => {
 	console.log('updatePropertyListingImage API - propertyId:', propertyId);
 	console.log('updatePropertyListingImage API - updateData:', updateData);
-	console.log('updatePropertyListingImage API - Full URL:', `/bookings/property-listing/${propertyId}/update-listing-image`);
+	console.log(
+		'updatePropertyListingImage API - Full URL:',
+		`/bookings/property-listing/${propertyId}/update-listing-image`
+	);
 	return AuthApi().put(`/bookings/property-listing/${propertyId}/update-listing-image`, updateData); // (Msvs => done)
 };
 
@@ -549,6 +557,25 @@ export const merchantDeliverFoodOrdersApi = (id) => AuthApi().put(`/api/myshop/f
 /** *
  * #############################################################################################
  * HANDLE SHOP FOOD  MART-MENUS ITEMS ENDS HERE
+ * ############################################################################################
+ */
+
+/** *
+ * #############################################################################################
+ * HANDLE MERCHANT TRANSACTIONS ANALYTICS STARTS HERE
+ * ############################################################################################
+ */
+export const getMerchantTransactions = (params) => {
+	const queryString = params ? qs.stringify(params, { arrayFormat: 'repeat' }) : '';
+	return AuthApi().get(`/trade-transactions/merchant/transactions${queryString ? `?${queryString}` : ''}`);
+}; // (Msvs => Transaction Analytics)
+
+export const getMerchantTransactionSummary = () =>
+	AuthApi().get('/trade-transactions/merchant/summary'); // (Msvs => Transaction Summary)
+
+/** *
+ * #############################################################################################
+ * HANDLE MERCHANT TRANSACTIONS ANALYTICS ENDS HERE
  * ############################################################################################
  */
 

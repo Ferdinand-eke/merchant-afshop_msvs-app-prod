@@ -80,7 +80,7 @@ export function useAddShopProductMutation() {
 			}
 		}
 	);
-}// (Msvs : 'Done)
+} // (Msvs : 'Done)
 
 // update existing product
 export function useProductUpdateMutation() {
@@ -123,7 +123,7 @@ export function useProductUpdateMutation() {
 			}
 		}
 	});
-}// (Msvs : 'Done)
+} // (Msvs : 'Done)
 
 // update existing product: Pushing it for export
 export function usePushProductForExportMutation() {
@@ -163,7 +163,7 @@ export function usePushProductForExportMutation() {
 			}
 		}
 	});
-}// (Msvs : 'Done)
+} // (Msvs : 'Done)
 
 // update existing product: Pulling it from export
 export function usePullProductFromExportMutation() {
@@ -202,7 +202,7 @@ export function usePullProductFromExportMutation() {
 			}
 		}
 	});
-}// (Msvs : 'Done)
+} // (Msvs : 'Done)
 
 /** *Delete a product single image */
 export function useDeleteProductSingleImage() {
@@ -240,7 +240,7 @@ export function useDeleteProductSingleImage() {
 			}
 		}
 	});
-}  // (Msvs : 'Done)
+} // (Msvs : 'Done)
 
 /** *Delete a product */
 export function useDeleteSingleProduct() {
@@ -317,7 +317,7 @@ export function useAddProductImagesMutation() {
 			}
 		}
 	});
-}// (Msvs : 'Done)
+} // (Msvs : 'Done)
 
 /** *Change/Replace a single product image */
 export function useChangeProductImageMutation() {
@@ -355,7 +355,7 @@ export function useChangeProductImageMutation() {
 			}
 		}
 	});
-}// (Msvs : 'Done)
+} // (Msvs : 'Done)
 
 /** *Add a new price tier to existing product */
 export function useAddProductPriceTierMutation() {
@@ -365,7 +365,7 @@ export function useAddProductPriceTierMutation() {
 		onSuccess: (data) => {
 			console.log('Price tier added', data);
 
-			if (data?.data?.success ) {
+			if (data?.data?.success) {
 				toast.success('Bulk price tier added successfully!');
 				queryClient.invalidateQueries('__myshop_products');
 				queryClient.invalidateQueries(['singleproduct']);
@@ -393,8 +393,7 @@ export function useAddProductPriceTierMutation() {
 			}
 		}
 	});
-}// (Msvs : 'Done)
-
+} // (Msvs : 'Done)
 
 /** *Update a single price tier */
 export function useUpdateProductPriceTierMutation() {
@@ -432,7 +431,7 @@ export function useUpdateProductPriceTierMutation() {
 			}
 		}
 	});
-}// (Msvs : 'Done)
+} // (Msvs : 'Done)
 
 /** *Delete a single price tier */
 export function useDeleteProductPriceTierMutation() {
@@ -470,4 +469,4 @@ export function useDeleteProductPriceTierMutation() {
 			}
 		}
 	});
-}// (Msvs : 'Done)
+} // (Msvs : 'Done)

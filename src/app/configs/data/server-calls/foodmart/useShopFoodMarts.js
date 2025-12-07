@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
+import { handleApiError } from '../../../utils/errorHandler';
 import {
 	getMyShopFoodMartBySlug,
 	getShopFoodMarts,
@@ -40,10 +41,7 @@ export function useAddShopFoodMartMutation() {
 		},
 		{
 			onError: (error, rollback) => {
-				const {
-					response: { data }
-				} = error ?? {};
-				Array.isArray(data?.message) ? data?.message?.map((m) => toast.error(m)) : toast.error(data?.message);
+				handleApiError(error, 'Failed to create food mart');
 				rollback();
 			}
 		}
@@ -61,12 +59,10 @@ export function useFoodMartUpdateMutation() {
 				queryClient.invalidateQueries('__myshop_foodmarts');
 			}
 		},
-		onError: (error) => {
-			const {
-				response: { data }
-			} = error ?? {};
-			Array.isArray(data?.message) ? data?.message?.map((m) => toast.error(m)) : toast.error(data?.message);
-			rollback();
+		onError: (error, rollback) => {
+			handleApiError(error, 'Failed to update food mart');
+
+			if (rollback) rollback();
 		}
 	});
 } // (Mcsvsn => Done)

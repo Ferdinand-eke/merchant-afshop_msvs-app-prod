@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
+import { handleApiError } from '../../../utils/errorHandler';
 import {
 	getPropertyAcquisitions,
 	getSingleAcquisition,
@@ -47,7 +48,7 @@ export function useUploadAgreementDocumentsMutation() {
 			}
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to upload agreement documents');
 		}
 	});
 }

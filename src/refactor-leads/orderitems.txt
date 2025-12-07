@@ -1,0 +1,498 @@
+import { memo, useMemo } from 'react';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Chip from '@mui/material/Chip';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import Divider from '@mui/material/Divider';
+
+/**
+ * Individual product card component - memoized to prevent unnecessary re-renders
+ */
+const ProductCard = memo(({ product, index }) => (
+	<Card
+		elevation={2}
+		sx={{
+			height: '100%',
+			display: 'flex',
+			flexDirection: 'column',
+			borderRadius: 2,
+			transition: 'all 0.3s ease-in-out',
+			'&:hover': {
+				transform: 'translateY(-4px)',
+				boxShadow: 6
+			}
+		}}
+	>
+		<Box sx={{ position: 'relative' }}>
+			<CardMedia
+				component="img"
+				height="200"
+				image={product.image || 'assets/images/placeholder.jpg'}
+				alt={product.name}
+				sx={{
+					objectFit: 'cover',
+					bgcolor: 'action.hover'
+				}}
+			/>
+			<Chip
+				label={`#${index + 1}`}
+				size="small"
+				color="primary"
+				sx={{
+					position: 'absolute',
+					top: 12,
+					left: 12,
+					fontWeight: 700,
+					boxShadow: 2
+				}}
+			/>
+		</Box>
+		<CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+			<Typography
+				variant="h6"
+				gutterBottom
+				sx={{
+					fontWeight: 600,
+					overflow: 'hidden',
+					textOverflow: 'ellipsis',
+					display: '-webkit-box',
+					WebkitLineClamp: 2,
+					WebkitBoxOrient: 'vertical',
+					minHeight: '3.6em'
+				}}
+			>
+				{product.name}
+			</Typography>
+
+			<Box sx={{ mt: 'auto' }}>
+				<Divider sx={{ my: 2 }} />
+				<Box
+					display="flex"
+					justifyContent="space-between"
+					alignItems="center"
+					mb={1}
+				>
+					<Box
+						display="flex"
+						alignItems="center"
+						gap={0.5}
+					>
+						<FuseSvgIcon
+							size={16}
+							color="action"
+						>
+							heroicons-outline:currency-dollar
+						</FuseSvgIcon>
+						<Typography
+							variant="body2"
+							color="text.secondary"
+						>
+							Unit Price
+						</Typography>
+					</Box>
+					<Typography
+						variant="h6"
+						color="primary.main"
+						fontWeight={700}
+					>
+						NGN {product.price?.toLocaleString()}
+					</Typography>
+				</Box>
+				<Box
+					display="flex"
+					justifyContent="space-between"
+					alignItems="center"
+				>
+					<Box
+						display="flex"
+						alignItems="center"
+						gap={0.5}
+					>
+						<FuseSvgIcon
+							size={16}
+							color="action"
+						>
+							heroicons-outline:shopping-cart
+						</FuseSvgIcon>
+						<Typography
+							variant="body2"
+							color="text.secondary"
+						>
+							Quantity
+						</Typography>
+					</Box>
+					<Chip
+						label={`×${product.quantity}`}
+						size="small"
+						color="success"
+						variant="outlined"
+						sx={{ fontWeight: 700, borderRadius: 1 }}
+					/>
+				</Box>
+				<Box
+					display="flex"
+					justifyContent="space-between"
+					alignItems="center"
+					mt={2}
+					p={1.5}
+					sx={{
+						bgcolor: 'primary.main',
+						borderRadius: 1.5,
+						color: 'primary.contrastText'
+					}}
+				>
+					<Typography
+						variant="body2"
+						fontWeight={600}
+					>
+						Subtotal
+					</Typography>
+					<Typography
+						variant="h6"
+						fontWeight={700}
+					>
+						NGN {((product.price || 0) * (product.quantity || 0)).toLocaleString()}
+					</Typography>
+				</Box>
+			</Box>
+		</CardContent>
+	</Card>
+));
+
+ProductCard.displayName = 'ProductCard';
+
+/**
+ * The products tab - optimized with memoization and engaging UI
+ */
+function ProductsTab({ orderItems }) {
+	// Calculate order summary
+	const orderSummary = useMemo(() => {
+		if (!orderItems || orderItems.length === 0) return null;
+
+		const totalItems = orderItems.reduce((sum, item) => sum + (item.quantity || 0), 0);
+		const totalValue = orderItems.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 0), 0);
+
+		return { totalItems, totalValue };
+	}, [orderItems]);
+
+	if (!orderItems || orderItems.length === 0) {
+		return (
+			<Paper
+				elevation={0}
+				sx={{
+					p: 8,
+					textAlign: 'center',
+					borderRadius: 2,
+					bgcolor: 'background.default'
+				}}
+			>
+				<FuseSvgIcon
+					size={64}
+					color="disabled"
+				>
+					heroicons-outline:inbox
+				</FuseSvgIcon>
+				<Typography
+					variant="h6"
+					color="text.secondary"
+					mt={2}
+				>
+					No products found in this order
+				</Typography>
+				<Typography
+					variant="body2"
+					color="text.disabled"
+					mt={1}
+				>
+					This order does not contain any items.
+				</Typography>
+			</Paper>
+		);
+	}
+
+	return (
+		<Box>
+			{/* Order Summary Card */}
+			<Paper
+				elevation={1}
+				sx={{ p: 3, mb: 4, borderRadius: 2, bgcolor: 'background.default' }}
+			>
+				<Box
+					display="flex"
+					alignItems="center"
+					gap={1}
+					mb={2}
+				>
+					<FuseSvgIcon
+						color="action"
+						size={24}
+					>
+						heroicons-outline:clipboard-list
+					</FuseSvgIcon>
+					<Typography
+						variant="h6"
+						fontWeight={600}
+						color="text.secondary"
+					>
+						Order Summary
+					</Typography>
+				</Box>
+				<Box
+					display="flex"
+					gap={3}
+				>
+					<Paper
+						elevation={0}
+						sx={{ flex: 1, p: 2, bgcolor: 'primary.light', borderRadius: 2 }}
+					>
+						<Typography
+							variant="body2"
+							color="primary.dark"
+							gutterBottom
+						>
+							Total Products
+						</Typography>
+						<Typography
+							variant="h4"
+							fontWeight={700}
+							color="primary.main"
+						>
+							{orderItems.length}
+						</Typography>
+					</Paper>
+					<Paper
+						elevation={0}
+						sx={{ flex: 1, p: 2, bgcolor: 'success.light', borderRadius: 2 }}
+					>
+						<Typography
+							variant="body2"
+							color="success.dark"
+							gutterBottom
+						>
+							Total Items
+						</Typography>
+						<Typography
+							variant="h4"
+							fontWeight={700}
+							color="success.main"
+						>
+							{orderSummary.totalItems}
+						</Typography>
+					</Paper>
+					<Paper
+						elevation={0}
+						sx={{ flex: 1, p: 2, bgcolor: 'secondary.light', borderRadius: 2 }}
+					>
+						<Typography
+							variant="body2"
+							color="secondary.dark"
+							gutterBottom
+						>
+							Total Value
+						</Typography>
+						<Typography
+							variant="h4"
+							fontWeight={700}
+							color="secondary.main"
+						>
+							NGN {orderSummary.totalValue.toLocaleString()}
+						</Typography>
+					</Paper>
+				</Box>
+			</Paper>
+
+			{/* Products Grid */}
+			<Box mb={4}>
+				<Box
+					display="flex"
+					alignItems="center"
+					gap={1}
+					mb={3}
+				>
+					<FuseSvgIcon
+						color="action"
+						size={24}
+					>
+						heroicons-outline:shopping-bag
+					</FuseSvgIcon>
+					<Typography
+						variant="h6"
+						fontWeight={600}
+						color="text.secondary"
+					>
+						Products in Order
+					</Typography>
+				</Box>
+				<Grid
+					container
+					spacing={3}
+				>
+					{orderItems.map((product, index) => (
+						<Grid
+							item
+							xs={12}
+							sm={6}
+							md={4}
+							key={product.id || index}
+						>
+							<ProductCard
+								product={product}
+								index={index}
+							/>
+						</Grid>
+					))}
+				</Grid>
+			</Box>
+
+			{/* Detailed Table View */}
+			<Paper
+				elevation={1}
+				sx={{ borderRadius: 2, overflow: 'hidden' }}
+			>
+				<Box sx={{ p: 2, bgcolor: 'action.hover' }}>
+					<Box
+						display="flex"
+						alignItems="center"
+						gap={1}
+					>
+						<FuseSvgIcon
+							color="action"
+							size={20}
+						>
+							heroicons-outline:table
+						</FuseSvgIcon>
+						<Typography
+							variant="subtitle1"
+							fontWeight={600}
+						>
+							Detailed Product List
+						</Typography>
+					</Box>
+				</Box>
+				<Table>
+					<TableHead>
+						<TableRow sx={{ bgcolor: 'background.default' }}>
+							<TableCell width="60">
+								<Typography fontWeight={600}>#</Typography>
+							</TableCell>
+							<TableCell width="100">
+								<Typography fontWeight={600}>Image</Typography>
+							</TableCell>
+							<TableCell>
+								<Typography fontWeight={600}>Product Name</Typography>
+							</TableCell>
+							<TableCell align="right">
+								<Typography fontWeight={600}>Unit Price</Typography>
+							</TableCell>
+							<TableCell align="center">
+								<Typography fontWeight={600}>Quantity</Typography>
+							</TableCell>
+							<TableCell align="right">
+								<Typography fontWeight={600}>Subtotal</Typography>
+							</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{orderItems.map((product, index) => (
+							<TableRow
+								key={product.id || index}
+								hover
+							>
+								<TableCell>
+									<Chip
+										label={index + 1}
+										size="small"
+										color="default"
+										sx={{ fontWeight: 600 }}
+									/>
+								</TableCell>
+								<TableCell>
+									<Box
+										component="img"
+										src={product.image || 'assets/images/placeholder.jpg'}
+										alt={product.name}
+										sx={{
+											width: 60,
+											height: 60,
+											borderRadius: 1,
+											objectFit: 'cover',
+											border: 1,
+											borderColor: 'divider'
+										}}
+									/>
+								</TableCell>
+								<TableCell>
+									<Typography
+										variant="body2"
+										fontWeight={500}
+									>
+										{product.name}
+									</Typography>
+								</TableCell>
+								<TableCell align="right">
+									<Typography
+										variant="body2"
+										fontWeight={600}
+										color="primary.main"
+									>
+										NGN {product.price?.toLocaleString()}
+									</Typography>
+									{/* {(() => {
+                              let itemPrice = item?.product?.price;
+                              if (item?.isBulkOrder && item?.bulkPriceTierId) {
+                                // Find the matching price tier from product's priceTiers array
+                                const matchingTier =
+                                  item?.product?.priceTiers?.find(
+                                    (tier) =>
+                                      (tier?.id || tier?._id) ===
+                                      item?.bulkPriceTierId
+                                  );
+
+                                if (matchingTier) {
+                                  itemPrice = matchingTier?.price;
+                                }
+                              }
+                              return formatCurrency(
+                                itemPrice * item?.quantity
+                              ).toLocaleString();
+                            })()} */}
+								</TableCell>
+								<TableCell align="center">
+									<Chip
+										label={`×${product.quantity}`}
+										size="small"
+										color="success"
+										variant="outlined"
+										sx={{ fontWeight: 600 }}
+									/>
+								</TableCell>
+								<TableCell align="right">
+									<Typography
+										variant="body1"
+										fontWeight={700}
+										color="secondary.main"
+									>
+										NGN {((product.price || 0) * (product.quantity || 0)).toLocaleString()}
+									</Typography>
+								</TableCell>
+							</TableRow>
+						))}
+					</TableBody>
+				</Table>
+			</Paper>
+		</Box>
+	);
+}
+
+export default memo(ProductsTab);
+

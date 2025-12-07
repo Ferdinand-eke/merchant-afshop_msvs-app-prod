@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
+import { handleApiError } from '../../../utils/errorHandler';
 import {
 	getReservationsOnPropertyApi,
 	getShopBookingsReservationsApi,
@@ -57,7 +58,7 @@ export function useCheckInGuest() {
 			}
 		},
 		onError: (err) => {
-			toast.error(err.response && err.response.data.message ? err.response.data.message : err.message);
+			handleApiError(err, 'Failed to check in guest');
 		}
 	});
 }
@@ -78,7 +79,7 @@ export function useCheckOutGuest() {
 			}
 		},
 		onError: (err) => {
-			toast.error(err.response && err.response.data.message ? err.response.data.message : err.message);
+			handleApiError(err, 'Failed to check out guest');
 		}
 	});
 }
@@ -96,7 +97,7 @@ export function useCashoutMerchantReservationEarnings() {
 			}
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to cashout reservation earnings');
 		}
 	});
 }

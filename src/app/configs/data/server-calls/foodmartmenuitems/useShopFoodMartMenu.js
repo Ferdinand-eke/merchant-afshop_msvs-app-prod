@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
+import { handleApiError } from '../../../utils/errorHandler';
 import {
 	getAllMerchantOwnedMartMenus,
 	getMyShopFoodMartMenuBySlug,
@@ -54,16 +55,7 @@ export function useAddShopFoodMartMenuMutation() {
 		},
 		{
 			onError: (error, rollback) => {
-				// toast.error(
-				//   error.response && error.response.data.message
-				//     ? error.response.data.message
-				//     : error.message
-				// );
-				// rollback();
-				const {
-					response: { data }
-				} = error ?? {};
-				Array.isArray(data?.message) ? data?.message?.map((m) => toast.error(m)) : toast.error(data?.message);
+				handleApiError(error, 'Failed to create food mart menu item');
 				rollback();
 			}
 		}
@@ -83,7 +75,7 @@ export function useFoodMartMenUpdateMutation() {
 			}
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to update food mart menu item');
 		}
 	});
 }

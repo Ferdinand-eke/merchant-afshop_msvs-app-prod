@@ -1,6 +1,7 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { motion } from 'framer-motion';
 import FuseLoading from '@fuse/core/FuseLoading';
+import { useMemo } from 'react';
 import useGetMyShopDetails, {
 	useGetShopAccountBalance
 } from 'app/configs/data/server-calls/shopdetails/useShopDetails';
@@ -8,16 +9,9 @@ import FinanceDashboardAppHeader from './FinanceDashboardAppHeader';
 import PreviousStatementWidget from './widgets/PreviousStatementWidget';
 import CurrentStatementWidget from './widgets/CurrentStatementWidget';
 import AccountBalanceWidget from './widgets/AccountBalanceWidget';
+import TransactionsReportWidget from './widgets/TransactionsReportWidget';
 import { useGetFinanceDashboardWidgetsQuery } from './FinanceDashboardApi';
-// import { useMemo } from "react";
-// import {
-//   Button,
-//   ListItemIcon,
-//   MenuItem,
-//   Paper,
-//   Typography,
-// } from "@mui/material";
-// import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
+
 
 const container = {
 	show: {
@@ -39,7 +33,28 @@ function FinanceDashboardApp() {
 
 	const { data: shopData, isLoading: shopDataLoading, isError } = useGetMyShopDetails();
 
-	const { data: shopAccount, isLoading: accountLoading, isError: accountError } = useGetShopAccountBalance();
+	const {
+		data: shopAccount,
+		isLoading: accountLoading,
+		isError: accountError,
+		refetch: refetchAccount
+	} = useGetShopAccountBalance();
+
+	// Memoize account data processing
+	const accountData = useMemo(() => {
+		if (!shopAccount) return null;
+
+		const hasAccount = shopAccount?.hasAccount !== false && shopAccount?.data?.payload !== null;
+		const payload = shopAccount?.data?.payload;
+
+		return {
+			hasAccount,
+			account: payload,
+			success: shopAccount?.data?.success
+		};
+	}, [shopAccount]);
+
+	console.log("Merchant fintech account data", { shopAccount, accountData });
 
 	if (isLoading) {
 		return <FuseLoading />;
@@ -48,6 +63,7 @@ function FinanceDashboardApp() {
 	if (!widgets) {
 		return null;
 	}
+
 
 	return (
 		<FusePageSimple
@@ -72,9 +88,12 @@ function FinanceDashboardApp() {
 									className="flex flex-col flex-auto"
 								>
 									<PreviousStatementWidget
-										account={shopAccount?.data}
+										account={accountData?.account}
+										hasAccount={accountData?.hasAccount}
 										accountLoading={accountLoading}
 										accountError={accountError}
+										refetchAccount={refetchAccount}
+										shopData={shopData?.data?.merchant}
 									/>
 								</motion.div>
 
@@ -97,19 +116,20 @@ function FinanceDashboardApp() {
 									shopData={shopData?.data?.merchant}
 									shopDataLoading={shopDataLoading}
 									isError={isError}
-									account={shopAccount?.data}
+									account={accountData?.account}
+									hasAccount={accountData?.hasAccount}
 									accountLoading={accountLoading}
 									accountError={accountError}
 								/>
 							</motion.div>
 						</div>
 
-						<div className="grid grid-cols-1 xl:grid-cols-3 gap-32 w-full mt-32">
+						<div className="grid grid-cols-1 gap-32 w-full mt-32">
 							<motion.div
 								variants={item}
-								className="xl:col-span-2 flex flex-col flex-auto"
+								className="flex flex-col flex-auto"
 							>
-								{/* <RecentTransactionsWidget /> */}
+								<TransactionsReportWidget />
 							</motion.div>
 						</div>
 					</motion.div>

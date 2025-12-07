@@ -6,6 +6,7 @@ import OrdersTable from './OrdersTable';
  * The orders page.
  */
 
+
 function Orders() {
 	return (
 		<>

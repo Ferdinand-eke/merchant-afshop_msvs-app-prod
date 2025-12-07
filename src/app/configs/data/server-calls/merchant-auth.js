@@ -8,6 +8,7 @@ import {
 	setAuthTokens,
 	setShopForgotPasswordPAYLOAD
 } from '../../utils/authUtils';
+import { handleApiError } from '../../utils/errorHandler';
 
 /** *1) Login for merchants account */
 export function useAdminLogin() {
@@ -28,10 +29,7 @@ export function useAdminLogin() {
 			}
 		},
 		onError: (error) => {
-			const {
-				response: { data }
-			} = error ?? {};
-			Array.isArray(data?.message) ? data?.message?.map((m) => toast.error(m)) : toast.error(data?.message);
+			handleApiError(error, 'Login failed. Please check your credentials.');
 		}
 	});
 }
@@ -54,10 +52,7 @@ export function useShopForgotPass() {
 			}
 		},
 		onError: (error) => {
-			const {
-				response: { data }
-			} = error ?? {};
-			Array.isArray(data?.message) ? data?.message?.map((m) => toast.error(m)) : toast.error(data?.message);
+			handleApiError(error, 'Failed to initiate password reset. Please try again.');
 		}
 	});
 }
@@ -79,10 +74,7 @@ export function useResetShopPass() {
 			}
 		},
 		onError: (error) => {
-			const {
-				response: { data }
-			} = error ?? {};
-			Array.isArray(data?.message) ? data?.message?.map((m) => toast.error(m)) : toast.error(data?.message);
+			handleApiError(error, 'Failed to reset password. Please try again.');
 		}
 	});
 }

@@ -13,6 +13,7 @@ import Drawer from '@mui/material/Drawer';
 import { useForm } from 'react-hook-form';
 import FundsMovementPage from './fundsmovementcards/FundsMovementPage';
 import FundsWithdrawalPage from './fundsmovementcards/FundsWithdrawalPage';
+import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
 
 /**
  * The FinanceDashboardAppHeader component.
@@ -64,33 +65,18 @@ function FinanceDashboardAppHeader(props) {
 		show: { opacity: 1, y: 0 }
 	};
 
-	const DrawerMoveFunds = (
-		<Box
-			sx={{ width: 350 }}
-			sm={{ width: 250 }}
-			role="presentation"
-		>
-			<FundsMovementPage />
-		</Box>
-	);
+	const DrawerMoveFunds = <FundsMovementPage onClose={toggleDrawer(false)} />;
 
-	const DrawerWithdraw = (
-		<Box
-			sx={{ width: 350 }}
-			sm={{ width: 250 }}
-			role="presentation"
-		>
-			{/* <Typography>Withdraw Funds</Typography> */}
-
-			<FundsWithdrawalPage />
-		</Box>
-	);
+	const DrawerWithdraw = <FundsWithdrawalPage onClose={toggleWithdrawDrawer(false)} />;
 
 	return (
 		<div className="flex w-full container">
 			<div className="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 p-24 md:p-32 pb-0 md:pb-0">
 				<div className="flex flex-col flex-auto">
-					<Typography className="text-3xl font-semibold tracking-tight leading-8">
+					<Typography
+					 component={NavLinkAdapter}
+	           to={`/africanshops/finance`}
+					className="text-3xl font-semibold tracking-tight leading-8 cursor-pointer">
 						Finance dashboard
 					</Typography>
 					<Typography
@@ -102,6 +88,10 @@ function FinanceDashboardAppHeader(props) {
 				</div>
 				<div className="flex items-center mt-24 sm:mt-0 sm:mx-8 space-x-12">
 					<Button
+				// component={NavLinkAdapter}
+				// africanshops/transaction-reports
+				 component={NavLinkAdapter}
+	           to={`/africanshops/transaction-reports`}
 						className="whitespace-nowrap"
 						startIcon={<FuseSvgIcon size={20}>heroicons-solid:document-report</FuseSvgIcon>}
 					>
@@ -142,6 +132,17 @@ function FinanceDashboardAppHeader(props) {
 				<Drawer
 					open={open}
 					onClose={toggleDrawer(false)}
+					anchor="right"
+					disableEscapeKeyDown
+					PaperProps={{
+						sx: {
+							width: { xs: '100%', sm: 600 },
+							maxWidth: '100%'
+						}
+					}}
+					ModalProps={{
+						keepMounted: false
+					}}
 				>
 					{DrawerMoveFunds}
 				</Drawer>
@@ -149,10 +150,22 @@ function FinanceDashboardAppHeader(props) {
 				<Drawer
 					open={withdarwopen}
 					onClose={toggleWithdrawDrawer(false)}
+					anchor="right"
+					disableEscapeKeyDown
+					PaperProps={{
+						sx: {
+							width: { xs: '100%', sm: 600 },
+							maxWidth: '100%'
+						}
+					}}
+					ModalProps={{
+						keepMounted: false
+					}}
 				>
 					{DrawerWithdraw}
 				</Drawer>
 			</div>
+			
 		</div>
 	);
 }

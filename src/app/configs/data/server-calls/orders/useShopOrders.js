@@ -13,6 +13,7 @@ import {
 	myShopItemsInOrdersByShopId,
 	myShopOrderByShopId
 } from '../../client/clientToApiRoutes';
+import { handleApiError } from '../../../utils/errorHandler';
 // import { message } from 'antd';
 
 export default function useMyShopOrders() {
@@ -32,9 +33,8 @@ export function useCashoutShopEarnings() {
 			queryClient.invalidateQueries('__myshop_orders');
 			history('/control/orders');
 		},
-		onError: () => {
-			toast.success('Oops!, an error occured');
-			// queryClient.invalidateQueries('__myshop_orders');
+		onError: (error) => {
+			handleApiError(error, 'Failed to cash out earnings. Please try again.');
 		}
 	});
 }
@@ -70,7 +70,7 @@ export function useCashoutShopOrderItemsEarnings() {
 			}
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to seal order. Please try again.');
 		}
 	});
 }
@@ -115,8 +115,7 @@ export function useShopCreateInvoiceOrder() {
 		},
 		onError: (error) => {
 			console.log('Create-Invoice-Error', error);
-			toast.success('Oops!, an error occured');
-			// queryClient.invalidateQueries('__myshop_invoiveorders');
+			handleApiError(error, 'Failed to create invoice. Please try again.');
 		}
 	});
 }

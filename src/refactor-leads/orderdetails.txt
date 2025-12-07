@@ -4,7 +4,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useParams } from 'react-router-dom';
 import TableBody from '@mui/material/TableBody';
@@ -12,17 +12,30 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useQueryClient } from 'react-query';
 import { format, formatDistance, parseISO, isValid } from 'date-fns';
+import {
+	useDeliverOrder,
+	useHandleOrderArrival,
+	usePackOrder,
+	useShipOrder
+} from 'src/app/api/orders/useAdminGetShopOrders';
 import OrdersPackedStatus from '../OrdersPackedStatus';
-import OrdersCreatedAndPaymentStatus from '../OrdersCreatedAndPaymentStatus';
 import OrdersShipmentStatus from '../OrdersShipmentStatus';
 import OrdersArrivalStatus from '../OrdersArrivalStatus';
 import OrdersDeliveryStatus from '../OrdersDeliveryStatus';
-import { formatCurrency } from '../../../pos/PosUtils';
+import OrdersCreatedAndPaymentStatus from '../OrdersCreatedAndPaymentStatus';
 
 /**
  * Format date to human-readable format
@@ -34,36 +47,239 @@ const formatHumanDate = (dateString, formatType = 'full') => {
 	if (!dateString) return 'N/A';
 
 	try {
+		// Parse the date
 		const date = typeof dateString === 'string' ? parseISO(dateString) : dateString;
 
+		// Check if date is valid
 		if (!isValid(date)) return dateString;
 
 		switch (formatType) {
 			case 'full':
+				// e.g., "January 15, 2024 at 3:45 PM"
 				return format(date, "MMMM dd, yyyy 'at' h:mm a");
 			case 'short':
+				// e.g., "Jan 15, 2024"
 				return format(date, 'MMM dd, yyyy');
 			case 'relative':
+				// e.g., "2 hours ago"
 				return formatDistance(date, new Date(), { addSuffix: true });
 			case 'time':
+				// e.g., "3:45 PM"
 				return format(date, 'h:mm a');
 			case 'datetime':
+				// e.g., "15/01/2024 15:45"
 				return format(date, 'dd/MM/yyyy HH:mm');
 			default:
 				return format(date, "MMMM dd, yyyy 'at' h:mm a");
 		}
 	} catch (error) {
+		console.error('Date formatting error:', error);
 		return dateString;
 	}
 };
 
 /**
- * Order Details Tab - Enhanced with professional design and date formatting
+ * Professional Confirmation Dialog Component
+ */
+function ConfirmationDialog({ open, onClose, onConfirm, title, message, actionLabel, isLoading }) {
+	return (
+		<Dialog
+			open={open}
+			onClose={onClose}
+			aria-labelledby="confirmation-dialog-title"
+			PaperProps={{
+				sx: {
+					borderRadius: 2,
+					minWidth: 400
+				}
+			}}
+		>
+			<DialogTitle
+				id="confirmation-dialog-title"
+				sx={{ pb: 1 }}
+			>
+				<Box
+					display="flex"
+					alignItems="center"
+					gap={1}
+				>
+					<FuseSvgIcon
+						color="primary"
+						size={24}
+					>
+						heroicons-outline:exclamation-circle
+					</FuseSvgIcon>
+					<Typography
+						variant="h6"
+						component="span"
+					>
+						{title}
+					</Typography>
+				</Box>
+			</DialogTitle>
+			<Divider />
+			<DialogContent sx={{ pt: 3 }}>
+				<DialogContentText>{message}</DialogContentText>
+			</DialogContent>
+			<DialogActions sx={{ px: 3, pb: 2 }}>
+				<Button
+					onClick={onClose}
+					variant="outlined"
+					disabled={isLoading}
+					sx={{ borderRadius: 1.5 }}
+				>
+					Cancel
+				</Button>
+				<Button
+					onClick={onConfirm}
+					variant="contained"
+					color="primary"
+					disabled={isLoading}
+					autoFocus
+					sx={{ borderRadius: 1.5, minWidth: 100 }}
+				>
+					{isLoading ? 'Processing...' : actionLabel}
+				</Button>
+			</DialogActions>
+		</Dialog>
+	);
+}
+
+/**
+ * The order details tab - Enhanced with auto-refresh and date formatting
  */
 function OrderDetailsTab({ order, isError }) {
 	const routeParams = useParams();
 	const { orderId } = routeParams;
+	const queryClient = useQueryClient();
+
 	const [map, setMap] = useState('shipping');
+	const [confirmDialog, setConfirmDialog] = useState({
+		open: false,
+		type: null,
+		title: '',
+		message: '',
+		actionLabel: ''
+	});
+	const [isRefreshing, setIsRefreshing] = useState(false);
+
+	const packOrder = usePackOrder();
+	const shipOrder = useShipOrder();
+	const handleOrderArrival = useHandleOrderArrival();
+	const deliverOrder = useDeliverOrder();
+
+	// Auto-refresh order data when mutations succeed
+	useEffect(() => {
+		if (packOrder.isSuccess || shipOrder.isSuccess || handleOrderArrival.isSuccess || deliverOrder.isSuccess) {
+			setIsRefreshing(true);
+			// Invalidate and refetch order queries
+			queryClient.invalidateQueries(['orders_adminrole', orderId]);
+			queryClient.invalidateQueries('orders_adminrole');
+
+			// Reset refreshing state after a delay
+			const timer = setTimeout(() => {
+				setIsRefreshing(false);
+			}, 1000);
+
+			return () => clearTimeout(timer);
+		}
+	}, [
+		packOrder.isSuccess,
+		shipOrder.isSuccess,
+		handleOrderArrival.isSuccess,
+		deliverOrder.isSuccess,
+		queryClient,
+		orderId
+	]);
+
+	const openConfirmDialog = (type, title, message, actionLabel) => {
+		setConfirmDialog({
+			open: true,
+			type,
+			title,
+			message,
+			actionLabel
+		});
+	};
+
+	const closeConfirmDialog = () => {
+		setConfirmDialog((prev) => ({ ...prev, open: false }));
+	};
+
+	const handleConfirm = async () => {
+		try {
+			switch (confirmDialog.type) {
+				case 'pack':
+					await packOrder.mutateAsync(order?.id || order?._id);
+					break;
+				case 'ship':
+					await shipOrder.mutateAsync(order?.id || order?._id);
+					break;
+				case 'arrival':
+					await handleOrderArrival.mutateAsync(order?.id || order?._id);
+					break;
+				case 'delivery':
+					await deliverOrder.mutateAsync(order?.id || order?._id);
+					break;
+				default:
+					break;
+			}
+			closeConfirmDialog();
+		} catch (error) {
+			console.error('Order action failed:', error);
+		}
+	};
+
+	const handlePack = () => {
+		openConfirmDialog(
+			'pack',
+			'Confirm Order Packaging',
+			'Are you sure you want to mark this order as packed? This action will move the order to the next stage in the fulfillment process.',
+			'Pack Order'
+		);
+	};
+
+	const handleShip = () => {
+		openConfirmDialog(
+			'ship',
+			'Confirm Order Shipment',
+			'Are you sure you want to mark this order as shipped? Please ensure all items are properly packaged and ready for dispatch.',
+			'Ship Order'
+		);
+	};
+
+	const handleArrival = () => {
+		openConfirmDialog(
+			'arrival',
+			'Confirm Warehouse Arrival',
+			'Are you sure you want to confirm that this order has arrived at the destination warehouse? This will notify the relevant parties.',
+			'Confirm Arrival'
+		);
+	};
+
+	const handleDelivery = () => {
+		openConfirmDialog(
+			'delivery',
+			'Confirm Order Delivery',
+			'Are you sure you want to mark this order as delivered? This action indicates the customer has received their order.',
+			'Confirm Delivery'
+		);
+	};
+
+	const getCurrentLoadingState = () => {
+		switch (confirmDialog.type) {
+			case 'pack':
+				return packOrder.isLoading;
+			case 'ship':
+				return shipOrder.isLoading;
+			case 'arrival':
+				return handleOrderArrival.isLoading;
+			case 'delivery':
+				return deliverOrder.isLoading;
+			default:
+				return false;
+		}
+	};
 
 	if (!isError && !order) {
 		return null;
@@ -71,6 +287,46 @@ function OrderDetailsTab({ order, isError }) {
 
 	return (
 		<div>
+			<ConfirmationDialog
+				open={confirmDialog.open}
+				onClose={closeConfirmDialog}
+				onConfirm={handleConfirm}
+				title={confirmDialog.title}
+				message={confirmDialog.message}
+				actionLabel={confirmDialog.actionLabel}
+				isLoading={getCurrentLoadingState()}
+			/>
+
+			{/* Refreshing Indicator */}
+			{isRefreshing && (
+				<Paper
+					elevation={2}
+					sx={{
+						p: 2,
+						mb: 3,
+						borderRadius: 2,
+						bgcolor: 'info.lighter',
+						borderLeft: 4,
+						borderColor: 'info.main',
+						display: 'flex',
+						alignItems: 'center',
+						gap: 2
+					}}
+				>
+					<CircularProgress
+						size={20}
+						color="info"
+					/>
+					<Typography
+						variant="body2"
+						color="info.dark"
+						fontWeight={600}
+					>
+						Refreshing order details...
+					</Typography>
+				</Paper>
+			)}
+
 			<Paper
 				elevation={0}
 				sx={{ p: 3, mb: 4, borderRadius: 2, bgcolor: 'background.default' }}
@@ -116,14 +372,14 @@ function OrderDetailsTab({ order, isError }) {
 									fontWeight: 600
 								}}
 							>
-								{order?.order?.shippingAddress?.fullName?.charAt(0)?.toUpperCase()}
+								{order?.shippingAddress?.fullName?.charAt(0)?.toUpperCase()}
 							</Avatar>
 							<Box>
 								<Typography
 									variant="h6"
 									fontWeight={600}
 								>
-									{order?.order?.shippingAddress?.fullName}
+									{order?.shippingAddress?.fullName}
 								</Typography>
 								<Box
 									display="flex"
@@ -131,13 +387,13 @@ function OrderDetailsTab({ order, isError }) {
 									mt={0.5}
 								>
 									<Chip
-										label={order?.order?.shippingAddress?.prefContact}
+										label={order?.shippingAddress?.prefContact}
 										size="small"
 										icon={<FuseSvgIcon size={16}>heroicons-outline:mail</FuseSvgIcon>}
 										sx={{ borderRadius: 1 }}
 									/>
 									<Chip
-										label={order?.order?.shippingAddress?.phone}
+										label={order?.shippingAddress?.phone}
 										size="small"
 										icon={<FuseSvgIcon size={16}>heroicons-outline:phone</FuseSvgIcon>}
 										sx={{ borderRadius: 1 }}
@@ -179,7 +435,7 @@ function OrderDetailsTab({ order, isError }) {
 									variant="body1"
 									color="text.secondary"
 								>
-									{order?.order?.shippingAddress?.address}
+									{order?.shippingAddress?.address}
 								</Typography>
 							</Paper>
 						</AccordionDetails>
@@ -215,7 +471,7 @@ function OrderDetailsTab({ order, isError }) {
 									variant="body1"
 									color="text.secondary"
 								>
-									{order?.order?.shippingAddress?.address}
+									{order?.shippingAddress?.address}
 								</Typography>
 							</Paper>
 						</AccordionDetails>
@@ -290,13 +546,13 @@ function OrderDetailsTab({ order, isError }) {
 											variant="body2"
 											fontFamily="monospace"
 										>
-											{order?.order?._id?.slice(-8)}
+											{order?.id || order?._id?.slice(-8)}
 										</Typography>
 									</Box>
 								</TableCell>
 								<TableCell>
 									<Chip
-										label={`AfricanShops Express - ${order?.order?.shippingMethod}`}
+										label={`AfricanShops Express - ${order?.shippingMethod}`}
 										size="small"
 										color="primary"
 										variant="outlined"
@@ -304,7 +560,7 @@ function OrderDetailsTab({ order, isError }) {
 									/>
 								</TableCell>
 								<TableCell>
-									<Typography variant="body2">{order?.order?.shipmentWeight || 'N/A'}</Typography>
+									<Typography variant="body2">{order?.shipmentWeight || 'N/A'}</Typography>
 								</TableCell>
 								<TableCell>
 									<Typography
@@ -312,7 +568,7 @@ function OrderDetailsTab({ order, isError }) {
 										fontWeight={600}
 										color="success.main"
 									>
-										NGN {formatCurrency(order?.order?.shippingfee || 2000)}
+										NGN {order?.shippingfee || 2000}
 									</Typography>
 								</TableCell>
 								<TableCell>
@@ -321,14 +577,14 @@ function OrderDetailsTab({ order, isError }) {
 											variant="body2"
 											fontWeight={600}
 										>
-											{formatHumanDate(order?.order?.shippedAt, 'short')}
+											{formatHumanDate(order?.shippedAt, 'short')}
 										</Typography>
-										{order?.order?.shippedAt && (
+										{order?.shippedAt && (
 											<Typography
 												variant="caption"
 												color="text.disabled"
 											>
-												{formatHumanDate(order?.order?.shippedAt, 'relative')}
+												{formatHumanDate(order?.shippedAt, 'relative')}
 											</Typography>
 										)}
 									</Box>
@@ -375,7 +631,7 @@ function OrderDetailsTab({ order, isError }) {
 									<Typography fontWeight={600}>Status</Typography>
 								</TableCell>
 								<TableCell width="60%">
-									<Typography fontWeight={600}>Updated On</Typography>
+									<Typography fontWeight={600}>Action / Date</Typography>
 								</TableCell>
 							</TableRow>
 						</TableHead>
@@ -383,8 +639,8 @@ function OrderDetailsTab({ order, isError }) {
 							<TableRow hover>
 								<TableCell>
 									<OrdersCreatedAndPaymentStatus
-										createdAt={order?.order?.createdAt}
-										isPaid={order?.order?.isPaid}
+										createdAt={order?.createdAt}
+										isPaid={order?.isPaid}
 									/>
 								</TableCell>
 								<TableCell>
@@ -393,29 +649,29 @@ function OrderDetailsTab({ order, isError }) {
 											variant="body2"
 											fontWeight={600}
 										>
-											{formatHumanDate(order?.order?.createdAt, 'full')}
+											{formatHumanDate(order?.createdAt, 'full')}
 										</Typography>
 										<Typography
 											variant="caption"
 											color="text.disabled"
 										>
-											{formatHumanDate(order?.order?.createdAt, 'relative')}
+											{formatHumanDate(order?.createdAt, 'relative')}
 										</Typography>
 									</Box>
 								</TableCell>
 							</TableRow>
 
-							{order?.order?.isPaid && (
+							{order?.isPaid && (
 								<>
 									<TableRow hover>
 										<TableCell>
-											<OrdersPackedStatus isPacked={order?.order?.isPacked} />
+											<OrdersPackedStatus isPacked={order?.isPacked} />
 										</TableCell>
 										<TableCell>
-											{order?.order?.isPacked ? (
+											{order?.isPacked ? (
 												<Box>
 													<Chip
-														label={formatHumanDate(order?.order?.packedAt, 'short')}
+														label={formatHumanDate(order?.packedAt, 'short')}
 														color="success"
 														size="small"
 														icon={
@@ -431,9 +687,68 @@ function OrderDetailsTab({ order, isError }) {
 														display="block"
 														mt={0.5}
 													>
-														{formatHumanDate(order?.order?.packedAt, 'relative')}
+														{formatHumanDate(order?.packedAt, 'relative')}
 													</Typography>
 												</Box>
+											) : (
+												<Button
+													variant="contained"
+													color="warning"
+													size="small"
+													onClick={handlePack}
+													disabled={packOrder.isLoading}
+													startIcon={
+														<FuseSvgIcon size={16}>heroicons-outline:cube</FuseSvgIcon>
+													}
+													sx={{ borderRadius: 1.5, textTransform: 'none' }}
+												>
+													{packOrder.isLoading ? 'Processing...' : 'Process Packaging'}
+												</Button>
+											)}
+										</TableCell>
+									</TableRow>
+
+									<TableRow hover>
+										<TableCell>
+											<OrdersShipmentStatus isShipped={order?.isShipped} />
+										</TableCell>
+										<TableCell>
+											{order?.isShipped ? (
+												<Box>
+													<Chip
+														label={formatHumanDate(order?.shippedAt, 'short')}
+														color="success"
+														size="small"
+														icon={
+															<FuseSvgIcon size={16}>
+																heroicons-outline:check-circle
+															</FuseSvgIcon>
+														}
+														sx={{ borderRadius: 1, fontWeight: 600 }}
+													/>
+													<Typography
+														variant="caption"
+														color="text.disabled"
+														display="block"
+														mt={0.5}
+													>
+														{formatHumanDate(order?.shippedAt, 'relative')}
+													</Typography>
+												</Box>
+											) : order?.isPacked ? (
+												<Button
+													variant="contained"
+													color="warning"
+													size="small"
+													onClick={handleShip}
+													disabled={shipOrder.isLoading}
+													startIcon={
+														<FuseSvgIcon size={16}>heroicons-outline:truck</FuseSvgIcon>
+													}
+													sx={{ borderRadius: 1.5, textTransform: 'none' }}
+												>
+													{shipOrder.isLoading ? 'Processing...' : 'Process Shipping'}
+												</Button>
 											) : (
 												<Typography
 													variant="body2"
@@ -447,13 +762,14 @@ function OrderDetailsTab({ order, isError }) {
 
 									<TableRow hover>
 										<TableCell>
-											<OrdersShipmentStatus isShipped={order?.order?.isShipped} />
+											<OrdersArrivalStatus hasArrivedWarehouse={order?.hasArrivedWarehouse} />
 										</TableCell>
 										<TableCell>
-											{order?.order?.isShipped ? (
+											{order?.hasArrivedWarehouse ? (
+												// hasArrivedWarehouse
 												<Box>
 													<Chip
-														label={formatHumanDate(order?.order?.shippedAt, 'short')}
+														label={formatHumanDate(order?.arrivedWarehouseAt, 'short')}
 														color="success"
 														size="small"
 														icon={
@@ -469,9 +785,25 @@ function OrderDetailsTab({ order, isError }) {
 														display="block"
 														mt={0.5}
 													>
-														{formatHumanDate(order?.order?.shippedAt, 'relative')}
+														{formatHumanDate(order?.arrivedWarehouseAt, 'relative')}
 													</Typography>
 												</Box>
+											) : order?.isShipped ? (
+												<Button
+													variant="contained"
+													color="warning"
+													size="small"
+													onClick={handleArrival}
+													disabled={handleOrderArrival.isLoading}
+													startIcon={
+														<FuseSvgIcon size={16}>
+															heroicons-outline:office-building
+														</FuseSvgIcon>
+													}
+													sx={{ borderRadius: 1.5, textTransform: 'none' }}
+												>
+													{handleOrderArrival.isLoading ? 'Processing...' : 'Confirm Arrival'}
+												</Button>
 											) : (
 												<Typography
 													variant="body2"
@@ -485,13 +817,13 @@ function OrderDetailsTab({ order, isError }) {
 
 									<TableRow hover>
 										<TableCell>
-											<OrdersArrivalStatus hasArrivedWarehouse={order?.order?.hasArrivedWarehouse} />
+											<OrdersDeliveryStatus isDelivered={order?.isDelivered} />
 										</TableCell>
 										<TableCell>
-											{order?.order?.hasArrivedWarehouse ? (
+											{order?.isDelivered ? (
 												<Box>
 													<Chip
-														label={formatHumanDate(order?.order?.arrivedWarehouseAt, 'short')}
+														label={formatHumanDate(order?.deliveredAt, 'short')}
 														color="success"
 														size="small"
 														icon={
@@ -507,53 +839,31 @@ function OrderDetailsTab({ order, isError }) {
 														display="block"
 														mt={0.5}
 													>
-														{formatHumanDate(order?.order?.arrivedWarehouseAt, 'relative')}
+														{formatHumanDate(order?.deliveredAt, 'relative')}
 													</Typography>
 												</Box>
+											) : order?.isPacked && order?.isShipped && order?.hasArrivedWarehouse ? (
+												<Button
+													variant="contained"
+													// color="gray"
+													size="small"
+													onClick={handleDelivery}
+													disabled={deliverOrder.isLoading}
+													startIcon={
+														<FuseSvgIcon size={16}>
+															heroicons-outline:badge-check
+														</FuseSvgIcon>
+													}
+													sx={{ borderRadius: 1.5, textTransform: 'none' }}
+												>
+													{deliverOrder.isLoading ? 'Processing...' : 'Confirm Delivery'}
+												</Button>
 											) : (
 												<Typography
 													variant="body2"
 													color="text.disabled"
 												>
-													Awaiting arrival
-												</Typography>
-											)}
-										</TableCell>
-									</TableRow>
-
-									<TableRow hover>
-										<TableCell>
-											<OrdersDeliveryStatus isDelivered={order?.order?.isDelivered} />
-										</TableCell>
-										<TableCell>
-											{order?.order?.isDelivered ? (
-												<Box>
-													<Chip
-														label={formatHumanDate(order?.order?.deliveredAt, 'short')}
-														color="success"
-														size="small"
-														icon={
-															<FuseSvgIcon size={16}>
-																heroicons-outline:check-circle
-															</FuseSvgIcon>
-														}
-														sx={{ borderRadius: 1, fontWeight: 600 }}
-													/>
-													<Typography
-														variant="caption"
-														color="text.disabled"
-														display="block"
-														mt={0.5}
-													>
-														{formatHumanDate(order?.order?.deliveredAt, 'relative')}
-													</Typography>
-												</Box>
-											) : (
-												<Typography
-													variant="body2"
-													color="text.disabled"
-												>
-													Awaiting delivery
+													Awaiting warehouse arrival
 												</Typography>
 											)}
 										</TableCell>
@@ -614,11 +924,11 @@ function OrderDetailsTab({ order, isError }) {
 									fontFamily="monospace"
 									fontWeight={500}
 								>
-									{order?.order?.id || order?.order?._id?.slice(-12)}
+									{order?.id || order?._id?.slice(-12)}
 								</Typography>
 							</Box>
 							<Chip
-								label={order?.order?.paymentMethod}
+								label={order?.paymentMethod}
 								color="primary"
 								variant="outlined"
 								icon={<FuseSvgIcon size={16}>heroicons-outline:credit-card</FuseSvgIcon>}
@@ -637,13 +947,13 @@ function OrderDetailsTab({ order, isError }) {
 									variant="body2"
 									color="text.secondary"
 								>
-									Quantity
+									Item Price
 								</Typography>
 								<Typography
 									variant="body2"
 									fontWeight={600}
 								>
-									{order?.quantity}
+									NGN {order?.itemsPrice?.toLocaleString()}
 								</Typography>
 							</Box>
 							<Box
@@ -654,13 +964,30 @@ function OrderDetailsTab({ order, isError }) {
 									variant="body2"
 									color="text.secondary"
 								>
-									Unit Amount
+									Shipping Fee
 								</Typography>
 								<Typography
 									variant="body2"
 									fontWeight={600}
 								>
-									NGN {formatCurrency(order?.price)}
+									NGN {order?.shippingPrice?.toLocaleString()}
+								</Typography>
+							</Box>
+							<Box
+								display="flex"
+								justifyContent="space-between"
+							>
+								<Typography
+									variant="body2"
+									color="text.secondary"
+								>
+									Tax
+								</Typography>
+								<Typography
+									variant="body2"
+									fontWeight={600}
+								>
+									NGN {order?.taxPrice?.toLocaleString()}
 								</Typography>
 							</Box>
 
@@ -682,7 +1009,7 @@ function OrderDetailsTab({ order, isError }) {
 									fontWeight={700}
 									color="primary.main"
 								>
-									NGN {formatCurrency(order?.price * order?.quantity)}
+									NGN {order?.totalPrice?.toLocaleString()}
 								</Typography>
 							</Box>
 
@@ -723,3 +1050,4 @@ function OrderDetailsTab({ order, isError }) {
 }
 
 export default OrderDetailsTab;
+

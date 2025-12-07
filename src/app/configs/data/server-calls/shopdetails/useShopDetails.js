@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-
 import { toast } from 'react-toastify';
+import { handleApiError } from '../../../utils/errorHandler';
 import {
+	createMerchantFintechAccount,
 	createMyShopBranch,
 	getJustMyShopDetails,
 	getJustMyShopDetailsAndPlan,
@@ -54,9 +55,39 @@ export function useGetMyShopAndPlanForUpdate() {
  *
  * FINANCE MANAGEMENT STARTS HERE
  */
+
 /** *Get Shop Wallet Account Balance */
 export function useGetShopAccountBalance() {
-	return useQuery(['__myshop_account_balance'], getMyShopAccountApiDetails);
+	return useQuery(['__myshop_account_balance'], getMyShopAccountApiDetails, {
+		retry: 2,
+		staleTime: 30000, // 30 seconds
+		refetchOnWindowFocus: true,
+		select: (data) => {
+			// Transform the response to handle the nested structure correctly
+			if (data?.data?.success === false && data?.data?.payload === null) {
+				return { ...data, hasAccount: false };
+			}
+			return { ...data, hasAccount: true };
+		}
+	});
+}
+
+/** *Create Merchant Fintech Account */
+export function useCreateMerchantAccount() {
+	const queryClient = useQueryClient();
+
+	return useMutation(createMerchantFintechAccount, {
+		onSuccess: (data) => {
+			if (data?.data?.success) {
+				toast.success(data?.data?.message || 'Account created successfully!');
+				// Invalidate and refetch account balance
+				queryClient.invalidateQueries('__myshop_account_balance');
+			}
+		},
+		onError: (error) => {
+			handleApiError(error, 'Failed to create account');
+		}
+	});
 }
 
 // update existing shop details
@@ -71,7 +102,7 @@ export function useShopUpdateMutation() {
 			}
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to update shop details');
 		}
 	});
 } // (Msvs => Done)
@@ -88,7 +119,7 @@ export function useCreateVendorShopBranch() {
 			}
 		},
 		onError: (error, data) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to create shop branch');
 			// queryClient.invalidateQueries('__myshop_orders');
 		}
 	});
@@ -111,7 +142,7 @@ export function useUpdateVendorShopBranch() {
 			// navigate('/transaction-list'); error.message
 		},
 		onError: (error) => {
-			toast.error(error.response && error.response.data.message ? error.response.data.message : error.message);
+			handleApiError(error, 'Failed to update shop branch');
 			// queryClient.invalidateQueries('__myshop_orders');
 		}
 	});
