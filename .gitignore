@@ -61,6 +61,15 @@ amplifytools.xcconfig
 
 # ENV
 .env
+.env.development
+.env.production
+.env.test
+.env.prod
+.env.dev
+.env.**local
+.env.**test
+.env.**prod
+.env.**
 /.env
 .ENV
 # yarn.lock
