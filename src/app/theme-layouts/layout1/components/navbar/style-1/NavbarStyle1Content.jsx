@@ -1,19 +1,12 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
-import { memo, useEffect } from 'react';
-import Navigation from 'app/theme-layouts/shared-components/navigation/Navigation';
+import { memo } from 'react';
 import NavbarToggleButton from 'app/theme-layouts/shared-components/navbar/NavbarToggleButton';
 import { useGetMyShopAndPlan } from 'app/configs/data/server-calls/shopdetails/useShopDetails';
-import { Typography } from '@mui/material';
-import RealEstateNavigation from 'app/theme-layouts/shared-components/navigation/accountsnavigation/RealEstateNavigation';
-import HotelsApartmentsNavigation from 'app/theme-layouts/shared-components/navigation/hotelsnavigation/HotelsApartmentsNavigation';
-import LogisticsNavigation from 'app/theme-layouts/shared-components/navigation/logisticsnavigation/LogisticsNavigation';
-import FoodMartNavigation from 'app/theme-layouts/shared-components/navigation/foodmartnavigation/FoodMartNavigation';
-import ManufacturersNavigation from 'app/theme-layouts/shared-components/navigation/manufacturersnavigation/ManufacturersNavigation';
-import WholesaleRetailNavigation from 'app/theme-layouts/shared-components/navigation/wholealeretailnavigation/WholesaleRetailNavigation';
 import UserNavbarHeader from '../../../../shared-components/UserNavbarHeader';
 import Logo from '../../../../shared-components/Logo';
+import PlanNavigationResolver from './PlanNavigationResolver';
 
 const Root = styled('div')(({ theme }) => ({
 	backgroundColor: theme.palette.background.default,
@@ -40,12 +33,9 @@ const StyledContent = styled(FuseScrollbars)(() => ({
  */
 function NavbarStyle1Content(props) {
 	const { data: myshopData, isLoading } = useGetMyShopAndPlan({ queryAllData: false });
-
 	const { className = '' } = props;
 
-	useEffect(() => {}, [myshopData?.data?.merchant?.merchantShopplan?.plankey]);
-
-	console.log('PLAY___KEY', myshopData?.data?.merchant?.merchantShopplan?.plankey);
+	const planKey = myshopData?.data?.merchant?.merchantShopplan?.plankey ?? null;
 	return (
 		<Root className={clsx('flex h-full flex-auto flex-col overflow-hidden', className)}>
 			<div className="flex h-48 shrink-0 flex-row items-center px-20 md:h-72">
@@ -61,6 +51,13 @@ function NavbarStyle1Content(props) {
 				option={{ suppressScrollX: true, wheelPropagation: false }}
 			>
 				<UserNavbarHeader />
+
+				{/* ============================================================
+				  LEGACY NAVIGATION BLOCK — kept for reference/fallback.
+				  Commented out in favour of the new <PlanNavigationResolver />
+				  below. To revert, uncomment this block and remove the
+				  PlanNavigationResolver import + usage further down.
+				  ============================================================
 
 				{isLoading ? (
 					<Typography>loading...</Typography>
@@ -78,7 +75,7 @@ function NavbarStyle1Content(props) {
 							<ManufacturersNavigation layout="vertical" />
 						)}
 
-						{myshopData?.data?.merchant?.merchantShopplan?.plankey === 'REALESTATES' && (
+						{myshopData?.data?.merchant?.merchantShopplan?.plankey === 'REALESTATE' && (
 							<RealEstateNavigation layout="vertical" />
 						)}
 
@@ -95,6 +92,10 @@ function NavbarStyle1Content(props) {
 						)}
 					</>
 				)}
+				============================================================ */}
+
+				{/* ── REFACTORED: plan-aware navigation resolver ── */}
+				<PlanNavigationResolver planKey={planKey} isLoading={isLoading} />
 
 				<div className="flex-0 flex items-center justify-center py-48 opacity-20">
 					<img
