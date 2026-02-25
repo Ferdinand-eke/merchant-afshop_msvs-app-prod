@@ -48,6 +48,7 @@ function ProductImagesTabProperty() {
 	const methods = useFormContext();
 	const { control, watch } = methods;
 	const images = watch('images');
+	
 	return (
 		<Root>
 			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">

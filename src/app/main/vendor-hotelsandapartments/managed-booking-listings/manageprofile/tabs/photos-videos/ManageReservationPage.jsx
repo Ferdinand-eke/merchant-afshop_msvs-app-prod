@@ -107,6 +107,7 @@ function ManageReservationPage() {
 	return (
 		<FusePageCarded
 			header={
+				
 				reservationItem?.data && (
 					<div className="flex flex-1 flex-col py-32 px-24 md:px-32">
 						<Typography

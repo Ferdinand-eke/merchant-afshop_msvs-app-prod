@@ -78,17 +78,17 @@ function ReservationOrder() {
 		);
 	}
 
-	if (reservationIsError) {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<MerchantErrorPage message="Error occurred while retrieving reservation data" />
-			</motion.div>
-		);
-	}
+	// if (reservationIsError) {
+	// 	return (
+	// 		<motion.div
+	// 			initial={{ opacity: 0 }}
+	// 			animate={{ opacity: 1, transition: { delay: 0.1 } }}
+	// 			className="flex flex-col flex-1 items-center justify-center h-full"
+	// 		>
+	// 			<MerchantErrorPage message="Error occurred while retrieving reservation data" />
+	// 		</motion.div>
+	// 	);
+	// }
 
 	return (
 		<FusePageCarded
@@ -180,7 +180,9 @@ function ReservationOrder() {
 											<Chip
 												icon={<FuseSvgIcon size={16}>heroicons-solid:user</FuseSvgIcon>}
 												label={
-													reservationItem?.data?.userInReservedBooking?.user?.name || 'Guest'
+													reservationItem?.data?.reservationBooked?.reservation?.isWalkIn
+														? reservationItem?.data?.reservationBooked?.reservation?.paymentdatas?.bookingName || 'Walk-In Guest'
+														: reservationItem?.data?.userInReservedBooking?.user?.name || 'Guest'
 												}
 												size="small"
 												sx={{
@@ -190,6 +192,19 @@ function ReservationOrder() {
 													border: '1px solid rgba(234, 88, 12, 0.2)'
 												}}
 											/>
+											{reservationItem?.data?.reservationBooked?.reservation?.isWalkIn && (
+												<Chip
+													icon={<FuseSvgIcon size={16}>heroicons-outline:user-add</FuseSvgIcon>}
+													label="Walk-In"
+													size="small"
+													sx={{
+														background: 'rgba(168, 85, 247, 0.1)',
+														color: '#9333ea',
+														fontWeight: 600,
+														border: '1px solid rgba(168, 85, 247, 0.2)'
+													}}
+												/>
+											)}
 											{reservationItem?.data?.reservationBooked?.reservation?.isPaid && (
 												<Chip
 													icon={

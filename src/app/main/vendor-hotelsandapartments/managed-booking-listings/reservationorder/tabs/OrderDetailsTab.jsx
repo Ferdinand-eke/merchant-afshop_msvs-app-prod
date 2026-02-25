@@ -170,7 +170,7 @@ function OrderDetailsTab({ reservation }) {
 								className="font-semibold truncate"
 								sx={{ color: '#292524' }}
 							>
-								{reservation?.paymentdatas?.bookingAddress || 'N/A'}
+								{reservation?.paymentdatas?.guestEmail || 'N/A'}
 							</Typography>
 						</Box>
 

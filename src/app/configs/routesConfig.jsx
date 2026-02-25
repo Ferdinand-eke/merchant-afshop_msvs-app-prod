@@ -105,8 +105,7 @@ const routes = [
 	...FuseUtils.generateRoutesFromConfigs(routeConfigs, settingsConfig.defaultAuth),
 	{
 		path: '/',
-		element: <Navigate to="/shop-dashboard" />,
-		auth: settingsConfig.defaultAuth
+		element: <Navigate to="/shop-dashboard" />
 	},
 	{
 		path: 'loading',
@@ -121,31 +120,6 @@ const routes = [
 		element: <Navigate to="404" />
 	}
 
-	// {
-	//   path: "/",
-	//   settings: {
-	//     layout: {
-	//       config: {
-	//         navbar: {
-	//           display: false,
-	//         },
-	//         toolbar: {
-	//           display: true,
-	//         },
-	//         footer: {
-	//           display: false,
-	//         },
-	//         leftSidePanel: {
-	//           display: false,
-	//         },
-	//         rightSidePanel: {
-	//           display: false,
-	//         },
-	//       },
-	//     },
-	//   },
-	//   element: <LandingCenterHome />,
-
-	// },
+	
 ];
 export default routes;

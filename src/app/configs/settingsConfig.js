@@ -44,6 +44,8 @@ const settingsConfig = {
 	defaultAuth: ['admin', 'merchant'],
 	/**
 	 * The loginRedirectUrl property defines the default redirect URL for the logged-in user.
+	 * 
+	 * 
 	 */
 	loginRedirectUrl: '/shop-dashboard'
 };

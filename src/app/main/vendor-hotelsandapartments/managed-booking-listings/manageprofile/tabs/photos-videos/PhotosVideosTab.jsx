@@ -147,7 +147,7 @@ function PhotosVideosTab(props) {
 			<motion.div
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
+				className="flex flex-col flex-1 items-center justify-center h-full w-full"
 			>
 				<MerchantErrorPage message="Error occurred while retrieving reservations" />
 			</motion.div>
@@ -166,6 +166,7 @@ function PhotosVideosTab(props) {
 					borderRadius: 2
 				}}
 			>
+
 				<Box
 					sx={{
 						width: 120,
@@ -220,6 +221,7 @@ function PhotosVideosTab(props) {
 			className="w-full"
 		>
 			{/* Header Section */}
+
 			<Paper
 				elevation={0}
 				sx={{

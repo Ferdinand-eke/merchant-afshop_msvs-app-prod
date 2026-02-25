@@ -710,6 +710,52 @@ function BasicInfoTabProperty() {
 					<Grid
 						item
 						xs={12}
+					>
+						<Controller
+							name="propertyAddress"
+							control={control}
+							render={({ field }) => (
+								<TextField
+									{...field}
+									required
+									label="Property Address"
+									id="propertyAddress"
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<FuseSvgIcon
+													size={20}
+													color="action"
+												>
+													heroicons-outline:map
+												</FuseSvgIcon>
+											</InputAdornment>
+										)
+									}}
+									type="text"
+									variant="outlined"
+									fullWidth
+									error={!!errors.propertyAddress}
+									helperText={errors?.propertyAddress?.message}
+									placeholder="e.g., 123 Main Street, Downtown District"
+									sx={{
+										'& .MuiOutlinedInput-root': {
+											'&:hover fieldset': {
+												borderColor: '#f97316'
+											},
+											'&.Mui-focused fieldset': {
+												borderColor: '#ea580c'
+											}
+										}
+									}}
+								/>
+							)}
+						/>
+					</Grid>
+
+					<Grid
+						item
+						xs={12}
 						sm={6}
 					>
 						<Controller

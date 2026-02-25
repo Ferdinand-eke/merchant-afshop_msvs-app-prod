@@ -73,9 +73,16 @@ function BookingPropertyListing() {
 		}
 	}, [productId, reset]);
 
+	console.log('propertyList', propertyList?.data?.bookingList);
+
 	useEffect(() => {
 		if (propertyList?.data?.bookingList) {
-			reset({ ...propertyList?.data?.bookingList });
+			reset({ ...propertyList?.data?.bookingList,
+				checkedAmenities: Array.isArray(propertyList?.data?.bookingList?.checkedAmenities)
+					? propertyList?.data?.bookingList?.checkedAmenities
+					: []
+		
+			 });
 		}
 	}, [propertyList, reset]);
 
@@ -246,7 +253,7 @@ function BookingPropertyListing() {
 								<Tab
 									icon={<FuseSvgIcon size={20}>heroicons-outline:cube</FuseSvgIcon>}
 									iconPosition="start"
-									label="Measurements"
+									label="Amenities & Measurements"
 								/>
 							</Tabs>
 						</Paper>
@@ -272,6 +279,7 @@ function BookingPropertyListing() {
 								<div className={tabValue !== 3 ? 'hidden' : ''}>
 									<ShippingTabProperty />
 								</div>
+
 							</motion.div>
 						</Box>
 					</>

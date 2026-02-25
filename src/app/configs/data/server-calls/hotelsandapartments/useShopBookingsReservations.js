@@ -3,9 +3,11 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 import { handleApiError } from '../../../utils/errorHandler';
 import {
+	createUserWalkinReservationsOnRoomAndProperty,
 	getReservationsOnPropertyApi,
 	getShopBookingsReservationsApi,
 	getSingleMerchantReservationApi,
+	getUserReservationsByRoomId,
 	merchantCashOutReservationEarning,
 	merchantCheckInGuestReservations,
 	merchantCheckOutGuestReservations
@@ -30,6 +32,51 @@ export function useFetchReservationsOnProperty(propertyId) {
 		}
 	);
 } // ("Msvs: => : Done")
+
+/**** 6.1) get single room  getUserReservationsByRoomId*/
+export function useGetReservationsOnRoom(params) {
+  return useQuery(
+    ["__reservationsByIdOnRoom", params],
+    () => getUserReservationsByRoomId(params),
+    {
+      enabled: Boolean(params),
+    }
+  );
+} // (Done => Msvs)
+
+
+/**** 1.1) Create reservation On Room : => Done for Africanshops */ //(Done => Msvs)
+export function useCreateWalkinGuestReservationOnRoom() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  return useMutation(
+    (newReservation) => {
+      return createUserWalkinReservationsOnRoomAndProperty(newReservation);
+    },
+
+    {
+      onSuccess: (data) => {
+        if (data?.data?.success) {
+          toast.success("reservation  added successfully!");
+          queryClient.invalidateQueries(["__merchant_reservations"]);
+          queryClient.refetchQueries("__merchant_reservations", { force: true });
+        //   navigate(
+        //     `/bookings/reservation/review/${data?.data?.createdReservation?.id}`
+        //   );
+        }
+      },
+      onError: (error, rollback) => {
+        handleApiError(error, {
+          fallbackMessage: "Failed to create room reservation. Please try again.",
+          onErrorCallback: rollback
+        });
+      },
+    }
+  );
+} //(Done => Msvs)
+
+
+
 
 //
 /** **Get single Guest Bookded Reservation */

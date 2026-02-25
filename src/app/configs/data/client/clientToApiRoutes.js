@@ -396,13 +396,28 @@ export const deleteShopEstateProperty = (id) => AuthApi().delete(`/myshop/delete
  * HANDLE SHOP ESTATE PRPERTIES ENDS HERE
  * ############################################################################################
  */
+/** *
+ * START
+ * #############################################################################################
+ * HANDLE  BOOKINGS AMENTIES STARTS HERE
+ * ############################################################################################
+ */
+export const getBookingsAmenities = () => Api().get('/bookings/all/amenities'); // (Msvs => done)
+
+
 
 /** *
+ * END
+ * #############################################################################################
+ * ############################################################################################
+ */
+
+/** *
+ * START
  * #############################################################################################
  * HANDLE SHOP HOMES, HOTELS and APARTMENT BOOKINGS STARTS HERE
  * ############################################################################################
  */
-// {===============================shop estate property handling starts=======================================}
 export const getShopBookingsProperties = (params) => {
 	const queryString = params ? qs.stringify(params, { arrayFormat: 'repeat' }) : '';
 	return AuthApi().get(`/bookings/get-merchant-bookings${queryString ? `?${queryString}` : ''}`);
@@ -476,6 +491,21 @@ export const getSingleMerchantReservationApi = (reservationId) =>
 	AuthApi().get(`/reservations/merchant-reservation/${reservationId}/view`); // (Msvs : => :done)
 export const getReservationsOnPropertyApi = (propertyId) =>
 	AuthApi().get(`/reservations/on-prop/${propertyId}/get-reservations`); // (Msvs : => :done)
+
+export const getUserReservationsByRoomId = (roomId) => {
+  return Api().get(
+    `reservations/on-room/${roomId}/confirm-free-dates`
+  );
+}; // (Done => Mcsvs)
+
+// export const createUserReservations = (formData) => {
+//   return AuthApi().post(`reservations/create-reservation-on-room`, formData);
+// };
+
+
+export const createUserWalkinReservationsOnRoomAndProperty = (formData) => {
+  return AuthApi().post(`reservations/merchant-reservation/walk-in/book-guest`, formData);
+}; //(Done => Msvs)
 
 export const merchantCheckInGuestReservations = (payload) => {
 	const { reservationId, checkInCode } = payload;

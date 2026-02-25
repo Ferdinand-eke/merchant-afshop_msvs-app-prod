@@ -19,6 +19,7 @@ import {
  * The product header.
  */
 function BookingPropertyHeader() {
+
 	const routeParams = useParams();
 	const { productId } = routeParams;
 	const methods = useFormContext();
@@ -37,56 +38,63 @@ function BookingPropertyHeader() {
 	const deleteBookingsProperty = useDeleteBookingPropertyMutation();
 
 	function handleSaveApartment() {
+		const values = getValues();
 		const formData = {
-			...getValues(),
-			price: parseInt(getValues()?.price),
-			listprice: parseInt(getValues()?.listprice),
-			guestCount: parseInt(getValues()?.guestCount),
-			sittingroomCount: parseInt(getValues()?.sittingroomCount),
-			bathroomCount: parseInt(getValues()?.bathroomCount),
-			roomCount: parseInt(getValues()?.roomCount),
-			height: parseInt(getValues()?.height),
-			length: parseInt(getValues()?.length),
-			width: parseInt(getValues()?.width),
-			isRentIndividualRoom: Boolean(getValues()?.isRentIndividualRoom),
+			...values,
+			price: parseInt(values?.price),
+			listprice: parseInt(values?.listprice),
+			guestCount: parseInt(values?.guestCount),
+			sittingroomCount: parseInt(values?.sittingroomCount),
+			bathroomCount: parseInt(values?.bathroomCount),
+			roomCount: parseInt(values?.roomCount),
+			height: parseInt(values?.height),
+			length: parseInt(values?.length),
+			width: parseInt(values?.width),
+			isRentIndividualRoom: Boolean(values?.isRentIndividualRoom),
+			// amenities: Array.isArray(values?.amenities) ? values.amenities : [],
+			checkedAmenities: Array.isArray(values?.checkedAmenities) ? values.checkedAmenities : [],
+			//checkedAmenities
 
 			// extra properties added
-			cleaningFee: parseInt(getValues()?.cleaningFee),
-			floorArea: parseInt(getValues()?.floorArea),
-			floorLevel: parseInt(getValues()?.floorLevel),
-			numberOfFloors: parseInt(getValues()?.numberOfFloors),
-			plotArea: parseInt(getValues()?.plotArea),
-			securityDeposit: parseInt(getValues()?.securityDeposit)
+			cleaningFee: parseInt(values?.cleaningFee),
+			floorArea: parseInt(values?.floorArea),
+			floorLevel: parseInt(values?.floorLevel),
+			numberOfFloors: parseInt(values?.numberOfFloors),
+			plotArea: parseInt(values?.plotArea),
+			securityDeposit: parseInt(values?.securityDeposit)
 		};
 		updateBookingsProperty.mutate(formData);
 	}
 
 	function handleCreateApartment() {
+
+		const values = getValues();
 		const formData = {
-			...getValues(),
-			price: parseInt(getValues()?.price),
-			listprice: parseInt(getValues()?.listprice),
-			guestCount: parseInt(getValues()?.guestCount),
-			sittingroomCount: parseInt(getValues()?.sittingroomCount),
-			bathroomCount: parseInt(getValues()?.bathroomCount),
-			roomCount: parseInt(getValues()?.roomCount),
-			height: parseInt(getValues()?.height),
-			length: parseInt(getValues()?.length),
-			width: parseInt(getValues()?.width),
-			isRentIndividualRoom: Boolean(getValues()?.isRentIndividualRoom),
+			...values,
+			price: parseInt(values?.price),
+			listprice: parseInt(values?.listprice),
+			guestCount: parseInt(values?.guestCount),
+			sittingroomCount: parseInt(values?.sittingroomCount),
+			bathroomCount: parseInt(values?.bathroomCount),
+			roomCount: parseInt(values?.roomCount),
+			height: parseInt(values?.height),
+			length: parseInt(values?.length),
+			width: parseInt(values?.width),
+			isRentIndividualRoom: Boolean(values?.isRentIndividualRoom),
+			checkedAmenities: Array.isArray(values?.checkedAmenities) ? values.checkedAmenities : [],
 			propertyShopplan: myshopData?.data?.merchant?.merchantShopplan?.id,
 
 			// extra properties added
-			cleaningFee: parseInt(getValues()?.cleaningFee),
-			floorArea: parseInt(getValues()?.floorArea),
-			floorLevel: parseInt(getValues()?.floorLevel),
-			numberOfFloors: parseInt(getValues()?.numberOfFloors),
-			plotArea: parseInt(getValues()?.plotArea),
-			securityDeposit: parseInt(getValues()?.securityDeposit)
+			cleaningFee: parseInt(values?.cleaningFee),
+			floorArea: parseInt(values?.floorArea),
+			floorLevel: parseInt(values?.floorLevel),
+			numberOfFloors: parseInt(values?.numberOfFloors),
+			plotArea: parseInt(values?.plotArea),
+			securityDeposit: parseInt(values?.securityDeposit)
 		};
-		console.log('Create__Booking__Apartment', formData);
-		// return
-		addBookingsProperty.mutate(formData);
+		console.log('Create__Booking__Apartment', formData?.checkedAmenities);
+		return
+		// addBookingsProperty.mutate(formData);
 	}
 
 	// Open delete confirmation dialog

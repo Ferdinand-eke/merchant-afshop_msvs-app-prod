@@ -39,14 +39,35 @@ function InvoiceTab(props) {
 
 	/** *Calculations for earnings starts */
 
-	const shopEarning = calculateShopEarnings(
-		order?.totalPrice,
-		myshopData?.merchantShopplan?.percetageCommissionChargeConversion
-	);
-	const companyEarnings = calculateCompanyEarnings(
-		order?.totalPrice,
-		myshopData?.merchantShopplan?.percetageCommissionChargeConversion
-	);
+	// Walk-in service charge constant (100 naira for walk-in guests)
+	const WALKIN_SERVICE_CHARGE = 100;
+
+	// Check if this is a walk-in reservation
+	const isWalkInGuest = order?.isWalkIn;
+
+	// Calculate earnings based on guest type
+	let shopEarning;
+	let companyEarnings;
+
+	if (isWalkInGuest) {
+		// For walk-in guests: flat service charge of 100 naira
+		companyEarnings = WALKIN_SERVICE_CHARGE;
+		shopEarning = order?.totalPrice - WALKIN_SERVICE_CHARGE;
+	} else {
+		// For online bookings: percentage-based commission
+		shopEarning = calculateShopEarnings(
+			order?.totalPrice,
+			myshopData?.merchantShopplan?.percetageCommissionChargeConversion
+		);
+		companyEarnings = calculateCompanyEarnings(
+			order?.totalPrice,
+			myshopData?.merchantShopplan?.percetageCommissionChargeConversion
+		);
+	}
+
+	// Label to display based on guest type (for UI only, API variables remain unchanged)
+	const chargeLabel = isWalkInGuest ? 'Service Charge' : 'Commission';
+
 	/** *Calculations for earnings ends */
 
 	const formatter = new Intl.NumberFormat('en-US', {
@@ -245,6 +266,9 @@ function InvoiceTab(props) {
 									>
 										{order?.paymentResult?.reference || 'N/A'}
 									</Typography>
+									<Typography
+										variant="caption"
+										sx={{ color: '#78716c' }}>{order?.isWalkIn ? "Yes" : "Not-Walkin"}</Typography>
 								</Box>
 
 								<Box>
@@ -311,11 +335,22 @@ function InvoiceTab(props) {
 									variant="body2"
 									sx={{ color: '#78716c', mb: 1 }}
 								>
-									At <strong>{myshopData?.merchantShopplan?.percetageCommissionCharge}%</strong>{' '}
-									commission you earn{' '}
-									<strong style={{ color: '#ea580c' }}>₦{formatCurrency(shopEarning)}</strong> while
-									commission is{' '}
-									<strong style={{ color: '#ea580c' }}>₦{formatCurrency(companyEarnings)}</strong>
+									{isWalkInGuest ? (
+										<>
+											With a flat <strong>₦{WALKIN_SERVICE_CHARGE}</strong> service charge, you earn{' '}
+											<strong style={{ color: '#ea580c' }}>₦{formatCurrency(shopEarning)}</strong> while
+											service charge is{' '}
+											<strong style={{ color: '#ea580c' }}>₦{formatCurrency(companyEarnings)}</strong>
+										</>
+									) : (
+										<>
+											At <strong>{myshopData?.merchantShopplan?.percetageCommissionCharge}%</strong>{' '}
+											commission you earn{' '}
+											<strong style={{ color: '#ea580c' }}>₦{formatCurrency(shopEarning)}</strong> while
+											commission is{' '}
+											<strong style={{ color: '#ea580c' }}>₦{formatCurrency(companyEarnings)}</strong>
+										</>
+									)}
 								</Typography>
 							</Box>
 						</Paper>
@@ -411,7 +446,7 @@ function InvoiceTab(props) {
 										variant="body2"
 										sx={{ color: '#78716c' }}
 									>
-										Commission Cost
+										{chargeLabel} Cost
 									</Typography>
 									<Typography
 										variant="body1"
@@ -677,7 +712,10 @@ function InvoiceTab(props) {
 										<FuseSvgIcon size={14} sx={{ color: '#78716c' }}>
 											heroicons-outline:calculator
 										</FuseSvgIcon>
-										Platform Fee ({myshopData?.merchantShopplan?.percetageCommissionCharge}%)
+										{isWalkInGuest
+											? `Platform ${chargeLabel} (₦${WALKIN_SERVICE_CHARGE})`
+											: `Platform Fee (${myshopData?.merchantShopplan?.percetageCommissionCharge}%)`
+										}
 									</Typography>
 									<Typography
 										variant="body2"

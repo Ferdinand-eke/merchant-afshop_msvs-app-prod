@@ -164,14 +164,17 @@ function PropertyListing() {
 								className="h-64"
 								label="Pricing"
 							/>
-							{/* <Tab
-								className="h-64"
-								label="Inventory"
-							/> */}
+							
+
 							<Tab
 								className="h-64"
 								label="Property measurement"
 							/>
+{/* 
+							<Tab
+								className="h-64"
+								label="Inventory"
+							/> */}
 						</Tabs>
 
 						<div className="p-16 sm:p-24 max-w-3xl">
@@ -190,6 +193,10 @@ function PropertyListing() {
 							<div className={tabValue !== 3 ? 'hidden' : ''}>
 								<ShippingTabProperty />
 							</div>
+
+							{/* <div className={tabValue !== 4 ? 'hidden' : ''}>
+								<InventoryTabProperty />
+							</div> */}
 						</div>
 					</>
 				}

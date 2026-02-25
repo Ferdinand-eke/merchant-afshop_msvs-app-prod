@@ -82,10 +82,11 @@ function ContentLoadingPlaceholder({
 										background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
 									}}
 								>
+
 									<img
-										src="/assets/images/logo/logo.svg"
+										src="/assets/images/afslogo/aflogo.png"
 										alt="AfricanShops"
-										className="w-16 h-16"
+										className="w-16 h-16 bg-black rounded-full p-2"
 										onError={(e) => {
 											e.target.style.display = 'none';
 											e.target.parentElement.innerHTML = `

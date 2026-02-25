@@ -11,7 +11,8 @@ import {
 	updateMyShopBookingsPropertyById,
 	updatePropertyListingImage,
 	deletePropertyListingImage,
-	deleteMerchantBookingListing
+	deleteMerchantBookingListing,
+	getBookingsAmenities
 } from '../../client/clientToApiRoutes';
 import { handleApiError } from '../../../utils/errorHandler';
 
@@ -186,4 +187,16 @@ export function useDeleteBookingPropertyMutation() {
 			}
 		}
 	);
+}
+
+/****   MANAGEMENT OF AMENITIES *******************************
+   *  START
+   * =============================================================================================
+   *===============================================================================================
+   */
+/** *1) get all Specific user shop-Bookings property   */
+export  function useGetAmenities(params = {}) {
+	return useQuery(['__bookingsproperties_amenities', params], () => getBookingsAmenities(), {
+		keepPreviousData: true // Keeps previous data while fetching new data for smoother transitions
+	});
 }

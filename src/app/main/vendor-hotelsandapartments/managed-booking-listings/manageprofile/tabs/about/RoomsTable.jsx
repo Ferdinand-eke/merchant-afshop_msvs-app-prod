@@ -9,6 +9,7 @@ import MerchantErrorPage from 'src/app/main/vendor-hotelsandapartments/MerchantE
 import { formatCurrency } from 'src/app/main/vendors-shop/pos/PosUtils';
 
 function RoomsTable(props) {
+
 	const { rooms, roomsIsLoading, roomsIsError, toggleNewEntryDrawer, setRoomId } = props;
 
 	const initiateUpdate = (roomId) => {
@@ -82,7 +83,7 @@ function RoomsTable(props) {
 			<motion.div
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
+				className="flex flex-col flex-1 items-center justify-center h-full w-full"
 			>
 				<MerchantErrorPage message=" Error occurred while retriving rooms" />
 			</motion.div>
@@ -91,7 +92,7 @@ function RoomsTable(props) {
 
 	if (!rooms) {
 		return (
-			<div className="flex flex-1 items-center justify-center h-full">
+			<div className="flex flex-1 items-center justify-center h-full w-full">
 				<Typography
 					color="text.secondary"
 					variant="h5"
