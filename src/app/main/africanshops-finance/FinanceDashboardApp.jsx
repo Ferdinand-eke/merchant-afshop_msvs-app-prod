@@ -33,6 +33,8 @@ function FinanceDashboardApp() {
 
 	const { data: shopData, isLoading: shopDataLoading, isError } = useGetMyShopDetails();
 
+	console.log("Shop details data", { shopData });
+
 	const {
 		data: shopAccount,
 		isLoading: accountLoading,
@@ -54,7 +56,7 @@ function FinanceDashboardApp() {
 		};
 	}, [shopAccount]);
 
-	console.log("Merchant fintech account data", { shopAccount, accountData });
+	// console.log("Merchant fintech account data", { shopAccount, accountData });
 
 	if (isLoading) {
 		return <FuseLoading />;

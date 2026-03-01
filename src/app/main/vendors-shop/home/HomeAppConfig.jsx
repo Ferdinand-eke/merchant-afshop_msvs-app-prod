@@ -35,31 +35,10 @@ const HomeAppConfig = {
 
 	auth: authRoles.onlyGuest,
 	routes: [
-		{
-			path: '/',
-			//   settings: {
-			//     layout: {
-			//       config: {
-			//         navbar: {
-			//           display: false,
-			//         },
-			//         toolbar: {
-			//           display: true,
-			//         },
-			//         footer: {
-			//           display: false,
-			//         },
-			//         leftSidePanel: {
-			//           display: false,
-			//         },
-			//         rightSidePanel: {
-			//           display: false,
-			//         },
-			//       },
-			//     },
-			//   },
-			element: <LandingCenterHome />
-		},
+		// {
+		// 	path: '/',
+		// 	element: <LandingCenterHome />
+		// },
 		{
 			path: 'homeregistry',
 			element: <AcademyApp />,

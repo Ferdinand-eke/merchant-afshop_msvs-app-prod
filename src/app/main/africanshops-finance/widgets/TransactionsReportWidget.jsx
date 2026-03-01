@@ -54,24 +54,7 @@ function LoanEligibilityCard({ summary, isLoading }) {
 	const eligibilityData = useMemo(() => {
 		if (!summary?.data?.summary) return null;
 
-// 		totalCommissions
-// : 
-// 47200
-// totalMerchantPayout
-// : 
-// 1132800
-// totalRevenue
-// : 
-// 1180000
-// totalShipping
-// : 
-// 64000
-// totalTaxes
-// : 
-// 122250
-// totalTransactions
-// : 
-// 10
+
 
 		const data = summary?.data?.summary;
 		const totalVolume = data.totalRevenue || 0;
@@ -382,7 +365,7 @@ function LoanEligibilityCard({ summary, isLoading }) {
  */
 function TransactionSummaryStats({ summary, isLoading }) {
 
-	console.log("Summary on stats", summary)
+	// console.log("Summary on stats", summary)
 	const theme = useTheme();
 
 	if (isLoading) {
@@ -411,7 +394,7 @@ function TransactionSummaryStats({ summary, isLoading }) {
 	const stats = summary?.data?.summary || {};
 	// const stats = summary || {};
 
-	console.log("Stats in summary stats", stats)
+	// console.log("Stats in summary stats", stats)
 
 	const statCards = [
 		{

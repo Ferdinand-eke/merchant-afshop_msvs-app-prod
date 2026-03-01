@@ -237,9 +237,12 @@ export const deleteProductPriceTier = (tierData) => {
 	return AuthApi().delete(`/productsbymerchant/${tierData?.productId}/delete-price-tier/${tierData?.tierId}`);
 };
 
-// {===============================shop product handling ends   =======================================}
 
-// {===============================shop detals handling starts   =======================================}
+/***
+ * 
+ * Handle shop account details and banking updates
+ * ######shop detals handling starts######## 
+ */
 export const getJustMyShopDetails = () => AuthApi().get('/api/myshop/get-just-details');
 
 export const getMinimizedJustMyShopDetails = () => AuthApi().get('/auth-merchant/get-base-merchant');
@@ -256,6 +259,7 @@ export const getJustMyShopDetailsAndPlanForUpdate = () => {
 }; //* (Msvs => Done)
 
 export const getMyShopDetails = () => AuthApi().get('/auth-merchant/myshop/get-just-details/plan'); //* (Msvs => Done)
+/***######shop detals handling (current end)######## */
 
 export const getMyOtherShopsList = () => AuthApi().get('/api/myshop/get-my-other-shops');
 
@@ -266,6 +270,9 @@ export const updateMyShopBranch = (shopFormData) =>
 
 export const updateMyShopDetails = (shopFormData) =>
 	AuthApi().put(`auth-merchant/myshop/get-just-details/update`, shopFormData); // (Msvs => Done)
+
+export const linkBankAccountToMyShopDetails = (shopFormData) =>
+	AuthApi().put(`auth-merchant/settings/update-linked-bank-details`, shopFormData); // (Msvs => Done)
 
 export const deleteMyShopCompletely = (id, shopFormData) =>
 	AuthApi().post(`/api/myshop/delete-myshop-completely/${id}`, shopFormData);
@@ -284,14 +291,28 @@ export const getMyShopWithdrawals = () => AuthApi().get('/api/myshop/get-my-With
  *############################################################################# */
 export const getMyShopAccountApiDetails = () => AuthApi().get('/fintech-accounts/merchant/account/my-account'); // newDashboards //done /**(Msvs => Done) */
 export const createMerchantFintechAccount = (formData) => AuthApi().post('/fintech-accounts/merchant/account/create', formData); // (Msvs => Done)
+export const resolveAccountNumber = (formData) =>
+	AuthApi().post('/fintech-accounts/paystack-api/verify-account-number', formData); // Resolve account number (Step 1)
+export const verifyBankAccount = (formData) => AuthApi().post('/fintech-accounts/paystack-api/verify-bank-account', formData); // Bank verification with BVN (Step 2)
+export const getBanksList = (params) => {
+	const queryString = params ? qs.stringify(params, { arrayFormat: 'repeat' }) : '';
+	return AuthApi().get(`/fintech-accounts/paystack-api/banks/list${queryString ? `?${queryString}` : ''}`);
+}; // Get list of banks
+
+/**
+ * ####SHOP table queries starts###
+ */
 export const updateMyShopAccountBankDetails = (shopFormData) =>
 	AuthApi().put(`/api/myshop/update-account-details`, shopFormData);
 
 export const transferToWalletEndpoint = (productFormData) =>
 	AuthApi().post('/api/myshop/transfer-funds-to-wallet', productFormData);
 
-export const withdrawFromMyShopNow = (productFormData) =>
-	AuthApi().post('/api/myshop/place-myshop-withdrawal', productFormData);
+export const initiateWithdrawal = (formData) =>
+	AuthApi().post('/auth-merchant/myshop/initiate-withdrawal', formData); // Initiate withdrawal and send OTP
+
+export const withdrawFromMyShopNow = (formData) =>
+	AuthApi().post('/auth-merchant/myshop/place-myshop-withdrawal', formData); // Confirm withdrawal with OTP
 
 // {===============================user shop transferlogs handling starts=======================================}
 

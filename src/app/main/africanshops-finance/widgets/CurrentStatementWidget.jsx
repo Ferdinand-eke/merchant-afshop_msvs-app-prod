@@ -1,153 +1,245 @@
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { memo } from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import { memo, useState } from 'react';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import FuseLoading from '@fuse/core/FuseLoading';
+import LinkBankAccountDialog from './LinkBankAccountDialog';
+import WithdrawFundsDialog from './WithdrawFundsDialog';
 
 /**
  * The CurrentStatementWidget widget.
  */
-function CurrentStatementWidget({ shopData, shopDataLoading, isError }) {
-	// const [animate, setAnimate] = useState(false);
-	// const dispatch = useAppDispatch();
-	// const controls = useAnimation();
-
-	// const { data: widgets, isLoading } = useGetFinanceDashboardWidgetsQuery();
+function CurrentStatementWidget({ shopData, shopDataLoading }) {
+	const [linkBankDialogOpen, setLinkBankDialogOpen] = useState(false);
+	const [withdrawDialogOpen, setWithdrawDialogOpen] = useState(false);
 
 	if (shopDataLoading) {
 		return <FuseLoading />;
 	}
 
-	// const widget = widgets?.currentStatement;
-
 	if (!shopData) {
 		return null;
 	}
 
-	console.log('ShopDATAAA', shopData);
-	// const { status, date, limit, spent, minimum } = widget;
+	const accountBalance = shopData?.shopaccount?.accountbalance || 0;
+	const hasLinkedBank = shopData?.linkedBankName && shopData?.linkedBankAccountNumber;
 
-	// useEffect(() => {
-	// 	if (animate) {
-	// 		controls.start({
-	// 			rotate: [0, 20, -20, 0],
-	// 			color: [theme.palette.secondary.main],
-	// 			transition: { duration: 0.2, repeat: 5 }
-	// 		});
-	// 	} else {
-	// 		controls.start({ rotate: 0, scale: 1, color: theme.palette.text.secondary });
-	// 	}
-	// }, [animate, controls]);
+	const handleWithdrawClick = () => {
+		if (!hasLinkedBank) {
+			setLinkBankDialogOpen(true);
+		} else {
+			setWithdrawDialogOpen(true);
+		}
+	};
+
 	return (
-		<Paper className="relative flex flex-col flex-auto p-24 pr-12 pb-12 rounded-2xl shadow overflow-hidden">
-			<div className="flex items-center justify-between">
-				<div className="flex flex-col">
-					<Typography className="text-lg font-medium tracking-tight leading-6 truncate">
-						Current Statement
+		<>
+			<Paper
+				className="relative flex flex-col flex-auto p-32 rounded-2xl shadow-lg overflow-hidden"
+				sx={{
+					background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%)',
+					border: '1px solid',
+					borderColor: 'divider'
+				}}
+			>
+				{/* Header Section */}
+				<Box className="flex items-start justify-between mb-24">
+					<Box className="flex items-start gap-16">
+						<Box
+							className="flex items-center justify-center w-56 h-56 rounded-xl"
+							sx={{
+								background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+								boxShadow: '0 8px 16px 0 rgba(102, 126, 234, 0.4)'
+							}}
+						>
+							<FuseSvgIcon
+								size={28}
+								className="text-white"
+							>
+								heroicons-outline:currency-dollar
+							</FuseSvgIcon>
+						</Box>
+						<Box>
+							<Typography className="text-lg font-semibold tracking-tight leading-6">
+								Available Balance
+							</Typography>
+							<Typography
+								variant="caption"
+								className="text-sm mt-4 flex items-center gap-8"
+								color="text.secondary"
+							>
+								Merchant's Earnings
+								<Chip
+									label="Live"
+									size="small"
+									sx={{
+										height: 20,
+										fontSize: '0.7rem',
+										background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+										color: 'white',
+										fontWeight: 600
+									}}
+								/>
+							</Typography>
+						</Box>
+					</Box>
+
+					<Tooltip title="Refresh balance">
+						<IconButton size="small">
+							<FuseSvgIcon
+								size={20}
+								className="text-gray-600 dark:text-gray-400"
+							>
+								heroicons-outline:refresh
+							</FuseSvgIcon>
+						</IconButton>
+					</Tooltip>
+				</Box>
+
+				{/* Balance Display */}
+				<Box className="mb-32">
+					<Typography
+						className="font-bold text-5xl leading-none mb-8"
+						sx={{
+							background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+							WebkitBackgroundClip: 'text',
+							WebkitTextFillColor: 'transparent',
+							backgroundClip: 'text'
+						}}
+					>
+						{accountBalance.toLocaleString('en-NG', {
+							style: 'currency',
+							currency: 'NGN'
+						})}
 					</Typography>
-					<Typography className="text-orange-600 font-medium text-sm">Merchant's Earnings </Typography>
-					{/* {status === 'paid' && (
-						<Typography className="text-green-600 font-medium text-sm">Paid on {date}</Typography>
-					)}
-					{status === 'pending' && (
-						<Typography className="text-red-600 font-medium text-sm">Must be paid before {date}</Typography>
-					)} */}
-				</div>
-				{/* <div className="-mt-8">
-					<IconButton
-						aria-label="more"
+					<Typography
+						variant="caption"
+						color="text.secondary"
+					>
+						Total earnings from trades
+					</Typography>
+				</Box>
+
+				{/* Bank Account Status */}
+				<Box className="mb-24 p-16 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+					<Box className="flex items-center justify-between">
+						<Box className="flex items-center gap-12">
+							<FuseSvgIcon
+								size={20}
+								className={hasLinkedBank ? 'text-green-600' : 'text-orange-600'}
+							>
+								{hasLinkedBank ? 'heroicons-solid:check-badge' : 'heroicons-outline:exclamation-triangle'}
+							</FuseSvgIcon>
+							<Box>
+								<Typography
+									variant="body2"
+									className="font-medium"
+								>
+									{hasLinkedBank ? 'Bank Account Linked' : 'No Bank Account Linked'}
+								</Typography>
+								{hasLinkedBank ? (
+									<Typography
+										variant="caption"
+										color="text.secondary"
+									>
+										{shopData?.linkedBankName} - ****
+										{shopData?.linkedBankAccountNumber?.slice(-4)}
+									</Typography>
+								) : (
+									<Typography
+										variant="caption"
+										color="text.secondary"
+									>
+										Link your bank account to enable withdrawals
+									</Typography>
+								)}
+							</Box>
+						</Box>
+						{!hasLinkedBank && (
+							<Button
+								variant="text"
+								size="small"
+								color="secondary"
+								onClick={() => setLinkBankDialogOpen(true)}
+								startIcon={<FuseSvgIcon size={16}>heroicons-outline:link</FuseSvgIcon>}
+							>
+								Link Now
+							</Button>
+						)}
+					</Box>
+				</Box>
+
+				{/* Action Buttons */}
+				<Box className="flex gap-12">
+					<Button
+						variant="contained"
+						fullWidth
 						size="large"
+						disabled={accountBalance <= 0}
+						onClick={handleWithdrawClick}
+						sx={{
+							background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+							boxShadow: '0 4px 12px 0 rgba(102, 126, 234, 0.4)',
+							'&:hover': {
+								background: 'linear-gradient(135deg, #5568d3 0%, #63408b 100%)',
+								boxShadow: '0 6px 16px 0 rgba(102, 126, 234, 0.6)'
+							},
+							'&:disabled': {
+								background: 'rgba(0, 0, 0, 0.12)',
+								boxShadow: 'none'
+							}
+						}}
+						startIcon={<FuseSvgIcon size={20}>heroicons-outline:arrow-down-tray</FuseSvgIcon>}
 					>
-						<FuseSvgIcon>heroicons-outline:dots-vertical</FuseSvgIcon>
-					</IconButton>
-				</div> */}
-			</div>
-			<div className="flex flex-row flex-wrap mt-16 -mx-24">
-				<div className="flex flex-col mx-24 my-12">
-					<Typography
-						color="text.secondary"
-						className="text-sm font-medium leading-none"
-					>
-						Shop Merchant
-					</Typography>
-					<Typography className="mt-8 font-medium text-3xl leading-none">
-						{shopData?.shopaccount?.accountbalance.toLocaleString('en-US', {
-							style: 'currency',
-							currency: 'NGN'
-						})}
-					</Typography>
-				</div>
-				{/* <div className="flex flex-col mx-24 my-12">
-					<Typography
-						color="text.secondary"
-						className="text-sm font-medium leading-none"
-					>
-						Logistics Merchant 
-					</Typography>
-					<Typography className="mt-8 font-medium text-3xl leading-none">
-						{shopData?.logisticsAccount?.accountbalance.toLocaleString('en-US', {
-							style: 'currency',
-							currency: 'NGN'
-						})}
-					</Typography>
-				</div> */}
-				{/* <div className="flex flex-col mx-24 my-12">
-					<Typography
-						color="text.secondary"
-						className="text-sm font-medium leading-none"
-					>
-						Estate Merchant
-					</Typography>
-					<Typography className="mt-8 font-medium text-3xl leading-none">
-						{shopData?.realEstateAccount?.accountbalance.toLocaleString('en-US', {
-							style: 'currency',
-							currency: 'NGN'
-						})}
-					</Typography>
-				</div> */}
+						Withdraw Funds
+					</Button>
 
-				{/* <div className="flex flex-col mx-24 my-12">
-					<Typography
-						color="text.secondary"
-						className="text-sm font-medium leading-none"
-					>
-						Food Producers/Farmers
-					</Typography>
-					<Typography className="mt-8 font-medium text-3xl leading-none">
-						{shopData?.realEstateAccount?.accountbalance.toLocaleString('en-US', {
-							style: 'currency',
-							currency: 'NGN'
-						})}
-					</Typography>
-				</div> */}
-			</div>
+					<Tooltip title="View transaction history">
+						<IconButton
+							size="large"
+							sx={{
+								border: '1px solid',
+								borderColor: 'divider',
+								borderRadius: 2
+							}}
+						>
+							<FuseSvgIcon size={20}>heroicons-outline:document-text</FuseSvgIcon>
+						</IconButton>
+					</Tooltip>
+				</Box>
 
-			<div className="absolute bottom-0 ltr:right-0 rtl:left-0 w-96 h-96 -m-24">
-				<FuseSvgIcon
-					size={96}
-					className="opacity-25 text-green-500 dark:text-green-400"
-				>
-					heroicons-outline:check-circle
-				</FuseSvgIcon>
-				{/* {status === 'paid' && (
-					<FuseSvgIcon
-						size={96}
-						className="opacity-25 text-green-500 dark:text-green-400"
-					>
-						heroicons-outline:check-circle
-					</FuseSvgIcon>
-				)} */}
+				{/* Background Decoration */}
+				<Box
+					className="absolute -bottom-24 -right-24 opacity-10 dark:opacity-5"
+					sx={{
+						width: 200,
+						height: 200,
+						background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+						borderRadius: '50%',
+						filter: 'blur(40px)'
+					}}
+				/>
+			</Paper>
 
-				{/* {status === 'pending' && (
-					<FuseSvgIcon
-						size={96}
-						className="opacity-25 text-red-500 dark:text-red-400"
-					>
-						heroicons-outline:exclamation-circle
-					</FuseSvgIcon>
-				)} */}
-			</div>
-		</Paper>
+			{/* Dialogs */}
+			<LinkBankAccountDialog
+				open={linkBankDialogOpen}
+				onClose={() => setLinkBankDialogOpen(false)}
+				shopData={shopData}
+			/>
+
+			<WithdrawFundsDialog
+				open={withdrawDialogOpen}
+				onClose={() => setWithdrawDialogOpen(false)}
+				shopData={shopData}
+				availableBalance={accountBalance}
+			/>
+		</>
 	);
 }
 

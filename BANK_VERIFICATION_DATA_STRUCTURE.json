@@ -1,0 +1,157 @@
+{
+  "accountCreationPayload": {
+    "description": "Complete payload sent to create merchant fintech account",
+    "structure": {
+      "accountName": "string - Business/Merchant name",
+      "accountPin": "string - 4-digit PIN for account security",
+      "linkedBankName": "string - Name of linked bank (if verified)",
+      "linkedBankAccountNumber": "string - 10-digit account number (if verified)",
+      "linkedBankAccountName": "string - Account holder name (if verified)",
+      "bankVerificationData": {
+        "description": "Complete bank verification details (null if skipped)",
+        "bankName": "string - Full bank name (e.g., 'Access Bank')",
+        "bankCode": "string - Bank code from Paystack (e.g., '044')",
+        "accountNumber": "string - 10-digit account number",
+        "accountName": "string - Account holder name from verification",
+        "bankDetails": {
+          "description": "Complete bank object from banks list API",
+          "id": "number - Bank ID",
+          "name": "string - Bank name",
+          "slug": "string - Bank slug",
+          "code": "string - Bank code",
+          "longcode": "string - Bank long code",
+          "gateway": "string|null - Gateway type",
+          "pay_with_bank": "boolean - Supports direct payment",
+          "active": "boolean - Bank is active",
+          "is_deleted": "boolean - Bank deletion status",
+          "country": "string - Country code (e.g., 'Nigeria')",
+          "currency": "string - Currency code (e.g., 'NGN')",
+          "type": "string - Bank type (e.g., 'nuban')",
+          "createdAt": "string - ISO timestamp",
+          "updatedAt": "string - ISO timestamp"
+        },
+        "resolutionResponse": {
+          "description": "Response from Paystack account resolution API",
+          "success": "boolean - Request success status",
+          "message": "string - Response message",
+          "data": {
+            "account_number": "string - Verified account number",
+            "account_name": "string - Account holder name from bank",
+            "bank_id": "number - Bank identifier"
+          }
+        },
+        "verificationMethod": "string - 'account_resolution'",
+        "verificationStatus": "string - 'verified'",
+        "verifiedAt": "string - ISO timestamp of verification"
+      }
+    }
+  },
+
+  "examplePayloads": {
+    "withBankVerification": {
+      "accountName": "My Business Store",
+      "accountPin": "5678",
+      "linkedBankName": "GTBank",
+      "linkedBankAccountNumber": "0987654321",
+      "linkedBankAccountName": "MY BUSINESS STORE",
+      "bankVerificationData": {
+        "bankName": "GTBank",
+        "bankCode": "058",
+        "accountNumber": "0987654321",
+        "accountName": "MY BUSINESS STORE",
+        "bankDetails": {
+          "id": 9,
+          "name": "GTBank",
+          "slug": "guaranty-trust-bank",
+          "code": "058",
+          "longcode": "058152036",
+          "gateway": "emandate",
+          "pay_with_bank": false,
+          "active": true,
+          "is_deleted": false,
+          "country": "Nigeria",
+          "currency": "NGN",
+          "type": "nuban",
+          "createdAt": "2023-01-01T00:00:00.000Z",
+          "updatedAt": "2023-01-01T00:00:00.000Z"
+        },
+        "resolutionResponse": {
+          "success": true,
+          "message": "Account resolved successfully",
+          "data": {
+            "account_number": "0987654321",
+            "account_name": "MY BUSINESS STORE",
+            "bank_id": 9
+          }
+        },
+        "verificationMethod": "account_resolution",
+        "verificationStatus": "verified",
+        "verifiedAt": "2024-01-15T10:35:00.000Z"
+      }
+    },
+
+    "noBankLinked": {
+      "accountName": "Simple Shop",
+      "accountPin": "9999",
+      "linkedBankName": "",
+      "linkedBankAccountNumber": "",
+      "linkedBankAccountName": "",
+      "bankVerificationData": null
+    }
+  },
+
+  "apiEndpoints": {
+    "getBanksList": {
+      "method": "GET",
+      "endpoint": "/fintech-accounts/paystack-api/banks/list",
+      "description": "Fetch list of available banks",
+      "query_params": {
+        "country": "nigeria",
+        "perPage": 100
+      }
+    },
+    "resolveAccountNumber": {
+      "method": "POST",
+      "endpoint": "/fintech-accounts/paystack-api/verify-account-number",
+      "description": "Resolve account number to get account name (Step 1)",
+      "payload": {
+        "account_number": "string - 10 digit account number",
+        "bank_code": "string - Bank code (e.g., '044')"
+      }
+    },
+    "createMerchantAccount": {
+      "method": "POST",
+      "endpoint": "/fintech-accounts/merchant/account/create",
+      "description": "Create merchant fintech account with complete verification data",
+      "payload": "See accountCreationPayload structure above"
+    }
+  },
+
+  "verificationFlow": {
+    "step1": {
+      "name": "Account Resolution",
+      "description": "User selects bank and enters account number",
+      "api": "resolveAccountNumber",
+      "required": "Bank name + Account number",
+      "output": "Account holder name and bank details"
+    },
+    "step2": {
+      "name": "Account Creation",
+      "description": "Create account with complete verification data from account resolution",
+      "api": "createMerchantAccount",
+      "includes": "All verification responses (resolution response + bank details) and metadata"
+    }
+  },
+
+  "storageRecommendation": {
+    "database_field": "bankVerificationData",
+    "type": "JSON/JSONB",
+    "indexed_fields": [
+      "bankVerificationData.bankCode",
+      "bankVerificationData.accountNumber",
+      "bankVerificationData.verificationMethod",
+      "bankVerificationData.verificationStatus"
+    ],
+    "usage": "Store complete verification data for audit trail and future reference"
+  }
+}

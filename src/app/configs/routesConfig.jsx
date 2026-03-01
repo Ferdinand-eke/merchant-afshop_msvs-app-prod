@@ -29,6 +29,7 @@ import HomeAppConfig from '../main/vendors-shop/home/HomeAppConfig';
 import MerchantMailboxAppConfig from '../main/vendors-shop/mailbox/MerchantMailboxAppConfig';
 import ManagedBookingsListingsAppConfig from '../main/vendor-hotelsandapartments/managed-booking-listings/ManagedBookingsListingsAppConfig';
 import ManagedFoodMartsAppConfig from '../main/vendor-foodmarts/managed-foood-mart/ManagedFoodMartsAppConfig';
+import LandingCenterHome from '../main/vendors-shop/home/home/LandingCenterHome';
 // import AfricanshopsMessengerAppConfig from '../main/africanshops-messenger/AfricanshopsMessengerAppConfig';
 
 const routeConfigs = [
@@ -82,8 +83,8 @@ const routeConfigs = [
 	 *
 	 * Start of Un-Authenticated pages are listed below here
 	 */
-	//   HomeAppConfig,
-	HomeAppConfig,
+	  HomeAppConfig,
+	
 	blogAppConfig,
 
 	/** **
@@ -103,9 +104,13 @@ const routeConfigs = [
  */
 const routes = [
 	...FuseUtils.generateRoutesFromConfigs(routeConfigs, settingsConfig.defaultAuth),
+
 	{
 		path: '/',
-		element: <Navigate to="/shop-dashboard" />
+		element: <LandingCenterHome />
+
+	},
+	{
 	},
 	{
 		path: 'loading',
@@ -120,6 +125,6 @@ const routes = [
 		element: <Navigate to="404" />
 	}
 
-	
+
 ];
 export default routes;

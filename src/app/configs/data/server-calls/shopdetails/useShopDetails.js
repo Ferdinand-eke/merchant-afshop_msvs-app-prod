@@ -4,6 +4,7 @@ import { handleApiError } from '../../../utils/errorHandler';
 import {
 	createMerchantFintechAccount,
 	createMyShopBranch,
+	getBanksList,
 	getJustMyShopDetails,
 	getJustMyShopDetailsAndPlan,
 	getJustMyShopDetailsAndPlanForUpdate,
@@ -12,8 +13,14 @@ import {
 	getMyShopAccountApiDetails,
 	getMyShopDetails,
 	getShopSealedBookingsReservationsApi,
+	initiateWithdrawal,
+	linkBankAccountToMyShopDetails,
+	resolveAccountNumber,
+	updateMyShopAccountBankDetails,
 	updateMyShopBranch,
-	updateMyShopDetails
+	updateMyShopDetails,
+	verifyBankAccount,
+	withdrawFromMyShopNow
 } from '../../client/clientToApiRoutes';
 
 export default function useGetMyShopDetails() {
@@ -72,6 +79,37 @@ export function useGetShopAccountBalance() {
 	});
 }
 
+/** *Get Banks List */
+export function useGetBanksList(params = { country: 'nigeria', perPage: 100 }) {
+	return useQuery(['__banks_list', params], () => getBanksList(params), {
+		staleTime: 300000, // 5 minutes - banks list doesn't change often
+		cacheTime: 600000, // 10 minutes
+		retry: 2,
+		select: (data) => {
+			// Transform the response to extract banks array
+			return data?.data?.data || data?.data?.payload || [];
+		}
+	});
+}
+
+/** *Resolve Account Number (Step 1: Get account name from bank code + account number) */
+export function useResolveAccountNumber() {
+	return useMutation(resolveAccountNumber, {
+		onError: (error) => {
+			handleApiError(error, 'Failed to resolve account number');
+		}
+	});
+}
+
+/** *Verify Bank Account with BVN (Step 2: Full verification with BVN) */
+export function useVerifyBankAccount() {
+	return useMutation(verifyBankAccount, {
+		onError: (error) => {
+			handleApiError(error, 'Bank verification failed');
+		}
+	});
+}
+
 /** *Create Merchant Fintech Account */
 export function useCreateMerchantAccount() {
 	const queryClient = useQueryClient();
@@ -86,6 +124,60 @@ export function useCreateMerchantAccount() {
 		},
 		onError: (error) => {
 			handleApiError(error, 'Failed to create account');
+		}
+	});
+}
+
+/** *Link Bank Account to Merchant Account */
+export function useLinkBankAccount() {
+	const queryClient = useQueryClient();
+
+	return useMutation(linkBankAccountToMyShopDetails, {
+		onSuccess: (data) => {
+			if (data?.data?.success) {
+				toast.success(data?.data?.message || 'Bank account linked successfully!');
+				// Invalidate and refetch account balance and shop details
+				queryClient.invalidateQueries('__myshop_account_balance');
+				queryClient.invalidateQueries('__myshop_details');
+				queryClient.invalidateQueries('__myshop_and_accountplan');
+			}
+		},
+		onError: (error) => {
+			handleApiError(error, 'Failed to link bank account');
+		}
+	});
+}
+
+/** *Initiate Withdrawal - Send OTP */
+export function useInitiateWithdrawal() {
+	return useMutation(initiateWithdrawal, {
+		onError: (error) => {
+			handleApiError(error, 'Failed to initiate withdrawal');
+		}
+	});
+}
+
+/** *Confirm Withdrawal with OTP */
+export function useConfirmWithdrawal() {
+	const queryClient = useQueryClient();
+
+	return useMutation(withdrawFromMyShopNow, {
+		onSuccess: (data) => {
+			if (data?.data?.success) {
+				const withdrawalRef = data?.data?.withdrawalReference || data?.data?.reference;
+				const message =
+					data?.data?.message ||
+					`Withdrawal of ${data?.data?.amount ? `₦${data?.data?.amount.toLocaleString()}` : ''} successful! Reference: ${withdrawalRef}`;
+				toast.success(message);
+				// Invalidate and refetch account balance and withdrawals
+				queryClient.invalidateQueries('__myshop_account_balance');
+				queryClient.invalidateQueries('__myshop_withdrawals');
+				queryClient.invalidateQueries('__myshop_details');
+				queryClient.invalidateQueries('__myshop_and_accountplan');
+			}
+		},
+		onError: (error) => {
+			handleApiError(error, 'Withdrawal failed');
 		}
 	});
 }
@@ -118,7 +210,7 @@ export function useCreateVendorShopBranch() {
 				queryClient.invalidateQueries('shops');
 			}
 		},
-		onError: (error, data) => {
+		onError: (error) => {
 			handleApiError(error, 'Failed to create shop branch');
 			// queryClient.invalidateQueries('__myshop_orders');
 		}

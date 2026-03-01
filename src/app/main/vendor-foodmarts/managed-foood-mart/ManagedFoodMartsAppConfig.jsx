@@ -18,6 +18,7 @@ const ManagedFoodMartsAppConfig = {
 		layout: {}
 	},
 
+	
 	routes: [
 		{
 			path: 'foodmarts',

@@ -5,6 +5,7 @@ import FoodMerchantsTable from './FoodMerchantsTable';
 /**
  * The products page.
  */
+
 function FoodMerchants() {
 	return (
 		<>
