@@ -31,6 +31,46 @@ import {
 } from 'app/configs/data/server-calls/transactions/useTransactions';
 import FuseLoading from '@fuse/core/FuseLoading';
 
+/**
+ * Loan Configuration Constants
+ * These values can be overridden by API values when available
+ */
+const LOAN_CONFIG = {
+	MINIMUM_COMMISSION_FOR_LOAN: 50000, // Minimum commission required to apply for a loan (NGN 50,000)
+	LOAN_TO_COMMISSION_RATIO: 1.25, // 125% of total commissions paid
+	REPAYMENT_PERIOD_MONTHS: 12, // Standard repayment period
+	ELIGIBILITY_TIERS: {
+		PREMIUM: {
+			threshold: 200000, // 200K+ in commissions
+			name: 'Premium Tier',
+			color: 'success',
+			icon: 'heroicons-outline:check-badge',
+			description: 'Excellent commission history'
+		},
+		STANDARD: {
+			threshold: 100000, // 100K+ in commissions
+			name: 'Standard Tier',
+			color: 'primary',
+			icon: 'heroicons-outline:check-circle',
+			description: 'Good commission history'
+		},
+		GROWING: {
+			threshold: 50000, // 50K+ in commissions (qualifies for loan)
+			name: 'Growing Tier',
+			color: 'warning',
+			icon: 'heroicons-outline:shield-check',
+			description: 'Qualifies for loan'
+		},
+		BUILDING: {
+			threshold: 0, // Any commission amount
+			name: 'Building Tier',
+			color: 'info',
+			icon: 'heroicons-outline:arrow-trending-up',
+			description: 'Building commission history'
+		}
+	}
+};
+
 const container = {
 	show: {
 		transition: {
@@ -45,8 +85,20 @@ const item = {
 };
 
 /**
- * Loan Eligibility Score Component
- * Calculates eligibility based on transaction volume, earnings, and commissions
+ * Loan Eligibility Assessment Component
+ * Calculates loan eligibility based on total commissions paid by merchant
+ *
+ * Key Rules:
+ * - All merchants see their eligibility tier and score
+ * - Loan Amount = Total Commissions × 125% (1.25 ratio)
+ * - Minimum Commission for Loan: NGN 50,000 (hard requirement)
+ * - Repayment Period: 12 months for all loans
+ *
+ * Eligibility Tiers (for tracking progress):
+ * - Premium: NGN 200,000+ in commissions → NGN 250,000+ loan
+ * - Standard: NGN 100,000+ in commissions → NGN 125,000+ loan
+ * - Growing: NGN 50,000+ in commissions → NGN 62,500+ loan (QUALIFIES)
+ * - Building: < NGN 50,000 in commissions → Cannot apply yet
  */
 function LoanEligibilityCard({ summary, isLoading }) {
 	const theme = useTheme();
@@ -54,56 +106,83 @@ function LoanEligibilityCard({ summary, isLoading }) {
 	const eligibilityData = useMemo(() => {
 		if (!summary?.data?.summary) return null;
 
-
-
 		const data = summary?.data?.summary;
+		const totalCommissions = data.totalCommissions || 0;
 		const totalVolume = data.totalRevenue || 0;
 		const totalEarnings = data.totalMerchantPayout || 0;
-		const totalCommissions = data.totalCommissions || 0;
 		const transactionCount = data.totalTransactions || 0;
 
-		// Calculate eligibility score (0-100)
-		// Factors: Volume (40%), Earnings (30%), Commission (20%), Transaction Count (10%)
-		const volumeScore = Math.min((totalVolume / 1000000) * 40, 40); // Max at 1M
-		const earningsScore = Math.min((totalEarnings / 500000) * 30, 30); // Max at 500K
-		const commissionScore = Math.min((totalCommissions / 50000) * 20, 20); // Max at 50K
-		const countScore = Math.min((transactionCount / 100) * 10, 10); // Max at 100 transactions
+		// Calculate potential loan amount (125% of commissions paid)
+		const calculatedLoanAmount = totalCommissions * LOAN_CONFIG.LOAN_TO_COMMISSION_RATIO;
 
-		const score = Math.round(volumeScore + earningsScore + commissionScore + countScore);
+		// Determine if merchant qualifies for loan (HARD REQUIREMENT: 50K+ in commissions)
+		const qualifiesForLoan = totalCommissions >= LOAN_CONFIG.MINIMUM_COMMISSION_FOR_LOAN;
 
-		// Determine eligibility tier
-		let tier = 'Not Eligible';
-		let maxLoanAmount = 0;
-		let tierColor = 'error';
-		let icon = 'heroicons-outline:x-circle';
+		// Set max loan amount - only if qualified
+		const maxLoanAmount = qualifiesForLoan ? calculatedLoanAmount : 0;
 
-		if (score >= 80) {
-			tier = 'Premium Eligible';
-			maxLoanAmount = totalEarnings * 1.5; // 150% of earnings
-			tierColor = 'success';
-			icon = 'heroicons-outline:check-badge';
-		} else if (score >= 60) {
-			tier = 'Standard Eligible';
-			maxLoanAmount = totalEarnings * 1.0; // 100% of earnings
-			tierColor = 'primary';
-			icon = 'heroicons-outline:check-circle';
-		} else if (score >= 40) {
-			tier = 'Basic Eligible';
-			maxLoanAmount = totalEarnings * 0.5; // 50% of earnings
-			tierColor = 'warning';
-			icon = 'heroicons-outline:exclamation-circle';
+		// Determine eligibility tier based on commission thresholds (ALWAYS show tier)
+		let tier = LOAN_CONFIG.ELIGIBILITY_TIERS.BUILDING.name;
+		let tierColor = LOAN_CONFIG.ELIGIBILITY_TIERS.BUILDING.color;
+		let icon = LOAN_CONFIG.ELIGIBILITY_TIERS.BUILDING.icon;
+		let tierDescription = LOAN_CONFIG.ELIGIBILITY_TIERS.BUILDING.description;
+		let score = 0;
+
+		if (totalCommissions >= LOAN_CONFIG.ELIGIBILITY_TIERS.PREMIUM.threshold) {
+			tier = LOAN_CONFIG.ELIGIBILITY_TIERS.PREMIUM.name;
+			tierColor = LOAN_CONFIG.ELIGIBILITY_TIERS.PREMIUM.color;
+			icon = LOAN_CONFIG.ELIGIBILITY_TIERS.PREMIUM.icon;
+			tierDescription = LOAN_CONFIG.ELIGIBILITY_TIERS.PREMIUM.description;
+			score = 100;
+		} else if (totalCommissions >= LOAN_CONFIG.ELIGIBILITY_TIERS.STANDARD.threshold) {
+			tier = LOAN_CONFIG.ELIGIBILITY_TIERS.STANDARD.name;
+			tierColor = LOAN_CONFIG.ELIGIBILITY_TIERS.STANDARD.color;
+			icon = LOAN_CONFIG.ELIGIBILITY_TIERS.STANDARD.icon;
+			tierDescription = LOAN_CONFIG.ELIGIBILITY_TIERS.STANDARD.description;
+			score = 80;
+		} else if (totalCommissions >= LOAN_CONFIG.ELIGIBILITY_TIERS.GROWING.threshold) {
+			tier = LOAN_CONFIG.ELIGIBILITY_TIERS.GROWING.name;
+			tierColor = LOAN_CONFIG.ELIGIBILITY_TIERS.GROWING.color;
+			icon = LOAN_CONFIG.ELIGIBILITY_TIERS.GROWING.icon;
+			tierDescription = LOAN_CONFIG.ELIGIBILITY_TIERS.GROWING.description;
+			score = 60;
+		} else {
+			// Building tier - calculate progress score (0-50)
+			tier = LOAN_CONFIG.ELIGIBILITY_TIERS.BUILDING.name;
+			tierColor = LOAN_CONFIG.ELIGIBILITY_TIERS.BUILDING.color;
+			icon = LOAN_CONFIG.ELIGIBILITY_TIERS.BUILDING.icon;
+			tierDescription = LOAN_CONFIG.ELIGIBILITY_TIERS.BUILDING.description;
+			score = Math.min(Math.round((totalCommissions / LOAN_CONFIG.MINIMUM_COMMISSION_FOR_LOAN) * 50), 50);
 		}
+
+		// Calculate monthly repayment amount (only if qualified)
+		const monthlyRepayment = maxLoanAmount > 0
+			? maxLoanAmount / LOAN_CONFIG.REPAYMENT_PERIOD_MONTHS
+			: 0;
+
+		// Calculate how much more commission needed to qualify
+		const commissionNeeded = qualifiesForLoan
+			? 0
+			: LOAN_CONFIG.MINIMUM_COMMISSION_FOR_LOAN - totalCommissions;
 
 		return {
 			score,
 			tier,
-			maxLoanAmount,
 			tierColor,
 			icon,
+			tierDescription,
+			maxLoanAmount,
+			potentialLoanAmount: calculatedLoanAmount, // Show what they COULD get
+			totalCommissions,
 			totalVolume,
 			totalEarnings,
-			totalCommissions,
-			transactionCount
+			transactionCount,
+			repaymentPeriod: LOAN_CONFIG.REPAYMENT_PERIOD_MONTHS,
+			monthlyRepayment,
+			commissionRatio: LOAN_CONFIG.LOAN_TO_COMMISSION_RATIO,
+			minimumRequired: LOAN_CONFIG.MINIMUM_COMMISSION_FOR_LOAN,
+			qualifiesForLoan,
+			commissionNeeded
 		};
 	}, [summary]);
 
@@ -146,13 +225,14 @@ function LoanEligibilityCard({ summary, isLoading }) {
 						variant="caption"
 						color="text.secondary"
 					>
-						Based on your transaction history and earnings
+						Based on total commissions paid • 125% loan-to-commission ratio
 					</Typography>
 				</Box>
 				<Box
 					className="flex items-center justify-center w-56 h-56 rounded-xl"
 					sx={{
-						background: `linear-gradient(135deg, ${theme.palette.success.main} 0%, ${theme.palette.primary.main} 100%)`
+						background: `linear-gradient(135deg, ${theme.palette[eligibilityData.tierColor].main} 0%, ${theme.palette[eligibilityData.tierColor].light} 100%)`,
+						boxShadow: `0 4px 12px ${alpha(theme.palette[eligibilityData.tierColor].main, 0.3)}`
 					}}
 				>
 					<FuseSvgIcon
@@ -214,129 +294,317 @@ function LoanEligibilityCard({ summary, isLoading }) {
 						</FuseSvgIcon>
 					}
 				/>
+				<Typography
+					variant="caption"
+					color="text.secondary"
+					className="block mt-8"
+				>
+					{eligibilityData.tierDescription}
+				</Typography>
 			</Box>
 
-			{/* Max Loan Amount */}
-			{eligibilityData.maxLoanAmount > 0 && (
-				<Box
-					className="p-16 rounded-xl mb-24"
-					sx={{
-						backgroundColor: alpha(theme.palette.success.main, 0.1),
-						border: `1px solid ${alpha(theme.palette.success.main, 0.3)}`
-					}}
-				>
-					<Typography
-						variant="caption"
-						color="text.secondary"
-						className="block mb-4"
+			{/* Loan Amount & Repayment Details */}
+			{eligibilityData.qualifiesForLoan ? (
+				<>
+					{/* Qualified - Show Available Loan Amount */}
+					<Box
+						className="p-16 rounded-xl mb-16"
+						sx={{
+							backgroundColor: alpha(theme.palette.success.main, 0.1),
+							border: `1px solid ${alpha(theme.palette.success.main, 0.3)}`
+						}}
 					>
-						Maximum Loan Amount
-					</Typography>
-					<Typography
-						variant="h4"
-						className="font-bold text-success-600"
+						<Typography
+							variant="caption"
+							color="text.secondary"
+							className="block mb-4"
+						>
+							Loan Amount Available
+						</Typography>
+						<Typography
+							variant="h4"
+							className="font-bold"
+							sx={{ color: theme.palette.success.main }}
+						>
+							{eligibilityData.maxLoanAmount.toLocaleString('en-NG', {
+								style: 'currency',
+								currency: 'NGN',
+								minimumFractionDigits: 0
+							})}
+						</Typography>
+					</Box>
+
+					{/* Repayment Details */}
+					<Box
+						className="p-16 rounded-xl mb-24"
+						sx={{
+							backgroundColor: alpha(theme.palette.primary.main, 0.05),
+							border: `1px dashed ${alpha(theme.palette.primary.main, 0.3)}`
+						}}
 					>
-						{eligibilityData.maxLoanAmount.toLocaleString('en-NG', {
-							style: 'currency',
-							currency: 'NGN',
-							minimumFractionDigits: 0
-						})}
-					</Typography>
-				</Box>
+						<Grid
+							container
+							spacing={2}
+						>
+							<Grid
+								item
+								xs={6}
+							>
+								<Typography
+									variant="caption"
+									color="text.secondary"
+								>
+									Repayment Period
+								</Typography>
+								<Typography
+									variant="body1"
+									className="font-semibold"
+								>
+									{eligibilityData.repaymentPeriod} months
+								</Typography>
+							</Grid>
+							<Grid
+								item
+								xs={6}
+							>
+								<Typography
+									variant="caption"
+									color="text.secondary"
+								>
+									Monthly Payment
+								</Typography>
+								<Typography
+									variant="body1"
+									className="font-semibold"
+								>
+									{eligibilityData.monthlyRepayment.toLocaleString('en-NG', {
+										style: 'currency',
+										currency: 'NGN',
+										minimumFractionDigits: 0
+									})}
+								</Typography>
+							</Grid>
+						</Grid>
+					</Box>
+				</>
+			) : (
+				<>
+					{/* Not Qualified - Show Progress Info */}
+					<Box
+						className="p-16 rounded-xl mb-16"
+						sx={{
+							backgroundColor: alpha(theme.palette.warning.main, 0.05),
+							border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`
+						}}
+					>
+						<Box className="flex items-start gap-12">
+							<FuseSvgIcon
+								className="text-warning"
+								size={20}
+							>
+								heroicons-outline:information-circle
+							</FuseSvgIcon>
+							<Box className="flex-1">
+								<Typography
+									variant="body2"
+									className="font-semibold mb-4"
+								>
+									Loan Qualification Progress
+								</Typography>
+								<Typography
+									variant="caption"
+									color="text.secondary"
+								>
+									You need {LOAN_CONFIG.MINIMUM_COMMISSION_FOR_LOAN.toLocaleString('en-NG', {
+										style: 'currency',
+										currency: 'NGN',
+										minimumFractionDigits: 0
+									})} in total commissions to qualify for a loan.
+								</Typography>
+								<Typography
+									variant="caption"
+									color="text.secondary"
+									className="block mt-8"
+								>
+									Current commissions: {eligibilityData.totalCommissions.toLocaleString('en-NG', {
+										style: 'currency',
+										currency: 'NGN',
+										minimumFractionDigits: 0
+									})}
+								</Typography>
+								{eligibilityData.commissionNeeded > 0 && (
+									<Typography
+										variant="caption"
+										className="block mt-4 font-semibold"
+										sx={{ color: theme.palette.warning.main }}
+									>
+										Only {eligibilityData.commissionNeeded.toLocaleString('en-NG', {
+											style: 'currency',
+											currency: 'NGN',
+											minimumFractionDigits: 0
+										})} more needed!
+									</Typography>
+								)}
+							</Box>
+						</Box>
+					</Box>
+
+					{/* Show Potential Loan Amount */}
+					{eligibilityData.potentialLoanAmount > 0 && (
+						<Box
+							className="p-16 rounded-xl mb-24"
+							sx={{
+								backgroundColor: alpha(theme.palette.info.main, 0.05),
+								border: `1px dashed ${alpha(theme.palette.info.main, 0.2)}`
+							}}
+						>
+							<Typography
+								variant="caption"
+								color="text.secondary"
+								className="block mb-4"
+							>
+								Your Potential Loan Amount (when qualified)
+							</Typography>
+							<Typography
+								variant="h5"
+								className="font-bold"
+								color="info"
+							>
+								{eligibilityData.potentialLoanAmount.toLocaleString('en-NG', {
+									style: 'currency',
+									currency: 'NGN',
+									minimumFractionDigits: 0
+								})}
+							</Typography>
+							<Typography
+								variant="caption"
+								color="text.secondary"
+								className="block mt-4"
+							>
+								Based on your current commission of {eligibilityData.totalCommissions.toLocaleString('en-NG', {
+									style: 'currency',
+									currency: 'NGN',
+									minimumFractionDigits: 0
+								})} × 125%
+							</Typography>
+						</Box>
+					)}
+				</>
 			)}
 
 			{/* Key Metrics */}
 			<Divider className="mb-16" />
-			<Grid
-				container
-				spacing={2}
-			>
-				<Grid
-					item
-					xs={6}
+			<Box className="mb-16">
+				<Typography
+					variant="caption"
+					color="text.secondary"
+					className="block mb-12"
 				>
-					<Typography
-						variant="caption"
-						color="text.secondary"
-					>
-						Transaction Volume
-					</Typography>
-					<Typography
-						variant="body2"
-						className="font-semibold"
-					>
-						{eligibilityData.totalVolume.toLocaleString('en-NG', {
-							style: 'currency',
-							currency: 'NGN',
-							minimumFractionDigits: 0
-						})}
-					</Typography>
-				</Grid>
+					Eligibility Factors
+				</Typography>
 				<Grid
-					item
-					xs={6}
+					container
+					spacing={2}
 				>
-					<Typography
-						variant="caption"
-						color="text.secondary"
+					{/* Primary Factor - Commissions (highlighted) */}
+					<Grid
+						item
+						xs={12}
 					>
-						Total Earnings
-					</Typography>
-					<Typography
-						variant="body2"
-						className="font-semibold"
+						<Box
+							className="p-12 rounded-lg"
+							sx={{
+								backgroundColor: alpha(theme.palette.primary.main, 0.08),
+								border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`
+							}}
+						>
+							<Box className="flex items-center gap-8 mb-4">
+								<FuseSvgIcon
+									className="text-primary"
+									size={16}
+								>
+									heroicons-outline:star
+								</FuseSvgIcon>
+								<Typography
+									variant="caption"
+									color="primary"
+									className="font-semibold"
+								>
+									Total Commissions Paid (Primary Factor)
+								</Typography>
+							</Box>
+							<Typography
+								variant="h6"
+								className="font-bold"
+								color="primary"
+							>
+								{eligibilityData.totalCommissions.toLocaleString('en-NG', {
+									style: 'currency',
+									currency: 'NGN',
+									minimumFractionDigits: 0
+								})}
+							</Typography>
+							<Typography
+								variant="caption"
+								color="text.secondary"
+								className="block mt-4"
+							>
+								Loan calculation: Commissions × 125% = {(eligibilityData.totalCommissions * eligibilityData.commissionRatio).toLocaleString('en-NG', {
+									style: 'currency',
+									currency: 'NGN',
+									minimumFractionDigits: 0
+								})}
+							</Typography>
+						</Box>
+					</Grid>
+
+					{/* Supporting Metrics */}
+					<Grid
+						item
+						xs={6}
 					>
-						{eligibilityData.totalEarnings.toLocaleString('en-NG', {
-							style: 'currency',
-							currency: 'NGN',
-							minimumFractionDigits: 0
-						})}
-					</Typography>
+						<Typography
+							variant="caption"
+							color="text.secondary"
+						>
+							Transaction Volume
+						</Typography>
+						<Typography
+							variant="body2"
+							className="font-semibold"
+						>
+							{eligibilityData.totalVolume.toLocaleString('en-NG', {
+								style: 'currency',
+								currency: 'NGN',
+								minimumFractionDigits: 0
+							})}
+						</Typography>
+					</Grid>
+					<Grid
+						item
+						xs={6}
+					>
+						<Typography
+							variant="caption"
+							color="text.secondary"
+						>
+							Total Transactions
+						</Typography>
+						<Typography
+							variant="body2"
+							className="font-semibold"
+						>
+							{eligibilityData.transactionCount}
+						</Typography>
+					</Grid>
 				</Grid>
-				<Grid
-					item
-					xs={6}
-				>
-					<Typography
-						variant="caption"
-						color="text.secondary"
-					>
-						Commissions Earned
-					</Typography>
-					<Typography
-						variant="body2"
-						className="font-semibold"
-					>
-						{eligibilityData.totalCommissions.toLocaleString('en-NG', {
-							style: 'currency',
-							currency: 'NGN',
-							minimumFractionDigits: 0
-						})}
-					</Typography>
-				</Grid>
-				<Grid
-					item
-					xs={6}
-				>
-					<Typography
-						variant="caption"
-						color="text.secondary"
-					>
-						Total Transactions
-					</Typography>
-					<Typography
-						variant="body2"
-						className="font-semibold"
-					>
-						{eligibilityData.transactionCount}
-					</Typography>
-				</Grid>
-			</Grid>
+			</Box>
 
 			{/* CTA Button */}
-			{eligibilityData.maxLoanAmount > 0 && (
+			<Divider className="my-16" />
+			{eligibilityData.qualifiesForLoan ? (
 				<>
-					<Divider className="my-16" />
+					{/* Qualified Merchants - Active Apply Button */}
 					<Button
 						variant="contained"
 						color="success"
@@ -347,13 +615,53 @@ function LoanEligibilityCard({ summary, isLoading }) {
 						}
 						sx={{
 							background: `linear-gradient(135deg, ${theme.palette.success.main} 0%, ${theme.palette.success.dark} 100%)`,
+							boxShadow: `0 4px 12px ${alpha(theme.palette.success.main, 0.4)}`,
 							'&:hover': {
-								background: `linear-gradient(135deg, ${theme.palette.success.dark} 0%, ${theme.palette.success.main} 100%)`
+								background: `linear-gradient(135deg, ${theme.palette.success.dark} 0%, ${theme.palette.success.main} 100%)`,
+								boxShadow: `0 6px 16px ${alpha(theme.palette.success.main, 0.5)}`
 							}
 						}}
 					>
-						Apply for Loan
+						Apply for Loan • {eligibilityData.repaymentPeriod} Month Term
 					</Button>
+					<Typography
+						variant="caption"
+						color="text.secondary"
+						className="block text-center mt-8"
+					>
+						Get {eligibilityData.maxLoanAmount.toLocaleString('en-NG', {
+							style: 'currency',
+							currency: 'NGN',
+							minimumFractionDigits: 0
+						})} with {eligibilityData.repaymentPeriod}-month flexible repayment
+					</Typography>
+				</>
+			) : (
+				<>
+					{/* Not Qualified - Disabled Button */}
+					<Button
+						variant="outlined"
+						fullWidth
+						size="large"
+						disabled
+						startIcon={
+							<FuseSvgIcon size={20}>heroicons-outline:lock-closed</FuseSvgIcon>
+						}
+						sx={{
+							borderColor: alpha(theme.palette.text.disabled, 0.2)
+						}}
+					>
+						Loan Application Locked
+					</Button>
+					<Typography
+						variant="caption"
+						color="text.secondary"
+						className="block text-center mt-8"
+					>
+						{eligibilityData.totalCommissions > 0
+							? `You're ${Math.round((eligibilityData.totalCommissions / LOAN_CONFIG.MINIMUM_COMMISSION_FOR_LOAN) * 100)}% of the way to qualifying! Keep earning commissions.`
+							: 'Start earning commissions to unlock loan eligibility'}
+					</Typography>
 				</>
 			)}
 		</Card>

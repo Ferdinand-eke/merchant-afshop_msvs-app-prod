@@ -16,6 +16,8 @@ function InvoiceTab(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const { order, myshopData } = props;
 
+	console.log('InvoiceTab Props:', myshopData?.merchantShopplan?.serviceChargeFeeOption);
+
 	const [cashOutDialogOpen, setCashOutDialogOpen] = useState(false);
 
 	const {
@@ -40,7 +42,7 @@ function InvoiceTab(props) {
 	/** *Calculations for earnings starts */
 
 	// Walk-in service charge constant (100 naira for walk-in guests)
-	const WALKIN_SERVICE_CHARGE = 100;
+	const WALKIN_SERVICE_CHARGE = myshopData?.merchantShopplan?.serviceChargeFeeOption  || 0;
 
 	// Check if this is a walk-in reservation
 	const isWalkInGuest = order?.isWalkIn;

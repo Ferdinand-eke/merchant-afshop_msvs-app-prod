@@ -43,6 +43,7 @@ function ReservationOrder() {
 	async function getSingleApiShopDetails() {
 		setLoading(true);
 		const responseData = await getJustMyShopDetailsAndPlan();
+		// console.log('Shop Details Response:', responseData);
 
 		if (responseData) {
 			setMyshopData(responseData?.data);
@@ -293,6 +294,7 @@ function ReservationOrder() {
 					)}
 				</>
 			}
+			
 			scroll={isMobile ? 'normal' : 'content'}
 		/>
 	);

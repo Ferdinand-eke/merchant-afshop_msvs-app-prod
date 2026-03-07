@@ -1,6 +1,5 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { motion } from 'framer-motion';
-import FuseLoading from '@fuse/core/FuseLoading';
 import { useMemo } from 'react';
 import useGetMyShopDetails, {
 	useGetShopAccountBalance
@@ -10,6 +9,7 @@ import PreviousStatementWidget from './widgets/PreviousStatementWidget';
 import CurrentStatementWidget from './widgets/CurrentStatementWidget';
 import AccountBalanceWidget from './widgets/AccountBalanceWidget';
 import TransactionsReportWidget from './widgets/TransactionsReportWidget';
+import { DashboardPageSkeleton } from './widgets/FinanceLoadingSkeleton';
 import { useGetFinanceDashboardWidgetsQuery } from './FinanceDashboardApi';
 
 
@@ -59,7 +59,17 @@ function FinanceDashboardApp() {
 	// console.log("Merchant fintech account data", { shopAccount, accountData });
 
 	if (isLoading) {
-		return <FuseLoading />;
+		return (
+			<FusePageSimple
+				header={
+					<FinanceDashboardAppHeader
+						shopData={shopData}
+						isLoading={shopDataLoading}
+					/>
+				}
+				content={<DashboardPageSkeleton />}
+			/>
+		);
 	}
 
 	if (!widgets) {

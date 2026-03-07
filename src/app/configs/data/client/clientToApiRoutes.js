@@ -52,7 +52,7 @@ export function AuthApi() {
 
 			if (error?.response?.status === 403) {
 				console.log('responseSTATS', error?.response?.status);
-				// merchantLogOutCall();
+				merchantLogOutCall();
 				// toast.error(
 				//   error.response && error.response.data.message
 				//     ? error.response.data.message

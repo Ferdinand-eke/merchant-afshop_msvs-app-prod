@@ -5,28 +5,37 @@ import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import { Grid, Divider, alpha, useTheme } from '@mui/material';
 import { memo, useState } from 'react';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import FuseLoading from '@fuse/core/FuseLoading';
+import { StatementWidgetSkeleton } from './FinanceLoadingSkeleton';
 import LinkBankAccountDialog from './LinkBankAccountDialog';
 import WithdrawFundsDialog from './WithdrawFundsDialog';
+import RemittancePlatformChargeDialog from './RemittancePlatformChargeDialog';
 
 /**
  * The CurrentStatementWidget widget.
  */
 function CurrentStatementWidget({ shopData, shopDataLoading }) {
+	const theme = useTheme();
 	const [linkBankDialogOpen, setLinkBankDialogOpen] = useState(false);
 	const [withdrawDialogOpen, setWithdrawDialogOpen] = useState(false);
+	const [remittanceDialogOpen, setRemittanceDialogOpen] = useState(false);
 
 	if (shopDataLoading) {
-		return <FuseLoading />;
+		return <StatementWidgetSkeleton />;
 	}
 
 	if (!shopData) {
 		return null;
 	}
 
+	console.log("Shop__DATA___Recheck :", shopData);
+
+	// Extract account balances
 	const accountBalance = shopData?.shopaccount?.accountbalance || 0;
+	const deskBalance = shopData?.shopdeskaccount?.deskbalance || 0;
+	const platformChargeBalance = shopData?.platformChargeAccount?.servicechargebalance || 0;
 	const hasLinkedBank = shopData?.linkedBankName && shopData?.linkedBankAccountNumber;
 
 	const handleWithdrawClick = () => {
@@ -37,194 +46,438 @@ function CurrentStatementWidget({ shopData, shopDataLoading }) {
 		}
 	};
 
+	const handleRemittanceSuccess = (remittanceData) => {
+		console.log('Remittance successful:', remittanceData);
+		// Here you can call an API to update the backend with the remittance info
+		// Example: updateRemittance(remittanceData);
+
+		// Close dialog
+		setRemittanceDialogOpen(false);
+
+		// You might want to refresh the shop data here
+		// refetchShopData();
+	};
+
 	return (
 		<>
-			<Paper
-				className="relative flex flex-col flex-auto p-32 rounded-2xl shadow-lg overflow-hidden"
-				sx={{
-					background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%)',
-					border: '1px solid',
-					borderColor: 'divider'
-				}}
-			>
-				{/* Header Section */}
-				<Box className="flex items-start justify-between mb-24">
-					<Box className="flex items-start gap-16">
-						<Box
-							className="flex items-center justify-center w-56 h-56 rounded-xl"
-							sx={{
-								background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-								boxShadow: '0 8px 16px 0 rgba(102, 126, 234, 0.4)'
-							}}
-						>
-							<FuseSvgIcon
-								size={28}
-								className="text-white"
-							>
-								heroicons-outline:currency-dollar
-							</FuseSvgIcon>
-						</Box>
-						<Box>
-							<Typography className="text-lg font-semibold tracking-tight leading-6">
-								Available Balance
-							</Typography>
-							<Typography
-								variant="caption"
-								className="text-sm mt-4 flex items-center gap-8"
-								color="text.secondary"
-							>
-								Merchant's Earnings
-								<Chip
-									label="Live"
-									size="small"
-									sx={{
-										height: 20,
-										fontSize: '0.7rem',
-										background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-										color: 'white',
-										fontWeight: 600
-									}}
-								/>
-							</Typography>
-						</Box>
-					</Box>
-
-					<Tooltip title="Refresh balance">
-						<IconButton size="small">
-							<FuseSvgIcon
-								size={20}
-								className="text-gray-600 dark:text-gray-400"
-							>
-								heroicons-outline:refresh
-							</FuseSvgIcon>
-						</IconButton>
-					</Tooltip>
-				</Box>
-
-				{/* Balance Display */}
-				<Box className="mb-32">
+			{/* Main Header */}
+			<Box className="flex items-center justify-between mb-24">
+				<Box>
 					<Typography
-						className="font-bold text-5xl leading-none mb-8"
-						sx={{
-							background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-							WebkitBackgroundClip: 'text',
-							WebkitTextFillColor: 'transparent',
-							backgroundClip: 'text'
-						}}
+						variant="h5"
+						className="font-bold"
 					>
-						{accountBalance.toLocaleString('en-NG', {
-							style: 'currency',
-							currency: 'NGN'
-						})}
+						Account Overview
 					</Typography>
 					<Typography
 						variant="caption"
 						color="text.secondary"
 					>
-						Total earnings from trades
+						Monitor all your account balances and transactions
 					</Typography>
 				</Box>
+				<Tooltip title="Refresh all balances">
+					<IconButton>
+						<FuseSvgIcon size={20}>heroicons-outline:arrow-path</FuseSvgIcon>
+					</IconButton>
+				</Tooltip>
+			</Box>
 
-				{/* Bank Account Status */}
-				<Box className="mb-24 p-16 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-					<Box className="flex items-center justify-between">
-						<Box className="flex items-center gap-12">
-							<FuseSvgIcon
-								size={20}
-								className={hasLinkedBank ? 'text-green-600' : 'text-orange-600'}
+			{/* Three Account Cards Grid */}
+			<Grid
+				container
+				spacing={3}
+			>
+				{/* 1. Platform Earnings Account (Main Shop Account) */}
+				<Grid
+					item
+					xs={12}
+					md={4}
+				>
+					<Paper
+						className="relative flex flex-col p-24 rounded-2xl shadow-lg overflow-hidden h-full"
+						sx={{
+							background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%)',
+							border: '1px solid',
+							borderColor: 'divider'
+						}}
+					>
+						{/* Account Icon & Title */}
+						<Box className="flex items-start gap-12 mb-16">
+							<Box
+								className="flex items-center justify-center w-48 h-48 rounded-xl"
+								sx={{
+									background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+									boxShadow: '0 4px 12px 0 rgba(102, 126, 234, 0.4)'
+								}}
 							>
-								{hasLinkedBank ? 'heroicons-solid:check-badge' : 'heroicons-outline:exclamation-triangle'}
-							</FuseSvgIcon>
-							<Box>
-								<Typography
-									variant="body2"
-									className="font-medium"
+								<FuseSvgIcon
+									size={24}
+									className="text-white"
 								>
-									{hasLinkedBank ? 'Bank Account Linked' : 'No Bank Account Linked'}
-								</Typography>
-								{hasLinkedBank ? (
-									<Typography
-										variant="caption"
-										color="text.secondary"
-									>
-										{shopData?.linkedBankName} - ****
-										{shopData?.linkedBankAccountNumber?.slice(-4)}
-									</Typography>
-								) : (
-									<Typography
-										variant="caption"
-										color="text.secondary"
-									>
-										Link your bank account to enable withdrawals
-									</Typography>
-								)}
+									heroicons-outline:currency-dollar
+								</FuseSvgIcon>
+							</Box>
+							<Box>
+								<Typography className="font-semibold">Platform Earnings</Typography>
+								<Chip
+									label="Withdrawable"
+									size="small"
+									sx={{
+										height: 18,
+										fontSize: '0.65rem',
+										background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+										color: 'white',
+										fontWeight: 600,
+										mt: 0.5
+									}}
+								/>
 							</Box>
 						</Box>
-						{!hasLinkedBank && (
-							<Button
-								variant="text"
-								size="small"
-								color="secondary"
-								onClick={() => setLinkBankDialogOpen(true)}
-								startIcon={<FuseSvgIcon size={16}>heroicons-outline:link</FuseSvgIcon>}
-							>
-								Link Now
-							</Button>
-						)}
-					</Box>
-				</Box>
 
-				{/* Action Buttons */}
-				<Box className="flex gap-12">
-					<Button
-						variant="contained"
-						fullWidth
-						size="large"
-						disabled={accountBalance <= 0}
-						onClick={handleWithdrawClick}
-						sx={{
-							background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-							boxShadow: '0 4px 12px 0 rgba(102, 126, 234, 0.4)',
-							'&:hover': {
-								background: 'linear-gradient(135deg, #5568d3 0%, #63408b 100%)',
-								boxShadow: '0 6px 16px 0 rgba(102, 126, 234, 0.6)'
-							},
-							'&:disabled': {
-								background: 'rgba(0, 0, 0, 0.12)',
-								boxShadow: 'none'
-							}
-						}}
-						startIcon={<FuseSvgIcon size={20}>heroicons-outline:arrow-down-tray</FuseSvgIcon>}
-					>
-						Withdraw Funds
-					</Button>
-
-					<Tooltip title="View transaction history">
-						<IconButton
-							size="large"
+						{/* Balance */}
+						<Typography
+							className="font-bold text-3xl mb-4"
 							sx={{
-								border: '1px solid',
-								borderColor: 'divider',
-								borderRadius: 2
+								background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+								WebkitBackgroundClip: 'text',
+								WebkitTextFillColor: 'transparent'
 							}}
 						>
-							<FuseSvgIcon size={20}>heroicons-outline:document-text</FuseSvgIcon>
-						</IconButton>
-					</Tooltip>
-				</Box>
+							{accountBalance.toLocaleString('en-NG', {
+								style: 'currency',
+								currency: 'NGN',
+								minimumFractionDigits: 0
+							})}
+						</Typography>
 
-				{/* Background Decoration */}
-				<Box
-					className="absolute -bottom-24 -right-24 opacity-10 dark:opacity-5"
-					sx={{
-						width: 200,
-						height: 200,
-						background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-						borderRadius: '50%',
-						filter: 'blur(40px)'
-					}}
-				/>
-			</Paper>
+						<Typography
+							variant="caption"
+							color="text.secondary"
+							className="mb-16"
+						>
+							From platform-tracked trades
+						</Typography>
+
+						<Divider className="mb-16" />
+
+						{/* Bank Status */}
+						<Box
+							className="p-12 rounded-lg mb-16"
+							sx={{
+								backgroundColor: alpha(
+									hasLinkedBank ? theme.palette.success.main : theme.palette.warning.main,
+									0.1
+								)
+							}}
+						>
+							<Box className="flex items-center gap-8">
+								<FuseSvgIcon
+									size={16}
+									className={hasLinkedBank ? 'text-green-600' : 'text-orange-600'}
+								>
+									{hasLinkedBank
+										? 'heroicons-solid:check-badge'
+										: 'heroicons-outline:exclamation-triangle'}
+								</FuseSvgIcon>
+								<Typography variant="caption">{hasLinkedBank ? 'Bank Linked' : 'Link Bank'}</Typography>
+							</Box>
+						</Box>
+
+						{/* Action Button */}
+						<Button
+							variant="contained"
+							fullWidth
+							disabled={accountBalance <= 0}
+							onClick={handleWithdrawClick}
+							sx={{
+								background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+								'&:hover': {
+									background: 'linear-gradient(135deg, #5568d3 0%, #63408b 100%)'
+								}
+							}}
+							startIcon={<FuseSvgIcon size={18}>heroicons-outline:arrow-down-tray</FuseSvgIcon>}
+						>
+							Withdraw
+						</Button>
+
+						{/* Decoration */}
+						<Box
+							className="absolute -bottom-12 -right-12 opacity-10"
+							sx={{
+								width: 100,
+								height: 100,
+								background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+								borderRadius: '50%',
+								filter: 'blur(30px)'
+							}}
+						/>
+					</Paper>
+				</Grid>
+
+				{/* 2. Desk Account (Walk-in/POS Transactions) */}
+				<Grid
+					item
+					xs={12}
+					md={4}
+				>
+					<Paper
+						className="relative flex flex-col p-24 rounded-2xl shadow-lg overflow-hidden h-full"
+						sx={{
+							background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%)',
+							border: '1px solid',
+							borderColor: 'divider'
+						}}
+					>
+						{/* Account Icon & Title */}
+						<Box className="flex items-start gap-12 mb-16">
+							<Box
+								className="flex items-center justify-center w-48 h-48 rounded-xl"
+								sx={{
+									background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+									boxShadow: '0 4px 12px 0 rgba(16, 185, 129, 0.4)'
+								}}
+							>
+								<FuseSvgIcon
+									size={24}
+									className="text-white"
+								>
+									heroicons-outline:building-storefront
+								</FuseSvgIcon>
+							</Box>
+							<Box>
+								<Typography className="font-semibold">Desk Account</Typography>
+								<Chip
+									label="Direct Sales"
+									size="small"
+									sx={{
+										height: 18,
+										fontSize: '0.65rem',
+										background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+										color: 'white',
+										fontWeight: 600,
+										mt: 0.5
+									}}
+								/>
+							</Box>
+						</Box>
+
+						{/* Balance */}
+						<Typography
+							className="font-bold text-3xl mb-4"
+							sx={{
+								background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+								WebkitBackgroundClip: 'text',
+								WebkitTextFillColor: 'transparent'
+							}}
+						>
+							{deskBalance.toLocaleString('en-NG', {
+								style: 'currency',
+								currency: 'NGN',
+								minimumFractionDigits: 0
+							})}
+						</Typography>
+
+						<Typography
+							variant="caption"
+							color="text.secondary"
+							className="mb-16"
+						>
+							Walk-in, POS & cash transactions
+						</Typography>
+
+						<Divider className="mb-16" />
+
+						{/* Info Box */}
+						<Box
+							className="p-12 rounded-lg mb-16"
+							sx={{
+								backgroundColor: alpha(theme.palette.info.main, 0.1)
+							}}
+						>
+							<Box className="flex items-start gap-8">
+								<FuseSvgIcon
+									size={16}
+									className="text-info"
+								>
+									heroicons-outline:information-circle
+								</FuseSvgIcon>
+								<Typography
+									variant="caption"
+									color="text.secondary"
+								>
+									These are direct payments to your business not tracked by the platform
+								</Typography>
+							</Box>
+						</Box>
+
+						{/* Action Button */}
+						<Button
+							variant="contained"
+							fullWidth
+							color="success"
+							disabled
+							sx={{
+								opacity: 0.6
+							}}
+							startIcon={<FuseSvgIcon size={18}>heroicons-outline:eye</FuseSvgIcon>}
+						>
+							View Only
+						</Button>
+
+						{/* Decoration */}
+						<Box
+							className="absolute -bottom-12 -right-12 opacity-10"
+							sx={{
+								width: 100,
+								height: 100,
+								background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+								borderRadius: '50%',
+								filter: 'blur(30px)'
+							}}
+						/>
+					</Paper>
+				</Grid>
+
+				{/* 3. Platform Charges (Service Fees Owed) */}
+				<Grid
+					item
+					xs={12}
+					md={4}
+				>
+					<Paper
+						className="relative flex flex-col p-24 rounded-2xl shadow-lg overflow-hidden h-full"
+						sx={{
+							background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%)',
+							border: '1px solid',
+							borderColor: 'divider'
+						}}
+					>
+						{/* Account Icon & Title */}
+						<Box className="flex items-start gap-12 mb-16">
+							<Box
+								className="flex items-center justify-center w-48 h-48 rounded-xl"
+								sx={{
+									background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+									boxShadow: '0 4px 12px 0 rgba(239, 68, 68, 0.4)'
+								}}
+							>
+								<FuseSvgIcon
+									size={24}
+									className="text-white"
+								>
+									heroicons-outline:receipt-percent
+								</FuseSvgIcon>
+							</Box>
+							<Box>
+								<Typography className="font-semibold">Platform Charges</Typography>
+								<Chip
+									label={platformChargeBalance > 0 ? 'Payment Due' : 'Paid'}
+									size="small"
+									sx={{
+										height: 18,
+										fontSize: '0.65rem',
+										background:
+											platformChargeBalance > 0
+												? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
+												: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+										color: 'white',
+										fontWeight: 600,
+										mt: 0.5
+									}}
+								/>
+							</Box>
+						</Box>
+
+						{/* Balance */}
+						<Typography
+							className="font-bold text-3xl mb-4"
+							sx={{
+								background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+								WebkitBackgroundClip: 'text',
+								WebkitTextFillColor: 'transparent'
+							}}
+						>
+							{platformChargeBalance.toLocaleString('en-NG', {
+								style: 'currency',
+								currency: 'NGN',
+								minimumFractionDigits: 0
+							})}
+						</Typography>
+
+						<Typography
+							variant="caption"
+							color="text.secondary"
+							className="mb-16"
+						>
+							Service charges from desk transactions
+						</Typography>
+
+						<Divider className="mb-16" />
+
+						{/* Warning Box */}
+						{platformChargeBalance > 0 && (
+							<Box
+								className="p-12 rounded-lg mb-16"
+								sx={{
+									backgroundColor: alpha(theme.palette.warning.main, 0.1)
+								}}
+							>
+								<Box className="flex items-start gap-8">
+									<FuseSvgIcon
+										size={16}
+										className="text-warning"
+									>
+										heroicons-outline:exclamation-triangle
+									</FuseSvgIcon>
+									<Typography
+										variant="caption"
+										color="text.secondary"
+									>
+										Please remit service charges to continue operations
+									</Typography>
+								</Box>
+							</Box>
+						)}
+
+						{/* Action Button */}
+						<Button
+							variant="contained"
+							fullWidth
+							color="error"
+							disabled={platformChargeBalance <= 0}
+							onClick={() => setRemittanceDialogOpen(true)}
+							sx={{
+								background:
+									platformChargeBalance > 0
+										? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
+										: undefined,
+								'&:hover':
+									platformChargeBalance > 0
+										? {
+												background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)'
+											}
+										: undefined
+							}}
+							startIcon={<FuseSvgIcon size={18}>heroicons-outline:credit-card</FuseSvgIcon>}
+						>
+							{platformChargeBalance > 0 ? 'Pay Now' : 'No Charges'}
+						</Button>
+
+						{/* Decoration */}
+						<Box
+							className="absolute -bottom-12 -right-12 opacity-10"
+							sx={{
+								width: 100,
+								height: 100,
+								background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+								borderRadius: '50%',
+								filter: 'blur(30px)'
+							}}
+						/>
+					</Paper>
+				</Grid>
+			</Grid>
 
 			{/* Dialogs */}
 			<LinkBankAccountDialog
@@ -238,6 +491,13 @@ function CurrentStatementWidget({ shopData, shopDataLoading }) {
 				onClose={() => setWithdrawDialogOpen(false)}
 				shopData={shopData}
 				availableBalance={accountBalance}
+			/>
+
+			<RemittancePlatformChargeDialog
+				open={remittanceDialogOpen}
+				onClose={() => setRemittanceDialogOpen(false)}
+				shopData={shopData}
+				onRemittanceSuccess={handleRemittanceSuccess}
 			/>
 		</>
 	);
