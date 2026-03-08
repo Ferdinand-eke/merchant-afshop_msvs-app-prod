@@ -38,6 +38,7 @@ function BookingPropertyHeader() {
 	const deleteBookingsProperty = useDeleteBookingPropertyMutation();
 
 	function handleSaveApartment() {
+		
 		const values = getValues();
 		const formData = {
 			...values,
@@ -61,12 +62,23 @@ function BookingPropertyHeader() {
 			floorLevel: parseInt(values?.floorLevel),
 			numberOfFloors: parseInt(values?.numberOfFloors),
 			plotArea: parseInt(values?.plotArea),
-			securityDeposit: parseInt(values?.securityDeposit)
+			securityDeposit: parseInt(values?.securityDeposit),
+
+			// VAT fields
+			vatEnabled: Boolean(values?.vatEnabled),
+			vatRate: parseFloat(values?.vatRate) || 0,
+			priceWithoutVAT: parseInt(values?.priceWithoutVAT) || 0,
+			priceWithVAT: parseInt(values?.priceWithVAT) || 0,
+			vatAmount: parseInt(values?.vatAmount) || 0
 		};
 		updateBookingsProperty.mutate(formData);
 	}
 
 	function handleCreateApartment() {
+
+		console.log('Creating property with form data:', getValues());
+
+		return
 
 		const values = getValues();
 		const formData = {
@@ -90,7 +102,14 @@ function BookingPropertyHeader() {
 			floorLevel: parseInt(values?.floorLevel),
 			numberOfFloors: parseInt(values?.numberOfFloors),
 			plotArea: parseInt(values?.plotArea),
-			securityDeposit: parseInt(values?.securityDeposit)
+			securityDeposit: parseInt(values?.securityDeposit),
+
+			// VAT fields
+			vatEnabled: Boolean(values?.vatEnabled),
+			vatRate: parseFloat(values?.vatRate) || 0,
+			priceWithoutVAT: parseInt(values?.priceWithoutVAT) || 0,
+			priceWithVAT: parseInt(values?.priceWithVAT) || 0,
+			vatAmount: parseInt(values?.vatAmount) || 0
 		};
 		return
 		// addBookingsProperty.mutate(formData);

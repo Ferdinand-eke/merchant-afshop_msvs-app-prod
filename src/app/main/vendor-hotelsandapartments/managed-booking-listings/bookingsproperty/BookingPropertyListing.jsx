@@ -36,6 +36,7 @@ const schema = z.object({
 	longitude: z.string()
 });
 
+
 /**
  * The propertyList page.
  */
@@ -90,7 +91,6 @@ function BookingPropertyListing() {
 		setTabValue(getStoredTab());
 	}, [productId]);
 
-	// console.log('propertyList__AND___property-listImages', propertyList?.data?.bookingList);
 
 	/**
 	 * Tab Change

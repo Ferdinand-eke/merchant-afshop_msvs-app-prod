@@ -7,9 +7,15 @@ const ProductModel = (data) =>
 		// id: _.uniqueId('product-'),
 		title: '',
 		// description: '',
-		images: []
+		images: [],
 		// width: '',
 		// length: '',
 		// price: '',
+		// VAT fields
+		vatEnabled: false,
+		vatRate: 7.5,
+		priceWithoutVAT: 0,
+		priceWithVAT: 0,
+		vatAmount: 0
 	});
 export default ProductModel;

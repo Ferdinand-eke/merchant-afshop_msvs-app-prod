@@ -25,35 +25,42 @@ import { formatCurrency } from 'src/app/main/vendors-shop/pos/PosUtils';
  */
 function PricingTabProperty({ shopData }) {
 	const methods = useFormContext();
-	const { control, watch } = methods;
-
-	const [vatEnabled, setVatEnabled] = useState(false);
-	const [vatRate, setVatRate] = useState(7.5); // Default VAT rate for Nigeria
-	const [priceWithoutVAT, setPriceWithoutVAT] = useState(0);
-	const [priceWithVAT, setPriceWithVAT] = useState(0);
-	const [vatAmount, setVatAmount] = useState(0);
+	const { control, watch, setValue } = methods;
 
 	const currentPrice = watch('price') || 0;
+	const vatEnabled = watch('vatEnabled') || false;
+	const vatRate = watch('vatRate') || 7.5;
 	const commissionRate = shopData?.data?.merchant?.merchantShopplan?.percetageCommissionCharge || 0;
 	const commissionConversion = shopData?.data?.merchant?.merchantShopplan?.percetageCommissionChargeConversion || 0;
 
 	// Calculate VAT and prices
 	useEffect(() => {
 		if (vatEnabled && currentPrice > 0) {
-			const basePrice = currentPrice / (1 + vatRate / 100);
-			const vat = currentPrice - basePrice;
-			setPriceWithoutVAT(basePrice);
-			setVatAmount(vat);
-			setPriceWithVAT(currentPrice);
+			// Base price is the entered price (without VAT)
+			const basePrice = Math.round(currentPrice);
+			// VAT is ADDED to the base price
+			const vat = Math.round(basePrice * (vatRate / 100));
+			const totalPrice = Math.round(basePrice + vat);
+
+			setValue('priceWithoutVAT', basePrice);
+			setValue('vatAmount', vat);
+			setValue('priceWithVAT', totalPrice);
 		} else {
-			setPriceWithoutVAT(currentPrice);
-			setVatAmount(0);
-			setPriceWithVAT(currentPrice);
+			const roundedPrice = Math.round(currentPrice);
+			setValue('priceWithoutVAT', roundedPrice);
+			setValue('vatAmount', 0);
+			setValue('priceWithVAT', roundedPrice);
 		}
-	}, [currentPrice, vatEnabled, vatRate]);
+	}, [currentPrice, vatEnabled, vatRate, setValue]);
+
+	// Get calculated values from form
+	const priceWithoutVAT = watch('priceWithoutVAT') || 0;
+	const priceWithVAT = watch('priceWithVAT') || 0;
+	const vatAmount = watch('vatAmount') || 0;
 
 	const yourEarnings = calculateShopEarnings(currentPrice, commissionConversion);
 	const platformCommission = calculateCompanyEarnings(currentPrice, commissionConversion);
+
 
 	return (
 		<div>
@@ -223,22 +230,29 @@ function PricingTabProperty({ shopData }) {
 							</Typography>
 						</Box>
 					</Box>
-					<FormControlLabel
-						control={
-							<Switch
-								checked={vatEnabled}
-								onChange={(e) => setVatEnabled(e.target.checked)}
-								sx={{
-									'& .MuiSwitch-switchBase.Mui-checked': {
-										color: '#ea580c'
-									},
-									'& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-										backgroundColor: '#ea580c'
-									}
-								}}
+					<Controller
+						name="vatEnabled"
+						control={control}
+						defaultValue={false}
+						render={({ field }) => (
+							<FormControlLabel
+								control={
+									<Switch
+										checked={field.value}
+										onChange={(e) => field.onChange(e.target.checked)}
+										sx={{
+											'& .MuiSwitch-switchBase.Mui-checked': {
+												color: '#ea580c'
+											},
+											'& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+												backgroundColor: '#ea580c'
+											}
+										}}
+									/>
+								}
+								label="Include VAT"
 							/>
-						}
-						label="Include VAT"
+						)}
 					/>
 				</Box>
 
@@ -253,20 +267,26 @@ function PricingTabProperty({ shopData }) {
 							className="mb-16"
 							icon={<FuseSvgIcon size={20}>heroicons-outline:information-circle</FuseSvgIcon>}
 						>
-							VAT will be calculated and displayed separately to guests
+							VAT will be added to your base price and displayed separately to guests
 						</Alert>
 
-						<TextField
-							label="VAT Rate (%)"
-							type="number"
-							value={vatRate}
-							onChange={(e) => setVatRate(parseFloat(e.target.value) || 0)}
-							InputProps={{
-								endAdornment: <InputAdornment position="end">%</InputAdornment>
-							}}
-							fullWidth
-							className="mb-16"
-							helperText="Default: 7.5% (Nigeria VAT rate)"
+						<Controller
+							name="vatRate"
+							control={control}
+							defaultValue={7.5}
+							render={({ field }) => (
+								<TextField
+									{...field}
+									label="VAT Rate (%)"
+									type="number"
+									InputProps={{
+										endAdornment: <InputAdornment position="end">%</InputAdornment>
+									}}
+									fullWidth
+									className="mb-16"
+									helperText="Default: 7.5% (Nigeria VAT rate)"
+								/>
+							)}
 						/>
 
 						<Divider className="my-16" />
