@@ -50,30 +50,6 @@ function NotificationPanel() {
 			dispatch(closeNotificationPanel());
 		}
 	}, [location, dispatch]);
-	useEffect(() => {
-		const item = NotificationModel({
-			title: 'New Fuse React version is released! ',
-			description: ' Checkout the release notes for more information. 🚀 ',
-			link: '/documentation/changelog',
-			icon: 'heroicons-solid:fire',
-			variant: 'secondary'
-		});
-		setTimeout(() => {
-			addNotification(item);
-			enqueueSnackbar(item.title, {
-				key: item.id,
-				autoHideDuration: 6000,
-				content: (
-					<NotificationTemplate
-						item={item}
-						onClose={() => {
-							closeSnackbar(item.id);
-						}}
-					/>
-				)
-			});
-		}, 2000);
-	}, []);
 
 	function handleClose() {
 		dispatch(closeNotificationPanel());

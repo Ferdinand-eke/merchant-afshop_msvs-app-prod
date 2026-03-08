@@ -26,8 +26,6 @@ export function useShopAccountUpdateMutation() {
 
 	return useMutation(updateMyShopBankAccount, {
 		onSuccess: (data) => {
-			console.log('Updated AccountDetails', data);
-			console.log('Updated AccountDetails1212', data);
 
 			if (data) {
 				toast.success('account details updated successfully!!');
@@ -45,7 +43,6 @@ export function useAccountPinUpdateMutation() {
 
 	return useMutation(updateMyShopBankAccountPin, {
 		onSuccess: (data) => {
-			console.log('Updated AccountPinDetails', data);
 
 			if (data) {
 				toast.success('account pin updated successfully!!');
@@ -68,7 +65,6 @@ export function useUpdateMyShopAccountMutation() {
 
 	return useMutation(updateMyShopAccountBankDetails, {
 		onSuccess: (data) => {
-			console.log('Updated AccountDetails~~~', data?.data);
 
 			if (data?.data) {
 				toast.success('account details updated successfully!!');
@@ -89,7 +85,6 @@ export function useTransferToShopWalletMutation() {
 
 	return useMutation(transferToWalletEndpoint, {
 		onSuccess: (data) => {
-			console.log('In-Transfer_Block', data);
 
 			if (data?.data) {
 				// console.log('In-Transfer_Block', data);
@@ -154,7 +149,6 @@ export function usePlaceWithdrawalMutation() {
 		},
 		throwOnError: true,
 		onError: (error) => {
-			console.log('MuTationError', error);
 			// console.log('MuTationErrorMessage', error.message);
 			handleApiError(error, 'Failed to place withdrawal');
 			// toast.error('possible wrong account pin ');

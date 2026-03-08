@@ -269,7 +269,6 @@ const EntirePropertyBookingForm = ({ propertyId, propertyPrice, propertyTitle, p
 				isCheckingInNow: formData.isCheckingInNow
 			};
 
-			console.log('Walk-in booking data (entire property):', bookingData);
 
 			// Call the mutation to create reservation
 			onCreateReservation(bookingData);

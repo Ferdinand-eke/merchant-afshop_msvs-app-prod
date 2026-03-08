@@ -29,7 +29,6 @@ export function useProductUpdateMutation() {
 
 	return useMutation(updateMyShopProductById, {
 		onSuccess: (data) => {
-			console.log('Updated Producr clientController', data);
 
 			if (data) {
 				message.success('product updated successfully!!');
@@ -53,7 +52,6 @@ export function usePushProductForExportMutation() {
 
 	return useMutation(pushMyShopProductByIdToExport, {
 		onSuccess: (data) => {
-			console.log('push Product clientController', data);
 
 			if (data) {
 				message.success('product pushed to export successfully!!');
@@ -63,7 +61,6 @@ export function usePushProductForExportMutation() {
 			}
 		},
 		onError: (error) => {
-			console.log('PushingExportError', error);
 			message.error('Error occured while pushing product!!');
 			// message.error(
 			//   error.response && error.response.data.message
@@ -80,7 +77,6 @@ export function usePullProductFromExportMutation() {
 
 	return useMutation(pullMyShopProductByIdFromExport, {
 		onSuccess: (data) => {
-			console.log('Pull Product clientController', data);
 
 			if (data) {
 				message.success('product pulled successfully!!');

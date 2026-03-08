@@ -28,7 +28,6 @@ export function useAdminCreateNewUser() {
 	const navigate = useNavigate();
 	return useMutation(andminCreateNewUserEndpoint, {
 		onSuccess: (data) => {
-			console.log('User-INVITATION-PAYLOAD', data?.data);
 			// return activation_token
 
 			if (data?.data?.success && data?.data?.activation_token) {
@@ -37,7 +36,6 @@ export function useAdminCreateNewUser() {
 				toast.success(data?.data?.message);
 			} else if (data?.data?.error) {
 				// toast.error(data?.data?.error?.message)
-				console.log('In-BoundError:', data?.data?.error);
 			} else {
 				toast.info('something unexpected happened');
 			}
@@ -73,7 +71,6 @@ export function useActivateNewUserByAdmin() {
 						? error?.response?.data?.message
 						: error?.message
 				);
-				console.log('In-BoundError:', data?.data?.error);
 			} else {
 				toast.info('something unexpected happened');
 			}
@@ -86,7 +83,6 @@ export function useActivateNewUserByAdmin() {
 			// Array.isArray(data?.message)
 			//     ? data?.message?.map((m) => toast.error(m))
 			//     : toast.error(data?.message)
-			console.log('INSIDE ERROR BLOCK', data);
 
 			Array.isArray(data?.message) ? data?.message?.map((m) => toast.error(m)) : toast.error(data?.message);
 		}

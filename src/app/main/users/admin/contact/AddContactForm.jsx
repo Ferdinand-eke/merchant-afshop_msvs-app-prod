@@ -161,7 +161,6 @@ function AddContactForm() {
 
 	const onSubmit = useCallback(() => {
 		// console.log("Crete STAFF-FORMDATA", { contact: form })
-		console.log('Crete STAFF-FORMDATA', form);
 
 		// return
 		recruitStaff.mutate(form);
@@ -201,7 +200,6 @@ function AddContactForm() {
 	// 	return <FuseLoading className="min-h-screen" />;
 	// }
 
-	console.log('Ading Contacts......');
 
 	return (
 		<>

@@ -39,7 +39,6 @@ function ContactView() {
 		skip: !contactId
 	});
 
-	console.log('SINGLE ADMIN:', admin?.data);
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();

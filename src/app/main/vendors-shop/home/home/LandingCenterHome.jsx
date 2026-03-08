@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import { Link } from 'react-router-dom';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
@@ -77,7 +76,7 @@ function LandingCenterHome() {
 			title: 'Powerful Analytics',
 			description:
 				'Advanced tools and insights to manage, promote, and scale your business. Data-driven decisions made easy.',
-			stat: '1000+ Merchants',
+			stat: '100+ Merchants',
 			gradient: 'linear-gradient(135deg, #F77F00 0%, #FCBF49 100%)'
 		},
 		{
@@ -85,7 +84,7 @@ function LandingCenterHome() {
 			title: '24/7 Support',
 			description:
 				'Round-the-clock sales assistance and support team. Maximum visibility for your products and services.',
-			stat: '10K+ Products',
+			stat: '1K+ Products',
 			gradient: 'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)'
 		}
 	];
@@ -127,7 +126,7 @@ function LandingCenterHome() {
 								backgroundColor: 'rgba(255, 255, 255, 0.2)',
 								color: 'white',
 								fontWeight: 700,
-								fontSize: '0.75rem',
+								fontSize: '1.15rem',
 								letterSpacing: '0.5px',
 								backdropFilter: 'blur(10px)',
 								border: '1px solid rgba(255, 255, 255, 0.3)'
@@ -147,9 +146,15 @@ function LandingCenterHome() {
 						>
 							Millions Of Shoppers
 							<br />
-							<span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 to-yellow-50">
+							<Box
+								component="span"
+								sx={{
+									color: '#FFFBEB',
+									textShadow: '0 2px 10px rgba(0,0,0,0.2)'
+								}}
+							>
 								Can't Wait To See What You Have
-							</span>
+							</Box>
 						</Typography>
 					</motion.div>
 
@@ -177,8 +182,12 @@ function LandingCenterHome() {
 						<Button
 							variant="contained"
 							size="large"
-							component={Link}
-							to="/shop-dashboard"
+							component="a"
+							href="#pricing-plans"
+							onClick={(e) => {
+								e.preventDefault();
+								document.getElementById('pricing-plans')?.scrollIntoView({ behavior: 'smooth' });
+							}}
 							sx={{
 								backgroundColor: 'white',
 								color: '#FF6B35',
@@ -198,7 +207,7 @@ function LandingCenterHome() {
 							}}
 							endIcon={<FuseSvgIcon size={20}>heroicons-outline:arrow-right</FuseSvgIcon>}
 						>
-							Get Started Now
+							Choose Your Plan
 						</Button>
 						<Button
 							variant="outlined"
@@ -232,9 +241,9 @@ function LandingCenterHome() {
 						className="mt-48 flex flex-wrap justify-center gap-32 sm:gap-64"
 					>
 						{[
-							{ value: '1000+', label: 'Active Merchants' },
-							{ value: '10K+', label: 'Products Listed' },
-							{ value: '50K+', label: 'Orders Delivered' },
+							{ value: '100+', label: 'Active Merchants' },
+							{ value: '1K+', label: 'Products Listed' },
+							{ value: '5K+', label: 'Orders Delivered' },
 							{ value: '24/7', label: 'Support Available' }
 						].map((stat, index) => (
 							<div
@@ -350,7 +359,7 @@ function LandingCenterHome() {
 											background: prop.gradient,
 											color: 'white',
 											fontWeight: 700,
-											fontSize: '0.875rem'
+											fontSize: '0.975rem'
 										}}
 									/>
 								</div>
@@ -567,8 +576,12 @@ function LandingCenterHome() {
 					<Button
 						variant="contained"
 						size="large"
-						component={Link}
-						to="/shop-dashboard"
+						component="a"
+						href="#pricing-plans"
+						onClick={(e) => {
+							e.preventDefault();
+							document.getElementById('pricing-plans')?.scrollIntoView({ behavior: 'smooth' });
+						}}
 						sx={{
 							backgroundColor: 'white',
 							color: '#FF6B35',
@@ -588,7 +601,7 @@ function LandingCenterHome() {
 						}}
 						endIcon={<FuseSvgIcon size={24}>heroicons-outline:arrow-right</FuseSvgIcon>}
 					>
-						Create Your Shop Now
+						Choose Your Plan
 					</Button>
 				</div>
 			</Box>

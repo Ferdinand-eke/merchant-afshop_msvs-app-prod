@@ -35,7 +35,6 @@ export function useAddShopProductMutation() {
 	const queryClient = useQueryClient();
 	return useMutation(
 		(newProduct) => {
-			console.log('Run Product : ', newProduct);
 
 			// return;
 			return storeShopProduct(newProduct);
@@ -44,7 +43,6 @@ export function useAddShopProductMutation() {
 		{
 			onSuccess: (data) => {
 				if (data?.data?.success) {
-					console.log('New product  Data', data);
 
 					// return;
 					toast.success('product  added successfully!');
@@ -88,10 +86,8 @@ export function useProductUpdateMutation() {
 
 	return useMutation(updateMyShopProductById, {
 		onSuccess: (data) => {
-			console.log('Updated Product Data', data);
 
 			if (data?.data?.success) {
-				console.log('Updated Producr clientController', data);
 
 				// return;
 				toast.success(`${data?.data?.message ? data?.data?.message : 'product updated successfully!!'} `);
@@ -131,7 +127,6 @@ export function usePushProductForExportMutation() {
 
 	return useMutation(pushMyShopProductByIdToExport, {
 		onSuccess: (data) => {
-			console.log('push Product clientController', data);
 
 			if (data) {
 				toast.success('product pushed to export successfully!!');
@@ -141,7 +136,6 @@ export function usePushProductForExportMutation() {
 			}
 		},
 		onError: (error) => {
-			console.log('PushingExportError', error);
 			const errorData = error?.response?.data;
 
 			if (errorData) {
@@ -171,7 +165,6 @@ export function usePullProductFromExportMutation() {
 
 	return useMutation(pullMyShopProductByIdFromExport, {
 		onSuccess: (data) => {
-			console.log('Pull Product clientController', data);
 
 			if (data) {
 				toast.success('product pulled successfully!!');
@@ -249,7 +242,6 @@ export function useDeleteSingleProduct() {
 
 	return useMutation(deleteShopProduct, {
 		onSuccess: (data) => {
-			console.log('productDeleted', data);
 
 			if (data?.data?.success) {
 				toast.success('product deleted successfully!!');
@@ -287,7 +279,6 @@ export function useAddProductImagesMutation() {
 
 	return useMutation(storeProductImages, {
 		onSuccess: (data) => {
-			console.log('Product images uploaded', data);
 
 			if (data?.data?.success || data?.data) {
 				toast.success('Product images uploaded successfully!');
@@ -325,7 +316,6 @@ export function useChangeProductImageMutation() {
 
 	return useMutation(changeShopProductImage, {
 		onSuccess: (data) => {
-			console.log('Product image changed', data);
 
 			if (data?.data?.success || data?.data) {
 				toast.success('Product image changed successfully!');
@@ -363,7 +353,6 @@ export function useAddProductPriceTierMutation() {
 
 	return useMutation(addProductPriceTier, {
 		onSuccess: (data) => {
-			console.log('Price tier added', data);
 
 			if (data?.data?.success) {
 				toast.success('Bulk price tier added successfully!');
@@ -401,7 +390,6 @@ export function useUpdateProductPriceTierMutation() {
 
 	return useMutation(updateProductPriceTier, {
 		onSuccess: (data) => {
-			console.log('Price tier updated', data);
 
 			if (data?.data?.success || data?.data) {
 				toast.success('Bulk price tier updated successfully!');
@@ -439,7 +427,6 @@ export function useDeleteProductPriceTierMutation() {
 
 	return useMutation(deleteProductPriceTier, {
 		onSuccess: (data) => {
-			console.log('Price tier deleted', data);
 
 			if (data?.data?.success || data?.data) {
 				toast.success('Bulk price tier deleted successfully!');

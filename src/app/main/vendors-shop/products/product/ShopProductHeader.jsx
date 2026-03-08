@@ -70,7 +70,6 @@ function ShopProductHeader() {
 			fragileItem: allFormData?.fragileItem 
 		};
 
-		console.log("Updating_Product_With_All_Fields", updateProductFormPayload);
 
 		// return
 		updateProduct.mutate(updateProductFormPayload);
@@ -115,7 +114,6 @@ function ShopProductHeader() {
 			fragileItem: allFormData?.fragileItem || false
 		};
 
-		console.log("New_Product_With_All_Fields", createProductFormPayload);
 
 		// return
 		addNewProduct.mutate(createProductFormPayload);
@@ -123,7 +121,6 @@ function ShopProductHeader() {
 
 	function handleRemoveProduct() {
 		if (window.confirm('Comfirm delete of this product?')) {
-			console.log('deleting product...');
 
 			return;
 			deleteSingleProduct.mutate(productId);

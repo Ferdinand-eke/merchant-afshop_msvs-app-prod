@@ -25,7 +25,6 @@ function PhotosVideosTab(props) {
 	const { data: martMenu, isLoading: martMenuLoading, error } = useMyShopFoodMartMenus(foodMart?.id);
 	const [openNewEntry, setOpenNewEntry] = React.useState(false);
 
-	console.log('MART__MENUS', martMenu?.data?.foodmartmenus);
 
 	const toggleNewEntryDrawer = (newOpen) => () => {
 		setOpenNewEntry(newOpen);

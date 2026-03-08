@@ -73,7 +73,6 @@ function BookingPropertyListing() {
 		}
 	}, [productId, reset]);
 
-	console.log('propertyList', propertyList?.data?.bookingList);
 
 	useEffect(() => {
 		if (propertyList?.data?.bookingList) {

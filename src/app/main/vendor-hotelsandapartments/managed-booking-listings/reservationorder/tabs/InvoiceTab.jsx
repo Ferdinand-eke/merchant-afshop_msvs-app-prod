@@ -16,8 +16,6 @@ function InvoiceTab(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const { order, myshopData } = props;
 
-	console.log('InvoiceTab Props:', myshopData?.merchantShopplan?.serviceChargeFeeOption);
-
 	const [cashOutDialogOpen, setCashOutDialogOpen] = useState(false);
 
 	const {

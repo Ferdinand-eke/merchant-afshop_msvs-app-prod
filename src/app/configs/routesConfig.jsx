@@ -33,19 +33,11 @@ import LandingCenterHome from '../main/vendors-shop/home/home/LandingCenterHome'
 // import AfricanshopsMessengerAppConfig from '../main/africanshops-messenger/AfricanshopsMessengerAppConfig';
 
 const routeConfigs = [
-	// SignOutConfig,
+	/** ****Auth based pages  starts*/
 	SignInConfig,
-	// SignUpConfig,
-	// SignAcceptInviteConfig,
 	forgotPasswordConfig,
 	resetPasswordConfig,
-	// DocumentationConfig,
-
-	/** *User management and properties starts ManagedUserListingsAppConfig */
-	// UsersAppConfig,
-	// StaffAppConfig,
-	// PropertiesAppConfig,
-	// ServiceTypesAppConfig,
+	/** ****Auth based pages  ends*/
 
 	/** ****Hotels, apartment and suites management  starts*/
 	ManagedBookingsListingsAppConfig,

@@ -105,7 +105,6 @@ export function useShopCreateInvoiceOrder() {
 	return useMutation(CreateShopPointOfSales, {
 		onSuccess: (data) => {
 			if (data?.data) {
-				console.log('Create-Invoice-Data HOOK', data);
 				toast.success('Invoice created successfully!');
 				// removeItems
 				queryClient.invalidateQueries('__myshop_invoiveorders');
@@ -114,7 +113,6 @@ export function useShopCreateInvoiceOrder() {
 			// navigate('/transaction-list-items');
 		},
 		onError: (error) => {
-			console.log('Create-Invoice-Error', error);
 			handleApiError(error, 'Failed to create invoice. Please try again.');
 		}
 	});

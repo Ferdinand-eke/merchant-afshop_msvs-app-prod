@@ -75,7 +75,6 @@ export function AuthApi() {
 				error?.response && error?.response?.data?.message ? error?.response?.data?.message : error?.message
 			);
 
-			console.log(
 				error?.response && error?.response?.data?.message ? error?.response?.data?.message : error?.message
 			);
 
@@ -112,7 +111,6 @@ export const getAllUsers = () => {
 
 /** Get a single user data */
 export const getSingleUserAndListings = (userId) => {
-	console.log('Getting Single-User-DATA', userId);
 	return AuthApi().get(`${homesServerConfig.getAllUsers}/${userId}`);
 };
 

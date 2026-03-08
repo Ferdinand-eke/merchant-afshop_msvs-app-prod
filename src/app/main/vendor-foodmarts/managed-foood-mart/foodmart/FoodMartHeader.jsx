@@ -35,7 +35,6 @@ function FoodMartHeader() {
 	}
 
 	function handleCreateFoodMart() {
-		console.log('creating food mart...', getValues());
 		addNewFoodMart.mutate(getValues());
 	}
 

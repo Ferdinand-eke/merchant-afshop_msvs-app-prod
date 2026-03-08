@@ -170,7 +170,6 @@ function AddUserForm() {
 
 	const onSubmit = useCallback(() => {
 		// console.log("Crete STAFF-FORMDATA", { contact: form })
-		console.log('Crete User-FORMDATA', form);
 
 		recruitNewUserAccount.mutate(form);
 		// reset(ContactModel({}));

@@ -41,7 +41,6 @@ export function useAddShopBookingsPropertyMutation() {
 
 		{
 			onSuccess: (data) => {
-				console.log('creatBokibg_Property_DATA', data);
 
 				if (data?.data?.success) {
 					toast.success('property  added successfully!');
@@ -69,7 +68,6 @@ export function useBookingsPropertyUpdateMutation() {
 
 	return useMutation(updateMyShopBookingsPropertyById, {
 		onSuccess: (data) => {
-			console.log('Update Booking Property Data:', data);
 
 			if (data?.data?.success) {
 				toast.success(`${data?.data?.message ? data?.data?.message : 'product updated successfully!!'}`);
@@ -77,7 +75,6 @@ export function useBookingsPropertyUpdateMutation() {
 			}
 		},
 		onError: (error) => {
-			console.log('Update Booking Property Error__11:', error);
 			handleApiError(error, 'Failed to update property. Please try again.');
 		}
 	});
@@ -98,13 +95,10 @@ export function useUpdatePropertyListingImageMutation() {
 					url
 				}
 			};
-			console.log('useUpdatePropertyListingImageMutation - Sending payload:', payload);
-			console.log('useUpdatePropertyListingImageMutation - updateData:', payload.updateData);
 			return updatePropertyListingImage(payload);
 		},
 		{
 			onSuccess: (data, variables) => {
-				console.log('Update Property Listing Image Data:', data);
 
 				if (data?.data?.success) {
 					toast.success(
@@ -140,7 +134,6 @@ export function useDeletePropertyListingImageMutation() {
 		},
 		{
 			onSuccess: (data, variables) => {
-				console.log('Delete Property Listing Image Data:', data);
 
 				if (data?.data?.success) {
 					toast.success(data?.data?.message || 'Image deleted successfully! Removed from Cloudinary.');
@@ -169,7 +162,6 @@ export function useDeleteBookingPropertyMutation() {
 		},
 		{
 			onSuccess: (data) => {
-				console.log('Delete Booking Property Data:', data);
 
 				if (data?.data?.success) {
 					toast.success(data?.data?.message || 'Property deleted successfully!');

@@ -81,7 +81,6 @@ export function useGetRoomsFromBookingProperty(slug) {
 } // (Mcsvs => Done)
 
 export function useGetSingleRoomOfProperty(roomId) {
-	console.log('Fetching single room :', roomId);
 
 	return useQuery({
 		queryKey: ['_roomsOnBookingProperty', roomId],
@@ -100,7 +99,6 @@ export function useAddRoomPropertyMutation() {
 		},
 		{
 			onSuccess: (data) => {
-				console.log('createRoomOnProperty_DATA', data);
 
 				if (data?.data?.success) {
 					toast.success('Room added successfully!');
@@ -124,7 +122,6 @@ export function useRoomOnPropertyUpdateMutation() {
 
 	return useMutation(updateRoomOnProperty, {
 		onSuccess: (data) => {
-			console.log('Update Room On Property Data:', data);
 
 			if (data?.data?.success) {
 				toast.success(`${data?.data?.message ? data?.data?.message : 'Room updated successfully!'}`);
@@ -155,7 +152,6 @@ export function useUpdateRoomImageMutation() {
 		},
 		{
 			onSuccess: (data, variables) => {
-				console.log('Update Room Image Data:', data);
 
 				if (data?.data?.success) {
 					toast.success(
@@ -191,7 +187,6 @@ export function useDeleteRoomImageMutation() {
 		},
 		{
 			onSuccess: (data, variables) => {
-				console.log('Delete Room Image Data:', data);
 
 				if (data?.data?.success) {
 					toast.success(data?.data?.message || 'Image deleted successfully! Removed from Cloudinary.');
@@ -219,7 +214,6 @@ export function useDeleteRoomMutation() {
 		},
 		{
 			onSuccess: (data, roomId) => {
-				console.log('Delete Room Data:', data);
 
 				if (data?.data?.success) {
 					toast.success(data?.data?.message || 'Room deleted successfully! All images removed from storage.');

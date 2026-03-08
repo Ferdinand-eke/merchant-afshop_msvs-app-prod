@@ -183,14 +183,6 @@ function ProductImagesTabProperty() {
 				0,
 				async (uri) => {
 					try {
-						console.log('Sending update with data:', {
-							propertyId: listingId,
-							cloudinaryPublicId: imageToReplace?.public_id,
-							imageId: imageToReplace?.id,
-							type: imageToReplace.type || 'image',
-							url: uri
-						});
-
 						// Call the mutation to update the image
 						await updatePropertyImage.mutateAsync({
 							propertyId: listingId,

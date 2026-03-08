@@ -13,7 +13,6 @@ import { Box, Chip } from '@mui/material';
  */
 
 function SummaryWidget({ shopData, isLoading }) {
-	console.log('SummaryWidget shopData', shopData);
 
 	if (isLoading) {
 		return <FuseLoading />;

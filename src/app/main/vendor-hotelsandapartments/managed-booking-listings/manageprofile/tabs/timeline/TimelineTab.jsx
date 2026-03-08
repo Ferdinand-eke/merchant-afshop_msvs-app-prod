@@ -237,8 +237,6 @@ Sometimes taking a step back to improve the foundation pays off big time. Excite
 								{ icon: 'heroicons-outline:calendar', label: 'Events' }
 							]}
 							showPremiumCTA={false}
-							onViewAnalytics={() => console.log('View analytics')}
-							onGrowNetwork={() => console.log('Grow network')}
 						/>
 					</Box>
 				</div>
@@ -315,7 +313,6 @@ Sometimes taking a step back to improve the foundation pays off big time. Excite
 							key={post.id}
 							post={post}
 							currentUserAvatar=""
-							onDelete={(postId) => console.log('Post deleted:', postId)}
 						/>
 					))}
 				</div>

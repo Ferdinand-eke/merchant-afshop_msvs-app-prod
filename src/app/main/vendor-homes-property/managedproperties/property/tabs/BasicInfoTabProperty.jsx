@@ -100,7 +100,6 @@ function BasicInfoTabProperty() {
 		}
 
 		if (getValues()?.propertyState?.length > 0) {
-			console.log('Entered......');
 			getLgasFromState(getValues()?.propertyState);
 		}
 	}, [getValues()?.propertyCountry, getValues()?.propertyState]);
@@ -135,7 +134,6 @@ function BasicInfoTabProperty() {
 		}
 	}
 
-	console.log('LGA ID', getValues()?.propertyLga);
 	// console.log("LGA location", getLgasFromState(getValues()?.propertyLga))
 
 	return (

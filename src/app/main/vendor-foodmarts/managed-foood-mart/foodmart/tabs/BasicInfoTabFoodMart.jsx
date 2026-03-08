@@ -73,7 +73,6 @@ function BasicInfoTabFoodMart() {
 
 		const responseData = await getStateByCountryId(pid);
 
-		console.log('STATES_FETCHED', responseData?.data);
 
 		if (responseData) {
 			setBstates(responseData?.data?.states);

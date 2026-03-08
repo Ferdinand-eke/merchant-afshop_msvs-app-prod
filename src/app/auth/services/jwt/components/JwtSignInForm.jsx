@@ -42,13 +42,11 @@ function JwtSignInForm() {
 	const [showPassword, setShowPassword] = useState(false);
 
 	function onSubmit(formData) {
-		console.log('Login-Values', formData);
 		const { shopemail, password } = formData;
 		signIn({
 			shopemail,
 			password
 		}).catch((error) => {
-			console.log('FormJSXError', error);
 		});
 	}
 

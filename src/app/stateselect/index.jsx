@@ -20,7 +20,6 @@ function CountrySelect({ value, onChange }) {
 	const { data: countries } = useSellerCountries();
 	// console.log("AllCountries", getAll())
 
-	console.log('SellerCountries', countries?.data?.data);
 	return (
 		<div>
 			<label style={{ fontSize: '12px', fontWeight: '800' }}>*Shop/Business Country Origin</label>

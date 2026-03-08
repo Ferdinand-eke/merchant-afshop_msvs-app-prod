@@ -73,7 +73,6 @@ function AboutManageRoomsTab(props) {
 
 	// console.log("Reservations on property", reservatons?.data?.reservations)
 
-	console.log("Listing", Listing)
 
 	const disabledDates = useMemo(() => {
     let dates = [];
@@ -97,7 +96,6 @@ function AboutManageRoomsTab(props) {
   // Handler for creating a reservation (currently logs to console)
   const onCreateReservation = useCallback((bookingData) => {
 
-	console.log("Form Data for Entire Property Reservation:", bookingData);
 
     // TODO: Implement API call to create reservation
     return createWalkInGuesrReservations.mutate(bookingData);

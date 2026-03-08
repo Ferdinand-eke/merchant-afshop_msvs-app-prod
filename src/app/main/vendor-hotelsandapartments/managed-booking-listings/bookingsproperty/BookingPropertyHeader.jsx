@@ -92,7 +92,6 @@ function BookingPropertyHeader() {
 			plotArea: parseInt(values?.plotArea),
 			securityDeposit: parseInt(values?.securityDeposit)
 		};
-		console.log('Create__Booking__Apartment', formData?.checkedAmenities);
 		return
 		// addBookingsProperty.mutate(formData);
 	}

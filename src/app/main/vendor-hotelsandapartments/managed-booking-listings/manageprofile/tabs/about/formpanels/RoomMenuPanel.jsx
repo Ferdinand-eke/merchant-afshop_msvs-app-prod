@@ -321,7 +321,6 @@ function RoomMenuPanel(props) {
 					},
 					{
 						onSuccess: (response) => {
-							console.log('Image replacement successful:', response);
 
 							// Update local state to reflect the change
 							const currentImageSrcs = getValues('imageSrcs') || [];

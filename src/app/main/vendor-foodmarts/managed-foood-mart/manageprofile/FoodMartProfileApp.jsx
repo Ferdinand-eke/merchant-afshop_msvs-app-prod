@@ -47,7 +47,6 @@ function FoodMartProfileApp() {
 
 	const { data: shopData, isLoading: shopDataLoading } = useGetMyShopDetails();
 
-	console.log('FOODMART_IN_ROOT', foodMartList?.data?.foodMart);
 
 	function handleTabChange(event, value) {
 		setSelectedTab(value);

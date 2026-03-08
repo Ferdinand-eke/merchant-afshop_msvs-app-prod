@@ -267,8 +267,6 @@ function ProductImagesTab({productDataId}) {
       url: newReplacementImage?.url // Base64 data URL
 			}
 
-			console.log("IMAGE__TO___CHANGE", changeData)
-			console.log("IMAGE__TO___CHANGE___222", changeImageData)
 			// return
 
 			await changeProductImage.mutateAsync(changeImageData);
@@ -300,7 +298,6 @@ function ProductImagesTab({productDataId}) {
 			cloudinaryPublicId: selectedImageToDelete.public_id
 		};
 
-		console.log('IMAGE__TO___DELETE', imageData);
 		// return
 
 		try {

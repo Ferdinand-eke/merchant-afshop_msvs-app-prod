@@ -1,0 +1,80 @@
+<svg width="1000" height="1200" viewBox="0 0 1000 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- AfricanShops Logo: Africa-shaped shopping bag -->
+  <g id="africanshops-logo">
+    <!-- Shopping bag handle (curved arc at top) -->
+    <path id="handle"
+          d="M 200 100 Q 200 250, 350 250 L 650 250 Q 800 250, 800 100"
+          stroke="#EE7623"
+          stroke-width="85"
+          fill="none"
+          stroke-linecap="round"/>
+
+    <!-- Main Africa continent shape forming the shopping bag body -->
+    <path id="africa-bag"
+          d="M 150 280
+             C 150 280, 180 310, 220 350
+             C 260 390, 280 430, 300 480
+             C 320 530, 340 580, 360 630
+             C 380 680, 400 730, 420 780
+             C 440 830, 455 880, 470 930
+             C 485 980, 500 1020, 515 1060
+             C 525 1090, 535 1110, 545 1125
+             L 620 1160
+             L 750 1110
+             C 765 1080, 775 1040, 790 990
+             C 805 940, 820 890, 840 840
+             C 860 790, 875 740, 890 690
+             C 905 640, 915 590, 925 540
+             C 935 490, 940 440, 945 390
+             C 950 340, 950 290, 945 250
+             L 870 280
+             C 870 280, 860 330, 840 380
+             C 820 430, 790 480, 760 530
+             C 730 580, 700 630, 670 680
+             C 640 730, 610 780, 580 830
+             C 550 880, 520 930, 490 980
+             L 430 1020
+             L 380 975
+             C 360 930, 340 885, 320 840
+             C 300 795, 280 750, 260 705
+             C 240 660, 225 615, 215 570
+             C 205 525, 200 480, 195 435
+             C 190 390, 185 345, 180 300
+             C 175 285, 160 280, 150 280
+             Z"
+          fill="#EE7623"/>
+
+    <!-- Horn of Africa (northeastern protrusion) -->
+    <path id="horn-of-africa"
+          d="M 945 390
+             C 955 400, 975 420, 990 440
+             C 995 450, 995 460, 990 470
+             C 985 480, 970 485, 955 480
+             C 940 475, 930 465, 925 450
+             C 920 435, 920 420, 925 405
+             C 930 395, 940 390, 945 390
+             Z"
+          fill="#EE7623"/>
+
+    <!-- Madagascar island (off the east coast) -->
+    <ellipse id="madagascar"
+             cx="900"
+             cy="920"
+             rx="32"
+             ry="75"
+             fill="#EE7623"
+             transform="rotate(-15 900 920)"/>
+
+    <!-- Bottom left detail (representing southwestern Africa curve) -->
+    <path id="southwest-curve"
+          d="M 380 975
+             C 370 990, 355 1005, 340 1015
+             C 325 1025, 310 1030, 300 1032
+             C 290 1034, 285 1032, 285 1025
+             C 285 1018, 290 1008, 300 998
+             C 310 988, 325 978, 340 970
+             C 355 962, 370 957, 380 955
+             Z"
+          fill="#EE7623"/>
+  </g>
+</svg>

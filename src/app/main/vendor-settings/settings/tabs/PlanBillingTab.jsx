@@ -69,7 +69,6 @@ function PlanBillingTab() {
 		// TODO: Implement plan change mutation
 		setConfirmDialogOpen(false);
 		// Here you would call the mutation to update the merchant plan
-		console.log('Changing plan to:', selectedPlanData);
 	};
 
 	// Get plan details helper

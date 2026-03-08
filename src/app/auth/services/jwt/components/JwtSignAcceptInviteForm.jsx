@@ -56,7 +56,6 @@ function JwtSignAcceptInviteForm() {
 	function onSubmit(formData) {
 		const formDataWithUpdatedTokenParam = { ...formData, activationToken: token };
 
-		console.log('ACCEPT-INVITE-Values', formDataWithUpdatedTokenParam);
 		// return
 		acceptInvite.mutate(formDataWithUpdatedTokenParam);
 	}

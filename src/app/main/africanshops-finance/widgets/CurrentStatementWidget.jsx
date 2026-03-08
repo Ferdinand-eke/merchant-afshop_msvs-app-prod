@@ -30,8 +30,6 @@ function CurrentStatementWidget({ shopData, shopDataLoading }) {
 		return null;
 	}
 
-	console.log("Shop__DATA___Recheck :", shopData);
-
 	// Extract account balances
 	const accountBalance = shopData?.shopaccount?.accountbalance || 0;
 	const deskBalance = shopData?.shopdeskaccount?.deskbalance || 0;
@@ -46,10 +44,8 @@ function CurrentStatementWidget({ shopData, shopDataLoading }) {
 		}
 	};
 
-	const handleRemittanceSuccess = (remittanceData) => {
-		console.log('Remittance successful:', remittanceData);
+	const handleRemittanceSuccess = () => {
 		// Here you can call an API to update the backend with the remittance info
-		// Example: updateRemittance(remittanceData);
 
 		// Close dialog
 		setRemittanceDialogOpen(false);

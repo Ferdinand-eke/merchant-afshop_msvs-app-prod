@@ -44,7 +44,6 @@ function PropertyHeader() {
 	}
 
 	function handleRemoveProduct() {
-		console.log('Deleting UpdateEstateProperty-Values', getValues());
 	}
 
 	return (

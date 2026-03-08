@@ -45,7 +45,6 @@ function ChangeEmailSetting() {
 	 * Form Submit
 	 */
 	function onSubmit(formData) {
-		console.log('Form Data', formData);
 	}
 
 	return (

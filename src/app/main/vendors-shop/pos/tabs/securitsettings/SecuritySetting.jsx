@@ -60,7 +60,6 @@ function SecuritySetting() {
 	function onSubmit(formData, e) {
 		e.preventDefault();
 
-		console.log('Form Data', formData);
 
 		// updateSecuritySettings(formData);
 	}

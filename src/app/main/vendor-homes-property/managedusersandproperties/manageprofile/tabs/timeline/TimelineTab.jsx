@@ -6,7 +6,6 @@ import PropertyListItem from './PropertyListItem';
  * The timeline tab.
  */
 function TimelineTab({ listings, loading }) {
-	console.log('Listings proped down', listings);
 	// const { data: timeline, isLoading } = useGetProfileTimelineQuery();
 
 	// if (isLoading) {

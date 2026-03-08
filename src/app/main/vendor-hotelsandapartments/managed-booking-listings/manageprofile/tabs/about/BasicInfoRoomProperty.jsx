@@ -83,7 +83,6 @@ function BasicInfoRoomTabProperty(props) {
 	}
 
 	function handleRemoveRoomOnApartment() {
-		console.log('Deleting BookingProperty_List-Values', getValues());
 	}
 
 	useEffect(() => {

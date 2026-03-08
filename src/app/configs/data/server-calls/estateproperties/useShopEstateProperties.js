@@ -45,7 +45,6 @@ export function useAddShopEstatePropertyMutation() {
 		{
 			onSuccess: (data) => {
 				if (data?.data?.success && data?.data?.savedEstateProperty) {
-					console.log('New ESTATEPROPERTY  Data', data);
 
 					toast.success('property  added successfully!');
 					queryClient.invalidateQueries(['__myshop_estateproperties']);
@@ -60,8 +59,6 @@ export function useAddShopEstatePropertyMutation() {
 				toast.error(
 					error.response && error.response.data.message ? error.response.data.message : error.message
 				);
-				console.log('MutationError', error.response.data);
-				console.log('MutationError', error.data);
 				rollback();
 			}
 		}
@@ -74,7 +71,6 @@ export function useEstatePropertyUpdateMutation() {
 
 	return useMutation(updateMyShopEstatePropertyById, {
 		onSuccess: (data) => {
-			console.log('Updated Producr clientController', data);
 
 			if (data?.data?.success) {
 				toast.success('product updated successfully!!');

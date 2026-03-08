@@ -40,7 +40,6 @@ function TeamTab() {
 		updateTeamMembers(teamMembers?.filter((member) => member.email !== email));
 	}
 
-	console.log('TEamsn-MEMBERS', teamMembers);
 
 	return (
 		<div>

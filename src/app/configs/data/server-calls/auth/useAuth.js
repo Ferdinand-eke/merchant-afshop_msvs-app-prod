@@ -16,7 +16,6 @@ export function useShopSettingsChangePass() {
 	const queryClient = useQueryClient();
 	return useMutation(authShopChangePasword, {
 		onSuccess: (data) => {
-			console.log('Transaction Data', data);
 
 			if (data?.data?.success) {
 				toast.success(data?.data?.message);
@@ -73,7 +72,6 @@ export function useShopSettingsCloseShopAccount() {
 
 	return useMutation(authShopCloseAccountCall, {
 		onSuccess: (data) => {
-			console.log('closeAccountDetasil', data);
 		},
 
 		onError: (error) => {

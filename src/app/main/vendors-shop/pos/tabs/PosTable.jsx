@@ -14,7 +14,6 @@ import useEcomerce from '../UsePos';
 
 function PosTable() {
 	const { data: myshop_products, isLoading: shopProductdIsLoading, isError } = useMyShopProducts();
-	console.log('POS-Products', myshop_products?.data);
 	const { addItem, cartItems, removeItem } = useEcomerce();
 	const [qty, setQty] = useState(1);
 

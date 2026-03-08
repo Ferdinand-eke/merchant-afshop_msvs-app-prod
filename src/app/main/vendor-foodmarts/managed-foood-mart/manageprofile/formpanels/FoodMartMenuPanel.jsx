@@ -141,7 +141,6 @@ function FoodMartMenuPanel(props) {
 	const images = watch('images');
 	const imageSrcs = watch('imageSrcs');
 
-	console.log('Menu-IMAGES', images);
 
 	// function handleDismiss(id) {
 	// 	deleteNotification(id);

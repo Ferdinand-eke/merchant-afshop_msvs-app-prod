@@ -59,7 +59,6 @@ function FuseShortcuts(props) {
 		onChange(newShortcuts);
 	}
 
-	console.log('ShortCuts', shortcutItems);
 
 	return (
 		<div className={clsx('flex flex-1', variant === 'vertical' && 'shrink grow-0 flex-col', className)}>

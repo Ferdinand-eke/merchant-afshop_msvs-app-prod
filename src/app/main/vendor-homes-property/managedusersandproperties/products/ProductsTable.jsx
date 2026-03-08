@@ -16,7 +16,6 @@ function ProductsTable() {
 
 	const { data: usresData, isLoading: usersIsLoading } = useGetAllUsers();
 
-	console.log('MANAGED-USER&&LISTINGS', usresData?.data?.userlist);
 
 	// const columns = useMemo(
 	// 	() => [

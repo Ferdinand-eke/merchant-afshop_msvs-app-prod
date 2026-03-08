@@ -84,7 +84,6 @@ export default function useEcomerce() {
 		},
 
 		decreaseQty: (payload, currentCart) => {
-			console.log('Decreasing qty', payload, currentCart);
 			let cart = [];
 
 			if (currentCart) {

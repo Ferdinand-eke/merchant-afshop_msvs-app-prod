@@ -4,7 +4,6 @@ import useHubs from 'app/configs/data/server-calls/tradehubs/useTradeHubs';
 function TradehubSelect({ value, onChange }) {
 	const { data: hubData } = useHubs();
 
-	console.log('trade-Hubs', hubData?.data);
 	return (
 		<div>
 			<label style={{ fontSize: '12px', fontWeight: '800' }}>*Shop/Business Trade Hub</label>

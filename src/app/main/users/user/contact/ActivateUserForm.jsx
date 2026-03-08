@@ -129,7 +129,6 @@ function ActivateUserForm() {
 	const getActivateNewUserToken = getNewUserAccountToken();
 	const recruitNewUserAccount = useAdminCreateNewUser();
 	const activateNewUserCallback = useActivateNewUserByAdmin();
-	console.log('New-User-Token', getActivateNewUserToken);
 
 	const { control, watch, reset, handleSubmit, formState } = useForm({
 		mode: 'all',
@@ -171,10 +170,8 @@ function ActivateUserForm() {
 
 	const onSubmit = useCallback(() => {
 		// console.log("Crete STAFF-FORMDATA", { contact: form })
-		console.log('Activate And Crete User-FORMDATA', form);
 		const formAndToken = { ...form, activationToken: getActivateNewUserToken };
 
-		console.log('Activate User AccountFormDATA:', formAndToken);
 		// return
 		activateNewUserCallback.mutate(formAndToken);
 		// reset(ContactModel({}));

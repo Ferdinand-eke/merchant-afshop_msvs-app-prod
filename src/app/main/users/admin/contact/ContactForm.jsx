@@ -77,7 +77,6 @@ function ContactForm() {
 	// useGetAdminById(contactId, {
 	// 	return: !contactId || contactId === 'new'
 	// });
-	console.log('ADMIN FORM DATAS', admin?.data);
 	// const [createContact] = useCreateContactsItemMutation();
 	// const [updateContact] = useUpdateContactsItemMutation();
 	// const [deleteContact] = useDeleteContactsItemMutation();

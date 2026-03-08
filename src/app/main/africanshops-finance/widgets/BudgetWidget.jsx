@@ -16,7 +16,6 @@ function BudgetWidget() {
 	const { data: widgets, isLoading } = useGetFinanceDashboardWidgetsQuery();
 
 	const { data: transferLogs } = useGetMyShopTransferLogs();
-	console.log('TransferLOGS', transferLogs?.data?.data);
 
 	if (isLoading) {
 		return <FuseLoading />;

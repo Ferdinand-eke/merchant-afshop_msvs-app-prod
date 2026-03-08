@@ -168,7 +168,6 @@ function AccountTab() {
 						});
 					})
 					.catch((error) => {
-						console.log(error);
 						toast.error(
 							error.response && error.response.data.message ? error.response.data.message : error.message
 						);
@@ -181,7 +180,6 @@ function AccountTab() {
 							updateShopDetails?.mutate(getValues());
 						})
 						.catch((error) => {
-							console.log(error);
 							toast.error(
 								error.response && error.response.data.message
 									? error.response.data.message

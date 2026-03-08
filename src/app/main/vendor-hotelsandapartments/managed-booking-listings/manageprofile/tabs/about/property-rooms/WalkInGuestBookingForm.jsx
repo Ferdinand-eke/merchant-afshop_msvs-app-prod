@@ -267,7 +267,6 @@ const WalkInGuestBookingForm = ({ roomId, roomPrice, roomTitle, propertyId, prop
 				isCheckingInNow: formData.isCheckingInNow
 			};
 
-			console.log('Walk-in booking data:', bookingData);
 
 			// Call the mutation to create reservation
 			createReservation(bookingData);

@@ -8,7 +8,6 @@ import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import useShopplans from 'app/configs/data/server-calls/shopplans/useShopPlans';
 import Chip from '@mui/material/Chip';
-import { Link } from 'react-router-dom';
 import ModernPricingFeatureItem from './ModernPricingFeatureItem';
 import ModernPricingCard from './ModernPricingCard';
 
@@ -18,7 +17,7 @@ import ModernPricingCard from './ModernPricingCard';
  */
 function ModernPricingPage() {
 	const { data: merchantPlans } = useShopplans();
-	const [period, setPeriod] = useState('month');
+	const [period, setPeriod] = useState('year');
 
 	const container = {
 		show: {
@@ -37,6 +36,7 @@ function ModernPricingPage() {
 		<div className="relative flex min-w-0 flex-auto flex-col overflow-hidden">
 			{/* Header Section with Gradient Background */}
 			<Box
+				id="pricing-plans"
 				className="relative overflow-hidden px-24 pb-64 pt-48 sm:px-64 sm:pb-80 sm:pt-64"
 				sx={{
 					background: 'linear-gradient(180deg, transparent 0%, rgba(255, 107, 53, 0.03) 100%)'
@@ -167,165 +167,420 @@ function ModernPricingPage() {
 			{/* Pricing Cards Section */}
 			<div className="relative px-24 pb-64 sm:px-64">
 				<div className="mx-auto w-full max-w-7xl">
-					<motion.div
-						variants={container}
-						initial="hidden"
-						whileInView="show"
-						viewport={{ once: true }}
-						className="grid grid-cols-1 gap-32 md:grid-cols-2 lg:grid-cols-3"
-					>
-						{merchantPlans?.data?.merchantPlans?.length > 0 ? (
-							merchantPlans?.data?.merchantPlans?.map((plan, index) => (
-								<motion.div
-									variants={item}
-									key={plan?._id}
-								>
-									<ModernPricingCard
-										period={period}
-										isPopular={plan?.isMostPreferred}
-										accountId={plan?.id}
-										title={plan?.plansname}
-										subtitle={plan?.planinfo}
-										yearlyPrice={plan?.percetageCommissionCharge}
-										monthlyPrice={plan?.percetageCommissionCharge}
-										buttonTitle="Get Started"
-										index={index}
-										details={
-											<div className="mt-40 flex flex-col">
-												<Typography className="font-bold text-16 mb-16">
-													Everything you need to succeed:
-												</Typography>
-												<div className="space-y-12">
-													<div className="flex items-start gap-12">
-														<Box
-															sx={{
-																width: 20,
-																height: 20,
-																borderRadius: '6px',
-																background:
-																	'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)',
-																display: 'flex',
-																alignItems: 'center',
-																justifyContent: 'center',
-																flexShrink: 0,
-																marginTop: '2px'
-															}}
-														>
-															<FuseSvgIcon
-																size={12}
-																sx={{ color: 'white' }}
+					{period === 'year' ? (
+						<motion.div
+							variants={container}
+							initial="hidden"
+							whileInView="show"
+							viewport={{ once: true }}
+							className="grid grid-cols-1 gap-32 md:grid-cols-2 lg:grid-cols-3"
+						>
+							{merchantPlans?.data?.merchantPlans?.length > 0 ? (
+								merchantPlans?.data?.merchantPlans?.map((plan, index) => (
+									<motion.div
+										variants={item}
+										key={plan?._id}
+									>
+										<ModernPricingCard
+											period={period}
+											isPopular={plan?.isMostPreferred}
+											accountId={plan?.id}
+											title={plan?.plansname}
+											subtitle={plan?.planinfo}
+											yearlyPrice={plan?.percetageCommissionCharge}
+											monthlyPrice={plan?.percetageCommissionCharge}
+											buttonTitle="Get Started"
+											index={index}
+											details={
+												<div className="mt-40 flex flex-col">
+													<Typography className="font-bold text-16 mb-16">
+														Everything you need to succeed:
+													</Typography>
+													<div className="space-y-12">
+														<div className="flex items-start gap-12">
+															<Box
+																sx={{
+																	width: 20,
+																	height: 20,
+																	borderRadius: '6px',
+																	background:
+																		'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)',
+																	display: 'flex',
+																	alignItems: 'center',
+																	justifyContent: 'center',
+																	flexShrink: 0,
+																	marginTop: '2px'
+																}}
 															>
-																heroicons-solid:check
-															</FuseSvgIcon>
-														</Box>
-														<Typography className="text-15 leading-relaxed">
-															<b>{plan?.numberofproducts}</b> products to start
-														</Typography>
-													</div>
+																<FuseSvgIcon
+																	size={12}
+																	sx={{ color: 'white' }}
+																>
+																	heroicons-solid:check
+																</FuseSvgIcon>
+															</Box>
+															<Typography className="text-15 leading-relaxed">
+																<b>{plan?.numberofproducts}</b> products to start
+															</Typography>
+														</div>
 
-													<div className="flex items-start gap-12">
-														<Box
-															sx={{
-																width: 20,
-																height: 20,
-																borderRadius: '6px',
-																background:
-																	'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)',
-																display: 'flex',
-																alignItems: 'center',
-																justifyContent: 'center',
-																flexShrink: 0,
-																marginTop: '2px'
-															}}
-														>
-															<FuseSvgIcon
-																size={12}
-																sx={{ color: 'white' }}
+														<div className="flex items-start gap-12">
+															<Box
+																sx={{
+																	width: 20,
+																	height: 20,
+																	borderRadius: '6px',
+																	background:
+																		'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)',
+																	display: 'flex',
+																	alignItems: 'center',
+																	justifyContent: 'center',
+																	flexShrink: 0,
+																	marginTop: '2px'
+																}}
 															>
-																heroicons-solid:check
-															</FuseSvgIcon>
-														</Box>
-														<Typography className="text-15 leading-relaxed">
-															Advanced Analytics Dashboard
-														</Typography>
-													</div>
+																<FuseSvgIcon
+																	size={12}
+																	sx={{ color: 'white' }}
+																>
+																	heroicons-solid:check
+																</FuseSvgIcon>
+															</Box>
+															<Typography className="text-15 leading-relaxed">
+																Advanced Analytics Dashboard
+															</Typography>
+														</div>
 
-													<div className="flex items-start gap-12">
-														<Box
-															sx={{
-																width: 20,
-																height: 20,
-																borderRadius: '6px',
-																background:
-																	'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)',
-																display: 'flex',
-																alignItems: 'center',
-																justifyContent: 'center',
-																flexShrink: 0,
-																marginTop: '2px'
-															}}
-														>
-															<FuseSvgIcon
-																size={12}
-																sx={{ color: 'white' }}
+														<div className="flex items-start gap-12">
+															<Box
+																sx={{
+																	width: 20,
+																	height: 20,
+																	borderRadius: '6px',
+																	background:
+																		'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)',
+																	display: 'flex',
+																	alignItems: 'center',
+																	justifyContent: 'center',
+																	flexShrink: 0,
+																	marginTop: '2px'
+																}}
 															>
-																heroicons-solid:check
-															</FuseSvgIcon>
-														</Box>
-														<Typography className="text-15 leading-relaxed">
-															24/7 Priority Support
-														</Typography>
-													</div>
+																<FuseSvgIcon
+																	size={12}
+																	sx={{ color: 'white' }}
+																>
+																	heroicons-solid:check
+																</FuseSvgIcon>
+															</Box>
+															<Typography className="text-15 leading-relaxed">
+																24/7 Priority Support
+															</Typography>
+														</div>
 
-													<div className="flex items-start gap-12">
-														<Box
-															sx={{
-																width: 20,
-																height: 20,
-																borderRadius: '6px',
-																background:
-																	'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)',
-																display: 'flex',
-																alignItems: 'center',
-																justifyContent: 'center',
-																flexShrink: 0,
-																marginTop: '2px'
-															}}
-														>
-															<FuseSvgIcon
-																size={12}
-																sx={{ color: 'white' }}
+														<div className="flex items-start gap-12">
+															<Box
+																sx={{
+																	width: 20,
+																	height: 20,
+																	borderRadius: '6px',
+																	background:
+																		'linear-gradient(135deg, #FF6B35 0%, #F77F00 100%)',
+																	display: 'flex',
+																	alignItems: 'center',
+																	justifyContent: 'center',
+																	flexShrink: 0,
+																	marginTop: '2px'
+																}}
 															>
-																heroicons-solid:check
-															</FuseSvgIcon>
-														</Box>
-														<Typography className="text-15 leading-relaxed">
-															Secure Payment Processing
-														</Typography>
+																<FuseSvgIcon
+																	size={12}
+																	sx={{ color: 'white' }}
+																>
+																	heroicons-solid:check
+																</FuseSvgIcon>
+															</Box>
+															<Typography className="text-15 leading-relaxed">
+																Secure Payment Processing
+															</Typography>
+														</div>
 													</div>
 												</div>
+											}
+										/>
+									</motion.div>
+								))
+							) : (
+								<Box className="col-span-full text-center py-64">
+									<FuseSvgIcon
+										size={64}
+										color="disabled"
+									>
+										heroicons-outline:inbox
+									</FuseSvgIcon>
+									<Typography
+										className="mt-16 text-20 font-semibold"
+										color="text.secondary"
+									>
+										No merchant plans available yet
+									</Typography>
+								</Box>
+							)}
+						</motion.div>
+					) : (
+						<motion.div
+							initial={{ opacity: 0, y: 20 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true }}
+						>
+							<Box
+								className="mx-auto max-w-4xl rounded-3xl overflow-hidden"
+								sx={{
+									background: 'linear-gradient(135deg, #FF6B35 0%, #F77F00 50%, #FCBF49 100%)',
+									position: 'relative'
+								}}
+							>
+								<Box
+									sx={{
+										position: 'absolute',
+										top: 0,
+										left: 0,
+										right: 0,
+										bottom: 0,
+										opacity: 0.1,
+										background:
+											'radial-gradient(circle at 30% 50%, white 0%, transparent 50%)'
+									}}
+								/>
+
+								<div className="relative py-64 px-32 sm:px-64 text-center">
+									<Box
+										sx={{
+											width: 96,
+											height: 96,
+											borderRadius: '24px',
+											backgroundColor: 'rgba(255, 255, 255, 0.2)',
+											backdropFilter: 'blur(10px)',
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center',
+											margin: '0 auto',
+											border: '2px solid rgba(255, 255, 255, 0.3)',
+											mb: 4
+										}}
+									>
+										<FuseSvgIcon
+											size={48}
+											sx={{ color: 'white' }}
+										>
+											heroicons-outline:sparkles
+										</FuseSvgIcon>
+									</Box>
+
+									<Typography
+										className="text-36 sm:text-48 font-black mb-24"
+										sx={{ color: 'white' }}
+									>
+										Unlock Better Commission Rates
+									</Typography>
+
+									<Typography
+										className="text-18 sm:text-22 mb-32 leading-relaxed"
+										sx={{ color: 'rgba(255, 255, 255, 0.95)' }}
+									>
+										Get customized commission rates tailored to your business volume and needs.
+										Negotiated commissions offer you the flexibility to maximize your profits.
+									</Typography>
+
+									<Box
+										className="bg-white/10 backdrop-blur-md rounded-2xl p-32 mb-40 border-2 border-white/20"
+										sx={{ textAlign: 'left' }}
+									>
+										<Typography
+											className="text-20 font-bold mb-20"
+											sx={{ color: 'white' }}
+										>
+											How to apply for Negotiated Commission:
+										</Typography>
+
+										<div className="space-y-16">
+											<div className="flex items-start gap-16">
+												<Box
+													sx={{
+														width: 32,
+														height: 32,
+														borderRadius: '8px',
+														backgroundColor: 'rgba(255, 255, 255, 0.25)',
+														display: 'flex',
+														alignItems: 'center',
+														justifyContent: 'center',
+														flexShrink: 0,
+														marginTop: '2px'
+													}}
+												>
+													<Typography
+														className="text-16 font-black"
+														sx={{ color: 'white' }}
+													>
+														1
+													</Typography>
+												</Box>
+												<Typography
+													className="text-16 leading-relaxed"
+													sx={{ color: 'white' }}
+												>
+													<b>Choose a plan</b> from the Percentage Commission tab above
+												</Typography>
 											</div>
-										}
-									/>
-								</motion.div>
-							))
-						) : (
-							<Box className="col-span-full text-center py-64">
-								<FuseSvgIcon
-									size={64}
-									color="disabled"
-								>
-									heroicons-outline:inbox
-								</FuseSvgIcon>
-								<Typography
-									className="mt-16 text-20 font-semibold"
-									color="text.secondary"
-								>
-									No merchant plans available yet
-								</Typography>
+
+											<div className="flex items-start gap-16">
+												<Box
+													sx={{
+														width: 32,
+														height: 32,
+														borderRadius: '8px',
+														backgroundColor: 'rgba(255, 255, 255, 0.25)',
+														display: 'flex',
+														alignItems: 'center',
+														justifyContent: 'center',
+														flexShrink: 0,
+														marginTop: '2px'
+													}}
+												>
+													<Typography
+														className="text-16 font-black"
+														sx={{ color: 'white' }}
+													>
+														2
+													</Typography>
+												</Box>
+												<Typography
+													className="text-16 leading-relaxed"
+													sx={{ color: 'white' }}
+												>
+													<b>Sign up and access</b> your merchant dashboard
+												</Typography>
+											</div>
+
+											<div className="flex items-start gap-16">
+												<Box
+													sx={{
+														width: 32,
+														height: 32,
+														borderRadius: '8px',
+														backgroundColor: 'rgba(255, 255, 255, 0.25)',
+														display: 'flex',
+														alignItems: 'center',
+														justifyContent: 'center',
+														flexShrink: 0,
+														marginTop: '2px'
+													}}
+												>
+													<Typography
+														className="text-16 font-black"
+														sx={{ color: 'white' }}
+													>
+														3
+													</Typography>
+												</Box>
+												<Typography
+													className="text-16 leading-relaxed"
+													sx={{ color: 'white' }}
+												>
+													<b>Navigate to Settings</b> and click on "Apply for Negotiated Commission"
+												</Typography>
+											</div>
+
+											<div className="flex items-start gap-16">
+												<Box
+													sx={{
+														width: 32,
+														height: 32,
+														borderRadius: '8px',
+														backgroundColor: 'rgba(255, 255, 255, 0.25)',
+														display: 'flex',
+														alignItems: 'center',
+														justifyContent: 'center',
+														flexShrink: 0,
+														marginTop: '2px'
+													}}
+												>
+													<Typography
+														className="text-16 font-black"
+														sx={{ color: 'white' }}
+													>
+														4
+													</Typography>
+												</Box>
+												<Typography
+													className="text-16 leading-relaxed"
+													sx={{ color: 'white' }}
+												>
+													<b>Submit your application</b> with your business details and sales volume
+												</Typography>
+											</div>
+
+											<div className="flex items-start gap-16">
+												<Box
+													sx={{
+														width: 32,
+														height: 32,
+														borderRadius: '8px',
+														backgroundColor: 'rgba(255, 255, 255, 0.25)',
+														display: 'flex',
+														alignItems: 'center',
+														justifyContent: 'center',
+														flexShrink: 0,
+														marginTop: '2px'
+													}}
+												>
+													<Typography
+														className="text-16 font-black"
+														sx={{ color: 'white' }}
+													>
+														5
+													</Typography>
+												</Box>
+												<Typography
+													className="text-16 leading-relaxed"
+													sx={{ color: 'white' }}
+												>
+													<b>Get approved</b> and enjoy customized commission rates tailored to your
+													business
+												</Typography>
+											</div>
+										</div>
+									</Box>
+
+									<Button
+										variant="contained"
+										size="large"
+										onClick={() => setPeriod('year')}
+										sx={{
+											backgroundColor: 'white',
+											color: '#FF6B35',
+											px: 5,
+											py: 2,
+											fontSize: '1.125rem',
+											fontWeight: 700,
+											borderRadius: '12px',
+											textTransform: 'none',
+											boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+											'&:hover': {
+												backgroundColor: 'rgba(255, 255, 255, 0.9)',
+												transform: 'translateY(-2px)',
+												boxShadow: '0 12px 40px rgba(0,0,0,0.25)'
+											},
+											transition: 'all 0.3s ease'
+										}}
+										endIcon={<FuseSvgIcon size={24}>heroicons-outline:arrow-right</FuseSvgIcon>}
+									>
+										View Plans
+									</Button>
+								</div>
 							</Box>
-						)}
-					</motion.div>
+						</motion.div>
+					)}
 				</div>
 			</div>
 
@@ -350,7 +605,7 @@ function ModernPricingPage() {
 								backgroundColor: alpha('#FF6B35', 0.1),
 								color: '#FF6B35',
 								fontWeight: 700,
-								fontSize: '0.75rem',
+								fontSize: '1.15rem',
 								letterSpacing: '0.5px',
 								mb: 3
 							}}
@@ -451,11 +706,15 @@ function ModernPricingPage() {
 						</Typography>
 
 						<Button
-							component={Link}
-							to="/sign-up"
+							component="a"
+							href="#pricing-plans"
 							size="large"
 							variant="contained"
 							className="mt-48"
+							onClick={(e) => {
+								e.preventDefault();
+								document.getElementById('pricing-plans')?.scrollIntoView({ behavior: 'smooth' });
+							}}
 							sx={{
 								backgroundColor: 'white',
 								color: '#FF6B35',
@@ -475,7 +734,7 @@ function ModernPricingPage() {
 							}}
 							endIcon={<FuseSvgIcon size={24}>heroicons-outline:arrow-right</FuseSvgIcon>}
 						>
-							Start Selling for Free
+							Choose Your Plan
 						</Button>
 
 						<Typography

@@ -456,11 +456,6 @@ function OrdersTable() {
 									variant="contained"
 									size="small"
 									onClick={() => {
-										const selectedRows = table.getSelectedRowModel().rows;
-										console.log(
-											'Process selected orders:',
-											selectedRows.map((row) => row.original.id)
-										);
 										table.resetRowSelection();
 									}}
 									className="flex shrink min-w-40"

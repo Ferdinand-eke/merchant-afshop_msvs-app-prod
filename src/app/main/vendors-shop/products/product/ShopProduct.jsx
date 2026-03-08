@@ -63,7 +63,6 @@ function ShopProduct() {
 		skip: !productId || productId === 'new'
 	});
 
-	console.log('SINGLE__PRODUCT__DATA',  products?.data?.product);
 
 	// Persistent tab state using localStorage
 	const TAB_STORAGE_KEY = `product_tab_${productId}`;
@@ -96,7 +95,6 @@ function ShopProduct() {
 		}
 	}, [products?.data?.product, reset]);
 
-	console.log("SINGLE__PRODCT_FORM_STATE", products?.data?.product);
 
 	/**
 	 * Tab Change with localStorage persistence

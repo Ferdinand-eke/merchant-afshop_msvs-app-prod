@@ -19,7 +19,6 @@ function UsersList() {
 
 	// const groupedFilteredContacts = useAppSelector(selectGroupedFilteredContacts(filteredData));
 
-	console.log('users-on-HOMES', usresData?.data?.userlist);
 	const filteredData = useAppSelector(selectFilteredContactList(usresData?.data?.userlist));
 
 	const groupedFilteredContacts = useAppSelector(selectGroupedFilteredContacts(filteredData));

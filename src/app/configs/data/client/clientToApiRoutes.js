@@ -27,17 +27,6 @@ export function AuthApi() {
 
 	// console.log("AUTH_TOKEN", token)
 
-	const customHeaders = {
-		Accept: 'application/json',
-		withcredentials: true,
-		headers: {
-			// 'Access-Control-Allow-Origin': '*',
-			'Content-Type': 'application/json'
-		},
-		credentials: 'include'
-		// token: `Bearer ${TOKEN}`,
-	};
-
 	const Api = axios.create({
 		/** ***********Previous for Here starts */
 		baseURL: baseUrl,
@@ -48,24 +37,31 @@ export function AuthApi() {
 	Api.interceptors.response.use(
 		(response) => response,
 		(error) => {
-			console.error('Interceptor---ERROR', error);
+			// Check if we're in production
+			const isProduction = import.meta.env.VITE_ENV === 'Production';
 
+			// Log errors only in development mode
+			if (!isProduction) {
+				// You can uncomment these if you need detailed debugging
+				// const status = error?.response?.status;
+				// const endpoint = error?.config?.url;
+				// const message = error?.response?.data?.message || error.message;
+				// console.error('API Error:', { status, endpoint, message });
+			}
+
+			// Handle 403 Forbidden - trigger logout
 			if (error?.response?.status === 403) {
-				console.log('responseSTATS', error?.response?.status);
 				merchantLogOutCall();
-				// toast.error(
-				//   error.response && error.response.data.message
-				//     ? error.response.data.message
-				//     : error.message
-				// );
-
 				return Promise.reject({ status: 401, errors: ['Unauthorized'] });
 			}
 
-			if (error.response?.status === 422) {
-				const errors = Object.values(error?.response?.data?.errors || {});
+			// Handle 401 Unauthorized - trigger logout
+			if (error?.response?.status === 401) {
+				merchantLogOutCall();
+				return Promise.reject({ status: 401, errors: ['Unauthorized'] });
 			}
 
+			// All other errors - pass through for component-level handling
 			return Promise.reject(error);
 		}
 	);
@@ -74,17 +70,14 @@ export function AuthApi() {
 }
 
 export const merchantSignIn = (formData) => {
-	console.log('DATA_IN_FORM', formData);
 	return Api().post(`/auth-merchant/login`, formData);
 }; // (Mcsvs => Done)
 
 export const shopForgotPasswordInit = (formData) => {
-	console.log('DATA_IN_FORM', formData);
 	return Api().post(`/auth-merchant/forgot-password`, formData);
 }; // (Mcsvs => Done)
 
 export const resetshopPasswordWithcode = (formData) => {
-	console.log('RESETPASS_DATA_INTORM', formData);
 	return Api().put(`/auth-merchant/reset-password`, formData);
 }; // (Mcsvs => Done)
 
@@ -201,38 +194,32 @@ export const pullMyShopProductByIdFromExport = (productFormData) =>
 	AuthApi().put(`/myshop/pull-product-from-export/${productFormData}`);
 
 export const deleteShopProductImage = (imageData) => {
-	console.log('imageDataPayload', imageData);
 	return AuthApi().delete(`/productsbymerchant/${imageData?.productId}/delete-product-image`, { data: imageData });
 };
 
 // Change/Replace a single product image
 // TODO: Update endpoint when backend provides the correct route
 export const changeShopProductImage = (imageData) => {
-	console.log('changeImagePayload', imageData);
 	// imageData: { productId, oldImagePublicId, newImageFile }
 	return AuthApi().put(`/productsbymerchant/${imageData?.productId}/change-product-image`, imageData);
 };
 
 export const deleteShopProduct = (id) => {
-	console.log('productToDelete', id);
 	return AuthApi().delete(`/productsbymerchant/delete-product/${id}`);
 };
 
 // Price Tier Management for existing products
 export const addProductPriceTier = (tierData) => {
-	console.log('addPriceTierPayload', tierData);
 	// tierData: { productId, minQuantity, maxQuantity, price }
 	return AuthApi().post(`/productsbymerchant/${tierData?.productId}/add-price-tier`, tierData);
 };
 
 export const updateProductPriceTier = (tierData) => {
-	console.log('updatePriceTierPayload', tierData);
 	// tierData: { productId, tierId, minQuantity, maxQuantity, price } /${tierData?.tierId}
 	return AuthApi().put(`/productsbymerchant/${tierData?.productId}/update-price-tier/${tierData?.tierId}`, tierData);
 };
 
 export const deleteProductPriceTier = (tierData) => {
-	console.log('deletePriceTierPayload', tierData);
 	// tierData: { productId, tierId }
 	return AuthApi().delete(`/productsbymerchant/${tierData?.productId}/delete-price-tier/${tierData?.tierId}`);
 };
@@ -338,7 +325,6 @@ export const myShopItemsInOrdersByShopId = (id) => {
 export const MyShopCashOutOrderByOrderIdShopId = (id) => AuthApi().post(`/api/myshop/cashout-order/${id}`);
 
 export const MyShopCashOutOrderItemsByOrderItemsIdShopId = (id) => {
-	console.log('CASHOUT_ORDER_ITEM_ID', id);
 	// return
 	return AuthApi().put(`/merchant-orders/order-item/${id}/cashout`); // newDashboard (Msvs => Done)
 };
@@ -460,7 +446,6 @@ export const deleteMerchantBookingListing = (id) => AuthApi().delete(`/bookings/
 /** *Manage rooms
  * of prperties */
 export const getBookingsPropertyRoomsById = (propertyId) => {
-	console.log('In Route TABLE', propertyId);
 	return AuthApi().get(`/bookings/property-rooms/${propertyId}/view`); // (Msvs => done)
 };
 
@@ -488,12 +473,6 @@ export const deleteRoomOnProperty = (roomId) => {
 
 /** *Property Listing Images Management */
 export const updatePropertyListingImage = ({ propertyId, updateData }) => {
-	console.log('updatePropertyListingImage API - propertyId:', propertyId);
-	console.log('updatePropertyListingImage API - updateData:', updateData);
-	console.log(
-		'updatePropertyListingImage API - Full URL:',
-		`/bookings/property-listing/${propertyId}/update-listing-image`
-	);
 	return AuthApi().put(`/bookings/property-listing/${propertyId}/update-listing-image`, updateData); // (Msvs => done)
 };
 
@@ -564,7 +543,6 @@ export const storeShopFoodMart = (formData) => AuthApi().post('/rcs/merchant-rcs
 export const getMyShopFoodMartBySlug = (slug) => AuthApi().get(`/rcs/merchant-rcs/${slug}/view`); // (Msvs => Done)
 
 export const updateMyShopFoodMartById = (productFormData) => {
-	console.log('updateMyShopFoodMartById_PAYLOAD', productFormData);
 	return AuthApi().put(`/rcs/merchant-rcs/${productFormData?.id}/update`, productFormData);
 }; // (Msvs => Done)
 
@@ -643,8 +621,7 @@ export const logOut = () => {
 		// try {
 		// AuthApi();
 		MyShopLogOutSession()
-			.then((response) => {
-				console.log('logged out successfully', response);
+			.then(() => {
 
 				Cookies.remove('_auth');
 				Cookies.remove('_auth_storage');
@@ -654,10 +631,8 @@ export const logOut = () => {
 
 				window.location.reload();
 			})
-			.catch((error) => {
-				console.log(
-					error.response && error.response.data.message ? error.response.data.message : error.message
-				);
+			.catch(() => {
+				// Handle error silently
 			});
 	}
 };
@@ -700,7 +675,6 @@ export const merchantLogOutCall = () => {
 
 			// window.location.reload(false);
 		} catch (error) {
-			console.log(error);
 		}
 	}
 };

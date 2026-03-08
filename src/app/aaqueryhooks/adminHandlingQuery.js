@@ -28,7 +28,6 @@ export function useAdminRecruitStaff() {
 	//   const queryClient = useQueryClient()
 	return useMutation(recruitAdminUserEndpoint, {
 		onSuccess: (data) => {
-			console.log('ADMIN-INVITATION-PAYLOAD', data?.data);
 
 			// return
 			if (data?.data?.success && data?.data?.activation_token) {
@@ -68,7 +67,6 @@ export function useAdminInvitationAcceptance() {
 	// const queryClient = useQueryClient()
 	return useMutation(adminUserInviteAcceptanceEndpoint, {
 		onSuccess: (data) => {
-			console.log('ADMIN-ACCEPT-INVITATION-PAYLOAD', data?.data);
 
 			//    return
 			if (data?.data?.success && data?.data?.adminuser) {

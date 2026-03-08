@@ -71,7 +71,6 @@ function PricingTab({ shopData, productDataId }) {
 
 	// Handle opening edit modal
 	const handleOpenEditModal = (tier) => {
-		console.log('EDITING__TIER',tier)
 		setSelectedTier(tier);
 		setTierFormData({
 			minQuantity: tier.minQuantity,
@@ -129,7 +128,6 @@ function PricingTab({ shopData, productDataId }) {
 			// For existing products, call API
 			// Use productId from route params - this is the database ID of the product
 			try {
-				console.log('UPDATING__TIER__DATA', { productId, selectedTier, tierFormData });
 
 				await updatePriceTierMutation.mutateAsync({
 					productId:selectedTier.productId,
@@ -159,7 +157,6 @@ function PricingTab({ shopData, productDataId }) {
 			// For existing products, call API
 			// Use productId from route params - this is the database ID of the product
 			try {
-				console.log('ADDING__TIER__DATA', { selectedTier, tierFormData });
 
 				await addPriceTierMutation.mutateAsync({
 					productId:productDataId,

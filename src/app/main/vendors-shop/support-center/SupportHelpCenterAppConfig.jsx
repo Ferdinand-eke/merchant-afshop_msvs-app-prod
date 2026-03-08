@@ -15,6 +15,7 @@ const SupportHelpCenterAppConfig = {
 	settings: {
 		layout: {}
 	},
+	
 	routes: [
 		{
 			path: 'support',

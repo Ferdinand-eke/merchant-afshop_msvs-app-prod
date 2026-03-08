@@ -67,8 +67,6 @@ function OrderDetailsTab({ order, isError }) {
 			try {
 				packOrder.mutate(order?._id);
 			} catch (error) {
-				console.log({ error: packOrder?.error });
-				console.log({ error: JSON.stringify(error) });
 			}
 		}
 	};
@@ -78,7 +76,6 @@ function OrderDetailsTab({ order, isError }) {
 			try {
 				shipOrder.mutate(order?._id);
 			} catch (error) {
-				console.log({ error: shipOrder?.error });
 			}
 		}
 	};
@@ -99,7 +96,6 @@ function OrderDetailsTab({ order, isError }) {
 			try {
 				deliverOrder.mutate(order?._id);
 			} catch (error) {
-				console.log({ error: JSON.stringify(error) });
 			}
 		}
 	};

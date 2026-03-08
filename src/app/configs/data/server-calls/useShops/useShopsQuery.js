@@ -31,8 +31,6 @@ export function useShopSignUp() {
 			}
 		},
 		onError: (error) => {
-			console.log('MuTationError', error);
-			console.log('MuTationErrorMessage', error.message);
 			handleApiError(error, 'Failed to sign up. Please try again');
 		}
 	});
@@ -43,7 +41,6 @@ export function useShopSignUpWithOtp() {
 
 	return useMutation(newShopSignupWithOtp, {
 		onSuccess: (data) => {
-			console.log('preShopSignUp', data?.data);
 
 			if (data?.data?.registration_activation_token && data?.data?.message) {
 				// Store tokrn in cookie
@@ -52,7 +49,6 @@ export function useShopSignUpWithOtp() {
 			}
 
 			if (data?.data?.errors) {
-				console.log('preShopSignUpErrors', data?.data?.errors);
 				// const {
 				//     response: { data },
 				//   } = data?.data?.error ?? {};
@@ -73,16 +69,12 @@ export function useStoreShopPreSignUp() {
 
 	return useMutation(storePreShopUserData, {
 		onSuccess: (data) => {
-			console.log('RegistrationResponse', data);
-			console.log('ResponseMessage', data?.data?.message);
 
 			if (data) {
 				toast.success(data?.data?.message);
 			}
 		},
 		onError: (error) => {
-			console.log('MuTationError', error);
-			console.log('MuTationErrorMessage', error.message);
 			handleApiError(error, 'Failed to complete registration. Please try again');
 		}
 	});
@@ -142,8 +134,6 @@ export function useStoreShopPreSignUpFromOtp() {
 
 	return useMutation(storePreShopUserDataWithOtp, {
 		onSuccess: (data) => {
-			console.log('RegistrationResponse', data?.data);
-			console.log('ResponseMessage', data?.data?.message);
 
 			if (data?.data?.success) {
 				// && data?.data?.newShopFinanceAccount
@@ -155,7 +145,6 @@ export function useStoreShopPreSignUpFromOtp() {
 			}
 
 			if (data?.data?.errors) {
-				console.log('activate Merchant Errors', data?.data?.errors);
 
 				Array.isArray(data?.data?.errors)
 					? data?.data?.errors?.map((m) => toast.error(`${`${m?.message}` + `for` + ` ` + ` ${m?.path[1]}`}`))
@@ -163,8 +152,6 @@ export function useStoreShopPreSignUpFromOtp() {
 			}
 		},
 		onError: (error) => {
-			console.log('MuTationError', error);
-			console.log('MuTationErrorMessage', error.message);
 			handleApiError(error, 'Failed to activate account. Please try again');
 		}
 	});

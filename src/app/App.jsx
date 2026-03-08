@@ -35,10 +35,21 @@ const emotionCacheOptions = {
 	}
 };
 
+const isProduction = import.meta.env.VITE_ENV === 'Production';
+
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			retry: 0
+		}
+	},
+	// Only suppress error logging in production
+	logger: {
+		log: isProduction ? () => {} : console.log,
+		warn: isProduction ? () => {} : console.warn,
+		error: isProduction ? () => {} : () => {
+			// Suppress React Query's default error logging even in dev
+			// Individual components can still handle and display errors as needed
 		}
 	}
 });

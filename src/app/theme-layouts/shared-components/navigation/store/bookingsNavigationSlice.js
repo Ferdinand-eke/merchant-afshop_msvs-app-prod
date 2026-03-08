@@ -18,7 +18,6 @@ const initialState = navigationAdapter.upsertMany(
 );
 // console.log('navDATA', bookingsNavigationConfig)
 
-console.log('initialBOOKINGSNavSTate', initialState);
 /**
  * Redux Thunk actions related to the navigation store state
  */

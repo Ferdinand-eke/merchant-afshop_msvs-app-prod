@@ -174,7 +174,6 @@ function CreateAccountDialog({ open, onClose, onSuccess, shopData }) {
 						const accountName = resolvedData?.account_name;
 						const bankId = resolvedData?.bank_id;
 
-						console.log('Account Resolution Data:', resolveResponse?.data);
 
 						// Store complete verification data
 						const completeVerificationData = {
@@ -267,14 +266,12 @@ function CreateAccountDialog({ open, onClose, onSuccess, shopData }) {
 			bankVerificationData: verifiedBankDetails || null
 		};
 
-		console.log('Complete Account Creation Payload:', completeAccountData);
 
 
 		return;
 		createAccount(completeAccountData, {
 			onSuccess: (response) => {
 				if (response?.data?.success) {
-					console.log('Account Creation Response:', response?.data);
 
 					// Clear session storage on successful account creation
 					sessionStorage.removeItem(SESSION_STORAGE_KEY);
