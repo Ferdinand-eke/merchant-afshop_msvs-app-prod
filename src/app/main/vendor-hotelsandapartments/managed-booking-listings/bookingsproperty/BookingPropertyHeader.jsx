@@ -75,11 +75,6 @@ function BookingPropertyHeader() {
 	}
 
 	function handleCreateApartment() {
-
-		console.log('Creating property with form data:', getValues());
-
-		return
-
 		const values = getValues();
 		const formData = {
 			...values,
