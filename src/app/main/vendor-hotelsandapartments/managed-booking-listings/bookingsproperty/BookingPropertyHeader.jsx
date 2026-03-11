@@ -106,8 +106,7 @@ function BookingPropertyHeader() {
 			priceWithVAT: parseInt(values?.priceWithVAT) || 0,
 			vatAmount: parseInt(values?.vatAmount) || 0
 		};
-		return
-		// addBookingsProperty.mutate(formData);
+		addBookingsProperty.mutate(formData);
 	}
 
 	// Open delete confirmation dialog
